@@ -89,7 +89,7 @@ export default function AdminPage() {
   const loadProjectsData = async () => {
     setLoading(true)
     try {
-      console.log("[v0] Loading projects and categories from API...")
+      console.log("Loading projects and categories from API...")
 
       // Charger les projets et catégories en parallèle
       const [projectsRes, categoriesRes] = await Promise.all([fetch("/api/projects"), fetch("/api/categories")])
@@ -97,16 +97,16 @@ export default function AdminPage() {
       if (projectsRes.ok) {
         const projectsData = await projectsRes.json()
         setProjects(projectsData.projects || [])
-        console.log("[v0] Loaded projects:", projectsData.projects?.length || 0)
+        console.log("Loaded projects:", projectsData.projects?.length || 0)
       }
 
       if (categoriesRes.ok) {
         const categoriesData = await categoriesRes.json()
         setCategories(categoriesData.categories || [])
-        console.log("[v0] Loaded categories:", categoriesData.categories?.length || 0)
+        console.log("Loaded categories:", categoriesData.categories?.length || 0)
       }
     } catch (error) {
-      console.error("[v0] Error loading data:", error)
+      console.error("Error loading data:", error)
     } finally {
       setLoading(false)
     }
@@ -124,7 +124,7 @@ export default function AdminPage() {
 
   const handleCategoriesChange = async (newCategories: Category[]) => {
     try {
-      console.log("[v0] Saving categories...")
+      console.log("Saving categories...")
       const response = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -133,10 +133,10 @@ export default function AdminPage() {
 
       if (response.ok) {
         setCategories(newCategories)
-        console.log("[v0] Categories saved successfully")
+        console.log("Categories saved successfully")
       }
     } catch (error) {
-      console.error("[v0] Error saving categories:", error)
+      console.error("Error saving categories:", error)
     }
   }
 
@@ -169,7 +169,7 @@ export default function AdminPage() {
 
   const handleSave = async () => {
     try {
-      console.log("[v0] Saving project...")
+      console.log("Saving project...")
       const slug = formData.slug || generateSlug(formData.title || "")
       const projectData = { ...(formData as Project), slug }
 
@@ -185,7 +185,7 @@ export default function AdminPage() {
 
       if (response.ok) {
         const result = await response.json()
-        console.log("[v0] Project saved:", result.project.id)
+        console.log("Project saved:", result.project.id)
 
         // Recharger les données
         await loadProjectsData()
@@ -196,24 +196,24 @@ export default function AdminPage() {
         setFormData({})
       }
     } catch (error) {
-      console.error("[v0] Error saving project:", error)
+      console.error("Error saving project:", error)
     }
   }
 
   const handleDelete = async (id: number) => {
     if (confirm("Supprimer ce projet ?")) {
       try {
-        console.log("[v0] Deleting project:", id)
+        console.log("Deleting project:", id)
         const response = await fetch(`/api/projects?id=${id}`, {
           method: "DELETE",
         })
 
         if (response.ok) {
-          console.log("[v0] Project deleted successfully")
+          console.log("Project deleted successfully")
           await loadProjectsData()
         }
       } catch (error) {
-        console.error("[v0] Error deleting project:", error)
+        console.error("Error deleting project:", error)
       }
     }
   }
@@ -576,7 +576,7 @@ export default function AdminPage() {
                                 e.preventDefault()
                                 const v = (e.target as HTMLInputElement).value
                                 addService(v)
-                                ;(e.target as HTMLInputElement).value = ""
+                                  ; (e.target as HTMLInputElement).value = ""
                               }
                             }}
                           />

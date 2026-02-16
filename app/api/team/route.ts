@@ -7,7 +7,7 @@ export async function GET() {
     const team = await getTeam()
     return NextResponse.json({ ok: true, team })
   } catch (error) {
-    console.error("[v0] Team API GET error:", error)
+    console.error("Team API GET error:", error)
     return NextResponse.json({ ok: false, error: "Failed to fetch team data" }, { status: 500 })
   }
 }
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json({ ok: true, member: created }, { status: 201 })
   } catch (error) {
-    console.error("[v0] Team API POST error:", error)
+    console.error("Team API POST error:", error)
     return NextResponse.json({ ok: false, error: "Failed to create team member" }, { status: 500 })
   }
 }

@@ -31,7 +31,7 @@ async function kvGet<T>(key: string): Promise<T | null> {
       return null
     }
   } catch (error) {
-    console.error("[v0] KV get error:", error)
+    console.error("KV get error:", error)
     return null
   }
 }
@@ -49,7 +49,7 @@ async function kvSet<T>(key: string, value: T): Promise<boolean> {
 
     return res.ok
   } catch (error) {
-    console.error("[v0] KV set error:", error)
+    console.error("KV set error:", error)
     return false
   }
 }
@@ -108,7 +108,7 @@ export async function getTeam(): Promise<TeamMember[]> {
     // Final fallback to default team
     return defaultTeam
   } catch (error) {
-    console.error("[v0] getTeam error:", error)
+    console.error("getTeam error:", error)
     return defaultTeam
   }
 }
@@ -121,7 +121,7 @@ export async function saveTeam(members: TeamMember[]): Promise<void> {
     // Try to save to KV
     await kvSetTeam(members)
   } catch (error) {
-    console.error("[v0] saveTeam error:", error)
+    console.error("saveTeam error:", error)
     // Memory fallback already saved above
   }
 }
@@ -144,7 +144,7 @@ export async function createMember(input: Omit<TeamMember, "id" | "order">): Pro
     await saveTeam(updated)
     return member
   } catch (error) {
-    console.error("[v0] createMember error:", error)
+    console.error("createMember error:", error)
     throw new Error("Failed to create team member")
   }
 }

@@ -31,11 +31,11 @@ const fallbackServices: ServiceItem[] = [
 
 export async function GET() {
   try {
-    console.log("[v0] Fetching services from Redis...")
+    console.log("Fetching services from Redis...")
 
     const servicesData = await redis.get(SERVICES_KEY)
-    console.log("[v0] Redis response type:", typeof servicesData)
-    console.log("[v0] Redis response preview:", String(servicesData).substring(0, 100))
+    console.log("Redis response type:", typeof servicesData)
+    console.log("Redis response preview:", String(servicesData).substring(0, 100))
 
     let services: ServiceItem[] = fallbackServices
 
@@ -44,31 +44,31 @@ export async function GET() {
         // Check if it's valid JSON
         if (servicesData.startsWith("{") || servicesData.startsWith("[")) {
           services = JSON.parse(servicesData)
-          console.log("[v0] Successfully parsed services from Redis:", services.length, "services")
+          console.log("Successfully parsed services from Redis:", services.length, "services")
         } else {
-          console.log("[v0] Redis returned non-JSON data, using fallback")
+          console.log("Redis returned non-JSON data, using fallback")
         }
       } catch (parseError) {
-        console.log("[v0] JSON parse error, using fallback:", parseError)
+        console.log("JSON parse error, using fallback:", parseError)
       }
     } else if (servicesData && typeof servicesData === "object") {
       // Redis returned object directly
       services = Array.isArray(servicesData) ? servicesData : fallbackServices
-      console.log("[v0] Used Redis object data:", services.length, "services")
+      console.log("Used Redis object data:", services.length, "services")
     } else {
-      console.log("[v0] No valid data from Redis, initializing with fallback")
+      console.log("No valid data from Redis, initializing with fallback")
       // Initialize Redis with fallback data
       try {
         await redis.set(SERVICES_KEY, JSON.stringify(fallbackServices))
-        console.log("[v0] Initialized Redis with fallback services")
+        console.log("Initialized Redis with fallback services")
       } catch (initError) {
-        console.log("[v0] Failed to initialize Redis:", initError)
+        console.log("Failed to initialize Redis:", initError)
       }
     }
 
     return NextResponse.json({ services })
   } catch (error) {
-    console.log("[v0] Redis operation failed:", error)
+    console.log("Redis operation failed:", error)
     return NextResponse.json({ services: fallbackServices })
   }
 }
@@ -81,18 +81,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Services must be an array" }, { status: 400 })
     }
 
-    console.log("[v0] Saving services to Redis:", services.length, "services")
+    console.log("Saving services to Redis:", services.length, "services")
 
     try {
       await redis.set(SERVICES_KEY, JSON.stringify(services))
-      console.log("[v0] Successfully saved services to Redis")
+      console.log("Successfully saved services to Redis")
       return NextResponse.json({ success: true })
     } catch (redisError) {
-      console.log("[v0] Redis save failed:", redisError)
+      console.log("Redis save failed:", redisError)
       return NextResponse.json({ error: "Failed to save services" }, { status: 500 })
     }
   } catch (error) {
-    console.log("[v0] Services POST error:", error)
+    console.log("Services POST error:", error)
     return NextResponse.json({ error: "Invalid request" }, { status: 400 })
   }
 }

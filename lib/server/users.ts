@@ -61,33 +61,33 @@ const mem = {
 async function kvGet(): Promise<StoredUser[] | null> {
   if (!KV_URL || !KV_TOKEN) return null
   try {
-    console.log("[v0] KV GET attempt for users")
+    console.log("KV GET attempt for users")
     const res = await fetch(`${KV_URL}/get/${KV_KEY}`, {
       headers: { Authorization: `Bearer ${KV_TOKEN}` },
       cache: "no-store",
     })
-    console.log("[v0] KV GET response status:", res.status)
+    console.log("KV GET response status:", res.status)
     if (!res.ok) {
-      console.log("[v0] KV GET failed with status:", res.status)
+      console.log("KV GET failed with status:", res.status)
       return null
     }
     const j = await res.json().catch(() => ({}))
-    console.log("[v0] KV GET response data:", j)
+    console.log("KV GET response data:", j)
     const raw = (j as any)?.result
     if (!raw) {
-      console.log("[v0] KV GET no result, returning empty array")
+      console.log("KV GET no result, returning empty array")
       return []
     }
     try {
       const parsed = JSON.parse(raw) as StoredUser[]
-      console.log("[v0] KV GET parsed users count:", parsed.length)
+      console.log("KV GET parsed users count:", parsed.length)
       return parsed
     } catch (e) {
-      console.log("[v0] KV GET JSON parse error:", e)
+      console.log("KV GET JSON parse error:", e)
       return []
     }
   } catch (e) {
-    console.log("[v0] KV GET network error:", e)
+    console.log("KV GET network error:", e)
     return null
   }
 }
@@ -119,12 +119,12 @@ export async function listUsers(): Promise<PublicUser[]> {
 }
 export async function countUsers(): Promise<number> {
   try {
-    console.log("[v0] countUsers called")
+    console.log("countUsers called")
     const users = await readUsers()
-    console.log("[v0] countUsers result:", users.length)
+    console.log("countUsers result:", users.length)
     return users.length
   } catch (e) {
-    console.log("[v0] countUsers error:", e)
+    console.log("countUsers error:", e)
     return 0
   }
 }

@@ -20,14 +20,14 @@ function parseCookie(cookieHeader: string | null): Record<string, string> {
 
 export async function isBootstrapOpen(): Promise<boolean> {
   try {
-    console.log("[v0] isBootstrapOpen called")
+    console.log("isBootstrapOpen called")
     const count = await countUsers()
-    console.log("[v0] isBootstrapOpen user count:", count)
+    console.log("isBootstrapOpen user count:", count)
     const result = count === 0
-    console.log("[v0] isBootstrapOpen result:", result)
+    console.log("isBootstrapOpen result:", result)
     return result
   } catch (e) {
-    console.log("[v0] isBootstrapOpen error:", e)
+    console.log("isBootstrapOpen error:", e)
     return true // Default to bootstrap mode if error
   }
 }
