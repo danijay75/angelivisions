@@ -1,0 +1,51 @@
+// app/admin/login/page.tsx
+import { hcaptchaSiteKey } from "@/lib/public-config"
+// Existing imports here
+
+const SITEKEY = hcaptchaSiteKey
+// Existing code here
+
+// app/admin/forgot/page.tsx
+import { hcaptchaSiteKey } from "@/lib/public-config"
+// Existing imports here
+
+const SITEKEY = hcaptchaSiteKey
+// Existing code here
+
+// app/admin/reset/page.tsx
+import { hcaptchaSiteKey } from "@/lib/public-config"
+// Existing imports here
+
+const SITEKEY = hcaptchaSiteKey
+// Existing code here
+
+// lib/server/hcaptcha.ts
+export async function verifyHCaptcha(token: string) {
+  const secret = process.env.HCAPTCHA_SECRET
+  if (!token) return false
+
+  // Development fallback: if no secret is configured and not in production,
+  // allow verification to pass so previews work. In production, require the secret.
+  if (!secret) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("HCAPTCHA_SECRET missing - bypassing verification in development")
+      return true
+    }
+    return false
+  }
+
+  try {
+    const res = await fetch("https://hcaptcha.com/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret,
+        response: token,
+      }),
+    })
+    const data = await res.json()
+    return !!data.success
+  } catch {
+    return false
+  }
+}
