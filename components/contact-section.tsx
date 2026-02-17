@@ -4,11 +4,13 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone } from "lucide-react"
 import TeamSection from "@/components/team-section"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function ContactSection() {
+  const { t } = useI18n()
   const hours = {
-    title: "Horaires d'ouverture",
-    content: "Lun-Ven: 9h-19h\nSam: 10h-16h\nDim: Sur rendez-vous",
+    title: t("contact.hoursTitle"),
+    content: t("contact.hoursContent"),
   }
 
   const address = "79 rue du Général Leclerc, 78400 Chatou"
@@ -24,10 +26,8 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-10"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Contacts</h2>
-          <p className="text-white/80 max-w-2xl mx-auto">
-            Nous restons disponibles pendant nos horaires d’ouverture. Retrouvez également notre équipe ci-dessous.
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{t("contact.title")}</h2>
+          <p className="text-white/80 max-w-2xl mx-auto">{t("contact.description")}</p>
         </motion.div>
 
         {/* Opening hours */}
@@ -60,7 +60,7 @@ export default function ContactSection() {
                   <span className="text-sm font-medium">{address}</span>
                 </div>
                 <iframe
-                  title="Localisation - 79 rue du Général Leclerc, 78400 Chatou"
+                  title={`Localisation - ${address}`}
                   src={mapSrc}
                   className="w-full h-72 md:h-96"
                   style={{ border: 0 }}
@@ -82,10 +82,10 @@ export default function ContactSection() {
           <Card className="bg-gradient-to-r from-fuchsia-600/30 via-rose-600/30 to-orange-500/30 border-pink-500/40 ring-1 ring-inset ring-white/10">
             <CardContent className="p-6 md:p-7">
               <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide text-white mb-3">
-                {"Conciergerie de l'événement"}
+                {t("contact.conciergerieTitle")}
               </h3>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                <p className="text-white text-lg">{"Une urgence pour votre événement le soir et week-end ?"}</p>
+                <p className="text-white text-lg">{t("contact.conciergerieUrgencies")}</p>
                 <a
                   href="tel:+33663796742"
                   className="inline-flex items-center gap-2 rounded-lg bg-white/15 hover:bg-white/25 transition-colors text-white px-3 py-2 font-semibold"
@@ -99,7 +99,7 @@ export default function ContactSection() {
         </motion.div>
 
         {/* Team */}
-        <TeamSection id="equipe" title="Notre Équipe" subtitle="Rencontrez les talents derrière nos Projets" />
+        <TeamSection id="equipe" title={t("contact.teamTitle")} subtitle={t("contact.teamSubtitle")} />
       </div>
     </section>
   )

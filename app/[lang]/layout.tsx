@@ -15,13 +15,14 @@ export default async function LangLayout({
   params,
   children,
 }: {
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>
   children: React.ReactNode
 }) {
-  const dict = await getDictionary(params.lang)
+  const resolvedParams = await params
+  const dict = await getDictionary(resolvedParams.lang)
 
   return (
-    <I18nProvider lang={params.lang} dictionary={dict}>
+    <I18nProvider lang={resolvedParams.lang} dictionary={dict}>
       <Navigation />
       <main className="pt-24">{children}</main>
       <Footer />

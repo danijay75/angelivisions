@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { sanitizeHtml } from "@/lib/sanitizer"
 import { BLOG_STORAGE_KEY, defaultPosts, type BlogBlock, type BlogPost, type BlogSEO } from "@/data/blog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -269,7 +270,7 @@ export default function BlogManager() {
     const arr = [...draft.blocks]
     const b = arr[i]
     if (b && b.type === "paragraph") {
-      ;(b as any).html = el?.innerHTML || ""
+      ; (b as any).html = el?.innerHTML || ""
       updateDraft({ blocks: arr })
     }
   }
@@ -680,7 +681,7 @@ export default function BlogManager() {
                             value={(b as any).src}
                             onChange={(v) => {
                               const arr = [...draft.blocks]
-                              ;(arr[i] as any).src = v || ""
+                                ; (arr[i] as any).src = v || ""
                               updateDraft({ blocks: arr })
                             }}
                             hint="PNG/JPG/WEBP — Import local ou URL"
@@ -692,7 +693,7 @@ export default function BlogManager() {
                                 value={(b as any).alt || ""}
                                 onChange={(e) => {
                                   const arr = [...draft.blocks]
-                                  ;(arr[i] as any).alt = e.target.value
+                                    ; (arr[i] as any).alt = e.target.value
                                   updateDraft({ blocks: arr })
                                 }}
                                 className="bg-white/10 border-white/20 text-white"
@@ -704,7 +705,7 @@ export default function BlogManager() {
                                 value={(b as any).caption || ""}
                                 onChange={(e) => {
                                   const arr = [...draft.blocks]
-                                  ;(arr[i] as any).caption = e.target.value
+                                    ; (arr[i] as any).caption = e.target.value
                                   updateDraft({ blocks: arr })
                                 }}
                                 className="bg-white/10 border-white/20 text-white"
@@ -722,7 +723,7 @@ export default function BlogManager() {
                               value={(b as any).url}
                               onChange={(e) => {
                                 const arr = [...draft.blocks]
-                                ;(arr[i] as any).url = e.target.value
+                                  ; (arr[i] as any).url = e.target.value
                                 updateDraft({ blocks: arr })
                               }}
                               className="bg-white/10 border-white/20 text-white"
@@ -735,7 +736,7 @@ export default function BlogManager() {
                               value={(b as any).caption || ""}
                               onChange={(e) => {
                                 const arr = [...draft.blocks]
-                                ;(arr[i] as any).caption = e.target.value
+                                  ; (arr[i] as any).caption = e.target.value
                                 updateDraft({ blocks: arr })
                               }}
                               className="bg-white/10 border-white/20 text-white"
@@ -751,7 +752,7 @@ export default function BlogManager() {
                             value={(b as any).html}
                             onChange={(e) => {
                               const arr = [...draft.blocks]
-                              ;(arr[i] as any).html = e.target.value
+                                ; (arr[i] as any).html = e.target.value
                               updateDraft({ blocks: arr })
                             }}
                             className="bg-white/10 border-white/20 text-white min-h-[120px]"
@@ -762,7 +763,7 @@ export default function BlogManager() {
                               value={(b as any).caption || ""}
                               onChange={(e) => {
                                 const arr = [...draft.blocks]
-                                ;(arr[i] as any).caption = e.target.value
+                                  ; (arr[i] as any).caption = e.target.value
                                 updateDraft({ blocks: arr })
                               }}
                               className="bg-white/10 border-white/20 text-white"

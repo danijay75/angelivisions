@@ -8,15 +8,14 @@ import { Button } from "@/components/ui/button"
 import { Calendar, MapPin, Users, FolderKanban, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { usePathname } from "next/navigation"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 type Props = {
   project: Project
 }
 
 export default function ProjectPageClient({ project }: Props) {
-  const pathname = usePathname() || "/fr"
-  const lang = pathname.split("/")[1] || "fr"
+  const { t, lang } = useI18n()
 
   const mainSrc = project.image || "/placeholder.svg?height=720&width=1280"
   const gallery: string[] = project.gallery?.length ? project.gallery : ["/placeholder.svg?height=600&width=800"]
@@ -27,9 +26,9 @@ export default function ProjectPageClient({ project }: Props) {
       <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
         <div className="mb-6">
           <Button asChild variant="ghost" className="gap-2 px-0 text-white/70 hover:text-white">
-            <Link href={`/${lang}#realisations`} aria-label="Retour aux Réalisations">
+            <Link href={`/${lang}#realisations`} aria-label={t("realisations.backToList")}>
               <ArrowLeft className="h-4 w-4" />
-              {"Retour aux Réalisations"}
+              {t("realisations.backToList")}
             </Link>
           </Button>
         </div>
@@ -62,7 +61,7 @@ export default function ProjectPageClient({ project }: Props) {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{project.title}</h1>
           {project.client && (
             <p className="text-sm text-white/70">
-              {"Client: "}
+              {t("realisations.clientLabel")}{" "}
               {project.client}
             </p>
           )}
@@ -74,7 +73,7 @@ export default function ProjectPageClient({ project }: Props) {
               <div className="relative w-full aspect-[16/9]">
                 <Image
                   src={mainSrc || "/placeholder.svg"}
-                  alt={`Image principale du projet ${project.title}`}
+                  alt={`${t("audio.coverAlt")} ${project.title}`}
                   fill
                   priority
                   unoptimized={isRemote}
@@ -90,11 +89,11 @@ export default function ProjectPageClient({ project }: Props) {
               <p className="text-sm leading-relaxed text-white/70">{project.fullDescription}</p>
             )}
 
-            {project.services?.length > 0 && (
+            {project.services && project.services.length > 0 && (
               <div>
-                <h2 className="mb-2 text-sm font-semibold tracking-wide text-white/90">{"Prestations incluses"}</h2>
+                <h2 className="mb-2 text-sm font-semibold tracking-wide text-white/90">{t("realisations.servicesLabel")}</h2>
                 <ul className="flex flex-wrap gap-2">
-                  {project.services.map((s, i) => (
+                  {project.services.map((s: string, i: number) => (
                     <li key={i}>
                       <Badge className={cn("bg-white/10 text-white/90 border-white/10")}>{s}</Badge>
                     </li>
@@ -107,7 +106,7 @@ export default function ProjectPageClient({ project }: Props) {
 
         {gallery.length > 0 && (
           <section className="mt-10">
-            <h3 className="mb-4 text-lg font-semibold tracking-tight text-white">{"Galerie"}</h3>
+            <h3 className="mb-4 text-lg font-semibold tracking-tight text-white">{t("realisations.galleryLabel")}</h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               {gallery.map((src, idx) => {
                 const remote = /^https?:\/\//i.test(src)

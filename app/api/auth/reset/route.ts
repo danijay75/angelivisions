@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import bcrypt from "bcryptjs"
-import { readAdmin, writeAdmin } from "@/lib/server/storage"
-import { verifyHCaptcha } from "@/lib/server/hcaptcha"
+import { findUserByEmail, updateUser } from "@/lib/server/users"
+import { verifyCaptcha } from "@/lib/server/captcha"
 
 const ENC = new TextEncoder()
 function getSecret() {
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const validCaptcha = await verifyHCaptcha(captchaToken || "")
+    const validCaptcha = await verifyCaptcha(captchaToken || "")
     if (!validCaptcha) {
       return NextResponse.json({ success: false, message: "Captcha invalide" }, { status: 400 })
     }
@@ -34,20 +34,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Token invalide" }, { status: 400 })
     }
 
-    const admin = await readAdmin()
-    if (!admin || admin.email !== payload.sub) {
+    const email = payload.sub as string
+    const user = await findUserByEmail(email)
+    if (!user) {
       return NextResponse.json({ success: false, message: "Compte introuvable" }, { status: 400 })
     }
 
-    const hash = await bcrypt.hash(password, 10)
-    await writeAdmin({
-      ...admin,
-      passwordHash: hash,
-      updatedAt: new Date().toISOString(),
+    await updateUser(user.id, {
+      password: password,
     })
 
     return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ success: false, message: "Erreur serveur" }, { status: 500 })
+  } catch (error) {
+    console.error("Reset password error:", error)
+    return NextResponse.json({ success: false, message: "Erreur serveur (session expirée ou token invalide)" }, { status: 500 })
   }
 }

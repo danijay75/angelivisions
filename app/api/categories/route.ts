@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Redis } from "@upstash/redis"
+import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
 
 let redis: Redis | null = null
 
@@ -9,7 +10,7 @@ try {
     token: process.env.KV_REST_API_TOKEN!,
   })
 } catch (error) {
-  console.error("[v0] Redis initialization failed:", error)
+  console.error("Redis initialization failed:", error)
 }
 
 export interface Category {
@@ -62,10 +63,10 @@ const defaultCategories: Category[] = [
 // GET /api/categories - Récupérer toutes les catégories avec compteurs
 export async function GET() {
   try {
-    console.log("[v0] Fetching categories from Redis...")
+    console.log("Fetching categories from Redis...")
 
     if (!redis) {
-      console.log("[v0] Redis not available, using default categories")
+      console.log("Redis not available, using default categories")
       return NextResponse.json({ categories: defaultCategories })
     }
 
@@ -83,11 +84,11 @@ export async function GET() {
             try {
               categories = JSON.parse(categoriesData)
             } catch (parseError) {
-              console.error("[v0] Failed to parse categories data as JSON:", parseError)
+              console.error("Failed to parse categories data as JSON:", parseError)
               categories = defaultCategories
             }
           } else {
-            console.log("[v0] Redis returned non-JSON string for categories:", categoriesData.substring(0, 50))
+            console.log("Redis returned non-JSON string for categories:", categoriesData.substring(0, 50))
             categories = defaultCategories
           }
         } else if (typeof categoriesData === "object") {
@@ -102,11 +103,11 @@ export async function GET() {
             try {
               projects = JSON.parse(projectsData)
             } catch (parseError) {
-              console.error("[v0] Failed to parse projects data as JSON:", parseError)
+              console.error("Failed to parse projects data as JSON:", parseError)
               projects = []
             }
           } else {
-            console.log("[v0] Redis returned non-JSON string for projects:", projectsData.substring(0, 50))
+            console.log("Redis returned non-JSON string for projects:", projectsData.substring(0, 50))
             projects = []
           }
         } else if (typeof projectsData === "object") {
@@ -114,7 +115,7 @@ export async function GET() {
         }
       }
     } catch (redisError) {
-      console.error("[v0] Redis operation failed:", redisError)
+      console.error("Redis operation failed:", redisError)
       // Use default data when Redis fails
       categories = defaultCategories
       projects = []
@@ -126,10 +127,10 @@ export async function GET() {
       projectCount: projects.filter((p: any) => p.category === cat.id).length,
     }))
 
-    console.log("[v0] Loaded categories:", updatedCategories.length)
+    console.log("Loaded categories:", updatedCategories.length)
     return NextResponse.json({ categories: updatedCategories })
   } catch (error) {
-    console.error("[v0] Error in categories API:", error)
+    console.error("Error in categories API:", error)
     // Always return valid JSON, even on error
     return NextResponse.json({ categories: defaultCategories })
   }
@@ -137,9 +138,15 @@ export async function GET() {
 
 // POST /api/categories - Sauvegarder les catégories
 export async function POST(request: NextRequest) {
+  const sessionToken = await getSessionCookieFromRequest(request)
+  const session = await verifySessionToken(sessionToken)
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const { categories } = await request.json()
-    console.log("[v0] Saving categories:", categories.length)
+    console.log("Saving categories:", categories.length)
 
     if (!redis) {
       return NextResponse.json({ error: "Redis not available" }, { status: 503 })
@@ -147,15 +154,15 @@ export async function POST(request: NextRequest) {
 
     try {
       await redis.set("categories", JSON.stringify(categories))
-      console.log("[v0] Categories saved successfully")
+      console.log("Categories saved successfully")
     } catch (redisError) {
-      console.error("[v0] Failed to save categories to Redis:", redisError)
+      console.error("Failed to save categories to Redis:", redisError)
       return NextResponse.json({ error: "Failed to save to Redis" }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("[v0] Error saving categories:", error)
+    console.error("Error saving categories:", error)
     return NextResponse.json({ error: "Failed to save categories" }, { status: 500 })
   }
 }

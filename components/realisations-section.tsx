@@ -2,13 +2,13 @@
 
 import { useMemo, useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Calendar, Users, MapPin, Eye, ImageIcon } from "lucide-react"
-
-type Locale = "fr" | "en" | "es"
+import { useLang } from "@/hooks/use-lang"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 interface Project {
   id: number
@@ -33,60 +33,10 @@ interface Category {
   projectCount: number
 }
 
-const LOCALE_COPY: Record<
-  Locale,
-  {
-    title: string
-    highlight: string
-    subtitle: string
-    filterAll: string
-    seeProject: string
-    photos: (n: number) => string
-    viewAllCta: string
-  }
-> = {
-  fr: {
-    title: "Nos Créations,",
-    highlight: "Spectacles et Projets auxquels nous avons participé",
-    subtitle:
-      "Découvrez nos réalisations marquantes : événements sur-mesure, productions musicales originales et spectacles audiovisuels innovants.",
-    filterAll: "Tous les Projets",
-    seeProject: "Voir le projet",
-    photos: (n) => `${n} photos`,
-    viewAllCta: "Voir tous nos Projets",
-  },
-  en: {
-    title: "Our Creations",
-    highlight: "Creative Portfolio",
-    subtitle:
-      "Explore our standout work: bespoke events, original music productions, and innovative audiovisual shows.",
-    filterAll: "All projects",
-    seeProject: "View project",
-    photos: (n) => `${n} photos`,
-    viewAllCta: "See all projects",
-  },
-  es: {
-    title: "Nuestras Creaciones",
-    highlight: "Portafolio Creativo",
-    subtitle:
-      "Descubre nuestros proyectos destacados: eventos a medida, producciones musicales originales y espectáculos audiovisuales innovadores.",
-    filterAll: "Todos los proyectos",
-    seeProject: "Ver proyecto",
-    photos: (n) => `${n} fotos`,
-    viewAllCta: "Ver todos los proyectos",
-  },
-}
-
 export default function RealisationsSection() {
   const router = useRouter()
-  const pathname = usePathname() || "/fr"
-  const lang = useMemo<Locale>(() => {
-    if (pathname.startsWith("/en")) return "en"
-    if (pathname.startsWith("/es")) return "es"
-    return "fr"
-  }, [pathname])
-
-  const copy = LOCALE_COPY[lang]
+  const lang = useLang()
+  const { t } = useI18n()
   const [activeCategory, setActiveCategory] = useState("all")
   const [projects, setProjects] = useState<Project[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -97,20 +47,16 @@ export default function RealisationsSection() {
 
   const loadData = async () => {
     try {
-      console.log("[v0] Loading projects and categories from API...")
-
       const [projectsRes, categoriesRes] = await Promise.all([fetch("/api/projects"), fetch("/api/categories")])
 
       if (projectsRes.ok) {
         const projectsData = await projectsRes.json()
         setProjects(projectsData.projects || [])
-        console.log("[v0] Loaded projects:", projectsData.projects?.length || 0)
       }
 
       if (categoriesRes.ok) {
         const categoriesData = await categoriesRes.json()
         setCategories(categoriesData.categories || [])
-        console.log("[v0] Loaded categories:", categoriesData.categories?.length || 0)
       }
     } catch (error) {
       console.error("[v0] Error loading data:", error)
@@ -119,10 +65,15 @@ export default function RealisationsSection() {
 
   const allCategories = useMemo(
     () => [
-      { id: "all", label: copy.filterAll, color: "from-gray-500 to-gray-600", projectCount: projects.length },
+      {
+        id: "all",
+        label: t("realisations.filterAll"),
+        color: "from-gray-500 to-gray-600",
+        projectCount: projects.length,
+      },
       ...categories,
     ],
-    [copy.filterAll, categories, projects.length],
+    [t, categories, projects.length],
   )
 
   const filteredProjects =
@@ -145,25 +96,17 @@ export default function RealisationsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {copy.title}
+            {t("realisations.title")}{" "}
             <span className="block">
-              {lang === "fr" ? (
-                <>
-                  <span className="text-white">{"Spectacles et Projets"}</span>
-                  <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    {" "}
-                    {"auxquels nous avons participé"}
-                  </span>
-                </>
-              ) : (
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {copy.highlight}
-                </span>
-              )}
+              <span className="text-white">{t("realisations.highlight")}</span>
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                {" "}
+                {t("realisations.highlightSuffix")}
+              </span>
             </span>
           </h2>
 
-          <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">{copy.subtitle}</p>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">{t("realisations.subtitle")}</p>
 
           <div className="flex flex-wrap justify-center gap-4">
             {allCategories.map((category) => (
@@ -171,7 +114,10 @@ export default function RealisationsSection() {
                 key={category.id}
                 variant={activeCategory === category.id ? "default" : "outline"}
                 onClick={() => setActiveCategory(category.id)}
-                className={`rounded-full ${activeCategory === category.id ? `bg-gradient-to-r ${category.color} text-white hover:opacity-90` : "border-white/30 text-white hover:bg-white/10 bg-transparent"}`}
+                className={`rounded-full ${activeCategory === category.id
+                  ? `bg-gradient-to-r ${category.color} text-white hover:opacity-90`
+                  : "border-white/30 text-white hover:bg-white/10 bg-transparent"
+                  }`}
               >
                 {category.label}
               </Button>
@@ -183,7 +129,8 @@ export default function RealisationsSection() {
           <AnimatePresence>
             {filteredProjects.map((project, index) => {
               const categoryColor = getCategoryColor(project.category)
-              const categoryLabel = allCategories.find((cat) => cat.id === project.category)?.label || "Sans catégorie"
+              const categoryLabel =
+                allCategories.find((cat) => cat.id === project.category)?.label || t("realisations.noCategory")
               const galleryCount = (project.gallery || []).length
 
               return (
@@ -212,7 +159,7 @@ export default function RealisationsSection() {
                         <div className="flex space-x-3">
                           <Button size="sm" className="bg-white/20 backdrop-blur-md text-white hover:bg-white/30">
                             <Eye className="w-4 h-4 mr-2" />
-                            {copy.seeProject}
+                            {t("realisations.seeProject")}
                           </Button>
                           {galleryCount > 1 && (
                             <Button
@@ -221,7 +168,7 @@ export default function RealisationsSection() {
                               className="border-white/30 text-white hover:bg-white/10 bg-transparent backdrop-blur-md"
                             >
                               <ImageIcon className="w-4 h-4 mr-2" />
-                              {copy.photos(galleryCount)}
+                              {galleryCount} {t("realisations.photosCount")}
                             </Button>
                           )}
                         </div>
@@ -285,7 +232,7 @@ export default function RealisationsSection() {
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full"
           >
             <ExternalLink className="w-5 h-5 mr-2" />
-            {copy.viewAllCta}
+            {t("realisations.viewAllCta")}
           </Button>
         </motion.div>
       </div>

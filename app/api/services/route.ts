@@ -73,7 +73,14 @@ export async function GET() {
   }
 }
 
+import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
+
 export async function POST(request: NextRequest) {
+  const sessionToken = await getSessionCookieFromRequest(request)
+  const session = await verifySessionToken(sessionToken)
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
   try {
     const { services } = await request.json()
 

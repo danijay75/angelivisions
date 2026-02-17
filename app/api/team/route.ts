@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 import { createMember, getTeam } from "@/lib/server/team"
 import type { TeamMember } from "@/data/team"
+import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
 
 export async function GET() {
   try {

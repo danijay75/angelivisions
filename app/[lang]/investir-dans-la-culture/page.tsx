@@ -3,11 +3,11 @@ import InvestmentPageClient from "./InvestmentPageClient"
 import type { Locale } from "@/lib/i18n/locales"
 
 interface Props {
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const { lang } = params
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params
 
   const titles = {
     fr: "Investir dans la Culture - Projets Culturels Blockchain & NFT | Angeli Visions",
@@ -66,6 +66,7 @@ export function generateMetadata({ params }: Props): Metadata {
   }
 }
 
-export default function InvestmentPage({ params }: Props) {
-  return <InvestmentPageClient lang={params.lang} />
+export default async function InvestmentPage({ params }: Props) {
+  const resolvedParams = await params
+  return <InvestmentPageClient lang={resolvedParams.lang} />
 }

@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Play, Sparkles, Music, Calendar } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function HeroSection() {
+  const { t } = useI18n()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -136,23 +138,19 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            Votre Partenaire Privilégié
+            {t("hero.titlePart1")}
             <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent block">
-              pour vos Événements Culturels et le spectacle
+              {t("hero.titlePart2")}
             </span>
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto"
+            className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto whitespace-pre-line"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            Booking DJ • Production Musicale • Organisation d'Événements
-            <br />
-            Sonorisation • Éclairage • VJ / Vidéo Mapping • Animations musicales
-            <br />
-            Captations TV
+            {t("hero.description")}
           </motion.p>
 
           {/* CTA: restored original single primary button style */}
@@ -167,7 +165,7 @@ export default function HeroSection() {
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25"
             >
               <Play className="w-5 h-5 mr-2" />
-              Découvrir nos créations
+              {t("hero.cta")}
             </Button>
           </motion.div>
 
@@ -181,20 +179,20 @@ export default function HeroSection() {
             {[
               {
                 icon: Music,
-                title: "Production Musicale",
-                desc: "Compositions originales & jingles personnalisés",
+                title: t("hero.highlight1Title"),
+                desc: t("hero.highlight1Desc"),
                 color: "from-blue-500 to-cyan-500",
               },
               {
                 icon: Sparkles,
-                title: "Conception et organisation d'événements",
-                desc: "Organisation complète de A à Z",
+                title: t("hero.highlight2Title"),
+                desc: t("hero.highlight2Desc"),
                 color: "from-cyan-500 to-teal-500",
               },
               {
                 icon: Calendar,
-                title: "Animations musicales",
-                desc: "DJ sets, VJing & performances audiovisuelles",
+                title: t("hero.highlight3Title"),
+                desc: t("hero.highlight3Desc"),
                 color: "from-teal-500 to-blue-500",
               },
             ].map((service) => (

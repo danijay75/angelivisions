@@ -7,7 +7,7 @@ import { BLOG_STORAGE_KEY, defaultPosts, type BlogPost } from "@/data/blog"
 import { BlogRenderer } from "@/components/blog-renderer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { useLang } from "@/hooks/use-lang"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 function mergePosts(defaults: BlogPost[], stored?: BlogPost[]): BlogPost[] {
   if (!stored || !Array.isArray(stored)) return defaults
@@ -30,8 +30,8 @@ function getReadingStats(post: BlogPost) {
 }
 
 export default function BlogPostClient({ slug }: { slug: string }) {
+  const { t, lang } = useI18n()
   const [posts, setPosts] = useState<BlogPost[]>(defaultPosts)
-  const lang = useLang()
 
   useEffect(() => {
     try {
@@ -52,9 +52,9 @@ export default function BlogPostClient({ slug }: { slug: string }) {
   if (!post) {
     return (
       <div className="max-w-3xl mx-auto p-6 text-white">
-        <p>Article introuvable.</p>
+        <p>{t("blog.notFound")}</p>
         <Button asChild className="mt-4">
-          <Link href={`/${lang}/eside-culture-blog`}>Retour au blog</Link>
+          <Link href={`/${lang}/eside-culture-blog`}>{t("blog.backToBlog")}</Link>
         </Button>
       </div>
     )
@@ -104,11 +104,11 @@ export default function BlogPostClient({ slug }: { slug: string }) {
       <div className="max-w-4xl mx-auto px-4 py-10 text-white">
         <nav className="text-sm text-white/60 mb-6">
           <Link href={`/${lang}`} className="hover:text-white/90">
-            {lang === "fr" ? "Accueil" : "Home"}
+            {t("nav.accueil")}
           </Link>
           {" / "}
           <Link href={`/${lang}/eside-culture-blog`} className="hover:text-white/90">
-            eSide Culture
+            {t("blog.title")}
           </Link>
         </nav>
 
@@ -121,9 +121,9 @@ export default function BlogPostClient({ slug }: { slug: string }) {
 
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">{post.title}</h1>
         <div className="flex flex-wrap items-center gap-3 text-white/70 mb-6">
-          <span>{new Date(post.date).toLocaleDateString("fr-FR")}</span>
+          <span>{new Date(post.date).toLocaleDateString(t("blog.dateLocale"))}</span>
           {post.author ? <span>• {post.author}</span> : null}
-          <span>• {minutes} min de lecture</span>
+          <span>• {t("blog.readingTime", { min: minutes })}</span>
           {tags.length ? (
             <div className="flex flex-wrap gap-2">
               {tags.map((t) => (

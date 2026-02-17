@@ -1,17 +1,16 @@
 "use client"
 
 import type React from "react"
-
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useSearchParams } from "next/navigation"
-import HCaptcha from "react-hcaptcha"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { hcaptchaSiteKey, captchaBypass } from "@/lib/public-config"
+import { turnstileSiteKey, captchaBypass } from "@/lib/public-config"
+import Turnstile from "@/components/ui/turnstile"
 
-const SITEKEY = hcaptchaSiteKey
+const SITEKEY = turnstileSiteKey
 
 export default function ResetPasswordPage() {
   const params = useSearchParams()
@@ -21,14 +20,13 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [done, setDone] = useState(false)
-  const captchaRef = useRef<HCaptcha>(null)
 
-  const hcaptchaEnabled = !captchaBypass && !!SITEKEY
+  const captchaEnabled = !captchaBypass && !!SITEKEY
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setMessage(null)
-    if (hcaptchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
+    if (captchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
     setLoading(true)
     try {
       const res = await fetch("/api/auth/reset", {
@@ -39,8 +37,7 @@ export default function ResetPasswordPage() {
       const j = await res.json()
       if (!res.ok || !j.success) {
         setMessage(j.message || "Impossible de réinitialiser le mot de passe.")
-        if (hcaptchaEnabled) {
-          captchaRef.current?.resetCaptcha()
+        if (captchaEnabled) {
           setCaptchaToken(null)
         }
         return
@@ -68,9 +65,9 @@ export default function ResetPasswordPage() {
             </div>
           )}
 
-          {!hcaptchaEnabled ? (
+          {!captchaEnabled ? (
             <div className="bg-green-500/20 border border-green-500/50 text-green-100 p-3 rounded-lg text-sm">
-              hCaptcha bypass activé: le captcha n’est pas requis pour cette action.
+              Captcha bypass activé: le captcha n’est pas requis pour cette action.
             </div>
           ) : null}
 
@@ -88,12 +85,10 @@ export default function ResetPasswordPage() {
               />
             </div>
 
-            {hcaptchaEnabled && (
-              <div className="bg-white/10 p-3 rounded-md border border-white/20">
-                <HCaptcha
-                  sitekey={SITEKEY as string}
+            {captchaEnabled && (
+              <div className="bg-white/10 p-3 rounded-md border border-white/20 flex justify-center">
+                <Turnstile
                   onVerify={(t) => setCaptchaToken(t)}
-                  ref={captchaRef}
                   theme="dark"
                 />
               </div>

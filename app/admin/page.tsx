@@ -17,6 +17,8 @@ import {
   UsersIcon,
   Users,
   TrendingUp,
+  Mail,
+  UserCog,
 } from "lucide-react"
 import ServicesManager from "@/components/admin/services-manager"
 import CategoryManager from "@/components/admin/category-manager"
@@ -30,6 +32,8 @@ import BlogManager from "@/components/admin/blog-manager"
 import AudioManager from "@/components/admin/audio-manager"
 import TeamManager from "@/components/admin/team-manager"
 import InvestmentManager from "@/components/admin/investment-manager"
+import NewsletterManager from "@/components/admin/newsletter-manager"
+import UsersManager from "@/components/admin/users-manager"
 
 interface Category {
   id: string
@@ -57,14 +61,14 @@ interface Project {
   updatedAt?: string
 }
 
-type AdminSection = "services" | "projects" | "blog" | "player" | "team" | "investment"
+type AdminSection = "services" | "projects" | "blog" | "player" | "team" | "investment" | "newsletter" | "users"
 
 export default function AdminPage() {
-  const { user, refresh, logout } = useAuth()
+  const { user, refresh, logout, loading: authLoading } = useAuth()
   const router = useRouter()
 
-  const role = user?.role || "admin"
-  const canEdit = role !== "guest"
+  const role = user?.role
+  const canEdit = role === "admin" || role === "editor"
   const canSeeUsers = role === "admin"
 
   const [section, setSection] = useState<AdminSection>("services")
@@ -75,6 +79,25 @@ export default function AdminPage() {
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [isCreating, setIsCreating] = useState(false)
   const [formData, setFormData] = useState<Partial<Project>>({})
+
+  useEffect(() => {
+    // Si on n'est pas en train de charger et qu'il n'y a pas d'utilisateur, redirection
+    if (!authLoading && !user) {
+      router.push("/admin/login")
+    }
+  }, [user, authLoading, router])
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white">Chargement...</div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null // Eviter le flash de contenu avant la redirection
+  }
 
   useEffect(() => {
     void refresh()
@@ -269,15 +292,15 @@ export default function AdminPage() {
             </Button>
             <div className="text-white/80 hidden md:flex items-center">
               <Shield className="w-4 h-4 mr-2" />
-              {user?.email || "admin@bypass.local"}
+              {user?.email}
             </div>
             {canSeeUsers && (
               <Button
-                onClick={() => router.push("/admin/users")}
+                onClick={() => setSection("users")}
                 variant="outline"
                 className="border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10 bg-transparent"
               >
-                <UsersIcon className="w-4 h-4 mr-2" />
+                <UserCog className="w-4 h-4 mr-2" />
                 Utilisateurs
               </Button>
             )}
@@ -350,6 +373,22 @@ export default function AdminPage() {
                 <Newspaper className="w-4 h-4 mr-2" />
                 Blog (eSide Culture)
               </Button>
+              <Button
+                variant={section === "newsletter" ? "default" : "outline"}
+                className={`${section === "newsletter" ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white" : "border-white/30 text-white bg-transparent hover:bg-white/10"}`}
+                onClick={() => setSection("newsletter")}
+              >
+                <Mail className="w-4 h-4 mr-2" />
+                Newsletter
+              </Button>
+              <Button
+                variant={section === "users" ? "default" : "outline"}
+                className={`${section === "users" ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white" : "border-white/30 text-white bg-transparent hover:bg-white/10"}`}
+                onClick={() => setSection("users")}
+              >
+                <UserCog className="w-4 h-4 mr-2" />
+                Utilisateurs
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -383,6 +422,18 @@ export default function AdminPage() {
           {section === "team" && (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
               <TeamManager />
+            </motion.div>
+          )}
+
+          {section === "users" && (
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+              <UsersManager />
+            </motion.div>
+          )}
+
+          {section === "newsletter" && (
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+              <NewsletterManager />
             </motion.div>
           )}
 
@@ -713,6 +764,6 @@ export default function AdminPage() {
           )}
         </div>
       </div>
-    </div>
+    </div >
   )
 }

@@ -7,7 +7,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Minimize2, X, Music2 } from "lucide-react"
 import { AUDIO_STORAGE_KEY, defaultTracks, type AudioTrack } from "@/data/audio"
 
+import { useI18n } from "@/components/i18n/i18n-provider"
+
 export default function AudioPlayer() {
+  const { t } = useI18n()
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTrack, setCurrentTrack] = useState(0)
   const [volume, setVolume] = useState(0.7)
@@ -234,7 +237,7 @@ export default function AudioPlayer() {
                       <div className="text-white">
                         <p className="text-sm font-medium flex items-center gap-2">
                           <Music2 className="w-4 h-4 text-white/60" />
-                          {tr?.title || "Lecteur audio"}
+                          {tr?.title || t("audio.title")}
                         </p>
                         <p className="text-xs text-white/60">{tr?.artist || "—"}</p>
                       </div>
@@ -251,7 +254,7 @@ export default function AudioPlayer() {
                         variant="ghost"
                         onClick={closePlayer}
                         className="text-white/60 hover:text-white"
-                        title="Fermer le lecteur"
+                        title={t("audio.close")}
                       >
                         <X className="w-4 h-4" />
                       </Button>
@@ -265,17 +268,16 @@ export default function AudioPlayer() {
                     exit={{ height: 0 }}
                     className="w-80"
                   >
-                    {/* Header */}
                     <div className="p-4 border-b border-white/10">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-white font-medium">Nos Créations</h3>
+                        <h3 className="text-white font-medium">{t("audio.creations")}</h3>
                         <div className="flex items-center space-x-2">
                           <Button
                             size="sm"
                             variant="ghost"
                             onClick={() => setIsMinimized(true)}
                             className="text-white/60 hover:text-white"
-                            title="Réduire"
+                            title={t("audio.minimize")}
                           >
                             <Minimize2 className="w-4 h-4" />
                           </Button>
@@ -284,7 +286,7 @@ export default function AudioPlayer() {
                             variant="ghost"
                             onClick={closePlayer}
                             className="text-white/60 hover:text-white"
-                            title="Fermer le lecteur"
+                            title={t("audio.close")}
                           >
                             <X className="w-4 h-4" />
                           </Button>
@@ -303,7 +305,7 @@ export default function AudioPlayer() {
                       {tr?.cover ? (
                         <img
                           src={tr.cover || "/placeholder.svg"}
-                          alt={`Couverture ${tr.title}`}
+                          alt={`${t("audio.coverAlt")} ${tr.title}`}
                           className="w-full h-32 object-cover rounded mb-3"
                         />
                       ) : null}

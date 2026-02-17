@@ -1,6 +1,5 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
@@ -86,11 +85,14 @@ const LOCALE_COPY: Record<
   },
 }
 
-export default function RealisationsPage({ params }: { params: { lang: string } }) {
+import { useMemo, useState, useEffect, use } from "react"
+// ...
+export default function RealisationsPage({ params }: { params: Promise<{ lang: string }> }) {
   const router = useRouter()
   const { lang: contextLang } = useI18n()
+  const resolvedParams = use(params)
 
-  const lang = (params?.lang || contextLang || "fr") as Locale
+  const lang = (resolvedParams?.lang || contextLang || "fr") as Locale
   const copy = LOCALE_COPY[lang]
   const [activeCategory, setActiveCategory] = useState("all")
   const [projects, setProjects] = useState<Project[]>([])
@@ -192,11 +194,10 @@ export default function RealisationsPage({ params }: { params: { lang: string } 
                   key={category.id}
                   variant={activeCategory === category.id ? "default" : "outline"}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`rounded-full ${
-                    activeCategory === category.id
-                      ? `bg-gradient-to-r ${category.color} text-white hover:opacity-90`
-                      : "border-white/30 text-white hover:bg-white/10 bg-transparent"
-                  }`}
+                  className={`rounded-full ${activeCategory === category.id
+                    ? `bg-gradient-to-r ${category.color} text-white hover:opacity-90`
+                    : "border-white/30 text-white hover:bg-white/10 bg-transparent"
+                    }`}
                 >
                   {category.label}
                   <Badge variant="secondary" className="ml-2 bg-white/20 text-white text-xs">

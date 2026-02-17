@@ -21,23 +21,38 @@ export default function Footer() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubscribed(true)
-    setTimeout(() => {
-      setIsSubscribed(false)
-      setEmail("")
-    }, 3000)
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+      if (res.ok) {
+        setIsSubscribed(true)
+        setTimeout(() => {
+          setIsSubscribed(false)
+          setEmail("")
+        }, 3000)
+      } else {
+        const data = await res.json()
+        alert(data.error || "Une erreur est survenue")
+      }
+    } catch (error) {
+      console.error("Newsletter error:", error)
+      alert("Erreur de connexion")
+    }
   }
 
   const footerLinks = {
     services: [
-      { label: "Booking DJ", href: `/${lang}/services/booking` },
-      { label: "Production Musicale", href: `/${lang}/services/production` },
-      { label: "Organisation Événements", href: `/${lang}/services/organization` },
-      { label: "Prestations Techniques", href: `/${lang}/services/technical` },
-      { label: "Murs de LED", href: `/${lang}/services/led-walls` },
-      { label: "Captations et prises de vue", href: `/${lang}/services/media` },
+      { label: t("footer.services.booking"), href: `/${lang}/services/booking` },
+      { label: t("footer.services.production"), href: `/${lang}/services/production` },
+      { label: t("footer.services.organization"), href: `/${lang}/services/organization` },
+      { label: t("footer.services.technical"), href: `/${lang}/services/technical` },
+      { label: t("footer.services.ledWalls"), href: `/${lang}/services/led-walls` },
+      { label: t("footer.services.media"), href: `/${lang}/services/media` },
     ],
   }
 
@@ -83,17 +98,16 @@ export default function Footer() {
                 />
               </div>
               <h3 className="text-white font-semibold text-lg mb-4">Angeli Visions</h3>
-              <p className="text-slate-300 mb-4">Organisateur d'événements culturels et producteur de musique</p>
+              <p className="text-slate-300 mb-4">{t("footer.description")}</p>
 
               {/* Legal Information */}
               <div className="space-y-2 text-sm text-slate-400">
-                <p>Angeli Visions est une SAS immatriculée au RCS de Versailles sous le n° 898018221.</p>
-                <p>Licence entrepreneur de spectacles n° PLATESV-D-2022-000968</p>
+                <p>{t("footer.legalInfo1")}</p>
+                <p>{t("footer.legalInfo2")}</p>
                 <p className="mt-4">
-                  La société est adhérente de l'Économie Sociale et Solidaire (ESS). Nous luttons contre toute forme de
-                  discrimination et violence sexiste.
+                  {t("footer.essInfo")}
                   <a href="#" className="text-blue-400 hover:text-blue-300 ml-1">
-                    Consultez le kit ici.
+                    {t("footer.kitLink")}
                   </a>
                 </p>
               </div>
@@ -123,13 +137,13 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {/* Services quick links (kept in FR for now; can be moved to dictionaries later) */}
+          {/* Services quick links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-6">Services</h3>
+            <h3 className="text-white font-semibold text-lg mb-6">{t("nav.services")}</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
@@ -198,7 +212,7 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-slate-400 text-sm mb-4 md:mb-0">
-              © 2025. All rights reserved. |
+              © 2025 {t("footer.rights")} |
               <Link href={`/${lang}/politique-confidentialite`} className="hover:text-white ml-1 text-white">
                 {t("footer.privacy")}
               </Link>{" "}

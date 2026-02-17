@@ -1,29 +1,30 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useRef, useState } from "react"
-import HCaptcha from "react-hcaptcha"
 import { useRouter, useSearchParams } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { hcaptchaSiteKey, captchaBypass } from "@/lib/public-config"
+import { turnstileSiteKey, captchaBypass } from "@/lib/public-config"
+import Turnstile from "@/components/ui/turnstile"
 
-const SITEKEY = hcaptchaSiteKey
+const SITEKEY = turnstileSiteKey
 
 export default function AdminLoginPage() {
   const router = useRouter()
+  const { refresh } = useAuth()
   const params = useSearchParams()
   const nextUrl = params.get("next") || "/admin"
   const [exists, setExists] = useState<boolean | null>(null)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [name, setName] = useState("")
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-  const captchaRef = useRef<HCaptcha>(null)
 
   useEffect(() => {
     // Bypass total: on envoie l'utilisateur directement au tableau de bord
@@ -40,32 +41,32 @@ export default function AdminLoginPage() {
   }, [])
 
   const onCaptchaVerify = (token: string) => setCaptchaToken(token)
-  const resetCaptcha = () => captchaRef.current?.resetCaptcha()
 
-  const hcaptchaEnabled = !captchaBypass && !!SITEKEY
+  const captchaEnabled = !captchaBypass && !!SITEKEY
 
   async function handleInit(e: React.FormEvent) {
     e.preventDefault()
     setMessage(null)
-    if (hcaptchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
+    if (captchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
     setLoading(true)
     try {
       const res = await fetch("/api/auth/init", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, captchaToken }),
+        body: JSON.stringify({ email, password, captchaToken, name }),
       })
       const j = await res.json()
       if (!res.ok || !j.success) {
         setMessage(j.message || "Erreur lors de la création.")
-        if (hcaptchaEnabled) {
-          resetCaptcha()
+        if (captchaEnabled) {
           setCaptchaToken(null)
         }
         return
       }
       setMessage("Compte créé. Vous pouvez vous connecter.")
       setExists(true)
+      // On rafraîchit le contexte auth au cas où une session a été créée
+      await refresh()
     } finally {
       setLoading(false)
     }
@@ -74,7 +75,7 @@ export default function AdminLoginPage() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
     setMessage(null)
-    if (hcaptchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
+    if (captchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
     setLoading(true)
     try {
       const res = await fetch("/api/auth/login", {
@@ -85,12 +86,13 @@ export default function AdminLoginPage() {
       const j = await res.json()
       if (!res.ok || !j.success) {
         setMessage(j.message || "Identifiants invalides.")
-        if (hcaptchaEnabled) {
-          resetCaptcha()
+        if (captchaEnabled) {
           setCaptchaToken(null)
         }
         return
       }
+      // On rafraîchit le contexte auth pour que useAuth() soit au courant de la session
+      await refresh()
       router.replace(nextUrl)
     } finally {
       setLoading(false)
@@ -132,13 +134,27 @@ export default function AdminLoginPage() {
             <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded-lg">{message}</div>
           )}
 
-          {!hcaptchaEnabled ? (
+
+          {!captchaEnabled ? (
             <div className="bg-green-500/20 border border-green-500/50 text-green-100 p-3 rounded-lg text-sm">
-              hCaptcha bypass activé: le captcha n’est pas requis pour se connecter.
+              Captcha bypass activé: le captcha n’est pas requis pour se connecter.
             </div>
           ) : null}
 
           <form onSubmit={exists === false ? handleInit : handleLogin} className="space-y-4">
+            {exists === false && (
+              <div>
+                <Label className="text-white mb-2 block">Nom complet</Label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-white/10 border-white/20 text-white"
+                  placeholder="Administrateur"
+                  required
+                />
+              </div>
+            )}
             <div>
               <Label className="text-white mb-2 block">Email</Label>
               <Input
@@ -162,9 +178,9 @@ export default function AdminLoginPage() {
               />
             </div>
 
-            {hcaptchaEnabled && (
-              <div className="bg-white/10 p-3 rounded-md border border-white/20">
-                <HCaptcha sitekey={SITEKEY as string} onVerify={onCaptchaVerify} ref={captchaRef} theme="dark" />
+            {captchaEnabled && (
+              <div className="bg-white/10 p-3 rounded-md border border-white/20 flex justify-center">
+                <Turnstile onVerify={onCaptchaVerify} theme="dark" />
               </div>
             )}
 

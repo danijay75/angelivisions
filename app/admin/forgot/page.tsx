@@ -1,30 +1,28 @@
 "use client"
 
 import type React from "react"
-
-import { useRef, useState } from "react"
-import HCaptcha from "react-hcaptcha"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { hcaptchaSiteKey, captchaBypass } from "@/lib/public-config"
+import { turnstileSiteKey, captchaBypass } from "@/lib/public-config"
+import Turnstile from "@/components/ui/turnstile"
 
-const SITEKEY = hcaptchaSiteKey
+const SITEKEY = turnstileSiteKey
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-  const captchaRef = useRef<HCaptcha>(null)
 
-  const hcaptchaEnabled = !captchaBypass && !!SITEKEY
+  const captchaEnabled = !captchaBypass && !!SITEKEY
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setMessage(null)
-    if (hcaptchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
+    if (captchaEnabled && !captchaToken) return setMessage("Veuillez compléter le captcha.")
     setLoading(true)
     try {
       const res = await fetch("/api/auth/forgot", {
@@ -35,8 +33,7 @@ export default function ForgotPasswordPage() {
       const j = await res.json()
       if (!res.ok || !j.success) {
         setMessage(j.message || "Impossible d’envoyer l’email.")
-        if (hcaptchaEnabled) {
-          captchaRef.current?.resetCaptcha()
+        if (captchaEnabled) {
           setCaptchaToken(null)
         }
         return
@@ -49,7 +46,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <Card className="bg-white/5 backdrop-blur-md border-white/10 w/full max-w-md">
+      <Card className="bg-white/5 backdrop-blur-md border-white/10 w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-white text-2xl">Mot de passe oublié</CardTitle>
           <p className="text-slate-300 text-sm">Recevez un lien de réinitialisation par email</p>
@@ -58,9 +55,9 @@ export default function ForgotPasswordPage() {
           {message && (
             <div className="bg-blue-500/20 border border-blue-500/50 text-blue-100 p-3 rounded-lg">{message}</div>
           )}
-          {!hcaptchaEnabled ? (
+          {!captchaEnabled ? (
             <div className="bg-green-500/20 border border-green-500/50 text-green-100 p-3 rounded-lg text-sm">
-              hCaptcha bypass activé: le captcha n’est pas requis pour cette action.
+              Captcha bypass activé: le captcha n’est pas requis pour cette action.
             </div>
           ) : null}
 
@@ -77,12 +74,10 @@ export default function ForgotPasswordPage() {
               />
             </div>
 
-            {hcaptchaEnabled && (
-              <div className="bg-white/10 p-3 rounded-md border border-white/20">
-                <HCaptcha
-                  sitekey={SITEKEY as string}
+            {captchaEnabled && (
+              <div className="bg-white/10 p-3 rounded-md border border-white/20 flex justify-center">
+                <Turnstile
                   onVerify={(t) => setCaptchaToken(t)}
-                  ref={captchaRef}
                   theme="dark"
                 />
               </div>
@@ -96,6 +91,11 @@ export default function ForgotPasswordPage() {
               {loading ? "Envoi..." : "Envoyer le lien"}
             </Button>
           </form>
+          <div className="text-center">
+            <a href="/admin/login" className="text-purple-300 hover:text-purple-200 text-sm">
+              Retour à la connexion
+            </a>
+          </div>
         </CardContent>
       </Card>
     </div>

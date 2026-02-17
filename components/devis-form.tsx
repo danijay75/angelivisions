@@ -12,8 +12,10 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Calendar, Users, MapPin, Music, Mic, Zap, Camera, Send, CheckCircle, Monitor } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function DevisForm() {
+  const { t } = useI18n()
   const [formData, setFormData] = useState({
     eventType: "",
     services: [] as string[],
@@ -31,21 +33,21 @@ export default function DevisForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const eventTypes = [
-    { id: "wedding", label: "Mariage", icon: "💒" },
-    { id: "corporate", label: "Événement d'entreprise", icon: "🏢" },
-    { id: "private", label: "Soirée privée", icon: "🎉" },
-    { id: "festival", label: "Festival / Concert", icon: "🎵" },
-    { id: "other", label: "Autre", icon: "✨" },
+    { id: "wedding", label: t("devis.eventTypes.wedding"), icon: "💒" },
+    { id: "corporate", label: t("devis.eventTypes.corporate"), icon: "🏢" },
+    { id: "private", label: t("devis.eventTypes.private"), icon: "🎉" },
+    { id: "festival", label: t("devis.eventTypes.festival"), icon: "🎵" },
+    { id: "other", label: t("devis.eventTypes.other"), icon: "✨" },
   ]
 
   const services = [
-    { id: "dj", label: "DJ & Musiciens", icon: Mic, color: "from-purple-500 to-pink-500" }, // remplacé "Animation DJ" par "DJ & Musiciens"
-    { id: "production", label: "Production Musicale", icon: Music, color: "from-blue-500 to-cyan-500" },
-    { id: "organization", label: "Organisation d'Événements", icon: Calendar, color: "from-green-500 to-emerald-500" },
-    { id: "technical", label: "Prestations Techniques", icon: Zap, color: "from-orange-500 to-red-500" },
-    { id: "led-walls", label: "Murs de LED", icon: Monitor, color: "from-violet-500 to-purple-500" }, // Ajout du service "Murs de LED"
-    { id: "mapping", label: "VJ / Vidéo Mapping", icon: Camera, color: "from-indigo-500 to-purple-500" },
-    { id: "media", label: "Captation TV & Podcast", icon: Camera, color: "from-pink-500 to-rose-500" }, // Remplacé "Captations & Médias" par "Captation TV & Podcast"
+    { id: "dj", label: t("devis.services.dj"), icon: Mic, color: "from-purple-500 to-pink-500" },
+    { id: "production", label: t("devis.services.production"), icon: Music, color: "from-blue-500 to-cyan-500" },
+    { id: "organization", label: t("devis.services.organization"), icon: Calendar, color: "from-green-500 to-emerald-500" },
+    { id: "technical", label: t("devis.services.technical"), icon: Zap, color: "from-orange-500 to-red-500" },
+    { id: "led-walls", label: t("devis.services.ledWalls"), icon: Monitor, color: "from-violet-500 to-purple-500" },
+    { id: "mapping", label: t("devis.services.mapping"), icon: Camera, color: "from-indigo-500 to-purple-500" },
+    { id: "media", label: t("devis.services.media"), icon: Camera, color: "from-pink-500 to-rose-500" },
   ]
 
   const budgetRanges = [
@@ -53,7 +55,7 @@ export default function DevisForm() {
     { id: "5000-10000", label: "5 000€ - 10 000€" },
     { id: "10000-25000", label: "10 000€ - 25 000€" },
     { id: "25000+", label: "25 000€+" },
-    { id: "discuss", label: "À discuter" },
+    { id: "discuss", label: t("devis.budgetDiscuss") },
   ]
 
   const handleServiceToggle = (serviceId: string) => {
@@ -92,17 +94,16 @@ export default function DevisForm() {
                 >
                   <CheckCircle className="w-10 h-10 text-white" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-white mb-4">Demande envoyée !</h3>
+                <h3 className="text-2xl font-bold text-white mb-4">{t("devis.success.title")}</h3>
                 <p className="text-white/80 mb-6">
-                  Merci pour votre demande de devis. Notre équipe vous contactera dans les 24h pour discuter de votre
-                  projet et vous proposer une solution sur-mesure.
+                  {t("devis.success.message")}
                 </p>
                 <Button
                   onClick={() => setIsSubmitted(false)}
                   variant="outline"
                   className="border-white/30 text-white hover:bg-white/10"
                 >
-                  Nouvelle demande
+                  {t("devis.success.newRequest")}
                 </Button>
               </CardContent>
             </Card>
@@ -122,26 +123,26 @@ export default function DevisForm() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Devis Express
+            {t("devis.title")}
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent block">
-              Gratuit & Personnalisé
+              {t("devis.highlight")}
             </span>
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Dites-nous en plus sur votre projet. Nous vous répondons sous 24h avec une proposition sur-mesure.
+            {t("devis.description")}
           </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
           <Card className="bg-white/5 backdrop-blur-md border-white/10">
             <CardHeader>
-              <CardTitle className="text-white text-2xl text-center">Parlez-nous de votre projet</CardTitle>
+              <CardTitle className="text-white text-2xl text-center">{t("devis.formTitle")}</CardTitle>
             </CardHeader>
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Event Type */}
                 <div>
-                  <Label className="text-white text-lg mb-4 block">Type d'événement</Label>
+                  <Label className="text-white text-lg mb-4 block">{t("devis.eventType")}</Label>
                   <RadioGroup
                     value={formData.eventType}
                     onValueChange={(value) => setFormData((prev) => ({ ...prev, eventType: value }))}
@@ -152,11 +153,10 @@ export default function DevisForm() {
                         <RadioGroupItem value={type.id} id={type.id} className="sr-only" />
                         <Label
                           htmlFor={type.id}
-                          className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                            formData.eventType === type.id
-                              ? "border-purple-500 bg-purple-500/20"
-                              : "border-white/20 bg-white/5 hover:bg-white/10"
-                          }`}
+                          className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.eventType === type.id
+                            ? "border-purple-500 bg-purple-500/20"
+                            : "border-white/20 bg-white/5 hover:bg-white/10"
+                            }`}
                         >
                           <span className="text-2xl mr-3">{type.icon}</span>
                           <span className="text-white">{type.label}</span>
@@ -169,18 +169,17 @@ export default function DevisForm() {
                 {/* Services */}
                 <div>
                   <Label className="text-white text-lg mb-4 block">
-                    Services souhaités (plusieurs choix possibles)
+                    {t("devis.servicesTitle")}
                   </Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {services.map((service) => (
                       <motion.div key={service.id} whileHover={{ scale: 1.02 }} className="relative">
                         <div
                           onClick={() => handleServiceToggle(service.id)}
-                          className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                            formData.services.includes(service.id)
-                              ? "border-purple-500 bg-purple-500/20"
-                              : "border-white/20 bg-white/5 hover:bg-white/10"
-                          }`}
+                          className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.services.includes(service.id)
+                            ? "border-purple-500 bg-purple-500/20"
+                            : "border-white/20 bg-white/5 hover:bg-white/10"
+                            }`}
                         >
                           <div
                             className={`w-10 h-10 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center mr-3`}
@@ -200,7 +199,7 @@ export default function DevisForm() {
                   <div>
                     <Label htmlFor="eventDate" className="text-white mb-2 block">
                       <Calendar className="w-4 h-4 inline mr-2" />
-                      Date de l'événement
+                      {t("devis.date")}
                     </Label>
                     <Input
                       id="eventDate"
@@ -213,7 +212,7 @@ export default function DevisForm() {
                   <div>
                     <Label htmlFor="guestCount" className="text-white mb-2 block">
                       <Users className="w-4 h-4 inline mr-2" />
-                      Nombre d'invités
+                      {t("devis.guests")}
                     </Label>
                     <Input
                       id="guestCount"
@@ -226,7 +225,7 @@ export default function DevisForm() {
                   <div>
                     <Label htmlFor="location" className="text-white mb-2 block">
                       <MapPin className="w-4 h-4 inline mr-2" />
-                      Lieu / Ville
+                      {t("devis.location")}
                     </Label>
                     <Input
                       id="location"
@@ -240,7 +239,7 @@ export default function DevisForm() {
 
                 {/* Budget */}
                 <div>
-                  <Label className="text-white text-lg mb-4 block">Budget estimé</Label>
+                  <Label className="text-white text-lg mb-4 block">{t("devis.budget")}</Label>
                   <RadioGroup
                     value={formData.budget}
                     onValueChange={(value) => setFormData((prev) => ({ ...prev, budget: value }))}
@@ -251,11 +250,10 @@ export default function DevisForm() {
                         <RadioGroupItem value={range.id} id={range.id} className="sr-only" />
                         <Label
                           htmlFor={range.id}
-                          className={`flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${
-                            formData.budget === range.id
-                              ? "border-purple-500 bg-purple-500/20"
-                              : "border-white/20 bg-white/5 hover:bg-white/10"
-                          }`}
+                          className={`flex items-center justify-center p-3 rounded-xl border-2 cursor-pointer transition-all ${formData.budget === range.id
+                            ? "border-purple-500 bg-purple-500/20"
+                            : "border-white/20 bg-white/5 hover:bg-white/10"
+                            }`}
                         >
                           <span className="text-white text-center">{range.label}</span>
                         </Label>
@@ -268,7 +266,7 @@ export default function DevisForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="name" className="text-white mb-2 block">
-                      Nom complet *
+                      {t("devis.name")}
                     </Label>
                     <Input
                       id="name"
@@ -280,7 +278,7 @@ export default function DevisForm() {
                   </div>
                   <div>
                     <Label htmlFor="email" className="text-white mb-2 block">
-                      Email *
+                      {t("devis.email")}
                     </Label>
                     <Input
                       id="email"
@@ -293,7 +291,7 @@ export default function DevisForm() {
                   </div>
                   <div>
                     <Label htmlFor="phone" className="text-white mb-2 block">
-                      Téléphone
+                      {t("devis.phone")}
                     </Label>
                     <Input
                       id="phone"
@@ -304,7 +302,7 @@ export default function DevisForm() {
                   </div>
                   <div>
                     <Label htmlFor="company" className="text-white mb-2 block">
-                      Entreprise (optionnel)
+                      {t("devis.company")}
                     </Label>
                     <Input
                       id="company"
@@ -318,11 +316,11 @@ export default function DevisForm() {
                 {/* Description */}
                 <div>
                   <Label htmlFor="description" className="text-white mb-2 block">
-                    Décrivez votre projet (optionnel)
+                    {t("devis.projectDescription")}
                   </Label>
                   <Textarea
                     id="description"
-                    placeholder="Parlez-nous de votre vision, vos attentes particulières, le style souhaité..."
+                    placeholder={t("devis.placeholder")}
                     value={formData.description}
                     onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[120px]"
@@ -337,10 +335,10 @@ export default function DevisForm() {
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 rounded-full text-lg"
                   >
                     <Send className="w-5 h-5 mr-2" />
-                    Envoyer ma demande
+                    {t("devis.submit")}
                   </Button>
                   <p className="text-white/60 text-sm mt-4">
-                    Réponse garantie sous 24h • Devis gratuit et sans engagement
+                    {t("devis.guarantee")}
                   </p>
                 </motion.div>
               </form>

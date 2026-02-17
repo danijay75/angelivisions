@@ -55,13 +55,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Initial load from localStorage
-  useEffect(() => {
-    setLoading(true)
-    const u = readLocalUser()
-    setUser(u)
-    setLoading(false)
+  // Initial load from session API
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/auth/session")
+      const data = await res.json()
+      if (res.ok && data.authenticated && data.user) {
+        const nextUser: AuthUser = {
+          email: data.user.email,
+          role: data.user.role,
+          name: data.user.name,
+        }
+        setUser(nextUser)
+        writeLocalUser(nextUser)
+      } else {
+        setUser(null)
+        writeLocalUser(null)
+      }
+    } catch (e) {
+      console.error("Refresh error:", e)
+      const u = readLocalUser()
+      setUser(u)
+    } finally {
+      setLoading(false)
+    }
   }, [])
+
+  useEffect(() => {
+    void refresh()
+  }, [refresh])
 
   const isAdmin = user?.role === "admin"
   const isEditor = user?.role === "editor"
@@ -70,34 +92,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async (email: string, password: string) => {
     try {
       setLoading(true)
-      const res = await fetch("/api/admin/users/auth", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        return { ok: false as const, error: data?.error || "Identifiants invalides" }
+      if (!res.ok || !data.success) {
+        return { ok: false as const, error: data?.message || "Identifiants invalides" }
       }
-      const nextUser: AuthUser = {
-        email: data?.user?.email,
-        role: data?.user?.role,
-        name: data?.user?.name,
-      }
-      writeLocalUser(nextUser)
-      setUser(nextUser)
+      // Trigger a refresh to get the user info from the session
+      await refresh()
       return { ok: true as const }
     } catch (e: any) {
       return { ok: false as const, error: e?.message || "Erreur de connexion" }
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [refresh])
 
   const logout = useCallback(async () => {
     try {
       setLoading(true)
-      await fetch("/api/admin/users/auth", { method: "DELETE" })
+      await fetch("/api/auth/logout", { method: "POST" })
     } catch {
       // ignore
     } finally {
@@ -105,11 +122,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null)
       setLoading(false)
     }
-  }, [])
-
-  const refresh = useCallback(() => {
-    const u = readLocalUser()
-    setUser(u)
   }, [])
 
   const value = useMemo<AuthContextValue>(

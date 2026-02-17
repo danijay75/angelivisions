@@ -64,8 +64,9 @@ async function getServices(): Promise<ServiceItem[]> {
   ]
 }
 
-export default async function ServicesPage({ params }: { params: { lang: string } }) {
-  if (!params.lang || !["fr", "en"].includes(params.lang)) {
+export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params
+  if (!resolvedParams.lang || !["fr", "en"].includes(resolvedParams.lang)) {
     notFound()
   }
 
@@ -121,7 +122,7 @@ export default async function ServicesPage({ params }: { params: { lang: string 
                       </Badge>
                     ))}
                   </div>
-                  <Link href={`/${params.lang}/services/${service.id}`}>
+                  <Link href={`/${resolvedParams.lang}/services/${service.id}`}>
                     <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
                       En savoir plus
                       <ArrowRight className="w-4 h-4 ml-2" />
@@ -140,7 +141,7 @@ export default async function ServicesPage({ params }: { params: { lang: string 
             <p className="text-slate-300 mb-6">
               Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé
             </p>
-            <Link href={`/${params.lang}/devis`}>
+            <Link href={`/${resolvedParams.lang}/devis`}>
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"

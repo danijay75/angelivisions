@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
-import { readAdmin, writeAdmin } from "@/lib/server/storage"
-import { verifyHCaptcha } from "@/lib/server/hcaptcha"
-import bcrypt from "bcryptjs"
-import { createAdminRecordToken, setAdminRecordCookie } from "@/lib/server/jwt"
+import { createUser, countUsers } from "@/lib/server/users"
+import { verifyCaptcha } from "@/lib/server/captcha"
+import { createSessionToken, setSessionCookie } from "@/lib/server/jwt"
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -10,8 +9,9 @@ function isValidEmail(email: string) {
 
 export async function POST(req: Request) {
   try {
-    const { email, password, captchaToken } = await req.json()
-    if (!email || !password) {
+    const { email, password, captchaToken, name } = await req.json()
+
+    if (!email || !password || !name) {
       return NextResponse.json({ success: false, message: "Champs requis manquants" }, { status: 400 })
     }
     if (!isValidEmail(email)) {
@@ -23,33 +23,35 @@ export async function POST(req: Request) {
         { status: 400 },
       )
     }
-    const adminExists = await readAdmin()
-    if (adminExists) {
-      return NextResponse.json({ success: false, message: "Un administrateur existe déjà" }, { status: 400 })
+
+    // Only allow init if no users exist
+    const userCount = await countUsers()
+    if (userCount > 0) {
+      return NextResponse.json({ success: false, message: "Le système est déjà initialisé" }, { status: 400 })
     }
 
-    const captchaOk = await verifyHCaptcha(captchaToken || "")
+    const captchaOk = await verifyCaptcha(captchaToken || "")
     if (!captchaOk) {
       return NextResponse.json({ success: false, message: "Captcha invalide" }, { status: 400 })
     }
 
-    const hash = await bcrypt.hash(password, 10)
-    const now = new Date().toISOString()
+    // Create the first admin in Redis
+    const createdUser = await createUser({
+      name,
+      email,
+      role: "admin",
+      password,
+      active: true
+    })
 
-    // Tenter d'écrire sur disque, mais ne pas bloquer si l'environnement est read-only
-    let persisted = true
-    try {
-      await writeAdmin({ email, passwordHash: hash, createdAt: now, updatedAt: now })
-    } catch {
-      persisted = false
-    }
+    // Auto-login the first admin
+    const token = await createSessionToken(createdUser.email)
+    const res = NextResponse.json({ success: true })
+    setSessionCookie(res, token)
 
-    // Écrire aussi un cookie httpOnly signé avec l'admin (fallback persistant)
-    const adminRecordJwt = await createAdminRecordToken({ email, passwordHash: hash })
-    const res = NextResponse.json({ success: true, persisted })
-    setAdminRecordCookie(res, adminRecordJwt)
     return res
-  } catch {
-    return NextResponse.json({ success: false, message: "Erreur serveur" }, { status: 500 })
+  } catch (error: any) {
+    console.error("Init error:", error)
+    return NextResponse.json({ success: false, message: error.message || "Erreur serveur" }, { status: 500 })
   }
 }

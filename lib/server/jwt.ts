@@ -10,12 +10,13 @@ export const SESSION_COOKIE = SESSION_COOKIE_NAME
 function getSecretKey() {
   const secret = process.env.AUTH_SECRET
   if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("AUTH_SECRET must be set in production")
+    }
     console.warn(
       "AUTH_SECRET non configuré - utilisation d'un secret de secours NON SÉCURISÉ. Définissez AUTH_SECRET en production.",
     )
-    const fallback =
-      process.env.NODE_ENV === "production" ? "fallback-secret-use-AUTH_SECRET" : "dev-secret-use-AUTH_SECRET"
-    return ENC.encode(fallback)
+    return ENC.encode("fallback-secret-use-AUTH_SECRET")
   }
   return ENC.encode(secret)
 }
@@ -42,7 +43,8 @@ export async function verifySessionToken(token: string) {
     const { payload } = await jwtVerify(token, getSecretKey(), { algorithms: ["HS256"] })
     if (payload.typ !== "session" || !payload.sub) return null
     return payload
-  } catch {
+  } catch (e) {
+    // Token expired or invalid
     return null
   }
 }
@@ -51,7 +53,7 @@ export function setSessionCookie(res: NextResponse, token: string) {
   const ttl = getSessionTtlSeconds()
   res.cookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: false, // IMPORTANT: false en preview HTTP. Remettez true en prod HTTPS.
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: ttl,

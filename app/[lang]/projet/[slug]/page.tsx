@@ -10,17 +10,18 @@ export function generateStaticParams() {
   return LOCALES.flatMap((lang) => projects.map((p) => ({ lang, slug: p.slug })))
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { lang: Locale; slug: string }
-}): Metadata {
-  const project = projects.find((p) => p.slug === params.slug)
+  params: Promise<{ lang: Locale; slug: string }>
+}): Promise<Metadata> {
+  const resolvedParams = await params
+  const project = projects.find((p) => p.slug === resolvedParams.slug)
   const title = project ? `${project.title} – Angeli Visions` : "Projet introuvable – Angeli Visions"
   const description =
     project?.description ?? "Détails d’un projet réalisé par Angeli Visions: production musicale, événements et plus."
   const image = project?.image ?? "/placeholder.svg?height=630&width=1200"
-  const url = `/${params.lang}/projet/${params.slug}`
+  const url = `/${resolvedParams.lang}/projet/${resolvedParams.slug}`
 
   return {
     title,
@@ -36,12 +37,13 @@ export function generateMetadata({
   }
 }
 
-export default function LocalizedProjectPage({
+export default async function LocalizedProjectPage({
   params,
 }: {
-  params: { lang: Locale; slug: string }
+  params: Promise<{ lang: Locale; slug: string }>
 }) {
-  const project = projects.find((p) => p.slug === params.slug) as Project | undefined
+  const resolvedParams = await params
+  const project = projects.find((p) => p.slug === resolvedParams.slug) as Project | undefined
   if (!project) {
     return notFound()
   }

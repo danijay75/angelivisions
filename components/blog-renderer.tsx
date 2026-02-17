@@ -2,9 +2,12 @@
 import type { BlogBlock } from "@/data/blog"
 import { cn } from "@/lib/utils"
 
+import { sanitizeHtml } from "@/lib/sanitizer"
+
 function isYouTube(url: string) {
   return /youtube\.com|youtu\.be/.test(url)
 }
+
 function isVimeo(url: string) {
   return /vimeo\.com/.test(url)
 }
@@ -14,7 +17,7 @@ export function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
     <article className="prose prose-invert max-w-3xl w-full mx-auto prose-headings:scroll-mt-20">
       {blocks.map((b, i) => {
         if (b.type === "paragraph") {
-          return <div key={i} className="prose-p:my-4" dangerouslySetInnerHTML={{ __html: b.html }} />
+          return <div key={i} className="prose-p:my-4" dangerouslySetInnerHTML={{ __html: sanitizeHtml(b.html) }} />
         }
         if (b.type === "image") {
           return (
@@ -78,7 +81,7 @@ export function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
         if (b.type === "embed") {
           return (
             <div key={i} className={cn("my-6 rounded-lg overflow-hidden border border-white/10 p-2")}>
-              <div className="embed-container" dangerouslySetInnerHTML={{ __html: b.html }} />
+              <div className="embed-container" dangerouslySetInnerHTML={{ __html: sanitizeHtml(b.html) }} />
               {b.caption ? <p className="mt-2 text-sm text-white/60">{b.caption}</p> : null}
             </div>
           )

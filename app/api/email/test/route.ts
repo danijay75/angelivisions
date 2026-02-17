@@ -1,8 +1,15 @@
 import { NextResponse } from "next/server"
 import { getMailer } from "@/lib/server/mailer"
+import { requireAdmin } from "@/lib/server/admin-session"
 
 export async function POST(req: Request) {
   try {
+    // Security check: require admin
+    const gate = await requireAdmin()
+    if (!gate.ok) {
+      return NextResponse.json(gate.body, { status: gate.status })
+    }
+
     const mailer = getMailer()
     if (!mailer) {
       return NextResponse.json(

@@ -7,10 +7,10 @@ import Link from "next/link"
 import { ArrowLeft, CheckCircle, Phone, Mail, Music, Calendar, Users, Mic, Monitor, Camera } from "lucide-react"
 
 interface ServicePageProps {
-  params: {
+  params: Promise<{
     lang: string
     serviceId: string
-  }
+  }>
 }
 
 const serviceIcons = {
@@ -65,8 +65,9 @@ async function getServices(): Promise<ServiceItem[]> {
 }
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  const resolvedParams = await params
   const services = await getServices()
-  const service = services.find((s) => s.id === params.serviceId)
+  const service = services.find((s) => s.id === resolvedParams.serviceId)
 
   if (!service) {
     return {
@@ -88,12 +89,13 @@ export async function generateStaticParams() {
 }
 
 export default async function ServicePage({ params }: ServicePageProps) {
-  if (!params.lang || !["fr", "en"].includes(params.lang)) {
+  const resolvedParams = await params
+  if (!resolvedParams.lang || !["fr", "en"].includes(resolvedParams.lang)) {
     notFound()
   }
 
   const services = await getServices()
-  const service = services.find((s) => s.id === params.serviceId)
+  const service = services.find((s) => s.id === resolvedParams.serviceId)
 
   if (!service) {
     notFound()
@@ -106,7 +108,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       <div className="container mx-auto px-4 py-16">
         {/* Back Button */}
         <div className="mb-8">
-          <Link href={`/${params.lang}/services`}>
+          <Link href={`/${resolvedParams.lang}/services`}>
             <Button variant="ghost" className="text-slate-300 hover:text-white">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Retour aux services
@@ -265,7 +267,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Link href={`/${params.lang}/devis`}>
+                <Link href={`/${resolvedParams.lang}/devis`}>
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
                     Demander un devis
                   </Button>
@@ -300,7 +302,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                     .map((otherService) => {
                       const OtherIconComponent = serviceIcons[otherService.id as keyof typeof serviceIcons] || Music
                       return (
-                        <Link key={otherService.id} href={`/${params.lang}/services/${otherService.id}`}>
+                        <Link key={otherService.id} href={`/${resolvedParams.lang}/services/${otherService.id}`}>
                           <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
                             <div
                               className={`w-8 h-8 rounded bg-gradient-to-r ${otherService.color} flex items-center justify-center`}
@@ -313,7 +315,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                       )
                     })}
                 </div>
-                <Link href={`/${params.lang}/services`}>
+                <Link href={`/${resolvedParams.lang}/services`}>
                   <Button variant="ghost" className="w-full mt-4 text-slate-300 hover:text-white">
                     Voir tous les services
                   </Button>

@@ -8,6 +8,7 @@ import { Menu, X, Globe } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import LanguageSelector from "@/components/i18n/language-selector"
 
 type MenuItem = {
   href: string
@@ -32,7 +33,7 @@ export default function Navigation() {
       { href: "#accueil", label: t("nav.accueil") },
       { href: `/${lang}/services`, label: t("nav.services") }, // Changed services link from anchor to dedicated page
       { href: `/${lang}/realisations`, label: t("nav.realisations"), bold: true },
-      { href: `/${lang}/eside-culture-blog`, label: t("nav.blog"), featured: true },
+      { href: `/${lang}/eside-culture-blog`, label: t("nav.blog") },
       { href: `/${lang}/investir-dans-la-culture`, label: t("nav.investissement"), featured: true },
       { href: `/${lang}/devis`, label: t("nav.devis") },
       { href: `/${lang}/contacts`, label: t("nav.contact") }, // now a page
@@ -77,14 +78,7 @@ export default function Navigation() {
     return activeHref === item.href || (typeof window !== "undefined" && window.location.hash === item.href)
   }
 
-  const switchLanguage = () => {
-    const cycle: Record<string, string> = { fr: "en", en: "es", es: "fr" }
-    const nextLang = cycle[lang] || "fr"
-    const segments = pathname.split("/")
-    segments[1] = nextLang
-    const nextPath = segments.join("/") || `/${nextLang}`
-    router.push(nextPath)
-  }
+  // Removed switchLanguage function as it's now handled by LanguageSelector component
 
   return (
     <motion.nav
@@ -143,9 +137,8 @@ export default function Navigation() {
                       {item.label}
                       {!item.featured && (
                         <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${
-                            active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                          }`}
+                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
+                            }`}
                         />
                       )}
                     </Link>
@@ -161,9 +154,8 @@ export default function Navigation() {
                       {item.label}
                       {!item.featured && (
                         <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${
-                            active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                          }`}
+                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
+                            }`}
                         />
                       )}
                     </a>
@@ -175,15 +167,7 @@ export default function Navigation() {
 
           {/* Language Switcher & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={switchLanguage}
-              className="text-slate-300 hover:text-white hover:bg-slate-800/50"
-            >
-              <Globe className="w-4 h-4 mr-1" />
-              {lang.toUpperCase()}
-            </Button>
+            <LanguageSelector />
 
             <Button
               variant="ghost"
@@ -210,13 +194,11 @@ export default function Navigation() {
             {items.map((item) => {
               const active = isItemActive(item)
               const isPath = item.href.startsWith("/")
-              const mobileClass = `block py-2 transition-colors ${
-                item.featured
-                  ? `text-emerald-200 hover:text-emerald-100 border border-emerald-400/50 rounded-lg px-3 py-2 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/30 ${
-                      active ? "bg-emerald-500/15 ring-emerald-400/60 text-emerald-50" : ""
-                    }`
-                  : `text-slate-300 hover:text-white ${item.bold ? "font-bold" : ""} ${active ? "text-white" : ""}`
-              }`
+              const mobileClass = `block py-2 transition-colors ${item.featured
+                ? `text-emerald-200 hover:text-emerald-100 border border-emerald-400/50 rounded-lg px-3 py-2 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/30 ${active ? "bg-emerald-500/15 ring-emerald-400/60 text-emerald-50" : ""
+                }`
+                : `text-slate-300 hover:text-white ${item.bold ? "font-bold" : ""} ${active ? "text-white" : ""}`
+                }`
 
               return isPath ? (
                 <Link

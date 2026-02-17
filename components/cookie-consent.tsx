@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Cookie, Shield, Settings, X } from "lucide-react"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 declare global {
   interface Window {
@@ -13,6 +14,7 @@ declare global {
 }
 
 export default function CookieConsent() {
+  const { t } = useI18n()
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [preferences, setPreferences] = useState({
@@ -125,26 +127,26 @@ export default function CookieConsent() {
   const cookieCategories = [
     {
       key: "necessary" as const,
-      title: "Cookies nécessaires",
-      description: "Ces cookies sont essentiels au fonctionnement du site web et ne peuvent pas être désactivés.",
+      title: t("cookies.categories.necessary.title"),
+      description: t("cookies.categories.necessary.description"),
       required: true,
     },
     {
       key: "functional" as const,
-      title: "Cookies fonctionnels",
-      description: "Ces cookies permettent d'améliorer les fonctionnalités et la personnalisation du site.",
+      title: t("cookies.categories.functional.title"),
+      description: t("cookies.categories.functional.description"),
       required: false,
     },
     {
       key: "analytics" as const,
-      title: "Cookies analytiques",
-      description: "Ces cookies nous aident à comprendre comment les visiteurs interagissent avec le site web.",
+      title: t("cookies.categories.analytics.title"),
+      description: t("cookies.categories.analytics.description"),
       required: false,
     },
     {
       key: "marketing" as const,
-      title: "Cookies marketing",
-      description: "Ces cookies sont utilisés pour vous proposer des publicités pertinentes.",
+      title: t("cookies.categories.marketing.title"),
+      description: t("cookies.categories.marketing.description"),
       required: false,
     },
   ]
@@ -180,25 +182,21 @@ export default function CookieConsent() {
                         <Cookie className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-900 mb-2">Gestion des cookies</h3>
-                        <p className="text-slate-600 mb-4">
-                          Nous utilisons des cookies pour améliorer votre expérience sur notre site web, analyser le
-                          trafic et personnaliser le contenu. Vous pouvez choisir d'accepter tous les cookies ou
-                          personnaliser vos préférences.
-                        </p>
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">{t("cookies.title")}</h3>
+                        <p className="text-slate-600 mb-4">{t("cookies.description")}</p>
                         <div className="flex flex-col sm:flex-row gap-3">
                           <Button
                             onClick={acceptAll}
                             className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white"
                           >
-                            Tout accepter
+                            {t("cookies.acceptAll")}
                           </Button>
                           <Button
                             onClick={rejectAll}
                             variant="outline"
                             className="border-slate-300 text-slate-700 hover:bg-slate-50 bg-transparent"
                           >
-                            Tout refuser
+                            {t("cookies.rejectAll")}
                           </Button>
                           <Button
                             onClick={() => setShowDetails(true)}
@@ -206,7 +204,7 @@ export default function CookieConsent() {
                             className="text-slate-600 hover:text-slate-900"
                           >
                             <Settings className="w-4 h-4 mr-2" />
-                            Personnaliser
+                            {t("cookies.customize")}
                           </Button>
                         </div>
                       </div>
@@ -223,8 +221,8 @@ export default function CookieConsent() {
                             <Shield className="w-5 h-5 text-white" />
                           </div>
                           <div>
-                            <h3 className="text-xl font-bold text-slate-900">Préférences des cookies</h3>
-                            <p className="text-slate-600 text-sm">Gérez vos préférences de cookies par catégorie</p>
+                            <h3 className="text-xl font-bold text-slate-900">{t("cookies.preferencesTitle")}</h3>
+                            <p className="text-slate-600 text-sm">{t("cookies.preferencesSubtitle")}</p>
                           </div>
                         </div>
                         <Button
@@ -257,16 +255,14 @@ export default function CookieConsent() {
                                   className="sr-only peer"
                                 />
                                 <div
-                                  className={`relative w-11 h-6 rounded-full peer transition-colors ${
-                                    preferences[category.key]
+                                  className={`relative w-11 h-6 rounded-full peer transition-colors ${preferences[category.key]
                                       ? "bg-gradient-to-r from-blue-600 to-cyan-600"
                                       : "bg-slate-200"
-                                  } ${category.required ? "opacity-50" : ""}`}
+                                    } ${category.required ? "opacity-50" : ""}`}
                                 >
                                   <div
-                                    className={`absolute top-[2px] left-[2px] bg-white border border-slate-300 rounded-full h-5 w-5 transition-transform ${
-                                      preferences[category.key] ? "translate-x-5" : "translate-x-0"
-                                    }`}
+                                    className={`absolute top-[2px] left-[2px] bg-white border border-slate-300 rounded-full h-5 w-5 transition-transform ${preferences[category.key] ? "translate-x-5" : "translate-x-0"
+                                      }`}
                                   />
                                 </div>
                               </label>
@@ -285,20 +281,20 @@ export default function CookieConsent() {
                           variant="outline"
                           className="border-slate-300 text-slate-700 hover:bg-white bg-transparent"
                         >
-                          Tout refuser
+                          {t("cookies.rejectAll")}
                         </Button>
                         <Button
                           onClick={acceptAll}
                           variant="outline"
                           className="border-blue-300 text-blue-700 hover:bg-blue-50 bg-transparent"
                         >
-                          Tout accepter
+                          {t("cookies.acceptAll")}
                         </Button>
                         <Button
                           onClick={savePreferences}
                           className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white"
                         >
-                          Enregistrer les préférences
+                          {t("cookies.save")}
                         </Button>
                       </div>
                     </div>

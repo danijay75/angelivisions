@@ -1,8 +1,6 @@
-// Minimal server guards + bootstrap mode (open until first admin exists).
-// For production, replace with a signed session.
-
-import { headers } from "next/headers"
-import { countUsers, type Role } from "./users"
+import { headers, cookies } from "next/headers"
+import { countUsers, findUserByEmail, type Role } from "./users"
+import { verifySessionToken } from "./jwt"
 
 function parseCookie(cookieHeader: string | null): Record<string, string> {
   const out: Record<string, string> = {}
@@ -20,20 +18,16 @@ function parseCookie(cookieHeader: string | null): Record<string, string> {
 
 export async function isBootstrapOpen(): Promise<boolean> {
   try {
-    console.log("isBootstrapOpen called")
     const count = await countUsers()
-    console.log("isBootstrapOpen user count:", count)
-    const result = count === 0
-    console.log("isBootstrapOpen result:", result)
-    return result
+    return count === 0
   } catch (e) {
-    console.log("isBootstrapOpen error:", e)
+    console.error("isBootstrapOpen error:", e)
     return true // Default to bootstrap mode if error
   }
 }
 
-export function getRoleFromRequest(): Role | null {
-  const h = headers()
+export async function getRoleFromRequest(): Promise<Role | null> {
+  const h = await headers()
   const ck = parseCookie(h.get("cookie"))
   const role = ck["av_role"] as Role | undefined
   if (role === "admin" || role === "editor" || role === "guest") return role
@@ -41,7 +35,25 @@ export function getRoleFromRequest(): Role | null {
 }
 
 export async function requireAdmin() {
-  const role = getRoleFromRequest()
-  if (role === "admin") return { ok: true as const, status: 200, body: {} }
-  return { ok: false as const, status: 401, body: { error: "Accès administrateur requis" } }
+  const cookieStore = await cookies()
+  const sessionToken = cookieStore.get("av_session")?.value
+
+  if (!sessionToken) {
+    return { ok: false as const, status: 401, body: { error: "Non connecté" } }
+  }
+
+  const payload = await verifySessionToken(sessionToken)
+  if (!payload || !payload.sub) {
+    return { ok: false as const, status: 401, body: { error: "Session invalide" } }
+  }
+
+  const email = payload.sub as string
+
+  // Check if user (KV based) with role admin
+  const user = await findUserByEmail(email)
+  if (user && user.role === "admin" && user.active) {
+    return { ok: true as const, status: 200, body: {} }
+  }
+
+  return { ok: false as const, status: 403, body: { error: "Accès refusé" } }
 }

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { BLOG_STORAGE_KEY, defaultPosts, type BlogPost } from "@/data/blog"
 import { Badge } from "@/components/ui/badge"
-import { useLang } from "@/hooks/use-lang"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 function mergePosts(defaults: BlogPost[], stored?: BlogPost[]): BlogPost[] {
   if (!stored || !Array.isArray(stored)) return defaults
@@ -15,8 +15,8 @@ function mergePosts(defaults: BlogPost[], stored?: BlogPost[]): BlogPost[] {
 }
 
 export default function BlogListClient() {
+  const { t, lang } = useI18n()
   const [posts, setPosts] = useState<BlogPost[]>(defaultPosts)
-  const lang = useLang()
 
   useEffect(() => {
     try {
@@ -39,7 +39,7 @@ export default function BlogListClient() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-white text-3xl md:text-4xl font-bold mb-6">eSide Culture</h1>
+      <h1 className="text-white text-3xl md:text-4xl font-bold mb-6">{t("blog.title")}</h1>
       <div className="grid gap-6 md:grid-cols-2">
         {visible.map((p) => (
           <Link
@@ -56,7 +56,7 @@ export default function BlogListClient() {
             />
             <div className="p-4">
               <div className="text-xs text-white/60 mb-2 flex items-center gap-2">
-                <span>{new Date(p.date).toLocaleDateString("fr-FR")}</span>
+                <span>{new Date(p.date).toLocaleDateString(t("blog.dateLocale"))}</span>
                 {p.author ? <span>• {p.author}</span> : null}
               </div>
               <h2 className="text-white text-xl font-semibold mb-1 group-hover:underline">{p.title}</h2>

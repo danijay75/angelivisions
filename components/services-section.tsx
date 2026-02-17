@@ -6,8 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Sparkles } from "lucide-react"
 import { defaultServices, type ServiceItem, SERVICES_STORAGE_KEY } from "@/data/services"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function ServicesSection() {
+  const { t, lang } = useI18n()
   const [services, setServices] = useState<ServiceItem[]>(defaultServices)
   const [mounted, setMounted] = useState(false)
 
@@ -37,23 +39,16 @@ export default function ServicesSection() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Nos Services
+              {t("services.title")}
               <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
-                Une expertise complète dans tout le domaine culturel et le spectacle
+                {t("services.subtitle")}
               </span>
             </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et du spectacle pour
-              créer des expériences uniques et mémorables.
-            </p>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto">{t("services.description")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {/* Show skeleton loading */}
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div
-                key={i}
-                className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 rounded-lg p-6 animate-pulse"
-              >
+              <div key={i} className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 rounded-lg p-6 animate-pulse">
                 <div className="w-16 h-16 bg-slate-700 rounded-xl mb-4"></div>
                 <div className="h-6 bg-slate-700 rounded mb-4"></div>
                 <div className="h-4 bg-slate-700 rounded mb-2"></div>
@@ -67,10 +62,10 @@ export default function ServicesSection() {
   }
 
   const clientTypes = [
-    { title: "Entreprises", desc: "Séminaires, conventions, team building" },
-    { title: "Mariages", desc: "Cérémonies et réceptions sur-mesure" },
-    { title: "Événements Privés", desc: "Anniversaires, bar-mitzvah, soirées" },
-    { title: "Spectacles", desc: "Concerts, festivals, performances" },
+    { title: t("services.clientTypes.entreprises.title"), desc: t("services.clientTypes.entreprises.desc") },
+    { title: t("services.clientTypes.mariages.title"), desc: t("services.clientTypes.mariages.desc") },
+    { title: t("services.clientTypes.prive.title"), desc: t("services.clientTypes.prive.desc") },
+    { title: t("services.clientTypes.spectacles.title"), desc: t("services.clientTypes.spectacles.desc") },
   ]
 
   return (
@@ -83,61 +78,69 @@ export default function ServicesSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Nos Services
+            {t("services.title")}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
-              Une expertise complète dans tout le domaine culturel
+              {t("services.subtitle")}
             </span>
           </h2>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et du spectacle pour
-            créer des expériences uniques et mémorables.
-          </p>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">{t("services.description")}</p>
         </motion.div>
 
         {/* Main Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.8 }}
-              whileHover={{ scale: 1.02, y: -5 }}
-            >
-              <Card className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 h-full hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300">
-                <CardHeader>
-                  <div
-                    className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 shadow-lg overflow-hidden`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={
-                        service.image ||
-                        "/placeholder.svg?height=64&width=64&query=ic%C3%B4ne%20service%20par%20d%C3%A9faut" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg"
-                      }
-                      alt={service.title}
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
-                  <CardTitle className="text-white text-xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-300 mb-6">{service.description}</p>
-                  <div className="space-y-2">
-                    {(service.features || []).map((feature, idx) => (
-                      <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-400">
-                        <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          {services.map((service, index) => {
+            const translatedTitle = t(`services.items.${service.id}.title`)
+            const translatedDescription = t(`services.items.${service.id}.description`)
+            // Only translate if the key exists (i.e. not the key itself)
+            const displayTitle = translatedTitle !== `services.items.${service.id}.title` ? translatedTitle : service.title
+            const displayDescription =
+              translatedDescription !== `services.items.${service.id}.description`
+                ? translatedDescription
+                : service.description
+
+            return (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.8 }}
+                whileHover={{ scale: 1.02, y: -5 }}
+              >
+                <Card className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 h-full hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300">
+                  <CardHeader>
+                    <div
+                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 shadow-lg overflow-hidden`}
+                    >
+                      <img
+                        src={service.image || "/placeholder.svg"}
+                        alt={displayTitle}
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
+                    <CardTitle className="text-white text-xl">{displayTitle}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-300 mb-6">{displayDescription}</p>
+                    <div className="space-y-2">
+                      {(service.features || []).map((feature, idx) => {
+                        const translatedFeature = t(`services.items.${service.id}.features.${idx}`)
+                        const displayFeature =
+                          translatedFeature !== `services.items.${service.id}.features.${idx}`
+                            ? translatedFeature
+                            : feature
+                        return (
+                          <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-400">
+                            <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
+                            {displayFeature}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )
+          })}
         </div>
 
         {/* Client Types */}
@@ -147,7 +150,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">Nos Clients</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">{t("services.clientsTitle")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {clientTypes.map((client) => (
               <motion.div
@@ -174,7 +177,7 @@ export default function ServicesSection() {
             className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25"
           >
             <Sparkles className="w-5 h-5 mr-2" />
-            Demander un devis personnalisé
+            {t("services.cta")}
           </Button>
         </motion.div>
       </div>

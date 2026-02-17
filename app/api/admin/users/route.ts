@@ -5,18 +5,18 @@ import { isBootstrapOpen, requireAdmin } from "@/lib/server/admin-session"
 // GET /api/admin/users -> list users (open during bootstrap; admin-only otherwise)
 export async function GET() {
   try {
-    console.log("[v0] GET /api/admin/users called")
+    console.log("GET /api/admin/users called")
     const bootstrap = await isBootstrapOpen()
-    console.log("[v0] Bootstrap mode:", bootstrap)
+    console.log("Bootstrap mode:", bootstrap)
     if (!bootstrap) {
       const gate = await requireAdmin()
       if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status })
     }
     const users = await listUsers()
-    console.log("[v0] Users loaded:", users.length)
+    console.log("Users loaded:", users.length)
     return NextResponse.json(users, { status: 200 })
   } catch (e) {
-    console.log("[v0] GET /api/admin/users error:", e)
+    console.log("GET /api/admin/users error:", e)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import { readAdmin } from "@/lib/server/storage"
-import { verifyHCaptcha } from "@/lib/server/hcaptcha"
+import { findUserByEmail, updateUser } from "@/lib/server/users"
+import { verifyCaptcha } from "@/lib/server/captcha"
 import { SignJWT } from "jose"
 import nodemailer from "nodemailer"
 
@@ -35,14 +35,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Champs requis manquants" }, { status: 400 })
     }
 
-    const validCaptcha = await verifyHCaptcha(captchaToken || "")
+    const validCaptcha = await verifyCaptcha(captchaToken || "")
     if (!validCaptcha) {
       return NextResponse.json({ success: false, message: "Captcha invalide" }, { status: 400 })
     }
 
-    const admin = await readAdmin()
+    // Check Redis for user
+    const user = await findUserByEmail(email)
+
     // Ne pas divulguer l’existence du compte
-    if (!admin || admin.email !== email) {
+    if (!user || !user.active) {
       return NextResponse.json({ success: true, message: "Si un compte existe, un email a été envoyé." })
     }
 
@@ -67,12 +69,13 @@ export async function POST(req: Request) {
       from: mailer.fromName ? `${mailer.fromName} <${mailer.from}>` : mailer.from!,
       to: email,
       subject: "Réinitialisation du mot de passe – Angeli Visions",
-      html: `<p>Bonjour,</p><p>Pour réinitialiser votre mot de passe (valide 15 minutes) :</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
+      html: `<p>Bonjour ${user.name || ""},</p><p>Pour réinitialiser votre mot de passe (valide 15 minutes) :</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
       replyTo: mailer.replyTo || mailer.from,
     })
 
     return NextResponse.json({ success: true, message: "Si un compte existe, un email a été envoyé." })
-  } catch {
+  } catch (error) {
+    console.error("Forgot password error:", error)
     return NextResponse.json({ success: false, message: "Erreur serveur" }, { status: 500 })
   }
 }

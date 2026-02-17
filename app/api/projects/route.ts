@@ -133,9 +133,16 @@ export async function GET() {
   }
 }
 
+import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
+
 // POST /api/projects - Créer un nouveau projet
 export async function POST(request: NextRequest) {
   try {
+    const sessionToken = getSessionCookieFromRequest(request)
+    if (!sessionToken || !(await verifySessionToken(sessionToken))) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
+    }
+
     const body = await request.json()
     console.log("[v0] Creating new project:", body.title)
 
@@ -192,6 +199,11 @@ export async function POST(request: NextRequest) {
 // PUT /api/projects - Mettre à jour un projet
 export async function PUT(request: NextRequest) {
   try {
+    const sessionToken = getSessionCookieFromRequest(request)
+    if (!sessionToken || !(await verifySessionToken(sessionToken))) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
+    }
+
     const body = await request.json()
     const { id, ...updateData } = body
 
@@ -248,6 +260,11 @@ export async function PUT(request: NextRequest) {
 // DELETE /api/projects - Supprimer un projet
 export async function DELETE(request: NextRequest) {
   try {
+    const sessionToken = getSessionCookieFromRequest(request)
+    if (!sessionToken || !(await verifySessionToken(sessionToken))) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url)
     const id = Number.parseInt(searchParams.get("id") || "0")
 

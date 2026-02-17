@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Instagram, Linkedin, Globe, Twitter, Facebook } from "lucide-react"
 import { motion } from "framer-motion"
 import type { TeamMember } from "@/data/team"
+import { useI18n } from "@/components/i18n/i18n-provider"
 
 type TeamSectionProps = {
   id?: string
@@ -15,29 +16,33 @@ type TeamSectionProps = {
 
 export default function TeamSection({
   id = "equipe",
-  title = "Notre Équipe",
-  subtitle = "Rencontrez les talents derrière nos Spectacles et Projets",
+  title,
+  subtitle,
 }: TeamSectionProps) {
+  const { t } = useI18n()
   const [team, setTeam] = useState<TeamMember[]>([])
   const [loading, setLoading] = useState(true)
 
+  const sectionTitle = title || t("team.title")
+  const sectionSubtitle = subtitle || t("team.subtitle")
+
   useEffect(() => {
     let mounted = true
-    ;(async () => {
-      try {
-        const res = await fetch("/api/team", { cache: "no-store" })
-        if (!res.ok) {
-          console.error("[v0] Team API error:", res.status, res.statusText)
-          return
+      ; (async () => {
+        try {
+          const res = await fetch("/api/team", { cache: "no-store" })
+          if (!res.ok) {
+            console.error("[v0] Team API error:", res.status, res.statusText)
+            return
+          }
+          const json = (await res.json()) as { ok: boolean; team: TeamMember[] }
+          if (mounted && json.ok) setTeam(json.team)
+        } catch (error) {
+          console.error("[v0] Team fetch error:", error)
+        } finally {
+          if (mounted) setLoading(false)
         }
-        const json = (await res.json()) as { ok: boolean; team: TeamMember[] }
-        if (mounted && json.ok) setTeam(json.team)
-      } catch (error) {
-        console.error("[v0] Team fetch error:", error)
-      } finally {
-        if (mounted) setLoading(false)
-      }
-    })()
+      })()
     return () => {
       mounted = false
     }
@@ -74,7 +79,7 @@ export default function TeamSection({
         {s.website && (
           <a className="text-white/80 hover:text-white" href={s.website} target="_blank" rel="noreferrer">
             <Globe className="w-4 h-4" />
-            <span className="sr-only">Site web</span>
+            <span className="sr-only">{t("team.website")}</span>
           </a>
         )}
       </div>
@@ -91,8 +96,8 @@ export default function TeamSection({
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">{title}</h2>
-          <p className="text-white/70 max-w-2xl mx-auto">{subtitle}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">{sectionTitle}</h2>
+          <p className="text-white/70 max-w-2xl mx-auto">{sectionSubtitle}</p>
         </motion.div>
 
         {loading ? (
@@ -115,7 +120,7 @@ export default function TeamSection({
                   <div className="relative">
                     <img
                       src={m.photo || "/placeholder.svg?height=240&width=240&query=portrait%20team%20member"}
-                      alt={`Photo de ${m.name}`}
+                      alt={`${t("team.photoAlt")} ${m.name}`}
                       className="w-full h-56 object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
