@@ -137,12 +137,12 @@ export default function InvestmentPageClient() {
             "@type": "WebPage",
             name: t("investment.title"),
             description: t("investment.subtitle"),
-            url: `https://angeli-visions.com/${lang}/investir-dans-la-culture`,
+            url: `https://angelivisions.com/${lang}/investir-dans-la-culture`,
             inLanguage: lang,
             isPartOf: {
               "@type": "WebSite",
               name: "Angeli Visions",
-              url: "https://angeli-visions.com",
+              url: "https://angelivisions.com",
             },
             about: {
               "@type": "Thing",

@@ -67,7 +67,7 @@ export default function BlogPostClient({ slug }: { slug: string }) {
     ? `${post.seo.robots.index ? "index" : "noindex"}, ${post.seo.robots.follow ? "follow" : "nofollow"}`
     : undefined
   const url =
-    typeof window !== "undefined" ? window.location.href : `https://example.com/${lang}/eside-culture-blog/${post.slug}`
+    typeof window !== "undefined" ? window.location.href : `https://angelivisions.com/${lang}/eside-culture-blog/${post.slug}`
   const tags = post.seo?.tags || []
   const { minutes } = getReadingStats(post)
 
