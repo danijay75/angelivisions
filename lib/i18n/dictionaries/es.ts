@@ -302,7 +302,7 @@ const es = {
     kitLink: "Consulte el kit aquí.",
     contacts: "Contactos",
     newsletterTitle: "Boletín informativo",
-    subscribe: "Suscribirse",
+    subscribe: "Estoy contigo",
     subscribed: "¡Gracias!",
     error: "Ha ocurrido un error",
     privacy: "Política de privacidad",
