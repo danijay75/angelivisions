@@ -3,7 +3,7 @@ compatibility_date = "2024-04-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-# NEXT_PUBLIC_SITE_URL = "https://your-domain.com"
+# NEXT_PUBLIC_SITE_URL = "https://angelivisions.com"
 
 [pages_build_config]
 build_command = "npm run pages:build"

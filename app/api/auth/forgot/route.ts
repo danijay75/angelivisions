@@ -1,31 +1,14 @@
 import { NextResponse } from "next/server"
-import { findUserByEmail, updateUser } from "@/lib/server/users"
+import { findUserByEmail } from "@/lib/server/users"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { SignJWT } from "jose"
-import nodemailer from "nodemailer"
+import { sendMail } from "@/lib/server/mailer"
 
 const ENC = new TextEncoder()
 function getResetSecret() {
   const secret = process.env.AUTH_SECRET
   if (!secret) throw new Error("AUTH_SECRET non configuré")
   return ENC.encode(secret)
-}
-
-function getMailer() {
-  const host = process.env.SMTP_HOST
-  const port = Number(process.env.SMTP_PORT || "587")
-  const user = process.env.SMTP_USER
-  const pass = process.env.SMTP_PASS
-  const from = process.env.FROM_EMAIL || user
-  if (!host || !user || !pass || !from) return null
-  const transport = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    requireTLS: port === 587,
-    auth: { user, pass },
-  })
-  return { transport, from, fromName: process.env.FROM_NAME, replyTo: process.env.REPLY_TO }
 }
 
 export async function POST(req: Request) {
@@ -43,7 +26,7 @@ export async function POST(req: Request) {
     // Check Redis for user
     const user = await findUserByEmail(email)
 
-    // Ne pas divulguer l’existence du compte
+    // Ne pas divulguer l'existence du compte
     if (!user || !user.active) {
       return NextResponse.json({ success: true, message: "Si un compte existe, un email a été envoyé." })
     }
@@ -58,19 +41,29 @@ export async function POST(req: Request) {
     const origin = new URL(req.url).origin
     const resetUrl = `${origin}/admin/reset?token=${encodeURIComponent(token)}`
 
-    const mailer = getMailer()
-    if (!mailer) {
-      return NextResponse.json(
-        { success: false, message: "Envoi d’email non configuré. Veuillez définir SMTP_* et FROM_EMAIL." },
-        { status: 500 },
-      )
-    }
-    await mailer.transport.sendMail({
-      from: mailer.fromName ? `${mailer.fromName} <${mailer.from}>` : mailer.from!,
+    await sendMail({
       to: email,
       subject: "Réinitialisation du mot de passe – Angeli Visions",
-      html: `<p>Bonjour ${user.name || ""},</p><p>Pour réinitialiser votre mot de passe (valide 15 minutes) :</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
-      replyTo: mailer.replyTo || mailer.from,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #7c3aed, #ec4899); padding: 24px; border-radius: 12px 12px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 24px;">🔐 Réinitialisation du mot de passe</h1>
+          </div>
+          <div style="background: #1e1b4b; padding: 24px; color: #e2e8f0;">
+            <p>Bonjour ${user.name || ""},</p>
+            <p>Pour réinitialiser votre mot de passe (valide 15 minutes) :</p>
+            <p style="text-align: center; margin: 24px 0;">
+              <a href="${resetUrl}" style="background: linear-gradient(135deg, #7c3aed, #ec4899); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+                Réinitialiser mon mot de passe
+              </a>
+            </p>
+            <p style="font-size: 12px; color: #94a3b8;">Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
+          </div>
+          <div style="background: #0f0d2e; padding: 16px; border-radius: 0 0 12px 12px; text-align: center;">
+            <p style="color: #94a3b8; font-size: 12px; margin: 0;">angelivisions.com</p>
+          </div>
+        </div>
+      `,
     })
 
     return NextResponse.json({ success: true, message: "Si un compte existe, un email a été envoyé." })

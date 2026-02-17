@@ -1,23 +1,31 @@
-import nodemailer from "nodemailer"
+import { Resend } from "resend"
 
-export function getMailer() {
-  const host = process.env.SMTP_HOST
-  const port = Number(process.env.SMTP_PORT || "587")
-  const user = process.env.SMTP_USER
-  const pass = process.env.SMTP_PASS
-  const from = process.env.FROM_EMAIL || user
-  const fromName = process.env.FROM_NAME
-  const replyTo = process.env.REPLY_TO
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-  if (!host || !user || !pass || !from) return null
+const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivisions.com"
+const FROM_NAME = process.env.FROM_NAME || "Angeli Visions"
+const REPLY_TO = process.env.REPLY_TO || FROM_EMAIL
 
-  const transport = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465, // SSL direct
-    requireTLS: port === 587, // STARTTLS recommandé OVH Exchange
-    auth: { user, pass },
+interface SendMailOptions {
+  to: string | string[]
+  subject: string
+  html: string
+  replyTo?: string
+}
+
+export async function sendMail({ to, subject, html, replyTo }: SendMailOptions) {
+  const { data, error } = await resend.emails.send({
+    from: `${FROM_NAME} <${FROM_EMAIL}>`,
+    to: Array.isArray(to) ? to : [to],
+    subject,
+    html,
+    replyTo: replyTo || REPLY_TO,
   })
 
-  return { transport, from, fromName, replyTo }
+  if (error) {
+    console.error("[Mailer] Send error:", error)
+    throw new Error(error.message || "Failed to send email")
+  }
+
+  return data
 }

@@ -31,6 +31,8 @@ export default function DevisForm() {
   })
 
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const eventTypes = [
     { id: "wedding", label: t("devis.eventTypes.wedding"), icon: "💒" },
@@ -67,12 +69,27 @@ export default function DevisForm() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate form submission
-    setTimeout(() => {
+    setError(null)
+    setLoading(true)
+    try {
+      const res = await fetch("/api/devis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const json = await res.json()
+      if (!res.ok || !json.success) {
+        setError(json.message || t("devis.error"))
+        return
+      }
       setIsSubmitted(true)
-    }, 1000)
+    } catch {
+      setError(t("devis.error"))
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (isSubmitted) {
@@ -327,15 +344,23 @@ export default function DevisForm() {
                   />
                 </div>
 
+                {/* Error */}
+                {error && (
+                  <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded-lg text-center">
+                    {error}
+                  </div>
+                )}
+
                 {/* Submit */}
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="text-center">
+                <motion.div whileHover={{ scale: loading ? 1 : 1.02 }} whileTap={{ scale: loading ? 1 : 0.98 }} className="text-center">
                   <Button
                     type="submit"
                     size="lg"
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 rounded-full text-lg"
+                    disabled={loading}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 rounded-full text-lg disabled:opacity-50"
                   >
                     <Send className="w-5 h-5 mr-2" />
-                    {t("devis.submit")}
+                    {loading ? t("devis.sending") : t("devis.submit")}
                   </Button>
                   <p className="text-white/60 text-sm mt-4">
                     {t("devis.guarantee")}
