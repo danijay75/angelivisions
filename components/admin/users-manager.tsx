@@ -243,8 +243,8 @@ export default function UsersManager() {
                                             <div className="flex items-center gap-3">
                                                 <UserCircle className="w-8 h-8 text-slate-400" />
                                                 <div>
-                                                    <p className="font-medium">{user.name}</p>
-                                                    <p className="text-xs text-slate-400">{user.email}</p>
+                                                    <p className="font-medium">{String(user.name || "")}</p>
+                                                    <p className="text-xs text-slate-400">{String(user.email || "")}</p>
                                                 </div>
                                             </div>
                                         </td>
