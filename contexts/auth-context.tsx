@@ -61,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const res = await fetch("/api/auth/session")
       const data = await res.json()
+      console.log("[DEBUG] AuthContext raw session data:", data)
       if (res.ok && data.authenticated && data.user) {
         // Ensure strictly strings to prevent "Object invalid as React child" crashes
         const safeRole =

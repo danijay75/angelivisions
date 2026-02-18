@@ -20,6 +20,7 @@ function AdminTopbar() {
   const { user, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
+  console.log("[DEBUG] AdminTopbar user:", user)
 
   async function handleLogout() {
     await logout()
