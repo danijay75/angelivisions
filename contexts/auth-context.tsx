@@ -30,10 +30,11 @@ function readLocalUser(): AuthUser | null {
   try {
     const raw = localStorage.getItem(LS_KEY)
     if (!raw) return null
-    const u = JSON.parse(raw) as AuthUser
-    if (!u?.email || !u?.role) return null
+    const u = JSON.parse(raw)
+    // Strict type check to prevent React crash
+    if (typeof u?.email !== "string" || typeof u?.role !== "string") return null
     if (u.role !== "admin" && u.role !== "editor" && u.role !== "guest") return null
-    return u
+    return u as AuthUser
   } catch {
     return null
   }
@@ -61,10 +62,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await fetch("/api/auth/session")
       const data = await res.json()
       if (res.ok && data.authenticated && data.user) {
+        // Ensure strictly strings to prevent "Object invalid as React child" crashes
+        const safeRole =
+          typeof data.user.role === "string" && ["admin", "editor", "guest"].includes(data.user.role)
+            ? (data.user.role as Role)
+            : "guest"
+
         const nextUser: AuthUser = {
-          email: data.user.email,
-          role: data.user.role,
-          name: data.user.name,
+          email: typeof data.user.email === "string" ? data.user.email : "",
+          role: safeRole,
+          name: typeof data.user.name === "string" ? data.user.name : "",
         }
         setUser(nextUser)
         writeLocalUser(nextUser)
