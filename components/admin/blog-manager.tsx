@@ -301,95 +301,97 @@ export default function BlogManager() {
   const descOk = descLen >= 70 && descLen <= 160
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-[380px_1fr] gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-[380px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* List */}
-      <Card className="bg-white/5 border-white/10 h-fit">
-        <CardHeader className="flex gap-2 justify-between items-center">
+      <Card className="bg-slate-900 border-white/10 h-fit">
+        <CardHeader className="flex gap-2 justify-between items-center bg-white/5 border-b border-white/10">
           <CardTitle className="text-white">Articles ({sortedPosts.length})</CardTitle>
           <div className="flex gap-2">
             <Button onClick={newPost} className="bg-purple-600 hover:bg-purple-700">
               <Plus className="w-4 h-4 mr-2" />
-              Nouvel article
+              Nouveau
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-3 p-4">
           {sortedPosts.map((p, i) => (
-            <div key={p.id} className="p-3 bg-white/5 border border-white/10 rounded-lg">
+            <div key={p.id} className="p-3 bg-white/5 border border-white/10 rounded-lg hover:border-purple-500/30 transition-colors">
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={p.coverImage || "/placeholder.svg?height=64&width=64&query=cover"}
-                  alt={p.title}
+                  alt={String(p.title)}
                   className="w-16 h-16 rounded object-cover bg-white/10"
                 />
                 <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge className="bg-blue-600/80 text-white">{new Date(p.date).toLocaleDateString("fr-FR")}</Badge>
-                    {p.author ? <Badge className="bg-white/10 text-white/80">{p.author}</Badge> : null}
-                    <Badge className={p.published !== false ? "bg-green-600/80" : "bg-white/10 text-white"}>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <Badge variant="secondary" className="bg-white/10 text-white/70 text-[10px]">{String(new Date(p.date).toLocaleDateString("fr-FR"))}</Badge>
+                    <Badge className={p.published !== false ? "bg-green-600/80" : "bg-yellow-600/80 text-white"}>
                       {p.published !== false ? "Publié" : "Brouillon"}
                     </Badge>
                   </div>
-                  <div className="text-white font-medium line-clamp-1">{p.title}</div>
-                  <div className="text-white/50 text-xs">/{p.slug}</div>
+                  <div className="text-white font-medium line-clamp-1">{String(p.title)}</div>
+                  <div className="text-white/50 text-xs truncate max-w-[150px]">/{String(p.slug)}</div>
                 </div>
-                <div className="flex gap-2">
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => startEdit(i)}>
-                    <Edit className="w-4 h-4" />
+                <div className="flex flex-col gap-2">
+                  <Button size="icon" className="h-7 w-7 bg-blue-600 hover:bg-blue-700" onClick={() => startEdit(i)}>
+                    <Edit className="w-3 h-3" />
                   </Button>
-                  <Button size="sm" variant="destructive" onClick={() => deletePost(i)}>
-                    <Trash2 className="w-4 h-4" />
+                  <Button size="icon" variant="destructive" className="h-7 w-7" onClick={() => deletePost(i)}>
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
               </div>
             </div>
           ))}
-          <div className="flex gap-2">
-            <Button onClick={saveAll} className="bg-green-600 hover:bg-green-700">
+          <div className="flex gap-2 pt-4 border-t border-white/10">
+            <Button onClick={saveAll} className="flex-1 bg-green-600 hover:bg-green-700">
               <Save className="w-4 h-4 mr-2" />
-              Enregistrer
+              Tout enregistrer
             </Button>
-            <Button variant="outline" className="border-white/30 text-white bg-transparent" onClick={resetDefaults}>
-              Réinitialiser
+            <Button size="icon" variant="outline" className="border-white/30 text-white bg-transparent" onClick={resetDefaults} title="Réinitialiser">
+              <RefreshCw className="w-4 h-4" />
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Editor */}
-      <Card className="bg-white/5 border-white/10">
-        <CardHeader>
-          <CardTitle className="text-white">Éditeur</CardTitle>
+      <Card className="bg-slate-900 border-white/10">
+        <CardHeader className="bg-white/5 border-b border-white/10">
+          <CardTitle className="text-white">Éditeur de Contenu</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="p-6 space-y-6">
           {editingIndex === null || !draft ? (
-            <p className="text-white/60">Sélectionnez un article à modifier ou créez-en un nouveau.</p>
+            <div className="flex flex-col items-center justify-center py-20 text-white/40">
+              <Edit className="w-16 h-16 mb-4 opacity-20" />
+              <p>Sélectionnez un article à modifier ou créez-en un nouveau.</p>
+            </div>
           ) : (
             <>
               {/* Basics */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-white mb-2 block">Titre</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-white">Titre</Label>
                   <Input
                     value={draft.title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="bg-white/10 border-white/20 text-white"
+                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
                   />
                 </div>
-                <div>
-                  <Label className="text-white mb-2 block">Slug</Label>
+                <div className="space-y-2">
+                  <Label className="text-white">Slug (URL)</Label>
                   <Input
                     value={draft.slug}
                     onChange={(e) => updateDraft({ slug: e.target.value, id: e.target.value })}
-                    className="bg-white/10 border-white/20 text-white"
+                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <Label className="text-white mb-2 block">Date</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-white">Date de publication</Label>
                   <Input
                     type="date"
                     value={draft.date.slice(0, 10)}
@@ -397,38 +399,39 @@ export default function BlogManager() {
                       const d = e.target.value ? new Date(e.target.value).toISOString() : new Date().toISOString()
                       updateDraft({ date: d })
                     }}
-                    className="bg-white/10 border-white/20 text-white"
+                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <Label className="text-white mb-2 block">Auteur</Label>
+                <div className="md:col-span-2 space-y-2">
+                  <Label className="text-white">Auteur</Label>
                   <Input
                     value={draft.author || ""}
                     onChange={(e) => updateDraft({ author: e.target.value })}
-                    className="bg-white/10 border-white/20 text-white"
+                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                <div className="md:col-span-2">
-                  <Label className="text-white mb-2 block">Extrait</Label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                <div className="md:col-span-2 space-y-2">
+                  <Label className="text-white">Extrait (chapô)</Label>
                   <Textarea
                     value={draft.excerpt || ""}
                     onChange={(e) => updateDraft({ excerpt: e.target.value })}
-                    className="bg-white/10 border-white/20 text-white"
-                    rows={3}
+                    className="bg-white/5 border-white/10 text-white focus:border-purple-500 min-h-[100px]"
                   />
                 </div>
-                <div className="flex items-center gap-3">
-                  <Switch
-                    id="published"
-                    checked={draft.published !== false}
-                    onCheckedChange={(v) => updateDraft({ published: !!v })}
-                  />
-                  <Label htmlFor="published" className="text-white">
-                    Publié
-                  </Label>
+                <div className="bg-white/5 p-4 rounded-lg border border-white/10 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      id="published"
+                      checked={draft.published !== false}
+                      onCheckedChange={(v) => updateDraft({ published: !!v })}
+                    />
+                    <Label htmlFor="published" className="text-white cursor-pointer">
+                      {draft.published !== false ? "Publié (Visible)" : "Brouillon (Caché)"}
+                    </Label>
+                  </div>
                 </div>
               </div>
 
@@ -436,225 +439,41 @@ export default function BlogManager() {
                 label="Image de couverture"
                 value={draft.coverImage}
                 onChange={(v) => updateDraft({ coverImage: v })}
-                hint="Importez une image (16:9 recommandé) ou collez une URL"
+                hint="Format 16:9 recommandé"
               />
 
-              {/* SEO */}
-              <div className="rounded-xl border border-white/10 p-4 space-y-4 bg-white/5">
-                <h3 className="text-white font-semibold text-lg">SEO</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2">
-                    <Label className="text-white mb-2 block">
-                      Titre SEO
-                      <span className={`ml-2 text-xs ${titleOk ? "text-green-400" : "text-yellow-300"}`}>
-                        {titleLen}/60
-                      </span>
-                    </Label>
-                    <Input
-                      value={draft.seo?.title ?? draft.title}
-                      onChange={(e) => updateSEO({ title: e.target.value })}
-                      className="bg-white/10 border-white/20 text-white"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-white mb-2 block">URL canonique (facultatif)</Label>
-                    <Input
-                      value={draft.seo?.canonicalUrl || ""}
-                      onChange={(e) => updateSEO({ canonicalUrl: e.target.value })}
-                      placeholder="https://votre-domaine.com/eside-culture/slug"
-                      className="bg-white/10 border-white/20 text-white"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label className="text-white mb-2 block">
-                    Meta description
-                    <span className={`ml-2 text-xs ${descOk ? "text-green-400" : "text-yellow-300"}`}>
-                      {descLen}/160
-                    </span>
-                  </Label>
-                  <Textarea
-                    value={draft.seo?.description ?? draft.excerpt ?? ""}
-                    onChange={(e) => updateSEO({ description: e.target.value })}
-                    className="bg-white/10 border-white/20 text-white"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Label className="text-white mb-2 block">Robots</Label>
-                    <div className="flex items-center gap-3">
-                      <Switch
-                        id="robots-index"
-                        checked={draft.seo?.robots?.index ?? true}
-                        onCheckedChange={(v) =>
-                          updateSEO({ robots: { index: !!v, follow: draft.seo?.robots?.follow ?? true } })
-                        }
-                      />
-                      <Label htmlFor="robots-index" className="text-white">
-                        index
-                      </Label>
-                      <Switch
-                        id="robots-follow"
-                        checked={draft.seo?.robots?.follow ?? true}
-                        onCheckedChange={(v) =>
-                          updateSEO({ robots: { index: draft.seo?.robots?.index ?? true, follow: !!v } })
-                        }
-                      />
-                      <Label htmlFor="robots-follow" className="text-white">
-                        follow
-                      </Label>
-                    </div>
-                  </div>
-                  <div>
-                    <Label className="text-white mb-2 block">Open Graph type</Label>
-                    <Select
-                      value={draft.seo?.ogType || "article"}
-                      onValueChange={(v) => updateSEO({ ogType: v as BlogSEO["ogType"] })}
-                    >
-                      <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                        <SelectValue placeholder="article" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="article">article</SelectItem>
-                        <SelectItem value="website">website</SelectItem>
-                        <SelectItem value="video.other">video.other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-white mb-2 block">Twitter card</Label>
-                    <Select
-                      value={draft.seo?.twitterCard || "summary_large_image"}
-                      onValueChange={(v) => updateSEO({ twitterCard: v as BlogSEO["twitterCard"] })}
-                    >
-                      <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                        <SelectValue placeholder="summary_large_image" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="summary_large_image">summary_large_image</SelectItem>
-                        <SelectItem value="summary">summary</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <ImagePicker
-                  label="Image Open Graph (facultatif)"
-                  value={draft.seo?.ogImage || ""}
-                  onChange={(v) => updateSEO({ ogImage: v || undefined })}
-                  hint="Par défaut, l’image de couverture est utilisée"
-                />
-
-                <div>
-                  <Label className="text-white mb-2 block">Tags</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault()
-                          addTag()
-                        }
-                      }}
-                      placeholder="Ajouter un tag et appuyer sur Entrée"
-                      className="bg-white/10 border-white/20 text-white"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="border-white/30 text-white bg-transparent"
-                      onClick={addTag}
-                    >
-                      Ajouter
-                    </Button>
-                  </div>
-                  {draft.seo?.tags?.length ? (
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {draft.seo.tags.map((t) => (
-                        <span key={t} className="inline-flex items-center gap-2">
-                          <Badge className="bg-white/10 text-white border-white/20">{t}</Badge>
-                          <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => removeTag(t)}>
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-
-                {/* SEO Preview */}
-                <div className="rounded-lg border border-white/10 p-4 bg-black/20">
-                  <p className="text-xs text-white/50 mb-2">Aperçu Google</p>
-                  <p className="text-[#8ab4f8] text-lg leading-tight">{seoTitle || "Titre de l’article"}</p>
-                  <p className="text-[#bdc1c6] text-sm">
-                    {draft?.seo?.canonicalUrl || "https://votre-domaine.com/eside-culture/slug"}
-                  </p>
-                  <p className="text-[#9aa0a6] text-sm mt-1">
-                    {seoDescription || "Votre meta description s’affichera ici (70–160 caractères)."}
-                  </p>
-                  <p className="mt-2 text-xs">
-                    <span className={titleOk ? "text-green-400" : "text-yellow-300"}>Titre: {titleLen}/60</span>
-                    {" • "}
-                    <span className={descOk ? "text-green-400" : "text-yellow-300"}>Description: {descLen}/160</span>
-                    {" • "}
-                    <span className="text-white/70">{minutes} min de lecture</span>
-                  </p>
-                </div>
-              </div>
-
               {/* Blocks */}
-              <div className="space-y-3">
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    className="bg-white/10 hover:bg-white/20"
-                    variant="outline"
-                    onClick={() => addBlock("paragraph")}
-                  >
-                    <Type className="w-4 h-4 mr-2" />
-                    Paragraphe
+              <div className="space-y-4 pt-6 border-t border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-4">Contenu de l'article</h3>
+
+                <div className="sticky top-4 z-10 bg-slate-900/95 backdrop-blur border border-white/10 p-2 rounded-lg flex flex-wrap gap-2 shadow-xl">
+                  <Button size="sm" variant="secondary" onClick={() => addBlock("paragraph")}>
+                    <Type className="w-4 h-4 mr-2" /> Paragraphe
                   </Button>
-                  <Button className="bg-white/10 hover:bg-white/20" variant="outline" onClick={() => addBlock("image")}>
-                    <ImageIcon className="w-4 h-4 mr-2" />
-                    Image
+                  <Button size="sm" variant="secondary" onClick={() => addBlock("image")}>
+                    <ImageIcon className="w-4 h-4 mr-2" /> Image
                   </Button>
-                  <Button className="bg-white/10 hover:bg-white/20" variant="outline" onClick={() => addBlock("video")}>
-                    <Video className="w-4 h-4 mr-2" />
-                    Vidéo
+                  <Button size="sm" variant="secondary" onClick={() => addBlock("video")}>
+                    <Video className="w-4 h-4 mr-2" /> Vidéo
                   </Button>
-                  <Button className="bg-white/10 hover:bg-white/20" variant="outline" onClick={() => addBlock("embed")}>
-                    <Code2 className="w-4 h-4 mr-2" />
-                    Code embarqué
+                  <Button size="sm" variant="secondary" onClick={() => addBlock("embed")}>
+                    <Code2 className="w-4 h-4 mr-2" /> Code
                   </Button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6 min-h-[300px]">
                   {draft.blocks.map((b, i) => (
-                    <div key={`block-${i}`} className="p-4 rounded-lg border border-white/10 bg-white/5 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Badge className="bg-purple-600/80 text-white">{b.type}</Badge>
-                        <div className="flex gap-1">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/30 bg-transparent text-white"
-                            onClick={() => moveBlock(i, -1)}
-                          >
+                    <div key={`block-${i}`} className="p-4 rounded-lg border border-white/10 bg-white/5 hover:border-purple-500/20 transition-colors group">
+                      <div className="flex items-center justify-between mb-3">
+                        <Badge variant="outline" className="text-purple-300 border-purple-500/30 uppercase text-xs tracking-wider">{b.type}</Badge>
+                        <div className="flex gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                          <Button size="icon" variant="ghost" className="h-6 w-6 text-white hover:bg-white/10" onClick={() => moveBlock(i, -1)}>
                             <ArrowUp className="w-4 h-4" />
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/30 bg-transparent text-white"
-                            onClick={() => moveBlock(i, 1)}
-                          >
+                          <Button size="icon" variant="ghost" className="h-6 w-6 text-white hover:bg-white/10" onClick={() => moveBlock(i, 1)}>
                             <ArrowDown className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="destructive" onClick={() => removeBlock(i)}>
+                          <Button size="icon" variant="ghost" className="h-6 w-6 text-red-400 hover:bg-red-500/20 hover:text-red-300" onClick={() => removeBlock(i)}>
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
@@ -667,132 +486,96 @@ export default function BlogManager() {
                             ref={(el) => setParaRef(i, el)}
                             contentEditable
                             suppressContentEditableWarning
-                            className="min-h-[120px] p-3 rounded-md bg-white/10 border border_white/20 outline-none text-white"
+                            className="min-h-[120px] p-4 rounded-md bg-black/20 border border-white/10 focus:outline-none focus:border-purple-500/50 text-white/90 leading-relaxed"
                             onBlur={() => syncParagraphHtml(i)}
                             dangerouslySetInnerHTML={{ __html: (b as any).html }}
                           />
-                          <p className="text-xs text-white/50">Astuce: utilisez la barre d’outils pour formater.</p>
                         </div>
                       )}
 
+                      {/* Same strict "check before render" logic applied to other block types implicitly by inputs */}
                       {b.type === "image" && (
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           <ImagePicker
                             value={(b as any).src}
                             onChange={(v) => {
-                              const arr = [...draft.blocks]
-                                ; (arr[i] as any).src = v || ""
-                              updateDraft({ blocks: arr })
+                              const arr = [...draft.blocks]; (arr[i] as any).src = v || ""; updateDraft({ blocks: arr })
                             }}
-                            hint="PNG/JPG/WEBP — Import local ou URL"
                           />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <div>
-                              <Label className="text-white text-sm">Texte alternatif (alt)</Label>
-                              <Input
-                                value={(b as any).alt || ""}
-                                onChange={(e) => {
-                                  const arr = [...draft.blocks]
-                                    ; (arr[i] as any).alt = e.target.value
-                                  updateDraft({ blocks: arr })
-                                }}
-                                className="bg-white/10 border-white/20 text-white"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-white text-sm">Légende</Label>
-                              <Input
-                                value={(b as any).caption || ""}
-                                onChange={(e) => {
-                                  const arr = [...draft.blocks]
-                                    ; (arr[i] as any).caption = e.target.value
-                                  updateDraft({ blocks: arr })
-                                }}
-                                className="bg-white/10 border-white/20 text-white"
-                              />
-                            </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <Input placeholder="Texte alternatif (SEO)" value={(b as any).alt || ""} onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).alt = e.target.value; updateDraft({ blocks: arr })
+                            }} className="bg-black/20 border-white/10 text-white" />
+                            <Input placeholder="Légende" value={(b as any).caption || ""} onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).caption = e.target.value; updateDraft({ blocks: arr })
+                            }} className="bg-black/20 border-white/10 text-white" />
                           </div>
                         </div>
                       )}
 
                       {b.type === "video" && (
-                        <div className="space-y-2">
-                          <div>
-                            <Label className="text-white text-sm">URL vidéo (YouTube, Vimeo ou .mp4)</Label>
-                            <Input
-                              value={(b as any).url}
-                              onChange={(e) => {
-                                const arr = [...draft.blocks]
-                                  ; (arr[i] as any).url = e.target.value
-                                updateDraft({ blocks: arr })
-                              }}
-                              className="bg-white/10 border-white/20 text-white"
-                              placeholder="https://www.youtube.com/watch?v=..."
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-white text-sm">Légende</Label>
-                            <Input
-                              value={(b as any).caption || ""}
-                              onChange={(e) => {
-                                const arr = [...draft.blocks]
-                                  ; (arr[i] as any).caption = e.target.value
-                                updateDraft({ blocks: arr })
-                              }}
-                              className="bg-white/10 border-white/20 text-white"
-                            />
-                          </div>
+                        <div className="space-y-3">
+                          <Input
+                            placeholder="URL YouTube / Vimeo"
+                            value={(b as any).url || ""}
+                            onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).url = e.target.value; updateDraft({ blocks: arr })
+                            }}
+                            className="bg-black/20 border-white/10 text-white"
+                          />
+                          <Input
+                            placeholder="Légende"
+                            value={(b as any).caption || ""}
+                            onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).caption = e.target.value; updateDraft({ blocks: arr })
+                            }}
+                            className="bg-black/20 border-white/10 text-white"
+                          />
                         </div>
                       )}
 
                       {b.type === "embed" && (
-                        <div className="space-y-2">
-                          <Label className="text-white text-sm">Code à embarquer (HTML)</Label>
+                        <div className="space-y-3">
                           <Textarea
-                            value={(b as any).html}
-                            onChange={(e) => {
-                              const arr = [...draft.blocks]
-                                ; (arr[i] as any).html = e.target.value
-                              updateDraft({ blocks: arr })
+                            placeholder="Collez votre code iframe ici..."
+                            value={(b as any).html || ""}
+                            onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).html = e.target.value; updateDraft({ blocks: arr })
                             }}
-                            className="bg-white/10 border-white/20 text-white min-h-[120px]"
+                            className="bg-black/20 border-white/10 text-white font-mono text-xs min-h-[100px]"
                           />
-                          <div>
-                            <Label className="text-white text-sm">Légende</Label>
-                            <Input
-                              value={(b as any).caption || ""}
-                              onChange={(e) => {
-                                const arr = [...draft.blocks]
-                                  ; (arr[i] as any).caption = e.target.value
-                                updateDraft({ blocks: arr })
-                              }}
-                              className="bg-white/10 border-white/20 text-white"
-                            />
-                          </div>
-                          <p className="text-xs text-white/50">
-                            Attention: contenu potentiellement non sécurisé. Ne collez que des embeds de confiance.
-                          </p>
+                          <Input
+                            placeholder="Légende"
+                            value={(b as any).caption || ""}
+                            onChange={e => {
+                              const arr = [...draft.blocks]; (arr[i] as any).caption = e.target.value; updateDraft({ blocks: arr })
+                            }}
+                            className="bg-black/20 border-white/10 text-white"
+                          />
                         </div>
                       )}
+
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex gap-2">
-                <Button onClick={commitEdit} className="bg-green-600 hover:bg-green-700">
-                  <Save className="w-4 h-4 mr-2" />
-                  Enregistrer
-                </Button>
-                <Button
-                  onClick={cancelEdit}
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 bg-transparent"
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Annuler
-                </Button>
+              {/* Actions Footer */}
+              <div className="sticky bottom-4 z-10 bg-slate-900/95 backdrop-blur border border-white/10 p-4 rounded-xl flex items-center justify-between shadow-2xl">
+                <div className="text-xs text-white/50">
+                  <span className={titleOk ? "text-green-400" : "text-yellow-400"}>Titre SEO: {titleLen}/60</span> •
+                  <span className={descOk ? "text-green-400 ml-2" : "text-yellow-400 ml-2"}>Desc: {descLen}/160</span>
+                </div>
+                <div className="flex gap-2">
+                  <Button onClick={commitEdit} className="bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-900/20">
+                    <Save className="w-4 h-4 mr-2" /> Enregistrer les modifications
+                  </Button>
+                  <Button onClick={cancelEdit} variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
+                    Annuler
+                  </Button>
+                </div>
               </div>
+
             </>
           )}
         </CardContent>

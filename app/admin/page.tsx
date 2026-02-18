@@ -10,8 +10,10 @@ import { RefreshCw } from "lucide-react"
 // Import components safely
 import ServicesManager from "@/components/admin/services-manager"
 import UsersManager from "@/components/admin/users-manager"
-import CategoryManager from "@/components/admin/category-manager"
-// We will need to re-import Projects and others later
+import ProjectsManager from "@/components/admin/projects-manager"
+import BlogManager from "@/components/admin/blog-manager"
+
+// We will need to re-import others later in next phase
 
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth()
@@ -74,13 +76,23 @@ export default function AdminPage() {
               <ServicesManager />
             )}
 
+            {/* PROJECTS MANAGER (Safe) */}
+            {section === "projects" && (
+              <ProjectsManager />
+            )}
+
+            {/* BLOG MANAGER (Safe) */}
+            {section === "blog" && (
+              <BlogManager />
+            )}
+
             {/* USERS MANAGER (Safe) */}
             {section === "users" && (
               <UsersManager />
             )}
 
             {/* PLACEHOLDERS FOR OTHER SECTIONS (Safe) */}
-            {["projects", "blog", "newsletter", "team", "player", "investment"].includes(section) && (
+            {["newsletter", "team", "player", "investment"].includes(section) && (
               <div className="flex flex-col items-center justify-center p-20 border border-dashed border-white/10 rounded-2xl bg-white/5">
                 <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
                   <RefreshCw className="w-8 h-8 text-white/20" />
