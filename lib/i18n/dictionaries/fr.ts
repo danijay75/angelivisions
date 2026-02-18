@@ -367,7 +367,7 @@ const fr = {
       title: "Gestion de vos préférences",
       description: "Gérez vos informations et votre abonnement à la newsletter.",
       form: {
-        name: "Votre nom",
+        name: "Votre nom complet",
         email: "Votre email",
         save: "Mettre à jour",
         unsubscribe: "Se désinscrire",
