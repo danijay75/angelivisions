@@ -153,7 +153,7 @@ export default function NewsletterManager() {
                                     filteredSubscribers.map((sub) => (
                                         <TableRow key={sub.email} className="border-slate-700 hover:bg-white/5">
                                             <TableCell className="text-slate-200">
-                                                {sub.name || <span className="text-slate-500 italic">Non renseigné</span>}
+                                                {sub.name ? String(sub.name) : <span className="text-slate-500 italic text-xs">Non renseigné</span>}
                                             </TableCell>
                                             <TableCell className="font-medium text-slate-200">
                                                 {editingEmail === sub.email ? (
@@ -164,17 +164,17 @@ export default function NewsletterManager() {
                                                         autoFocus
                                                     />
                                                 ) : (
-                                                    <div className="flex items-center">
-                                                        <Mail className="w-4 h-4 mr-3 text-slate-500" />
-                                                        {sub.email}
+                                                    <div className="flex items-center text-sm">
+                                                        <Mail className="w-3.5 h-3.5 mr-2.5 text-slate-500" />
+                                                        {String(sub.email)}
                                                     </div>
                                                 )}
                                             </TableCell>
                                             <TableCell className="text-slate-400 text-sm">
-                                                {formatDate(sub.subscribedAt)}
+                                                {formatDate(String(sub.subscribedAt))}
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
+                                                <div className="flex justify-end gap-1.5">
                                                     {editingEmail === sub.email ? (
                                                         <>
                                                             <Button
@@ -188,7 +188,7 @@ export default function NewsletterManager() {
                                                             <Button
                                                                 size="sm"
                                                                 variant="ghost"
-                                                                className="text-red-400 hover:text-red-300 hover:bg-red-400/10 h-8 w-8 p-0"
+                                                                className="text-slate-400 hover:text-slate-300 hover:bg-slate-400/10 h-8 w-8 p-0"
                                                                 onClick={() => setEditingEmail(null)}
                                                             >
                                                                 <X className="w-4 h-4" />
@@ -199,21 +199,21 @@ export default function NewsletterManager() {
                                                             <Button
                                                                 size="sm"
                                                                 variant="ghost"
-                                                                className="text-blue-400 hover:text-blue-300 hover:bg-blue-400/10 h-8 w-8 p-0"
+                                                                className="text-white/40 hover:text-blue-400 hover:bg-blue-400/10 h-8 w-8 p-0"
                                                                 onClick={() => {
                                                                     setEditingEmail(sub.email)
                                                                     setEditValue(sub.email)
                                                                 }}
                                                             >
-                                                                <Edit2 className="w-4 h-4" />
+                                                                <Edit2 className="w-3.5 h-3.5" />
                                                             </Button>
                                                             <Button
                                                                 size="sm"
                                                                 variant="ghost"
-                                                                className="text-red-400 hover:text-red-300 hover:bg-red-400/10 h-8 w-8 p-0"
+                                                                className="text-white/40 hover:text-red-400 hover:bg-red-400/10 h-8 w-8 p-0"
                                                                 onClick={() => handleDelete(sub.email)}
                                                             >
-                                                                <Trash2 className="w-4 h-4" />
+                                                                <Trash2 className="w-3.5 h-3.5" />
                                                             </Button>
                                                         </>
                                                     )}

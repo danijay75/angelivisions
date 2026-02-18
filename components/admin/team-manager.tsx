@@ -349,16 +349,16 @@ export default function TeamManager() {
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <div className="text-white font-semibold">{m.name}</div>
-                            <div className="text-white/70 text-sm">{m.title}</div>
-                            <a href={`mailto:${m.email}`} className="text-emerald-300 text-sm hover:text-emerald-200">
-                              {m.email}
+                            <div className="text-white font-semibold">{String(m.name)}</div>
+                            <div className="text-white/70 text-sm">{String(m.title)}</div>
+                            <a href={`mailto:${String(m.email)}`} className="text-emerald-300 text-sm hover:text-emerald-200">
+                              {String(m.email)}
                             </a>
                             {m.roles && m.roles.length > 0 && (
                               <div className="flex flex-wrap gap-2 mt-2">
                                 {m.roles.map((r, i) => (
                                   <Badge key={i} className="bg-emerald-600/70 text-white">
-                                    {r}
+                                    {String(r)}
                                   </Badge>
                                 ))}
                               </div>

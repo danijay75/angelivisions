@@ -12,8 +12,10 @@ import ServicesManager from "@/components/admin/services-manager"
 import UsersManager from "@/components/admin/users-manager"
 import ProjectsManager from "@/components/admin/projects-manager"
 import BlogManager from "@/components/admin/blog-manager"
-
-// We will need to re-import others later in next phase
+import InvestmentManager from "@/components/admin/investment-manager"
+import TeamManager from "@/components/admin/team-manager"
+import AudioManager from "@/components/admin/audio-manager"
+import NewsletterManager from "@/components/admin/newsletter-manager"
 
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth()
@@ -91,18 +93,24 @@ export default function AdminPage() {
               <UsersManager />
             )}
 
-            {/* PLACEHOLDERS FOR OTHER SECTIONS (Safe) */}
-            {["newsletter", "team", "player", "investment"].includes(section) && (
-              <div className="flex flex-col items-center justify-center p-20 border border-dashed border-white/10 rounded-2xl bg-white/5">
-                <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
-                  <RefreshCw className="w-8 h-8 text-white/20" />
-                </div>
-                <h3 className="text-xl font-semibold text-white/80 mb-2">Section en migration</h3>
-                <p className="text-white/40 text-center max-w-md">
-                  Nous migrons les composants vers la nouvelle architecture sécurisée.
-                  Cette section sera bientôt disponible.
-                </p>
-              </div>
+            {/* INVESTMENT MANAGER (Safe) */}
+            {section === "investment" && (
+              <InvestmentManager />
+            )}
+
+            {/* TEAM MANAGER (Safe) */}
+            {section === "team" && (
+              <TeamManager />
+            )}
+
+            {/* AUDIO MANAGER (Safe) */}
+            {section === "player" && (
+              <AudioManager />
+            )}
+
+            {/* NEWSLETTER MANAGER (Safe) */}
+            {section === "newsletter" && (
+              <NewsletterManager />
             )}
           </motion.div>
         </AnimatePresence>

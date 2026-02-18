@@ -341,7 +341,7 @@ export default function InvestmentManager() {
                       e.preventDefault()
                       const v = (e.target as HTMLInputElement).value
                       addHighlight(v)
-                      ;(e.target as HTMLInputElement).value = ""
+                        ; (e.target as HTMLInputElement).value = ""
                     }
                   }}
                 />
@@ -399,39 +399,38 @@ export default function InvestmentManager() {
                 alt={project.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute top-4 left-4 flex gap-2">
-                <Badge className="bg-emerald-600/80 text-white">{project.category}</Badge>
-                <Badge className={`${getRiskColor(project.risk)} text-white`}>{project.risk}</Badge>
-                {!project.isActive && <Badge className="bg-gray-600/80 text-white">Inactif</Badge>}
+              <div className="absolute bottom-3 left-4 right-4">
+                <h3 className="text-white font-bold text-lg leading-tight shadow-black drop-shadow-md">{String(project.title)}</h3>
+                <p className="text-white/70 text-xs">{String(project.category)}</p>
               </div>
             </div>
-            <CardContent className="p-6">
-              <h3 className="text-white font-bold text-lg mb-2">{project.title}</h3>
-              <p className="text-white/80 text-sm mb-4 line-clamp-2">{project.description}</p>
+            <CardContent className="p-6 flex-1 flex flex-col">
+              <h3 className="text-white font-bold text-lg mb-2">{String(project.title)}</h3>
+              <p className="text-white/80 text-sm mb-4 line-clamp-2 flex-1">{String(project.description)}</p>
 
               <div className="space-y-3 mb-4">
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-white/70">Progression</span>
                     <span className="text-white">
-                      {Math.round((project.currentAmount / project.targetAmount) * 100)}%
+                      {Math.round((project.currentAmount / (project.targetAmount || 1)) * 100)}%
                     </span>
                   </div>
-                  <Progress value={(project.currentAmount / project.targetAmount) * 100} className="h-2" />
+                  <Progress value={(project.currentAmount / (project.targetAmount || 1)) * 100} className="h-2" />
                   <div className="flex justify-between text-xs mt-1 text-white/60">
-                    <span>€{project.currentAmount.toLocaleString()}</span>
-                    <span>€{project.targetAmount.toLocaleString()}</span>
+                    <span>€{String(project.currentAmount.toLocaleString())}</span>
+                    <span>€{String(project.targetAmount.toLocaleString())}</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center text-white/70">
+                <div className="grid grid-cols-2 gap-4 text-sm font-medium">
+                  <div className="flex items-center text-white/70 bg-white/5 p-2 rounded">
                     <TrendingUp className="h-4 w-4 mr-2 text-emerald-400" />
-                    <span>{project.expectedReturn}</span>
+                    <span>{String(project.expectedReturn)}</span>
                   </div>
-                  <div className="flex items-center text-white/70">
-                    <Clock className="h-4 w-4 mr-2" />
-                    <span>{project.duration}</span>
+                  <div className="flex items-center text-white/70 bg-white/5 p-2 rounded">
+                    <Clock className="h-4 w-4 mr-2 text-blue-400" />
+                    <span>{String(project.duration)}</span>
                   </div>
                 </div>
               </div>

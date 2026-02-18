@@ -87,7 +87,7 @@ export default function AudioManager() {
     if (idx <= 0) return
     setTracks((prev) => {
       const c = [...prev]
-      ;[c[idx - 1], c[idx]] = [c[idx], c[idx - 1]]
+        ;[c[idx - 1], c[idx]] = [c[idx], c[idx - 1]]
       return c
     })
     setEditIndex((i) => (i === idx ? idx - 1 : i))
@@ -97,7 +97,7 @@ export default function AudioManager() {
     if (idx >= tracks.length - 1) return
     setTracks((prev) => {
       const c = [...prev]
-      ;[c[idx + 1], c[idx]] = [c[idx], c[idx + 1]]
+        ;[c[idx + 1], c[idx]] = [c[idx], c[idx + 1]]
       return c
     })
     setEditIndex((i) => (i === idx ? idx + 1 : i))
@@ -106,7 +106,7 @@ export default function AudioManager() {
   const updateField = (idx: number, field: keyof AudioTrack, value: any) => {
     setTracks((prev) => {
       const copy = [...prev]
-      ;(copy[idx] as any)[field] = value
+        ; (copy[idx] as any)[field] = value
       if (field === "title" && value) copy[idx].id = genId(String(value))
       return copy
     })
@@ -160,12 +160,12 @@ export default function AudioManager() {
                 />
                 <div>
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">{t.title}</Badge>
-                    {t.artist && <span className="text-white/60 text-sm">par {t.artist}</span>}
+                    <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">{String(t.title)}</Badge>
+                    {t.artist && <span className="text-white/60 text-sm">par {String(t.artist)}</span>}
                   </div>
                   <p className="text-white/60 text-xs break-all">
-                    {t.src ? (t.src.startsWith("data:") ? "data URL" : t.src) : "—"}{" "}
-                    <span className="ml-2 text-white/40">({t.format})</span>
+                    {t.src ? (t.src.startsWith("data:") ? "Fichier chargé" : String(t.src)) : "—"}{" "}
+                    <span className="ml-2 text-white/40">({String(t.format)})</span>
                   </p>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function AudioManager() {
                 >
                   <ArrowDown className="w-4 h-4" />
                 </Button>
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => setEditIndex(idx)}>
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 font-medium" onClick={() => setEditIndex(idx)}>
                   Modifier
                 </Button>
                 <Button
@@ -202,7 +202,7 @@ export default function AudioManager() {
                 </Button>
                 <Button
                   size="icon"
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/20"
                   onClick={() => togglePreview(idx)}
                   title="Pré-écouter"
                 >
