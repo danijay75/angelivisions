@@ -303,7 +303,7 @@ const fr = {
     kitLink: "Consultez le kit ici.",
     contacts: "Contacts",
     newsletterTitle: "Newsletter",
-    newsletterName: "Nom complet",
+    newsletterName: "Prénom NOM",
     newsletterConsent: "J'accepte que les informations saisies soient exploitées dans le cadre de mon inscription à la newsletter du site angelivisions.com et de la relation commerciale et/ou non commerciale qui peut en découler.",
     subscribe: "Je vous suis",
     subscribed: "Merci !",
