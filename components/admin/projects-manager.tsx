@@ -11,7 +11,8 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2, Save, X, ImageIcon as ImageIconLucide, Calendar, Users as UsersIcon, MapPin, RefreshCw } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import ImagePicker from "@/components/admin/image-picker"
-import CategoryManager from "@/components/admin/category-manager"
+// Removed unused CategoryManager import to fix build error
+// import CategoryManager from "@/components/admin/category-manager"
 
 // Define interfaces locally to avoid import issues from missing files
 interface Project {
