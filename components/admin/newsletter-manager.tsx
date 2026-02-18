@@ -1,15 +1,21 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Mail, Trash2, Edit2, Check, X, Search, UserPlus, RefreshCw } from "lucide-react"
+import { Mail, Trash2, Edit2, Check, X, Search, RefreshCw, User, CalendarDays } from "lucide-react"
+
+interface Subscriber {
+    name: string
+    email: string
+    subscribedAt: string
+    consentGiven: boolean
+}
 
 export default function NewsletterManager() {
-    const [subscribers, setSubscribers] = useState<string[]>([])
+    const [subscribers, setSubscribers] = useState<Subscriber[]>([])
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
     const [editingEmail, setEditingEmail] = useState<string | null>(null)
@@ -43,7 +49,7 @@ export default function NewsletterManager() {
                 body: JSON.stringify({ email }),
             })
             if (res.ok) {
-                setSubscribers((prev) => prev.filter((s) => s !== email))
+                setSubscribers((prev) => prev.filter((s) => s.email !== email))
             }
         } catch (error) {
             console.error("Error deleting subscriber:", error)
@@ -59,7 +65,9 @@ export default function NewsletterManager() {
                 body: JSON.stringify({ oldEmail, newEmail: editValue }),
             })
             if (res.ok) {
-                setSubscribers((prev) => prev.map((s) => (s === oldEmail ? editValue : s)))
+                setSubscribers((prev) =>
+                    prev.map((s) => (s.email === oldEmail ? { ...s, email: editValue } : s))
+                )
                 setEditingEmail(null)
             }
         } catch (error) {
@@ -67,7 +75,24 @@ export default function NewsletterManager() {
         }
     }
 
-    const filteredSubscribers = subscribers.filter((s) => s.toLowerCase().includes(searchTerm.toLowerCase()))
+    const formatDate = (dateStr: string): string => {
+        if (!dateStr) return "—"
+        try {
+            return new Date(dateStr).toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            })
+        } catch {
+            return "—"
+        }
+    }
+
+    const filteredSubscribers = subscribers.filter(
+        (s) =>
+            s.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            s.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
     return (
         <div className="space-y-6">
@@ -87,7 +112,7 @@ export default function NewsletterManager() {
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                         <Input
-                            placeholder="Rechercher un email..."
+                            placeholder="Rechercher par nom ou email..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="pl-10 bg-slate-900/50 border-slate-700 text-white"
@@ -99,28 +124,39 @@ export default function NewsletterManager() {
                         <Table>
                             <TableHeader className="bg-slate-900/50">
                                 <TableRow className="border-slate-700 hover:bg-transparent">
-                                    <TableHead className="text-slate-400">Email</TableHead>
+                                    <TableHead className="text-slate-400">
+                                        <User className="w-4 h-4 inline mr-1" /> Nom
+                                    </TableHead>
+                                    <TableHead className="text-slate-400">
+                                        <Mail className="w-4 h-4 inline mr-1" /> Email
+                                    </TableHead>
+                                    <TableHead className="text-slate-400">
+                                        <CalendarDays className="w-4 h-4 inline mr-1" /> Date
+                                    </TableHead>
                                     <TableHead className="text-right text-slate-400">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {loading ? (
                                     <TableRow>
-                                        <TableCell colSpan={2} className="text-center py-8 text-slate-500">
+                                        <TableCell colSpan={4} className="text-center py-8 text-slate-500">
                                             Chargement des abonnés...
                                         </TableCell>
                                     </TableRow>
                                 ) : filteredSubscribers.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={2} className="text-center py-8 text-slate-500">
+                                        <TableCell colSpan={4} className="text-center py-8 text-slate-500">
                                             Aucun abonné trouvé.
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    filteredSubscribers.map((email) => (
-                                        <TableRow key={email} className="border-slate-700 hover:bg-white/5">
+                                    filteredSubscribers.map((sub) => (
+                                        <TableRow key={sub.email} className="border-slate-700 hover:bg-white/5">
+                                            <TableCell className="text-slate-200">
+                                                {sub.name || <span className="text-slate-500 italic">Non renseigné</span>}
+                                            </TableCell>
                                             <TableCell className="font-medium text-slate-200">
-                                                {editingEmail === email ? (
+                                                {editingEmail === sub.email ? (
                                                     <Input
                                                         value={editValue}
                                                         onChange={(e) => setEditValue(e.target.value)}
@@ -130,19 +166,22 @@ export default function NewsletterManager() {
                                                 ) : (
                                                     <div className="flex items-center">
                                                         <Mail className="w-4 h-4 mr-3 text-slate-500" />
-                                                        {email}
+                                                        {sub.email}
                                                     </div>
                                                 )}
                                             </TableCell>
+                                            <TableCell className="text-slate-400 text-sm">
+                                                {formatDate(sub.subscribedAt)}
+                                            </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
-                                                    {editingEmail === email ? (
+                                                    {editingEmail === sub.email ? (
                                                         <>
                                                             <Button
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-green-400 hover:text-green-300 hover:bg-green-400/10 h-8 w-8 p-0"
-                                                                onClick={() => handleUpdate(email)}
+                                                                onClick={() => handleUpdate(sub.email)}
                                                             >
                                                                 <Check className="w-4 h-4" />
                                                             </Button>
@@ -162,8 +201,8 @@ export default function NewsletterManager() {
                                                                 variant="ghost"
                                                                 className="text-blue-400 hover:text-blue-300 hover:bg-blue-400/10 h-8 w-8 p-0"
                                                                 onClick={() => {
-                                                                    setEditingEmail(email)
-                                                                    setEditValue(email)
+                                                                    setEditingEmail(sub.email)
+                                                                    setEditValue(sub.email)
                                                                 }}
                                                             >
                                                                 <Edit2 className="w-4 h-4" />
@@ -172,7 +211,7 @@ export default function NewsletterManager() {
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-red-400 hover:text-red-300 hover:bg-red-400/10 h-8 w-8 p-0"
-                                                                onClick={() => handleDelete(email)}
+                                                                onClick={() => handleDelete(sub.email)}
                                                             >
                                                                 <Trash2 className="w-4 h-4" />
                                                             </Button>

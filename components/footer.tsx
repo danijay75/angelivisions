@@ -13,6 +13,8 @@ import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function Footer() {
   const [email, setEmail] = useState("")
+  const [newsletterName, setNewsletterName] = useState("")
+  const [newsletterConsent, setNewsletterConsent] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
   const lang = useLang()
   const { t } = useI18n()
@@ -27,13 +29,15 @@ export default function Footer() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, name: newsletterName, consent: newsletterConsent }),
       })
       if (res.ok) {
         setIsSubscribed(true)
         setTimeout(() => {
           setIsSubscribed(false)
           setEmail("")
+          setNewsletterName("")
+          setNewsletterConsent(false)
         }, 3000)
       } else {
         const data = await res.json()
@@ -162,21 +166,39 @@ export default function Footer() {
             transition={{ delay: 0.3, duration: 0.6 }}
           >
             <h3 className="text-white font-semibold text-lg mb-6">{t("footer.newsletterTitle")}</h3>
-            <form onSubmit={handleNewsletterSubmit} className="space-y-4">
-              <div>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+            <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+              <Input
+                type="text"
+                placeholder={t("footer.newsletterName")}
+                value={newsletterName}
+                onChange={(e) => setNewsletterName(e.target.value)}
+                required
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
+              />
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
+              />
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={newsletterConsent}
+                  onChange={(e) => setNewsletterConsent(e.target.checked)}
+                  className="mt-1 accent-blue-500 min-w-[16px]"
                   required
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
                 />
-              </div>
+                <span className="text-xs text-slate-400 leading-relaxed">
+                  {t("footer.newsletterConsent")}
+                </span>
+              </label>
               <Button
                 type="submit"
-                disabled={isSubscribed}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg"
+                disabled={isSubscribed || !newsletterConsent}
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg disabled:opacity-50"
               >
                 {isSubscribed ? t("footer.subscribed") : t("footer.subscribe")}
               </Button>

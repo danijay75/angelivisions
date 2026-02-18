@@ -63,7 +63,6 @@ export default function ServicesSection() {
 
   const clientTypes = [
     { title: t("services.clientTypes.entreprises.title"), desc: t("services.clientTypes.entreprises.desc") },
-    { title: t("services.clientTypes.mariages.title"), desc: t("services.clientTypes.mariages.desc") },
     { title: t("services.clientTypes.prive.title"), desc: t("services.clientTypes.prive.desc") },
     { title: t("services.clientTypes.spectacles.title"), desc: t("services.clientTypes.spectacles.desc") },
   ]

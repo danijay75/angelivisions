@@ -13,6 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Calendar, Users, MapPin, Music, Mic, Zap, Camera, Send, CheckCircle, Monitor } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import Turnstile from "@/components/ui/turnstile"
+import { captchaBypass } from "@/lib/public-config"
 
 export default function DevisForm() {
   const { t } = useI18n()
@@ -28,14 +30,15 @@ export default function DevisForm() {
     phone: "",
     company: "",
     description: "",
+    consent: false,
   })
 
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(captchaBypass ? "bypass" : null)
 
   const eventTypes = [
-    { id: "wedding", label: t("devis.eventTypes.wedding"), icon: "💒" },
     { id: "corporate", label: t("devis.eventTypes.corporate"), icon: "🏢" },
     { id: "private", label: t("devis.eventTypes.private"), icon: "🎉" },
     { id: "festival", label: t("devis.eventTypes.festival"), icon: "🎵" },
@@ -77,7 +80,7 @@ export default function DevisForm() {
       const res = await fetch("/api/devis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, captchaToken }),
       })
       const json = await res.json()
       if (!res.ok || !json.success) {
@@ -344,6 +347,32 @@ export default function DevisForm() {
                   />
                 </div>
 
+                {/* RGPD Consent */}
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.consent}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, consent: e.target.checked }))}
+                    className="mt-1 accent-purple-500 min-w-[16px]"
+                    required
+                  />
+                  <span className="text-sm text-white/70 leading-relaxed">
+                    {t("devis.consent")}
+                  </span>
+                </label>
+
+                {/* Turnstile Captcha */}
+                {!captchaBypass && (
+                  <div className="flex justify-center">
+                    <Turnstile
+                      onVerify={(token) => setCaptchaToken(token)}
+                      onExpire={() => setCaptchaToken(null)}
+                      onError={() => setCaptchaToken(null)}
+                      theme="dark"
+                    />
+                  </div>
+                )}
+
                 {/* Error */}
                 {error && (
                   <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded-lg text-center">
@@ -356,7 +385,7 @@ export default function DevisForm() {
                   <Button
                     type="submit"
                     size="lg"
-                    disabled={loading}
+                    disabled={loading || !formData.consent || !captchaToken}
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 rounded-full text-lg disabled:opacity-50"
                   >
                     <Send className="w-5 h-5 mr-2" />

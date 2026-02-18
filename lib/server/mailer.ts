@@ -2,7 +2,7 @@ import { Resend } from "resend"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivisions.com"
+const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivision.com"
 const FROM_NAME = process.env.FROM_NAME || "Angeli Visions"
 const REPLY_TO = process.env.REPLY_TO || FROM_EMAIL
 
@@ -23,7 +23,7 @@ export async function sendMail({ to, subject, html, replyTo }: SendMailOptions) 
   })
 
   if (error) {
-    console.error("[Mailer] Send error:", error)
+    console.error("[Mailer] Send error:", JSON.stringify(error))
     throw new Error(error.message || "Failed to send email")
   }
 

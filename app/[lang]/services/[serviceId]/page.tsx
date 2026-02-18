@@ -57,7 +57,7 @@ async function getServices(): Promise<ServiceItem[]> {
       id: "organization",
       title: "Organisation d'Événements",
       description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-      features: ["Mariages clé-en-main", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
+      features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
       color: "from-cyan-500 to-teal-500",
       image: "/event-organization.jpg",
     },
@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                       de l'animation pour créer des moments inoubliables.
                     </p>
                     <p>
-                      Nous adaptons nos services à tous types d'événements : mariages, événements d'entreprise, soirées
+                      Nous adaptons nos services à tous types d'événements : galas, événements d'entreprise, soirées
                       privées, conventions et séminaires.
                     </p>
                   </>

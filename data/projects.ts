@@ -15,7 +15,6 @@ export type Project = {
 }
 
 export const categories = [
-  { id: "wedding", label: "Mariages", color: "from-pink-500 to-rose-500" },
   { id: "corporate", label: "Entreprise", color: "from-blue-500 to-cyan-500" },
   { id: "production", label: "Production Musicale", color: "from-purple-500 to-pink-500" },
   { id: "mapping", label: "Vidéo Mapping", color: "from-indigo-500 to-purple-500" },
@@ -23,29 +22,7 @@ export const categories = [
 ]
 
 export const projects: Project[] = [
-  {
-    id: 1,
-    title: "Mariage Château de Versailles",
-    slug: "mariage-chateau-versailles",
-    category: "wedding",
-    image: "/placeholder.svg?height=400&width=600",
-    gallery: [
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-      "/placeholder.svg?height=600&width=800",
-    ],
-    description: "Organisation complète d'un mariage de 200 invités avec production musicale sur-mesure",
-    fullDescription:
-      "Un mariage d'exception dans le cadre prestigieux du Château de Versailles. Ambiance musicale sur-mesure, éclairage scénique et coordination complète.",
-    services: ["Organisation complète", "Production musicale", "Éclairage scénique", "DJ & Musiciens"], // remplacé "DJ & Animation" par "DJ & Musiciens"
-    client: "Sophie & Alexandre",
-    date: "Juin 2024",
-    guests: "200 invités",
-    location: "Château de Versailles",
-  },
+
   {
     id: 2,
     title: "Convention Technologique",
@@ -138,7 +115,7 @@ export const projects: Project[] = [
     id: 6,
     title: "Bar-Mitzvah Moderne",
     slug: "bar-mitzvah-moderne",
-    category: "wedding",
+    category: "corporate",
     image: "/placeholder.svg?height=400&width=600",
     gallery: [
       "/placeholder.svg?height=600&width=800",

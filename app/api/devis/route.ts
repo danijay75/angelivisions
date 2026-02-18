@@ -3,26 +3,27 @@ import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 
 interface DevisPayload {
-    eventType: string
-    services: string[]
-    eventDate: string
-    guestCount: string
-    budget: string
-    location: string
-    name: string
-    email: string
-    phone: string
-    company: string
-    description: string
-    captchaToken?: string
+  eventType: string
+  services: string[]
+  eventDate: string
+  guestCount: string
+  budget: string
+  location: string
+  name: string
+  email: string
+  phone: string
+  company: string
+  description: string
+  consent?: boolean
+  captchaToken?: string
 }
 
 function buildHtmlEmail(data: DevisPayload): string {
-    const servicesList = data.services.length
-        ? data.services.map((s) => `<li>${s}</li>`).join("")
-        : "<li>Non spécifié</li>"
+  const servicesList = data.services.length
+    ? data.services.map((s) => `<li>${s}</li>`).join("")
+    : "<li>Non spécifié</li>"
 
-    return `
+  return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #7c3aed, #ec4899); padding: 24px; border-radius: 12px 12px 0 0;">
         <h1 style="color: white; margin: 0; font-size: 24px;">📋 Nouvelle Demande de Devis</h1>
@@ -59,7 +60,7 @@ function buildHtmlEmail(data: DevisPayload): string {
 }
 
 function buildConfirmationEmail(name: string): string {
-    return `
+  return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: linear-gradient(135deg, #7c3aed, #ec4899); padding: 24px; border-radius: 12px 12px 0 0;">
         <h1 style="color: white; margin: 0; font-size: 24px;">✨ Merci pour votre demande !</h1>
@@ -80,47 +81,53 @@ function buildConfirmationEmail(name: string): string {
 }
 
 export async function POST(req: NextRequest) {
-    try {
-        const data: DevisPayload = await req.json()
+  try {
+    const data: DevisPayload = await req.json()
 
-        if (!data.name || !data.email) {
-            return NextResponse.json(
-                { success: false, message: "Nom et email requis." },
-                { status: 400 }
-            )
-        }
-
-        const captchaOk = await verifyCaptcha(data.captchaToken || "")
-        if (!captchaOk) {
-            return NextResponse.json(
-                { success: false, message: "Captcha invalide." },
-                { status: 400 }
-            )
-        }
-
-        const adminEmail = process.env.ADMIN_EMAIL || "contact@angelivisions.com"
-
-        // Send notification to admin
-        await sendMail({
-            to: adminEmail,
-            subject: `🎪 Nouveau devis — ${data.name} (${data.eventType || "Événement"})`,
-            html: buildHtmlEmail(data),
-            replyTo: data.email,
-        })
-
-        // Send confirmation to client
-        await sendMail({
-            to: data.email,
-            subject: "Votre demande de devis — Angeli Visions",
-            html: buildConfirmationEmail(data.name),
-        })
-
-        return NextResponse.json({ success: true })
-    } catch (error) {
-        console.error("[Devis API] Error:", error)
-        return NextResponse.json(
-            { success: false, message: "Erreur lors de l'envoi." },
-            { status: 500 }
-        )
+    if (!data.name || !data.email) {
+      return NextResponse.json(
+        { success: false, message: "Nom et email requis." },
+        { status: 400 }
+      )
     }
+
+    if (!data.consent) {
+      return NextResponse.json(
+        { success: false, message: "Le consentement RGPD est requis." },
+        { status: 400 }
+      )
+    }
+    const captchaOk = await verifyCaptcha(data.captchaToken || "")
+    if (!captchaOk) {
+      return NextResponse.json(
+        { success: false, message: "Captcha invalide." },
+        { status: 400 }
+      )
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL || "contact@angelivisions.com"
+
+    // Send notification to admin
+    await sendMail({
+      to: adminEmail,
+      subject: `🎪 Nouveau devis — ${data.name} (${data.eventType || "Événement"})`,
+      html: buildHtmlEmail(data),
+      replyTo: data.email,
+    })
+
+    // Send confirmation to client
+    await sendMail({
+      to: data.email,
+      subject: "Votre demande de devis — Angeli Visions",
+      html: buildConfirmationEmail(data.name),
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error("[Devis API] Error:", error)
+    return NextResponse.json(
+      { success: false, message: "Erreur lors de l'envoi." },
+      { status: 500 }
+    )
+  }
 }

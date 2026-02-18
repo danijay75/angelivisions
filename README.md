@@ -1,4 +1,4 @@
-# Angeli Visions - Organisateur d'événements & Maison de disque WEB3
+# Angeli Visions - Organisateur d'événements & Maison de disque
 
 Site web officiel d'Angeli Visions.
 

@@ -90,11 +90,13 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
-            <img
-              src="/images/angeli-visions-logo-white.png"
-              alt="Angeli Visions"
-              className="h-20 w-auto object-contain"
-            />
+            <Link href="/fr" title="Angeli Visions – Accueil" aria-label="Retour à l'accueil">
+              <img
+                src="/images/angeli-visions-logo-white.png"
+                alt="Angeli Visions"
+                className="h-20 w-auto object-contain"
+              />
+            </Link>
           </motion.div>
 
           {/* Desktop Menu */}

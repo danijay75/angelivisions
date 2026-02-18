@@ -182,7 +182,7 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
                         value={formData.label}
                         onChange={(e) => updateFormData("label", e.target.value)}
                         className="bg-white/10 border-white/20 text-white"
-                        placeholder="ex: Mariages"
+                        placeholder="ex: Spectacles"
                       />
                     </div>
                     <div>
@@ -191,7 +191,7 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
                         value={formData.id}
                         onChange={(e) => updateFormData("id", e.target.value)}
                         className="bg-white/10 border-white/20 text-white"
-                        placeholder="ex: mariages"
+                        placeholder="ex: spectacles"
                       />
                     </div>
                   </div>
@@ -214,11 +214,10 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
                           key={color.id}
                           type="button"
                           onClick={() => updateFormData("color", color.value)}
-                          className={`relative p-3 rounded-lg border-2 transition-all ${
-                            formData.color === color.value
+                          className={`relative p-3 rounded-lg border-2 transition-all ${formData.color === color.value
                               ? "border-white scale-105"
                               : "border-white/20 hover:border-white/50"
-                          }`}
+                            }`}
                         >
                           <div className={`w-full h-8 rounded bg-gradient-to-r ${color.value}`} />
                           <p className="text-white text-xs mt-1">{color.label}</p>

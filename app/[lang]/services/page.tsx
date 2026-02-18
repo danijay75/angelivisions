@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -6,12 +5,6 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, Music, Calendar, Users, Mic, Monitor, Camera } from "lucide-react"
 import type { ServiceItem } from "@/data/services"
-
-export const metadata: Metadata = {
-  title: "Nos Services - Angeli Visions",
-  description:
-    "Découvrez tous nos services : production musicale, organisation d'événements, booking DJ, prestations techniques et plus encore.",
-}
 
 const serviceIcons = {
   production: Music,
@@ -57,7 +50,7 @@ async function getServices(): Promise<ServiceItem[]> {
       id: "organization",
       title: "Organisation d'Événements",
       description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-      features: ["Mariages clé-en-main", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
+      features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
       color: "from-cyan-500 to-teal-500",
       image: "/event-organization.jpg",
     },

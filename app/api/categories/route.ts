@@ -24,13 +24,6 @@ export interface Category {
 // Catégories par défaut
 const defaultCategories: Category[] = [
   {
-    id: "wedding",
-    label: "Mariages",
-    description: "Cérémonies et réceptions",
-    color: "from-pink-500 to-rose-500",
-    projectCount: 0,
-  },
-  {
     id: "corporate",
     label: "Entreprise",
     description: "Événements d'entreprise",
