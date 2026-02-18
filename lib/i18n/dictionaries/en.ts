@@ -331,5 +331,40 @@ const en = {
     dateLocale: "en-US",
   },
 
+  legalPages: {
+    mentionsLegales: { title: "Legal Notice" },
+    privacyPolicy: { title: "Privacy Policy" },
+    cookiePolicy: { title: "Cookie Policy" },
+  },
+  cookieConsent: {
+    manage: "Manage preferences",
+    banner: {
+      title: "We respect your privacy",
+      description: "We use cookies to improve your experience, analyze traffic, and personalize content.",
+      accept: "Accept all",
+      reject: "Reject all",
+      customize: "Customize",
+    },
+    modal: {
+      title: "Cookie Preferences",
+      description: "Manage your consent preferences for cookies used on this site.",
+      essential: {
+        title: "Essential",
+        desc: "These cookies are necessary for the website to function properly.",
+      },
+      analytics: {
+        title: "Analytics",
+        desc: "Help us understand how you use the site.",
+      },
+      marketing: {
+        title: "Marketing",
+        desc: "Allow us to offer content tailored to your interests.",
+      },
+    },
+  },
+  common: {
+    save: "Save",
+    cancel: "Cancel",
+  },
 }
 export default en

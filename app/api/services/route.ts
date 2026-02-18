@@ -23,7 +23,7 @@ const fallbackServices: ServiceItem[] = [
     id: "organization",
     title: "Organisation d'Événements",
     description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-    features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
+    features: ["Mariages clé-en-main", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
     color: "from-cyan-500 to-teal-500",
     image: "/event-organization.jpg",
   },

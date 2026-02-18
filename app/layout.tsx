@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 
 export const metadata: Metadata = {
@@ -69,7 +70,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning>
-      <body className="min-h-screen bg-slate-950 antialiased">{children}</body>
+      <body className="min-h-screen bg-slate-950 antialiased">
+
+        {children}
+      </body>
     </html>
   )
 }

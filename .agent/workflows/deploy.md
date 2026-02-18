@@ -10,9 +10,9 @@ This workflow deploys the Angeli Visions website to the OVH VPS (Ubuntu) via SSH
 
 - SSH access configured to `ubuntu@91.134.143.82`
 - The VPS has Node.js 22, PM2, Nginx, and Git installed
-- The project is cloned at `/home/ubuntu/angelivisions` on the VPS
+- The project is cloned at `/var/www/angelivisions` on the VPS
 - The `.env.local` file is configured on the VPS
-- The `deploy.sh` script exists at `/home/ubuntu/angelivisions/deploy.sh`
+- The `deploy.sh` script exists at `/var/www/angelivisions/deploy.sh`
 
 ## Deployment Steps
 
@@ -33,7 +33,7 @@ git push origin main
 Run the deploy script on the VPS via SSH (single command, no interactive session needed):
 
 ```powershell
-ssh ubuntu@91.134.143.82 "cd /home/ubuntu/angelivisions && bash deploy.sh"
+ssh ubuntu@91.134.143.82 "cd /var/www/angelivisions && bash deploy.sh"
 ```
 
 This command will:
@@ -48,7 +48,7 @@ This command will:
 Check that the site is running correctly:
 
 ```powershell
-ssh ubuntu@91.134.143.82 "pm2 status && curl -s -o /dev/null -w '%{http_code}' http://localhost:3000"
+ssh ubuntu@91.134.143.82 "cd /var/www/angelivisions && pm2 status && curl -s -o /dev/null -w '%{http_code}' http://localhost:3000"
 ```
 
 Expected output:
@@ -69,7 +69,7 @@ ssh ubuntu@91.134.143.82 "sudo systemctl status nginx --no-pager -l"
 ### Build fails on VPS
 If the build fails, check the logs:
 ```powershell
-ssh ubuntu@91.134.143.82 "cd /home/ubuntu/angelivisions && cat .next/trace 2>/dev/null | tail -50"
+ssh ubuntu@91.134.143.82 "cd /var/www/angelivisions && cat .next/trace 2>/dev/null | tail -50"
 ```
 
 ### PM2 process crashes
@@ -81,7 +81,7 @@ ssh ubuntu@91.134.143.82 "pm2 logs angelivisions --lines 50 --nostream"
 ### Restart from scratch
 If everything is broken:
 ```powershell
-ssh ubuntu@91.134.143.82 "cd /home/ubuntu/angelivisions && pm2 delete angelivisions && npm install --legacy-peer-deps && npm run build && pm2 start npm --name angelivisions -- start && pm2 save"
+ssh ubuntu@91.134.143.82 "cd /var/www/angelivisions && pm2 delete angelivisions && npm install --legacy-peer-deps && npm run build && pm2 start npm --name angelivisions -- start && pm2 save"
 ```
 
 ## VPS Connection Info
@@ -90,6 +90,6 @@ ssh ubuntu@91.134.143.82 "cd /home/ubuntu/angelivisions && pm2 delete angelivisi
 |-------------|------------------------|
 | IP          | `91.134.143.82`        |
 | User        | `ubuntu`               |
-| Project dir | `/home/ubuntu/angelivisions` |
+| Project dir | `/var/www/angelivisions` |
 | PM2 name    | `angelivisions`        |
 | Node.js     | v22 LTS                |
