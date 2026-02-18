@@ -6,7 +6,7 @@ echo "🚀 Démarrage du déploiement..."
 # Mise à jour du code depuis GitHub
 echo "📥 Récupération des dernières modifications..."
 git fetch origin main
-git reset --hard origin main
+git reset --hard origin/main
 
 # Installation des dépendances
 echo "📦 Installation des dépendances..."
