@@ -136,8 +136,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2">
-            <Card className="bg-slate-800/50 border-slate-700 mb-8">
+          <div className="lg:col-span-2 space-y-8">
+            <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
                 <CardTitle className="text-white text-2xl">Ce que nous proposons</CardTitle>
               </CardHeader>
@@ -153,7 +153,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
               </CardContent>
             </Card>
 
-            {/* Service Details based on service type */}
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
                 <CardTitle className="text-white text-2xl">Détails du service</CardTitle>
@@ -161,95 +160,44 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <CardContent className="text-slate-300 space-y-4">
                 {service.id === "production" && (
                   <>
-                    <p>
-                      Notre équipe de producteurs expérimentés vous accompagne dans la création de compositions
-                      musicales originales, adaptées à vos besoins spécifiques.
-                    </p>
-                    <p>
-                      Que ce soit pour des jingles d'entreprise, des musiques d'ambiance pour vos événements ou des
-                      arrangements personnalisés, nous mettons notre expertise au service de votre projet.
-                    </p>
-                    <p>
-                      Nous travaillons avec des équipements de pointe et des logiciels professionnels pour garantir une
-                      qualité sonore exceptionnelle.
-                    </p>
+                    <p>Notre équipe de producteurs expérimentés vous accompagne dans la création de compositions musicales originales, adaptées à vos besoins spécifiques.</p>
+                    <p>Que ce soit pour des jingles d'entreprise, des musiques d'ambiance pour vos événements ou des arrangements personnalisés, nous mettons notre expertise au service de votre projet.</p>
+                    <p>Nous travaillons avec des équipements de pointe et des logiciels professionnels pour garantir une qualité sonore exceptionnelle.</p>
                   </>
                 )}
                 {service.id === "organization" && (
                   <>
-                    <p>
-                      Fort de notre expérience dans l'organisation d'événements, nous prenons en charge tous les aspects
-                      de votre projet, de la conception à la réalisation.
-                    </p>
-                    <p>
-                      Notre équipe s'occupe de la logistique, de la recherche de lieux, du traiteur, de la décoration et
-                      de l'animation pour créer des moments inoubliables.
-                    </p>
-                    <p>
-                      Nous adaptons nos services à tous types d'événements : galas, événements d'entreprise, soirées
-                      privées, conventions et séminaires.
-                    </p>
+                    <p>Fort de notre expérience dans l'organisation d'événements, nous prenons en charge tous les aspects de votre projet, de la conception à la réalisation.</p>
+                    <p>Notre équipe s'occupe de la logistique, de la recherche de lieux, du traiteur, de la décoration et de l'animation pour créer des moments inoubliables.</p>
+                    <p>Nous adaptons nos services à tous types d'événements : galas, événements d'entreprise, soirées privées, conventions et séminaires.</p>
                   </>
                 )}
                 {service.id === "booking" && (
                   <>
-                    <p>
-                      Nos DJs professionnels et nos artistes VJ créent des performances audiovisuelles uniques pour vos
-                      événements.
-                    </p>
-                    <p>
-                      Nous proposons des sets personnalisés, des animations interactives et des performances live qui
-                      s'adaptent à l'ambiance de votre événement.
-                    </p>
-                    <p>
-                      Possibilité de streaming en direct pour étendre la portée de votre événement au-delà du lieu
-                      physique.
-                    </p>
+                    <p>Nos DJs professionnels et nos artistes VJ créent des performances audiovisuelles uniques pour vos événements.</p>
+                    <p>Nous proposons des sets personnalisés, des animations interactives et des performances live qui s'adaptent à l'ambiance de votre événement.</p>
+                    <p>Possibilité de streaming en direct pour étendre la portée de votre événement au-delà du lieu physique.</p>
                   </>
                 )}
                 {service.id === "technical" && (
                   <>
-                    <p>
-                      Notre équipe technique expérimentée met à votre disposition un matériel de pointe pour la
-                      sonorisation, l'éclairage et la vidéo.
-                    </p>
-                    <p>
-                      Nous concevons des installations techniques sur-mesure adaptées à vos besoins et à la
-                      configuration de votre lieu.
-                    </p>
-                    <p>
-                      De la simple sonorisation aux installations complexes de vidéo mapping, nous maîtrisons toutes les
-                      technologies audiovisuelles.
-                    </p>
+                    <p>Notre équipe technique expérimentée met à votre disposition un matériel de pointe pour la sonorisation, l'éclairage et la vidéo.</p>
+                    <p>Nous concevons des installations techniques sur-mesure adaptées à vos besoins et à la configuration de votre lieu.</p>
+                    <p>De la simple sonorisation aux installations complexes de vidéo mapping, nous maîtrisons toutes les technologies audiovisuelles.</p>
                   </>
                 )}
                 {service.id === "led-walls" && (
                   <>
-                    <p>
-                      Nos murs de LED haute définition transforment vos événements en expériences visuelles
-                      spectaculaires.
-                    </p>
-                    <p>
-                      Nous proposons des écrans de différentes tailles et résolutions, avec des contenus personnalisés
-                      adaptés à votre événement.
-                    </p>
-                    <p>
-                      Installation professionnelle et support technique complet pour garantir un rendu visuel parfait.
-                    </p>
+                    <p>Nos murs de LED haute définition transforment vos événements en expériences visuelles spectaculaires.</p>
+                    <p>Nous proposons des écrans de différentes tailles et résolutions, avec des contenus personnalisés adaptés à votre événement.</p>
+                    <p>Installation professionnelle et support technique complet pour garantir un rendu visuel parfait.</p>
                   </>
                 )}
                 {service.id === "media" && (
                   <>
-                    <p>
-                      Nos équipes de captation multicaméras immortalisent vos événements avec un rendu professionnel.
-                    </p>
-                    <p>
-                      Nous réalisons également des émissions TV et des podcasts, de la prise de vue à la
-                      post-production.
-                    </p>
-                    <p>
-                      Nos services incluent le montage, l'étalonnage et la livraison dans les formats de votre choix.
-                    </p>
+                    <p>Nos équipes de captation multicaméras immortalisent vos événements avec un rendu professionnel.</p>
+                    <p>Nous réalisons également des émissions TV et des podcasts, de la prise de vue à la post-production.</p>
+                    <p>Nos services incluent le montage, l'étalonnage et la livraison dans les formats de votre choix.</p>
                   </>
                 )}
               </CardContent>
@@ -257,69 +205,36 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Contact Card */}
-            <Card className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border-blue-500/20">
-              <CardHeader>
-                <CardTitle className="text-white">Intéressé par ce service ?</CardTitle>
-                <CardDescription className="text-slate-300">
-                  Contactez-nous pour discuter de votre projet
-                </CardDescription>
+          <div className="space-y-6 lg:sticky lg:top-24 h-fit">
+            <Card className="bg-gradient-to-br from-blue-600/25 via-cyan-600/20 to-blue-600/10 border-blue-500/30 shadow-xl shadow-blue-500/10 overflow-hidden">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-white text-2xl">Vous avez un projet ?</CardTitle>
+                <div className="text-sm text-slate-300">Contactez-nous pour discuter de votre projet</div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <Link href={`/${resolvedParams.lang}/devis`}>
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
-                    Demander un devis
+              <CardContent className="space-y-6">
+                <Link href={`/${resolvedParams.lang}/devis`} className="block">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] font-bold">
+                    Parlons-en !
                   </Button>
                 </Link>
-                <div className="space-y-3">
-                  <div className="flex items-center text-slate-300">
-                    <Phone className="w-4 h-4 mr-3 text-blue-400" />
-                    <a href="tel:+33663796742" className="hover:text-white transition-colors">
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                  <div className="flex items-center text-slate-300 group">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 group-hover:bg-blue-500/20 transition-colors">
+                      <Phone className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <a href="tel:+33663796742" className="hover:text-white transition-colors font-medium">
                       +33 6 63 79 67 42
                     </a>
                   </div>
-                  <div className="flex items-center text-slate-300">
-                    <Mail className="w-4 h-4 mr-3 text-blue-400" />
-                    <a href="mailto:contact@angelivisions.com" className="hover:text-white transition-colors">
+                  <div className="flex items-center text-slate-300 group">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 group-hover:bg-blue-500/20 transition-colors">
+                      <Mail className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <a href="mailto:contact@angelivisions.com" className="hover:text-white transition-colors font-medium">
                       contact@angelivisions.com
                     </a>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Other Services */}
-            <Card className="bg-slate-800/50 border-slate-700">
-              <CardHeader>
-                <CardTitle className="text-white">Autres services</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {services
-                    .filter((s) => s.id !== service.id)
-                    .slice(0, 3)
-                    .map((otherService) => {
-                      const OtherIconComponent = serviceIcons[otherService.id as keyof typeof serviceIcons] || Music
-                      return (
-                        <Link key={otherService.id} href={`/${resolvedParams.lang}/services/${otherService.id}`}>
-                          <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700/50 transition-colors">
-                            <div
-                              className={`w-8 h-8 rounded bg-gradient-to-r ${otherService.color} flex items-center justify-center`}
-                            >
-                              <OtherIconComponent className="w-4 h-4 text-white" />
-                            </div>
-                            <span className="text-slate-300 hover:text-white text-sm">{otherService.title}</span>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                </div>
-                <Link href={`/${resolvedParams.lang}/services`}>
-                  <Button variant="ghost" className="w-full mt-4 text-slate-300 hover:text-white">
-                    Voir tous les services
-                  </Button>
-                </Link>
               </CardContent>
             </Card>
           </div>

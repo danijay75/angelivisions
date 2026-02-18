@@ -127,19 +127,16 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
           })}
         </div>
 
-        {/* CTA Section */}
         <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-2xl p-8 border border-blue-500/20">
-            <h2 className="text-3xl font-bold text-white mb-4">Prêt à démarrer votre projet ?</h2>
-            <p className="text-slate-300 mb-6">
-              Contactez-nous pour discuter de vos besoins et obtenir un devis personnalisé
-            </p>
+            <h2 className="text-3xl font-bold text-white mb-4">Vous avez un projet ?</h2>
+            <div className="text-sm text-slate-300 mb-6">Contactez-nous pour discuter de votre projet</div>
             <Link href={`/${resolvedParams.lang}/devis`}>
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 font-bold px-10"
               >
-                Demander un devis
+                Parlons-en !
               </Button>
             </Link>
           </div>

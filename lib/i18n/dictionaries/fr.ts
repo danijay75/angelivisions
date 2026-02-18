@@ -98,7 +98,7 @@ const fr = {
     description:
       "De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et du spectacle pour créer des expériences uniques et mémorables.",
     clientsTitle: "Nos Clients",
-    cta: "Demander un devis",
+    cta: "Parlons-en !",
     clientTypes: {
       entreprises: { title: "Entreprises", desc: "Séminaires, conventions, team building" },
       prive: { title: "Événements Privés", desc: "Anniversaires, bar-mitzvah, soirées" },
@@ -197,7 +197,7 @@ const fr = {
       title: "Prêt à créer votre événement sur-mesure ?",
       description: "Contactez-nous dès aujourd'hui pour une consultation gratuite et découvrez comment nous pouvons transformer votre vision en réalité.",
       consultation: "Consultation gratuite",
-      devis: "Devis express",
+      devis: "Parlons-en !",
     },
   },
   team: {
