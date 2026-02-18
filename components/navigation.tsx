@@ -30,7 +30,7 @@ export default function Navigation() {
 
   const items: MenuItem[] = useMemo(
     () => [
-      { href: "#accueil", label: t("nav.accueil") },
+      { href: `/${lang}`, label: t("nav.accueil") },
       { href: `/${lang}/services`, label: t("nav.services") }, // Changed services link from anchor to dedicated page
       { href: `/${lang}/realisations`, label: t("nav.realisations"), bold: true },
       { href: `/${lang}/eside-culture-blog`, label: t("nav.blog") },
@@ -90,7 +90,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
-            <Link href="/fr" title="Angeli Visions – Accueil" aria-label="Retour à l'accueil">
+            <Link href={`/${lang}`} title="Angeli Visions – Accueil" aria-label="Retour à l'accueil">
               <img
                 src="/images/angeli-visions-logo-white.png"
                 alt="Angeli Visions"
