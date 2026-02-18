@@ -9,7 +9,7 @@ git pull origin main
 
 # Installation des dépendances
 echo "📦 Installation des dépendances..."
-npm install --production=false
+npm install --production=false --legacy-peer-deps
 
 # Build du projet Next.js
 echo "🏗️ Build du projet..."
