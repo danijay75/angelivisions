@@ -3,7 +3,6 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone } from "lucide-react"
-import TeamSection from "@/components/team-section"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function ContactSection() {
@@ -98,8 +97,6 @@ export default function ContactSection() {
           </Card>
         </motion.div>
 
-        {/* Team */}
-        <TeamSection id="equipe" title={t("contact.teamTitle")} subtitle={t("contact.teamSubtitle")} />
       </div>
     </section>
   )
