@@ -153,7 +153,6 @@ export default function HeroSection() {
             {t("hero.description")}
           </motion.p>
 
-          {/* CTA: restored original single primary button style */}
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
             initial={{ opacity: 0, y: 30 }}
@@ -161,11 +160,14 @@ export default function HeroSection() {
             transition={{ delay: 0.7, duration: 0.8 }}
           >
             <Button
+              asChild
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25"
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25 pointer-events-auto"
             >
-              <Play className="w-5 h-5 mr-2" />
-              {t("hero.cta")}
+              <a href="#realisations">
+                <Play className="w-5 h-5 mr-2" />
+                {t("hero.cta")}
+              </a>
             </Button>
           </motion.div>
 

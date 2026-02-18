@@ -83,8 +83,8 @@ const en = {
     titlePart1: "Your Premier Partner",
     titlePart2: "for Cultural Events and Entertainment",
     description:
-      "DJ Booking • Music Production • Event Planning\nSound • Lighting • VJ / Video Mapping • Musical Animations\nTV Broadcasts",
-    cta: "Discover our creations",
+      "DJ Booking • Music Production • Event Planning\nSound • Lighting • VJ / Video Mapping • Musical Animations\nMulti-camera filming",
+    cta: "Discover our projects",
     highlight1Title: "Music Production",
     highlight1Desc: "Original compositions & custom jingles",
     highlight2Title: "Event Design & Planning",
@@ -131,7 +131,7 @@ const en = {
         features: ["Giant LED screens", "High-resolution display", "Custom installation", "Custom content"],
       },
       media: {
-        title: "Filming & Capture",
+        title: "Multi-camera filming",
         description: "Multi-camera filming, TV shows and podcast creation for your events",
         features: ["Multi-camera filming", "TV shows", "Podcast creation", "Video post-production"],
       },
@@ -226,7 +226,7 @@ const en = {
       technical: "Technical Services",
       ledWalls: "LED Walls",
       mapping: "VJ / Video Mapping",
-      media: "TV & Podcast Capture",
+      media: "Multi-camera filming & Podcast",
     },
     date: "Event Date",
     guests: "Number of Guests",
@@ -320,7 +320,7 @@ const en = {
       organization: "Event Organization",
       technical: "Technical Services",
       ledWalls: "LED Walls",
-      media: "Filming and Photography",
+      media: "Multi-camera filming",
     },
   },
   blog: {
