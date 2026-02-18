@@ -317,7 +317,7 @@ export default function AdminPage() {
       </div>
 
       {/* Layout */}
-      <div className={`container mx-auto px-4 py-6 ${canEdit ? "" : "pointer-events-none opacity-60 select-none"}`}>
+      <div className={`container mx-auto px-4 py-6`}>
         {/* Sections navigation */}
         <Card className="bg-white/5 border-white/10 mb-6">
           <CardHeader>
