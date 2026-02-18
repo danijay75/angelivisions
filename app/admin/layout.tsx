@@ -59,103 +59,23 @@ class AdminErrorBoundary extends React.Component<{ children: ReactNode }, { hasE
 function AdminTopbar() {
   const { user, logout } = useAuth()
   const router = useRouter()
-  const pathname = usePathname()
-  console.log("[DEBUG] AdminTopbar user:", user)
 
   async function handleLogout() {
-    console.log("[DEBUG] Logging out...")
     await logout()
     router.replace("/admin/login")
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-2 px-4">
-        <Link href="/admin" className="font-semibold whitespace-nowrap">
-          {"Admin"}
-        </Link>
-
-        <Separator orientation="vertical" className="mx-2 hidden h-6 sm:block" />
-
-        {/* Right controls */}
-        <div className="ml-auto flex items-center gap-2">
-          {/* Desktop: full buttons */}
-          <div className="hidden items-center gap-2 md:flex">
-            <Button variant="secondary" className="gap-2" asChild aria-label="Voir le site" title="Voir le site">
-              {/* Default to FR as langue par défaut */}
-              <Link href="/fr" target="_blank" rel="noreferrer">
-                <Globe className="h-4 w-4" />
-                <span className="whitespace-nowrap">{"Voir le site"}</span>
-                <ExternalLink className="ml-1 h-3.5 w-3.5 opacity-70" />
-              </Link>
-            </Button>
-
-            {/* Always visible to allow initial bootstrap access */}
-            <Button
-              variant={pathname?.startsWith("/admin/users") ? "default" : "secondary"}
-              className="gap-2"
-              aria-label="Gérer les utilisateurs"
-              asChild
-            >
-              <Link href="/admin/users">
-                <Users className="h-4 w-4" />
-                <span className="whitespace-nowrap">{"Utilisateurs"}</span>
-              </Link>
-            </Button>
-
-            {user?.role && (
-              <Badge variant="outline" className="uppercase">
-                {String(user.role)}
-              </Badge>
-            )}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogout}
-              aria-label="Se déconnecter"
-              title="Se déconnecter"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Mobile: collapsed menu */}
-          <div className="flex items-center md:hidden">
-            {user?.role && (
-              <Badge variant="outline" className="uppercase mr-1">
-                {String(user.role)}
-              </Badge>
-            )}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Ouvrir le menu admin">
-                  <MoreVertical className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuItem asChild>
-                  <Link href="/fr" target="_blank" rel="noreferrer" className="flex items-center gap-2">
-                    <Globe className="h-4 w-4" />
-                    <span>{"Voir le site"}</span>
-                    <ExternalLink className="ml-auto h-3.5 w-3.5 opacity-70" />
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/users" className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <span>{"Utilisateurs"}</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-700">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>{"Déconnexion"}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
+    <header className="sticky top-0 z-40 w-full border-b bg-white p-4 flex justify-between items-center h-14">
+      <div className="font-bold">ADMIN</div>
+      <div className="flex items-center gap-4 text-sm">
+        <span>{String(user?.email || "Connecté")}</span>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-2 py-1 rounded"
+        >
+          Sortir
+        </button>
       </div>
     </header>
   )
