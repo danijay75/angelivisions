@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Sparkles } from "lucide-react"
+import { Sparkles, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { defaultServices, type ServiceItem, SERVICES_STORAGE_KEY } from "@/data/services"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
@@ -105,38 +106,49 @@ export default function ServicesSection() {
                 transition={{ delay: index * 0.1, duration: 0.8 }}
                 whileHover={{ scale: 1.02, y: -5 }}
               >
-                <Card className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 h-full hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300">
-                  <CardHeader>
-                    <div
-                      className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 shadow-lg overflow-hidden`}
-                    >
-                      <img
-                        src={service.image || "/placeholder.svg"}
-                        alt={displayTitle}
-                        className="w-12 h-12 object-contain"
-                      />
+                <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
+                  <Card className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 h-full hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300 relative overflow-hidden">
+                    {/* Hover indicator overlay */}
+                    <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowRight className="w-5 h-5 text-blue-400" />
                     </div>
-                    <CardTitle className="text-white text-xl">{displayTitle}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-slate-300 mb-6">{displayDescription}</p>
-                    <div className="space-y-2">
-                      {(service.features || []).map((feature, idx) => {
-                        const translatedFeature = t(`services.items.${service.id}.features.${idx}`)
-                        const displayFeature =
-                          translatedFeature !== `services.items.${service.id}.features.${idx}`
-                            ? translatedFeature
-                            : feature
-                        return (
-                          <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-400">
-                            <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
-                            {displayFeature}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
+                    <CardHeader>
+                      <div
+                        className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 shadow-lg overflow-hidden group-hover:scale-110 transition-transform duration-500`}
+                      >
+                        <img
+                          src={service.image || "/placeholder.svg"}
+                          alt={displayTitle}
+                          className="w-12 h-12 object-contain"
+                        />
+                      </div>
+                      <CardTitle className="text-white text-xl group-hover:text-blue-400 transition-colors">
+                        {displayTitle}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-slate-300 mb-6 line-clamp-2">{displayDescription}</p>
+                      <div className="space-y-2">
+                        {(service.features || []).slice(0, 3).map((feature, idx) => {
+                          const translatedFeature = t(`services.items.${service.id}.features.${idx}`)
+                          const displayFeature =
+                            translatedFeature !== `services.items.${service.id}.features.${idx}`
+                              ? translatedFeature
+                              : feature
+                          return (
+                            <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-400 text-sm">
+                              <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
+                              {displayFeature}
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <div className="mt-8 pt-4 border-t border-white/5 flex items-center text-blue-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                        En savoir plus <ArrowRight className="w-4 h-4 ml-2" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             )
           })}
