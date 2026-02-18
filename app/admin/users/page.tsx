@@ -41,25 +41,25 @@ export default function UsersPage() {
   // Load users and detect bootstrap mode (no users yet)
   useEffect(() => {
     let cancelled = false
-    ;(async () => {
-      try {
-        setLoading(true)
-        const res = await fetch("/api/admin/users", { cache: "no-store" })
-        const data = (await res.json()) as UserRow[] | { error?: string }
-        if (!cancelled) {
-          if (Array.isArray(data)) {
-            setUsers(data)
-            setBootstrap(data.length === 0)
-          } else {
-            setBootstrap(false)
+      ; (async () => {
+        try {
+          setLoading(true)
+          const res = await fetch("/api/admin/users", { cache: "no-store" })
+          const data = (await res.json()) as UserRow[] | { error?: string }
+          if (!cancelled) {
+            if (Array.isArray(data)) {
+              setUsers(data)
+              setBootstrap(data.length === 0)
+            } else {
+              setBootstrap(false)
+            }
           }
+        } catch (e: any) {
+          toast({ variant: "destructive", title: "Erreur", description: e?.message || "Chargement impossible" })
+        } finally {
+          if (!cancelled) setLoading(false)
         }
-      } catch (e: any) {
-        toast({ variant: "destructive", title: "Erreur", description: e?.message || "Chargement impossible" })
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    })()
+      })()
     return () => {
       cancelled = true
     }
@@ -289,7 +289,7 @@ export default function UsersPage() {
                     <TableCell className="font-mono text-xs">{u.email}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className="uppercase">
-                        {u.role}
+                        {String(u.role || "")}
                       </Badge>
                     </TableCell>
                     <TableCell>{u.active ? "Oui" : "Non"}</TableCell>

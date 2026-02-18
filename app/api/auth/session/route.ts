@@ -8,11 +8,10 @@ export async function GET(req: Request) {
   // Adapter la réponse au format attendu par AuthProvider.refresh() => j.user
   const user = payload
     ? {
-        id: String(payload.sub),
-        email: String(payload.sub),
-        name: "Administrateur",
-        twoFactorEnabled: false,
-      }
+      email: String(payload.sub),
+      name: "Administrateur", // On pourrait le tirer du payload si présent
+      role: "admin", // On l'ajoute explicitement ici pour le client
+    }
     : null
 
   return NextResponse.json({

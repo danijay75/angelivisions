@@ -23,8 +23,9 @@ function AdminTopbar() {
   console.log("[DEBUG] AdminTopbar user:", user)
 
   async function handleLogout() {
+    console.log("[DEBUG] Logging out...")
     await logout()
-    router.push("/admin/login")
+    router.replace("/admin/login")
   }
 
   return (

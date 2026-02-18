@@ -138,8 +138,8 @@ export default function UsersManager() {
             <CardContent className="space-y-6">
                 {message && (
                     <div className={`p-3 rounded-lg border ${message.type === "success"
-                            ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-200"
-                            : "bg-red-500/20 border-red-500/50 text-red-200"
+                        ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-200"
+                        : "bg-red-500/20 border-red-500/50 text-red-200"
                         }`}>
                         {message.text}
                     </div>
@@ -250,7 +250,7 @@ export default function UsersManager() {
                                         </td>
                                         <td className="p-4">
                                             <Badge className={user.role === "admin" ? "bg-purple-600/80" : "bg-blue-600/80"}>
-                                                {user.role === "admin" ? "Admin" : "Éditeur"}
+                                                {String(user.role === "admin" ? "Admin" : "Éditeur")}
                                             </Badge>
                                         </td>
                                         <td className="p-4">
