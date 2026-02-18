@@ -12,7 +12,6 @@ interface TurnstileProps {
 
 declare global {
     interface Window {
-        onloadTurnstileCallback: () => void
         turnstile: {
             render: (
                 container: string | HTMLElement,
@@ -34,56 +33,54 @@ declare global {
 export default function Turnstile({ onVerify, onError, onExpire, theme = "dark" }: TurnstileProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const widgetIdRef = useRef<string | null>(null)
-    const [errorCount, setErrorCount] = useState(0)
+    const scriptLoadedRef = useRef(false)
 
     useEffect(() => {
-        // We use a unique callback name to avoid conflicts if multiple widgets are rendered
-        const callbackName = `onloadTurnstileCallback_${Math.random().toString(36).substring(7)}`
-
-            ; (window as any)[callbackName] = () => {
-                console.log(`Turnstile script loaded (cb: ${callbackName}), rendering widget...`)
-                if (containerRef.current && !widgetIdRef.current && window.turnstile) {
-                    try {
-                        console.log("Rendering Turnstile with key:", turnstileSiteKey.substring(0, 10) + "...")
-                        widgetIdRef.current = window.turnstile.render(containerRef.current, {
-                            sitekey: turnstileSiteKey,
-                            callback: (token) => {
-                                console.log("Turnstile verification success")
-                                onVerify(token)
-                            },
-                            "error-callback": (err) => {
-                                console.error("Turnstile widget error:", err)
-                                setErrorCount(prev => prev + 1)
-                                if (onError) onError(err)
-                            },
-                            "expired-callback": () => {
-                                console.warn("Turnstile token expired")
-                                if (onExpire) onExpire()
-                            },
-                            theme,
-                            size: "normal"
-                        })
-                    } catch (e) {
-                        console.error("Turnstile render exception:", e)
-                    }
+        const renderWidget = () => {
+            if (containerRef.current && !widgetIdRef.current && window.turnstile) {
+                try {
+                    widgetIdRef.current = window.turnstile.render(containerRef.current, {
+                        sitekey: turnstileSiteKey,
+                        callback: (token) => {
+                            onVerify(token)
+                        },
+                        "error-callback": (err) => {
+                            console.error("Turnstile error:", err)
+                            if (onError) onError(err)
+                        },
+                        "expired-callback": () => {
+                            if (onExpire) onExpire()
+                        },
+                        theme,
+                        size: "normal"
+                    })
+                } catch (e) {
+                    console.error("Turnstile render error:", e)
                 }
             }
+        }
 
-        // Load Turnstile script
-        const scriptId = "cloudflare-turnstile-script"
-        let script = document.getElementById(scriptId) as HTMLScriptElement
+        // Global callback for script load
+        const callbackName = "onloadTurnstileCallback"
+        if (!(window as any)[callbackName]) {
+            ; (window as any)[callbackName] = () => {
+                renderWidget()
+            }
+        }
 
-        if (!script) {
-            script = document.createElement("script")
-            script.id = scriptId
-            script.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?onload=${callbackName}&render=explicit`
-            script.async = true
-            script.defer = true
-            document.head.appendChild(script)
-        } else if (window.turnstile) {
-            // If script already exists, the global callback might not be called again by the script
-            // so we call it ourselves if the turnstile object is ready
-            ; (window as any)[callbackName]()
+        if (window.turnstile) {
+            renderWidget()
+        } else if (!scriptLoadedRef.current) {
+            const scriptId = "cloudflare-turnstile-script"
+            if (!document.getElementById(scriptId)) {
+                const script = document.createElement("script")
+                script.id = scriptId
+                script.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?onload=${callbackName}`
+                script.async = true
+                script.defer = true
+                document.head.appendChild(script)
+                scriptLoadedRef.current = true
+            }
         }
 
         return () => {
@@ -91,27 +88,16 @@ export default function Turnstile({ onVerify, onError, onExpire, theme = "dark" 
                 try {
                     window.turnstile.remove(widgetIdRef.current)
                 } catch (e) {
-                    console.warn("Error removing Turnstile widget:", e)
+                    // Ignore removal errors on unmount
                 }
                 widgetIdRef.current = null
             }
-            delete (window as any)[callbackName]
         }
     }, [onVerify, onError, onExpire, theme])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[65px] w-full py-2">
-            <div
-                ref={containerRef}
-                key={`turnstile-container-${errorCount}`} // Re-render container on error to try a fresh start
-            />
-            {errorCount > 0 && (
-                <div className="text-[10px] text-red-400 mt-2 text-center">
-                    <p>Erreur Turnstile ({errorCount})</p>
-                    <p className="opacity-70 break-all">Clé utilisée : {turnstileSiteKey}</p>
-                    <p className="mt-1">Vérifiez vos "Authorized Hostnames" sur Cloudflare.</p>
-                </div>
-            )}
+            <div ref={containerRef} />
             <p className="text-[10px] text-slate-500 mt-1">Défense par Cloudflare Turnstile</p>
         </div>
     )
