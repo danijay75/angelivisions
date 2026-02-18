@@ -277,12 +277,12 @@ export default function ServicesManager() {
               onDrop={(e) => handleDrop(e, idx)}
               onDragEnd={handleDragEnd}
               className={`flex items-center gap-3 p-3 border rounded-lg transition-all cursor-move ${draggedIndex === idx
-                  ? "bg-white/20 border-white/30 opacity-50"
-                  : dragOverIndex === idx
-                    ? "bg-white/15 border-white/40 scale-105"
-                    : editIndex === idx
-                      ? "bg-white/15 border-white/30"
-                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                ? "bg-white/20 border-white/30 opacity-50"
+                : dragOverIndex === idx
+                  ? "bg-white/15 border-white/40 scale-105"
+                  : editIndex === idx
+                    ? "bg-white/15 border-white/30"
+                    : "bg-white/5 border-white/10 hover:bg-white/10"
                 }`}
             >
               <div className="flex-shrink-0 text-white/40 hover:text-white/60 cursor-grab active:cursor-grabbing">
@@ -298,11 +298,11 @@ export default function ServicesManager() {
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <Badge className={`bg-gradient-to-r ${s.color} text-white`}>{s.title}</Badge>
+                    <Badge className={`bg-gradient-to-r ${String(s.color || "")} text-white`}>{String(s.title || "")}</Badge>
                     <span className="text-white/40 text-xs">#{idx + 1}</span>
                     {editIndex === idx && <Badge className="bg-blue-600 text-white text-xs">En cours d'édition</Badge>}
                   </div>
-                  <p className="text-white/60 text-sm line-clamp-1">{s.description || "—"}</p>
+                  <p className="text-white/60 text-sm line-clamp-1">{String(s.description || "") || "—"}</p>
                 </div>
               </div>
 
@@ -357,7 +357,7 @@ export default function ServicesManager() {
             <CardTitle className="text-white">
               Édition
               {editIndex !== null && (
-                <span className="text-white/60 text-base font-normal ml-2">- {services[editIndex]?.title}</span>
+                <span className="text-white/60 text-base font-normal ml-2">- {String(services[editIndex]?.title || "")}</span>
               )}
             </CardTitle>
           </CardHeader>
@@ -406,8 +406,8 @@ export default function ServicesManager() {
                         type="button"
                         onClick={() => updateField(editIndex, "color", c.value)}
                         className={`relative p-3 rounded-lg border-2 transition-all ${services[editIndex].color === c.value
-                            ? "border-white scale-105"
-                            : "border-white/20 hover:border-white/50"
+                          ? "border-white scale-105"
+                          : "border-white/20 hover:border-white/50"
                           }`}
                       >
                         <div className={`w-full h-8 rounded bg-gradient-to-r ${c.value}`} />

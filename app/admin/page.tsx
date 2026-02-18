@@ -758,25 +758,25 @@ export default function AdminPage() {
                           </Badge>
                         </div>
                         <div className="absolute bottom-4 left-4 right-4">
-                          <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
-                          <p className="text-white/80 text-sm">{project.client}</p>
-                          <p className="text-white/60 text-xs">/{project.slug}</p>
+                          <h3 className="text-white font-bold text-lg mb-1">{String(project.title || "")}</h3>
+                          <p className="text-white/80 text-sm">{String(project.client || "")}</p>
+                          <p className="text-white/60 text-xs">/{String(project.slug || "")}</p>
                         </div>
                       </div>
                       <CardContent className="p-6">
-                        <p className="text-white/80 mb-4 line-clamp-2">{project.description}</p>
+                        <p className="text-white/80 mb-4 line-clamp-2">{String(project.description || "")}</p>
                         <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                           <div className="flex items-center text-white/70">
                             <Calendar className="w-4 h-4 mr-2" />
-                            {project.date}
+                            {String(project.date || "")}
                           </div>
                           <div className="flex items-center text-white/70">
-                            <Users className="w-4 h-4 mr-2" />
-                            {project.guests}
+                            <UsersIcon className="w-4 h-4 mr-2" />
+                            {String(project.guests || "")}
                           </div>
                           <div className="flex items-center text-white/70 col-span-2">
                             <MapPin className="w-4 h-4 mr-2" />
-                            {project.location}
+                            {String(project.location || "")}
                           </div>
                         </div>
                         <div className="flex gap-2">
