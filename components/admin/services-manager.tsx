@@ -54,8 +54,25 @@ export default function ServicesManager() {
       if (response.ok) {
         const data = await response.json()
         if (data.services && Array.isArray(data.services)) {
-          setServices(data.services)
-          console.log("[v0] Loaded services from API:", data.services.length, "services")
+          // Sanitize data to avoid React crash if API returns objects/mixed types
+          try {
+            const validServices = data.services.map((s: any) => ({
+              id: typeof s.id === "string" ? s.id : String(s.id || Math.random()),
+              title: typeof s.title === "string" ? s.title : "Service sans titre (erreur donnée)",
+              description: typeof s.description === "string" ? s.description : "",
+              features: Array.isArray(s.features)
+                ? s.features.filter((f: any) => typeof f === "string")
+                : [],
+              color: typeof s.color === "string" ? s.color : "from-gray-500 to-gray-500",
+              image: typeof s.image === "string" ? s.image : undefined,
+            }))
+            setServices(validServices)
+            console.log("[v0] Loaded services from API:", validServices.length, "services")
+          } catch (e) {
+            console.error("[v0] Error sanitizing services:", e)
+            // Fallback to empty or defaults if sanitization fails drastically
+            setServices(defaultServices)
+          }
         }
       } else {
         console.log("[v0] Failed to load services from API, using defaults")
@@ -124,7 +141,7 @@ export default function ServicesManager() {
   const updateField = (idx: number, field: keyof ServiceItem, value: any) => {
     setServices((prev) => {
       const copy = [...prev]
-      ;(copy[idx] as any)[field] = value
+        ; (copy[idx] as any)[field] = value
       if (field === "title") {
         copy[idx].id = genId(String(value || "service"))
       }
@@ -259,15 +276,14 @@ export default function ServicesManager() {
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, idx)}
               onDragEnd={handleDragEnd}
-              className={`flex items-center gap-3 p-3 border rounded-lg transition-all cursor-move ${
-                draggedIndex === idx
+              className={`flex items-center gap-3 p-3 border rounded-lg transition-all cursor-move ${draggedIndex === idx
                   ? "bg-white/20 border-white/30 opacity-50"
                   : dragOverIndex === idx
                     ? "bg-white/15 border-white/40 scale-105"
                     : editIndex === idx
                       ? "bg-white/15 border-white/30"
                       : "bg-white/5 border-white/10 hover:bg-white/10"
-              }`}
+                }`}
             >
               <div className="flex-shrink-0 text-white/40 hover:text-white/60 cursor-grab active:cursor-grabbing">
                 <GripVertical className="w-5 h-5" />
@@ -293,9 +309,8 @@ export default function ServicesManager() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 <Button
                   size="sm"
-                  className={`min-w-[44px] min-h-[44px] md:min-w-auto md:min-h-auto ${
-                    editIndex === idx ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"
-                  }`}
+                  className={`min-w-[44px] min-h-[44px] md:min-w-auto md:min-h-auto ${editIndex === idx ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"
+                    }`}
                   onClick={() => (editIndex === idx ? cancelEdit() : startEdit(idx))}
                 >
                   {editIndex === idx ? "Fermer" : "Modifier"}
@@ -390,11 +405,10 @@ export default function ServicesManager() {
                         key={c.id}
                         type="button"
                         onClick={() => updateField(editIndex, "color", c.value)}
-                        className={`relative p-3 rounded-lg border-2 transition-all ${
-                          services[editIndex].color === c.value
+                        className={`relative p-3 rounded-lg border-2 transition-all ${services[editIndex].color === c.value
                             ? "border-white scale-105"
                             : "border-white/20 hover:border-white/50"
-                        }`}
+                          }`}
                       >
                         <div className={`w-full h-8 rounded bg-gradient-to-r ${c.value}`} />
                         <p className="text-white text-xs mt-1">{c.label}</p>

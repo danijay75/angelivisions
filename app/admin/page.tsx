@@ -119,14 +119,57 @@ export default function AdminPage() {
 
       if (projectsRes.ok) {
         const projectsData = await projectsRes.json()
-        setProjects(projectsData.projects || [])
-        console.log("Loaded projects:", projectsData.projects?.length || 0)
+        if (projectsData.projects && Array.isArray(projectsData.projects)) {
+          // Sanitize projects
+          try {
+            const validProjects = projectsData.projects.map((p: any) => ({
+              ...p,
+              title: typeof p.title === "string" ? p.title : "Projet sans titre",
+              slug: typeof p.slug === "string" ? p.slug : String(p.id),
+              category: typeof p.category === "string" ? p.category : "",
+              image: typeof p.image === "string" ? p.image : "",
+              gallery: Array.isArray(p.gallery) ? p.gallery.filter((g: any) => typeof g === "string") : [],
+              description: typeof p.description === "string" ? p.description : "",
+              fullDescription: typeof p.fullDescription === "string" ? p.fullDescription : "",
+              services: Array.isArray(p.services) ? p.services.filter((s: any) => typeof s === "string") : [],
+              client: typeof p.client === "string" ? p.client : "",
+              date: typeof p.date === "string" ? p.date : "",
+              guests: typeof p.guests === "string" ? p.guests : "",
+              location: typeof p.location === "string" ? p.location : "",
+            }))
+            setProjects(validProjects)
+            console.log("Loaded projects:", validProjects.length)
+          } catch (e) {
+            console.error("Error sanitizing projects:", e)
+            setProjects([])
+          }
+        } else {
+          setProjects([])
+        }
       }
 
       if (categoriesRes.ok) {
         const categoriesData = await categoriesRes.json()
-        setCategories(categoriesData.categories || [])
-        console.log("Loaded categories:", categoriesData.categories?.length || 0)
+        if (categoriesData.categories && Array.isArray(categoriesData.categories)) {
+          // Sanitize categories
+          try {
+            const validCategories = categoriesData.categories.map((c: any) => ({
+              ...c,
+              id: typeof c.id === "string" ? c.id : String(c.id || Math.random()),
+              label: typeof c.label === "string" ? c.label : "Catégorie sans nom",
+              description: typeof c.description === "string" ? c.description : "",
+              color: typeof c.color === "string" ? c.color : "from-gray-500 to-gray-500",
+              projectCount: typeof c.projectCount === "number" ? c.projectCount : 0,
+            }))
+            setCategories(validCategories)
+            console.log("Loaded categories:", validCategories.length)
+          } catch (e) {
+            console.error("Error sanitizing categories:", e)
+            setCategories([])
+          }
+        } else {
+          setCategories([])
+        }
       }
     } catch (error) {
       console.error("Error loading data:", error)
