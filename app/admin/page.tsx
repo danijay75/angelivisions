@@ -335,7 +335,7 @@ export default function AdminPage() {
             </Button>
             <div className="text-white/80 hidden md:flex items-center">
               <Shield className="w-4 h-4 mr-2" />
-              {user?.email}
+              {String(user?.email || "")}
             </div>
             {canSeeUsers && (
               <Button

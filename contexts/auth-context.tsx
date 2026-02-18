@@ -24,7 +24,7 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
-const LS_KEY = "av_user"
+const LS_KEY = "av_user_v2"
 
 function readLocalUser(): AuthUser | null {
   try {

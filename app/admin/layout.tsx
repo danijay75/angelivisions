@@ -63,7 +63,7 @@ function AdminTopbar() {
 
             {user?.role && (
               <Badge variant="outline" className="uppercase">
-                {user.role}
+                {String(user.role)}
               </Badge>
             )}
 
@@ -82,7 +82,7 @@ function AdminTopbar() {
           <div className="flex items-center md:hidden">
             {user?.role && (
               <Badge variant="outline" className="uppercase mr-1">
-                {user.role}
+                {String(user.role)}
               </Badge>
             )}
             <DropdownMenu>
