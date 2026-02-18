@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Play, Sparkles, Music, Calendar } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function HeroSection() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -164,10 +165,10 @@ export default function HeroSection() {
               size="lg"
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25 pointer-events-auto"
             >
-              <a href="#realisations">
+              <Link href={`/${lang}/realisations`}>
                 <Play className="w-5 h-5 mr-2" />
                 {t("hero.cta")}
-              </a>
+              </Link>
             </Button>
           </motion.div>
 
