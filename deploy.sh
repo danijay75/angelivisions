@@ -5,11 +5,16 @@ echo "🚀 Démarrage du déploiement..."
 
 # Mise à jour du code depuis GitHub
 echo "📥 Récupération des dernières modifications..."
-git pull origin main
+git fetch origin main
+git reset --hard origin main
 
 # Installation des dépendances
 echo "📦 Installation des dépendances..."
 npm install --production=false --legacy-peer-deps
+
+# Nettoyage du build précédent
+echo "🧹 Nettoyage du build précédent..."
+rm -rf .next
 
 # Build du projet Next.js
 echo "🏗️ Build du projet..."
