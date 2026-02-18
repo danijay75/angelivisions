@@ -98,7 +98,7 @@ const en = {
     description:
       "From musical creation to full organization, we master all aspects of events and entertainment to create unique and memorable experiences.",
     clientsTitle: "Our Clients",
-    cta: "Request a custom quote",
+    cta: "Request a quote",
     clientTypes: {
       entreprises: { title: "Corporate", desc: "Seminars, conventions, team building" },
       prive: { title: "Private Events", desc: "Birthdays, bar mitzvahs, parties" },

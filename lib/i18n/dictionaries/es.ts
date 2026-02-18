@@ -98,7 +98,7 @@ const es = {
     description:
       "Desde la creación musical hasta la organización completa, dominamos todos los aspectos de los eventos y el espectáculo para crear experiencias únicas y memorables.",
     clientsTitle: "Nuestros Clientes",
-    cta: "Solicitar un presupuesto personalizado",
+    cta: "Solicitar un presupuesto",
     clientTypes: {
       entreprises: { title: "Empresas", desc: "Seminarios, convenciones, teambuilding" },
       prive: { title: "Eventos Privados", desc: "Cumpleaños, bar-mitzvah, fiestas" },
