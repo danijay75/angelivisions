@@ -362,6 +362,24 @@ const es = {
       },
     },
   },
+  newsletter: {
+    preferences: {
+      title: "Gestionar sus preferencias",
+      description: "Gestione su información y suscripción al boletín.",
+      form: {
+        name: "Su nombre",
+        email: "Su correo electrónico",
+        save: "Actualizar",
+        unsubscribe: "Darse de baja",
+      },
+      messages: {
+        loading: "Cargando sus preferencias...",
+        error: "No se pueden cargar sus preferencias. El enlace puede haber expirado.",
+        saveSuccess: "Sus preferencias han sido actualizadas.",
+        unsubscribeSuccess: "Usted ha sido dado de baja con éxito.",
+      }
+    }
+  },
   common: {
     save: "Guardar",
     cancel: "Cancelar",

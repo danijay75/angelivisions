@@ -29,7 +29,7 @@ export default function Footer() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name: newsletterName, consent: newsletterConsent }),
+        body: JSON.stringify({ email, name: newsletterName, consent: newsletterConsent, lang }),
       })
       if (res.ok) {
         setIsSubscribed(true)

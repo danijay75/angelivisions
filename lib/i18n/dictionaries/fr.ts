@@ -362,6 +362,24 @@ const fr = {
       },
     },
   },
+  newsletter: {
+    preferences: {
+      title: "Gestion de vos préférences",
+      description: "Gérez vos informations et votre abonnement à la newsletter.",
+      form: {
+        name: "Votre nom",
+        email: "Votre email",
+        save: "Mettre à jour",
+        unsubscribe: "Se désinscrire",
+      },
+      messages: {
+        loading: "Chargement de vos préférences...",
+        error: "Impossible de charger vos préférences. Le lien est peut-être expiré.",
+        saveSuccess: "Vos préférences ont été mises à jour.",
+        unsubscribeSuccess: "Vous avez été désinscrit avec succès.",
+      }
+    }
+  },
   common: {
     save: "Enregistrer",
     cancel: "Annuler",

@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Redis } from "@upstash/redis"
 import { requireAdmin } from "@/lib/server/admin-session"
+import { sendMail } from "@/lib/server/mailer"
+import { getNewsletterConfirmationEmail, getAdminNotificationEmail } from "@/lib/emails/newsletter-templates"
 
 const redis = new Redis({
     url: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL!,
@@ -18,6 +20,7 @@ interface Subscriber {
     email: string
     subscribedAt: string
     consentGiven: boolean
+    token?: string
 }
 
 // ---------- GET: list all subscribers (admin only) ----------
@@ -61,7 +64,7 @@ export async function GET(req: NextRequest) {
 // ---------- POST: subscribe (public) ----------
 export async function POST(req: NextRequest) {
     try {
-        const { email, name, consent } = await req.json()
+        const { email, name, consent, lang = 'fr' } = await req.json()
 
         if (!email || !email.includes("@")) {
             return NextResponse.json({ error: "Email invalide" }, { status: 400 })
@@ -77,16 +80,38 @@ export async function POST(req: NextRequest) {
 
         const normalizedEmail = email.toLowerCase().trim()
 
+        // Generate a unique token for preferences management
+        const token = crypto.randomUUID()
+
         const subscriber: Subscriber = {
             name: name.trim(),
             email: normalizedEmail,
             subscribedAt: new Date().toISOString(),
             consentGiven: true,
+            token
         }
 
         // Store subscriber hash + add to index
         await redis.hset(subscriberKey(normalizedEmail), subscriber as unknown as Record<string, string>)
         await redis.sadd(INDEX_KEY, normalizedEmail)
+
+        // Send Confirmation Email
+        const preferencesUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/newsletter/preferences?token=${token}`
+        const emailContent = getNewsletterConfirmationEmail(subscriber.name, preferencesUrl, lang)
+
+        await sendMail({
+            to: subscriber.email,
+            subject: emailContent.subject,
+            html: emailContent.html,
+        })
+
+        // Send Admin Notification
+        const adminContent = getAdminNotificationEmail(subscriber.name, subscriber.email)
+        await sendMail({
+            to: process.env.FROM_EMAIL || "contact@angelivisions.com",
+            subject: adminContent.subject,
+            html: adminContent.html,
+        })
 
         return NextResponse.json({ success: true })
     } catch (error) {

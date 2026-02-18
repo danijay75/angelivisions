@@ -362,6 +362,24 @@ const en = {
       },
     },
   },
+  newsletter: {
+    preferences: {
+      title: "Manage your preferences",
+      description: "Manage your information and newsletter subscription.",
+      form: {
+        name: "Your name",
+        email: "Your email",
+        save: "Update",
+        unsubscribe: "Unsubscribe",
+      },
+      messages: {
+        loading: "Loading your preferences...",
+        error: "Unable to load your preferences. The link may have expired.",
+        saveSuccess: "Your preferences have been updated.",
+        unsubscribeSuccess: "You have been successfully unsubscribed.",
+      }
+    }
+  },
   common: {
     save: "Save",
     cancel: "Cancel",
