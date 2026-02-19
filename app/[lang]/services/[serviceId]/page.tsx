@@ -104,7 +104,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const IconComponent = serviceIcons[service.id as keyof typeof serviceIcons] || Music
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-16">
         {/* Back Button */}
         <div className="mb-8">
@@ -145,7 +145,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {service.features.map((feature, index) => (
                     <div key={index} className="flex items-center space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                       <span className="text-slate-300">{feature}</span>
                     </div>
                   ))}

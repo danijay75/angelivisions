@@ -51,7 +51,7 @@ export const defaultServices: ServiceItem[] = [
     title: "Murs de LED",
     description: "Écrans LED haute définition pour créer des expériences visuelles immersives et spectaculaires",
     features: ["Écrans LED géants", "Affichage haute résolution", "Installation sur-mesure", "Contenu personnalisé"],
-    color: "from-violet-500 to-purple-500",
+    color: "from-blue-600 to-cyan-600",
     image: "/placeholder.svg?height=128&width=128",
   },
   {
@@ -59,7 +59,7 @@ export const defaultServices: ServiceItem[] = [
     title: "Captations et prises de vue",
     description: "Captations multicaméras, émissions TV et création de podcasts pour vos événements",
     features: ["Captations multicaméras", "Émissions TV", "Création de Podcasts", "Post-production vidéo"],
-    color: "from-pink-500 to-rose-500",
+    color: "from-blue-700 to-cyan-800",
     image: "/placeholder.svg?height=128&width=128",
   },
 ]

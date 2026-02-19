@@ -32,7 +32,7 @@ export default function HeroSection() {
       alpha: number
     }> = []
 
-    const colors = ["#60A5FA", "#34D399", "#A78BFA", "#F472B6", "#FBBF24"]
+    const colors = ["#0ea5e9", "#22d3ee", "#3b82f6", "#0891b2", "#1d4ed8"]
 
     // Create particles
     for (let i = 0; i < 120; i++) {
@@ -106,11 +106,11 @@ export default function HeroSection() {
   return (
     <section
       id="accueil"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950"
     >
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-40" />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-cyan-900/20" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-slate-950 to-cyan-900/10" />
 
       <div className="container mx-auto px-4 pt-24 text-center relative z-10">
         <motion.div
@@ -140,7 +140,7 @@ export default function HeroSection() {
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             {t("hero.titlePart1")}
-            <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent block">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent block">
               {t("hero.titlePart2")}
             </span>
           </motion.h1>
@@ -184,25 +184,25 @@ export default function HeroSection() {
                 icon: Music,
                 title: t("hero.highlight1Title"),
                 desc: t("hero.highlight1Desc"),
-                color: "from-blue-500 to-cyan-500",
+                color: "from-blue-600 to-cyan-600",
               },
               {
                 icon: Sparkles,
                 title: t("hero.highlight2Title"),
                 desc: t("hero.highlight2Desc"),
-                color: "from-cyan-500 to-teal-500",
+                color: "from-cyan-600 to-blue-500",
               },
               {
                 icon: Calendar,
                 title: t("hero.highlight3Title"),
                 desc: t("hero.highlight3Desc"),
-                color: "from-teal-500 to-blue-500",
+                color: "from-blue-500 to-cyan-500",
               },
             ].map((service) => (
               <motion.div
                 key={service.title}
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-slate-800/30 backdrop-blur-md rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
+                className="bg-slate-900/40 backdrop-blur-md rounded-xl p-6 border border-blue-500/10 hover:border-cyan-500/30 transition-all duration-300"
               >
                 <div
                   className={`w-12 h-12 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 mx-auto shadow-lg`}

@@ -78,7 +78,7 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
           className="max-w-5xl mx-auto mb-12"
         >
-          <Card className="bg-gradient-to-r from-fuchsia-600/30 via-rose-600/30 to-orange-500/30 border-pink-500/40 ring-1 ring-inset ring-white/10">
+          <Card className="bg-gradient-to-r from-blue-600/20 via-cyan-600/25 to-blue-800/30 border-cyan-500/30 ring-1 ring-inset ring-white/10">
             <CardContent className="p-6 md:p-7">
               <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide text-white mb-3">
                 {t("contact.conciergerieTitle")}
