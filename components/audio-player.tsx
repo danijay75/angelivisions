@@ -119,8 +119,8 @@ export default function AudioPlayer() {
         const x = i * barWidth
         const y = (canvas.height - barHeight) / 2
         const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
-        gradient.addColorStop(0, "#8B5CF6")
-        gradient.addColorStop(1, "#EC4899")
+        gradient.addColorStop(0, "#0EA5E9")
+        gradient.addColorStop(1, "#22D3EE")
         ctx.fillStyle = gradient
         ctx.fillRect(x, y, barWidth - 1, barHeight)
       }
@@ -230,7 +230,7 @@ export default function AudioPlayer() {
                         size="sm"
                         onClick={togglePlay}
                         disabled={!hasPlayable}
-                        className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50"
+                        className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50"
                       >
                         {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
                       </Button>
@@ -333,7 +333,7 @@ export default function AudioPlayer() {
                           size="sm"
                           onClick={togglePlay}
                           disabled={!hasPlayable}
-                          className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50"
+                          className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50"
                         >
                           {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
                         </Button>
@@ -360,7 +360,7 @@ export default function AudioPlayer() {
                         </Button>
                         <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-200"
+                            className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-200"
                             style={{ width: `${isMuted ? 0 : volume * 100}%` }}
                           />
                         </div>

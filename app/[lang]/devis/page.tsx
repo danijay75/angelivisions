@@ -48,7 +48,7 @@ export async function generateMetadata({
 
 export default function DevisPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <main className="min-h-screen bg-slate-950">
       <DevisForm />
     </main>
   )

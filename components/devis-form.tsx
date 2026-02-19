@@ -46,13 +46,13 @@ export default function DevisForm() {
   ]
 
   const services = [
-    { id: "dj", label: t("devis.services.dj"), icon: Mic, color: "from-purple-500 to-pink-500" },
+    { id: "dj", label: t("devis.services.dj"), icon: Mic, color: "from-blue-600 to-cyan-600" },
     { id: "production", label: t("devis.services.production"), icon: Music, color: "from-blue-500 to-cyan-500" },
     { id: "organization", label: t("devis.services.organization"), icon: Calendar, color: "from-green-500 to-emerald-500" },
     { id: "technical", label: t("devis.services.technical"), icon: Zap, color: "from-orange-500 to-red-500" },
-    { id: "led-walls", label: t("devis.services.ledWalls"), icon: Monitor, color: "from-violet-500 to-purple-500" },
-    { id: "mapping", label: t("devis.services.mapping"), icon: Camera, color: "from-indigo-500 to-purple-500" },
-    { id: "media", label: t("devis.services.media"), icon: Camera, color: "from-pink-500 to-rose-500" },
+    { id: "led-walls", label: t("devis.services.ledWalls"), icon: Monitor, color: "from-blue-500 to-cyan-500" },
+    { id: "mapping", label: t("devis.services.mapping"), icon: Camera, color: "from-blue-700 to-cyan-700" },
+    { id: "media", label: t("devis.services.media"), icon: Camera, color: "from-cyan-600 to-blue-800" },
   ]
 
   const budgetRanges = [
@@ -97,7 +97,7 @@ export default function DevisForm() {
 
   if (isSubmitted) {
     return (
-      <section id="devis" className="py-20 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+      <section id="devis" className="py-20 bg-slate-950">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -134,7 +134,7 @@ export default function DevisForm() {
   }
 
   return (
-    <section id="devis" className="py-20 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <section id="devis" className="py-20 bg-slate-950">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -144,7 +144,7 @@ export default function DevisForm() {
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             {t("devis.title")}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent block">
+            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
               {t("devis.highlight")}
             </span>
           </h2>
@@ -174,7 +174,7 @@ export default function DevisForm() {
                         <Label
                           htmlFor={type.id}
                           className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.eventType === type.id
-                            ? "border-purple-500 bg-purple-500/20"
+                            ? "border-blue-500 bg-blue-500/20"
                             : "border-white/20 bg-white/5 hover:bg-white/10"
                             }`}
                         >
@@ -197,7 +197,7 @@ export default function DevisForm() {
                         <div
                           onClick={() => handleServiceToggle(service.id)}
                           className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.services.includes(service.id)
-                            ? "border-purple-500 bg-purple-500/20"
+                            ? "border-blue-500 bg-blue-500/20"
                             : "border-white/20 bg-white/5 hover:bg-white/10"
                             }`}
                         >
@@ -353,7 +353,7 @@ export default function DevisForm() {
                     type="checkbox"
                     checked={formData.consent}
                     onChange={(e) => setFormData((prev) => ({ ...prev, consent: e.target.checked }))}
-                    className="mt-1 accent-purple-500 min-w-[16px]"
+                    className="mt-1 accent-blue-500 min-w-[16px]"
                     required
                   />
                   <span className="text-sm text-white/70 leading-relaxed">
@@ -386,7 +386,7 @@ export default function DevisForm() {
                     type="submit"
                     size="lg"
                     disabled={loading || !formData.consent || !captchaToken}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 rounded-full text-lg disabled:opacity-50"
+                    className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-12 py-4 rounded-full text-lg disabled:opacity-50"
                   >
                     <Send className="w-5 h-5 mr-2" />
                     {loading ? t("devis.sending") : t("devis.submit")}

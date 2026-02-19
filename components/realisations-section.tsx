@@ -87,7 +87,7 @@ export default function RealisationsSection() {
     allCategories.find((cat) => cat.id === categoryId)?.color || "from-gray-500 to-gray-600"
 
   return (
-    <section id="realisations" className="py-20 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <section id="realisations" className="py-20 bg-slate-950">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -99,7 +99,7 @@ export default function RealisationsSection() {
             {t("realisations.title")}{" "}
             <span className="block">
               <span className="text-white">{t("realisations.highlight")}</span>
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 {" "}
                 {t("realisations.highlightSuffix")}
               </span>
@@ -147,7 +147,7 @@ export default function RealisationsSection() {
                 >
                   <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300">
                     <div className="relative overflow-hidden">
-                      <div className="w-full h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                      <div className="w-full h-48 bg-slate-900 flex items-center justify-center">
                         <div className="text-white/60 text-center">
                           <ImageIcon className="w-12 h-12 mx-auto mb-2" />
                           <p className="text-sm">{project.title}</p>
@@ -229,7 +229,7 @@ export default function RealisationsSection() {
           <Button
             size="lg"
             onClick={() => router.push(`/${lang}/realisations`)}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full"
+            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full"
           >
             <ExternalLink className="w-5 h-5 mr-2" />
             {t("realisations.viewAllCta")}

@@ -147,7 +147,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
           <div className="text-white/60 text-lg">{copy.loading}</div>
         </div>
@@ -156,7 +156,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <div className="min-h-screen bg-slate-950">
       {/* Header */}
       <div className="pt-32 pb-16">
         <div className="container mx-auto px-4">
@@ -176,7 +176,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
             </Button>
 
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 {copy.title}
               </span>
             </h1>
@@ -242,7 +242,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
                   >
                     <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300 h-full">
                       <div className="relative overflow-hidden">
-                        <div className="w-full h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                        <div className="w-full h-64 bg-slate-900 flex items-center justify-center">
                           <div className="text-white/60 text-center">
                             <ImageIcon className="w-12 h-12 mx-auto mb-2" />
                             <p className="text-sm">{project.title}</p>
