@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -126,9 +127,12 @@ export default function HeroSection() {
             transition={{ delay: 0.1, duration: 0.8 }}
             className="mb-6"
           >
-            <img
+            <Image
               src="/images/angeli-visions-logo-white.png"
               alt="Angeli Visions"
+              width={800}
+              height={224}
+              priority
               className="h-48 md:h-56 w-auto mx-auto object-contain drop-shadow-2xl"
             />
           </motion.div>
