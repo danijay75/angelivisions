@@ -138,9 +138,9 @@ const en = {
     },
   },
   realisations: {
-    title: "Our Creations",
-    highlight: "Creative Portfolio",
-    highlightSuffix: "",
+    title: "Our Projects & Shows",
+    highlight: "",
+    highlightSuffix: "Creative Portfolio",
     subtitle: "Explore our standout work: bespoke events, original music productions, and innovative audiovisual shows.",
     filterAll: "All projects",
     seeProject: "View project",
@@ -336,32 +336,7 @@ const en = {
     privacyPolicy: { title: "Privacy Policy" },
     cookiePolicy: { title: "Cookie Policy" },
   },
-  cookieConsent: {
-    manage: "Manage preferences",
-    banner: {
-      title: "We respect your privacy",
-      description: "We use cookies to improve your experience, analyze traffic, and personalize content.",
-      accept: "Accept all",
-      reject: "Reject all",
-      customize: "Customize",
-    },
-    modal: {
-      title: "Cookie Preferences",
-      description: "Manage your consent preferences for cookies used on this site.",
-      essential: {
-        title: "Essential",
-        desc: "These cookies are necessary for the website to function properly.",
-      },
-      analytics: {
-        title: "Analytics",
-        desc: "Help us understand how you use the site.",
-      },
-      marketing: {
-        title: "Marketing",
-        desc: "Allow us to offer content tailored to your interests.",
-      },
-    },
-  },
+
   newsletter: {
     preferences: {
       title: "Manage your preferences",

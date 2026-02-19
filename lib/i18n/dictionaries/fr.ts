@@ -138,8 +138,8 @@ const fr = {
     },
   },
   realisations: {
-    title: "Nos Créations,",
-    highlight: "Spectacles et Projets",
+    title: "Nos Projets et Spectacles",
+    highlight: "",
     highlightSuffix: "auxquels nous avons participé",
     subtitle: "Découvrez nos réalisations marquantes : événements sur-mesure, productions musicales originales et spectacles audiovisuels innovants.",
     filterAll: "Tous les Projets",
@@ -336,32 +336,7 @@ const fr = {
     privacyPolicy: { title: "Politique de Confidentialité" },
     cookiePolicy: { title: "Politique de Cookies" },
   },
-  cookieConsent: {
-    manage: "Gérer mes préférences",
-    banner: {
-      title: "Nous respectons votre vie privée",
-      description: "Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser le contenu.",
-      accept: "Tout accepter",
-      reject: "Tout refuser",
-      customize: "Personnaliser",
-    },
-    modal: {
-      title: "Préférences de cookies",
-      description: "Gérez vos préférences de consentement pour les cookies utilisés sur ce site.",
-      essential: {
-        title: "Nécessaires",
-        desc: "Ces cookies sont indispensables au bon fonctionnement du site.",
-      },
-      analytics: {
-        title: "Analytiques",
-        desc: "Nous aident à comprendre comment vous utilisez le site.",
-      },
-      marketing: {
-        title: "Marketing",
-        desc: "Permettent de vous proposer des contenus adaptés à vos intérêts.",
-      },
-    },
-  },
+
   newsletter: {
     preferences: {
       title: "Gestion de vos préférences",

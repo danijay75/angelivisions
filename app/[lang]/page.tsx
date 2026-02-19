@@ -5,7 +5,7 @@ import ServicesSection from "@/components/services-section"
 import RealisationsSection from "@/components/realisations-section"
 import ContactSection from "@/components/contact-section"
 import AudioPlayer from "@/components/audio-player"
-import CookieConsent from "@/components/cookie-consent"
+
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 
@@ -76,7 +76,7 @@ export default function LocalizedHomePage() {
       </section>
 
       <AudioPlayer />
-      <CookieConsent />
+
     </div>
   )
 }

@@ -11,7 +11,7 @@ export default function VerifyCookieButton() {
             onClick={() => window.openCookiePreferences?.()}
             className="bg-blue-600 hover:bg-blue-700 text-white"
         >
-            {t("cookieConsent.manage") || "Gérer mes préférences"}
+            {t("cookies.customize") || "Gérer mes préférences"}
         </Button>
     )
 }

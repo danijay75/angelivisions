@@ -138,9 +138,9 @@ const es = {
     },
   },
   realisations: {
-    title: "Nuestras Creaciones",
-    highlight: "Portafolio Creativo",
-    highlightSuffix: "",
+    title: "Nuestros Proyectos y Espectáculos",
+    highlight: "",
+    highlightSuffix: "Portafolio Creativo",
     subtitle: "Descubre nuestros proyectos destacados: eventos a medida, producciones musicales originales y espectáculos audiovisuales innovadores.",
     filterAll: "Todos los proyectos",
     seeProject: "Ver proyecto",
@@ -336,32 +336,7 @@ const es = {
     privacyPolicy: { title: "Política de Privacidad" },
     cookiePolicy: { title: "Política de Cookies" },
   },
-  cookieConsent: {
-    manage: "Gestionar preferencias",
-    banner: {
-      title: "Respetamos su privacidad",
-      description: "Utilizamos cookies para mejorar su experiencia, analizar el tráfico y personalizar el contenido.",
-      accept: "Aceptar todo",
-      reject: "Rechazar todo",
-      customize: "Personalizar",
-    },
-    modal: {
-      title: "Preferencias de cookies",
-      description: "Gestione sus preferencias de consentimiento para las cookies utilizadas en este sitio.",
-      essential: {
-        title: "Esenciales",
-        desc: "Estas cookies son necesarias para el correcto funcionamiento del sitio.",
-      },
-      analytics: {
-        title: "Analíticas",
-        desc: "Nos ayudan a entender cómo utiliza el sitio.",
-      },
-      marketing: {
-        title: "Marketing",
-        desc: "Nos permiten ofrecer contenido adaptado a sus intereses.",
-      },
-    },
-  },
+
   newsletter: {
     preferences: {
       title: "Gestionar sus preferencias",

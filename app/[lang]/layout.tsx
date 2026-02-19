@@ -4,7 +4,7 @@ import { I18nProvider } from "@/components/i18n/i18n-provider"
 import { LOCALES, type Locale } from "@/lib/i18n/locales"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
-import CookieConsentManager from "@/components/cookie-consent-manager"
+import CookieConsent from "@/components/cookie-consent"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 
@@ -52,7 +52,7 @@ export default async function LangLayout({
       <Navigation />
       <main className="pt-24">{children}</main>
       <Footer />
-      <CookieConsentManager />
+      <CookieConsent />
     </I18nProvider>
   )
 }
