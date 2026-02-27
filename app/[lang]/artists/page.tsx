@@ -288,17 +288,22 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                             <div className="relative overflow-hidden group">
                                                 {/* Placeholder OR First Photo */}
                                                 <div className="w-full h-72 bg-slate-900 flex items-center justify-center overflow-hidden">
-                                                    {artist.photos[0] ? (
-                                                        <img
-                                                            src={artist.photos[0]}
-                                                            alt={artist.name}
-                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                                        />
-                                                    ) : (
-                                                        <div className="text-white/60 text-center">
-                                                            <Music className="w-16 h-16 mx-auto mb-2 opacity-30" />
-                                                        </div>
-                                                    )}
+                                                    {(() => {
+                                                        const validPhotos = (artist.photos || []).filter(url => url && !url.includes("placeholder") && url.trim() !== "");
+                                                        const heroPhoto = validPhotos[0];
+
+                                                        return heroPhoto ? (
+                                                            <img
+                                                                src={heroPhoto}
+                                                                alt={artist.name}
+                                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                            />
+                                                        ) : (
+                                                            <div className="text-white/60 text-center">
+                                                                <Music className="w-16 h-16 mx-auto mb-2 opacity-30" />
+                                                            </div>
+                                                        );
+                                                    })()}
                                                 </div>
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
@@ -383,20 +388,35 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                             }
 
                                                                             // Otherwise, handle as video
-                                                                            let embedUrl = mediaUrl
-                                                                            let isYoutube = false
-
-                                                                            // Extract clean YouTube ID using robust regex
+                                                                            let isYoutube = false;
                                                                             let videoId = "";
-                                                                            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-                                                                            const ytMatch = mediaUrl.match(ytRegex);
-                                                                            if (ytMatch && ytMatch[1]) {
-                                                                                videoId = ytMatch[1];
-                                                                            }
 
-                                                                            if (videoId) {
-                                                                                embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`
-                                                                                isYoutube = true
+                                                                            if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
+                                                                                isYoutube = true;
+                                                                                try {
+                                                                                    const urlObj = new URL(mediaUrl);
+                                                                                    if (urlObj.hostname.includes("youtube.com")) {
+                                                                                        if (urlObj.pathname === "/watch") {
+                                                                                            videoId = urlObj.searchParams.get("v") || "";
+                                                                                        } else if (urlObj.pathname.startsWith("/embed/")) {
+                                                                                            videoId = urlObj.pathname.split("/embed/")[1];
+                                                                                        } else if (urlObj.pathname.startsWith("/v/")) {
+                                                                                            videoId = urlObj.pathname.split("/v/")[1];
+                                                                                        } else if (urlObj.pathname.startsWith("/shorts/")) {
+                                                                                            videoId = urlObj.pathname.split("/shorts/")[1];
+                                                                                        } else if (urlObj.pathname.startsWith("/live/")) {
+                                                                                            videoId = urlObj.pathname.split("/live/")[1];
+                                                                                        }
+                                                                                    } else if (urlObj.hostname.includes("youtu.be")) {
+                                                                                        videoId = urlObj.pathname.slice(1).split("?")[0];
+                                                                                    }
+                                                                                } catch (e) {
+                                                                                    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+                                                                                    const ytMatch = mediaUrl.match(ytRegex);
+                                                                                    if (ytMatch && ytMatch[1]) {
+                                                                                        videoId = ytMatch[1];
+                                                                                    }
+                                                                                }
                                                                             }
 
                                                                             return (
@@ -404,13 +424,13 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                                     <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
                                                                                         {isYoutube ? (
                                                                                             <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
-                                                                                                <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                                                                <img src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                                                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
                                                                                                     <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
                                                                                                 </div>
                                                                                             </a>
                                                                                         ) : (
-                                                                                            <video src={embedUrl} controls className="w-full h-full object-contain" />
+                                                                                            <video src={mediaUrl} controls className="w-full h-full object-contain" />
                                                                                         )}
                                                                                     </div>
                                                                                 </CarouselItem>
