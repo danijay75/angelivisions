@@ -10,7 +10,7 @@ import { Music, Eye, ImageIcon, ArrowLeft, Filter, Search, Tag } from "lucide-re
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { type Artist } from "@/data/artists"
 import { Input } from "@/components/ui/input"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Instagram, Facebook, Twitter, Youtube, Music2, Headphones, PlayCircle, Globe, X as XIcon } from "lucide-react"
 
@@ -94,29 +94,44 @@ const LOCALE_COPY: Record<
 function MediaCarousel({ medias, artistName }: { medias: string[], artistName: string }) {
     const ref = useRef<HTMLDivElement>(null)
     const inView = useInView(ref, { amount: 0.3 })
+    const [api, setApi] = useState<CarouselApi>()
     const plugin = useRef(Autoplay({ delay: 3500, stopOnInteraction: false }))
 
     useEffect(() => {
-        if (!plugin.current) return
-        if (inView) {
-            plugin.current.play()
-        } else {
-            plugin.current.stop()
+        if (!api) return
+        try {
+            const autoplay = api.plugins().autoplay
+            if (!autoplay) return
+
+            if (inView) {
+                autoplay.play()
+            } else {
+                autoplay.stop()
+            }
+        } catch (e) {
+            console.error(e)
         }
-    }, [inView])
+    }, [api, inView])
 
     return (
         <div
             ref={ref}
             className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10"
-            onMouseEnter={() => plugin.current.play()}
-            onMouseLeave={() => { if (!inView) plugin.current.stop() }}
+            onMouseEnter={() => {
+                if (!api) return;
+                try { api.plugins().autoplay?.play() } catch (e) { }
+            }}
+            onMouseLeave={() => {
+                if (!api) return;
+                try { if (!inView) api.plugins().autoplay?.stop() } catch (e) { }
+            }}
         >
             <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2">
                 <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
             </h4>
             <div className="relative">
                 <Carousel
+                    setApi={setApi}
                     plugins={[plugin.current]}
                     opts={{ loop: true }}
                     className="w-full"
