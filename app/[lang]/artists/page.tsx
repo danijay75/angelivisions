@@ -403,7 +403,12 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                                 <CarouselItem key={`vid-${i}`}>
                                                                                     <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
                                                                                         {isYoutube ? (
-                                                                                            <iframe src={embedUrl} className="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                                                                            <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
+                                                                                                <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
+                                                                                                    <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
+                                                                                                </div>
+                                                                                            </a>
                                                                                         ) : (
                                                                                             <video src={embedUrl} controls className="w-full h-full object-contain" />
                                                                                         )}
