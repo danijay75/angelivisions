@@ -96,6 +96,15 @@ function MediaCarousel({ medias, artistName }: { medias: string[], artistName: s
     const inView = useInView(ref, { amount: 0.3 })
     const [api, setApi] = useState<CarouselApi>()
     const plugin = useRef(Autoplay({ delay: 3500, stopOnInteraction: false }))
+    const [isHovered, setIsHovered] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 1024)
+        const onResize = () => setIsMobile(window.innerWidth < 1024)
+        window.addEventListener("resize", onResize)
+        return () => window.removeEventListener("resize", onResize)
+    }, [])
 
     useEffect(() => {
         if (!api) return
@@ -103,28 +112,24 @@ function MediaCarousel({ medias, artistName }: { medias: string[], artistName: s
             const autoplay = api.plugins().autoplay
             if (!autoplay) return
 
-            if (inView) {
-                autoplay.play()
+            if (isMobile) {
+                if (inView) autoplay.play()
+                else autoplay.stop()
             } else {
-                autoplay.stop()
+                if (isHovered) autoplay.play()
+                else autoplay.stop()
             }
         } catch (e) {
             console.error(e)
         }
-    }, [api, inView])
+    }, [api, inView, isMobile, isHovered])
 
     return (
         <div
             ref={ref}
             className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10"
-            onMouseEnter={() => {
-                if (!api) return;
-                try { api.plugins().autoplay?.play() } catch (e) { }
-            }}
-            onMouseLeave={() => {
-                if (!api) return;
-                try { if (!inView) api.plugins().autoplay?.stop() } catch (e) { }
-            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2">
                 <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
@@ -457,9 +462,9 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
                                                 {/* Socials & Follow (Moved below media) */}
                                                 {artist.socials && artist.socials.length > 0 ? (
-                                                    <div className="mb-4 mt-auto bg-white/5 p-3 rounded-xl border border-white/10">
+                                                    <div className="mb-4 mt-auto bg-white/5 p-3 rounded-xl border border-white/10 text-center">
                                                         <p className="text-white/90 text-sm font-semibold mb-3">Suivez "{artist.name}"</p>
-                                                        <div className="flex flex-wrap gap-3">
+                                                        <div className="flex flex-wrap gap-3 justify-center items-center">
                                                             {artist.socials.map((soc, i) => {
                                                                 const { icon: SocialIcon, color } = getSocialIconData(soc.platform)
                                                                 return (
