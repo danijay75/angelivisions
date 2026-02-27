@@ -64,8 +64,8 @@ export default function ImagePicker({ label = "Logo / Icône", value, onChange, 
 
       <Card className="bg-white/5 border-white/10 overflow-hidden">
         <CardContent className="p-4">
-          <div className="flex items-start gap-4">
-            <div className="w-24 h-24 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
+          <div className="flex flex-col xl:flex-row items-start gap-4">
+            <div className="w-24 h-24 shrink-0 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
               {value ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img

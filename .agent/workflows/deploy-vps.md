@@ -19,4 +19,4 @@ scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de
 
 // turbo
 3. Appliquer les droits et lancer le build sur le VPS
-ssh root@91.134.143.82 "chown -R ubuntu:ubuntu /var/www/angelivisions && cd /var/www/angelivisions && rm -rf .next && su ubuntu -c 'npm run build && pm2 restart all'"
+ssh root@91.134.143.82 "chown -R ubuntu:ubuntu /var/www/angelivisions && cd /var/www/angelivisions && rm -rf .next && su ubuntu -c 'npm run build && pm2 start ecosystem.config.js'"

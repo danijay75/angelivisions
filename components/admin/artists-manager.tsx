@@ -22,6 +22,7 @@ export default function ArtistsManager() {
     const [editingArtist, setEditingArtist] = useState<Artist | null>(null)
     const [isCreating, setIsCreating] = useState(false)
     const [formData, setFormData] = useState<Partial<Artist>>({})
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false)
 
     // Temp form states for new items
     const [newType, setNewType] = useState("")
@@ -178,6 +179,42 @@ export default function ArtistsManager() {
         setFormData(prev => ({ ...prev, videos: v }))
     }
 
+    const updateVideoUrl = (index: number, value: string) => {
+        const v = [...(formData.videos || [])]
+        v[index] = value
+        setFormData(prev => ({ ...prev, videos: v }))
+    }
+
+    const onVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setIsUploadingVideo(true)
+        try {
+            const uploadData = new FormData()
+            uploadData.append("file", file)
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: uploadData,
+            })
+
+            if (res.ok) {
+                const data = await res.json()
+                const v = [...(formData.videos || [])]
+                v.push(data.url)
+                setFormData(prev => ({ ...prev, videos: v }))
+            } else {
+                alert("Erreur lors de l'upload de la vidéo")
+            }
+        } catch (error) {
+            alert("Erreur de connexion")
+        } finally {
+            setIsUploadingVideo(false)
+            if (e.target) e.target.value = ""
+        }
+    }
+
     const addSocial = () => {
         if (!newSocialUrl.trim()) return
         const s = [...(formData.socials || [])]
@@ -332,18 +369,29 @@ export default function ArtistsManager() {
 
                         {/* Vidéos */}
                         <div className="space-y-4">
-                            <Label className="text-white flex items-center gap-2"><Video className="w-4 h-4" /> Vidéos (URLs YouTube)</Label>
+                            <Label className="text-white flex items-center gap-2"><Video className="w-4 h-4" /> Vidéos (URLs YouTube ou Fichier Local)</Label>
                             <div className="space-y-2">
                                 {formData.videos?.map((vid, i) => (
                                     <div key={i} className="flex gap-2 items-center bg-white/5 border border-white/10 p-2 rounded">
-                                        <code className="text-xs text-emerald-300 flex-1 truncate">{vid}</code>
+                                        <Input
+                                            value={vid}
+                                            onChange={(e) => updateVideoUrl(i, e.target.value)}
+                                            className="bg-transparent border-none text-emerald-300 flex-1 h-8 focus-visible:ring-0 px-0"
+                                        />
                                         <Button variant="ghost" size="sm" onClick={() => removeVideo(i)} className="text-red-400 hover:text-red-300 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
                                     </div>
                                 ))}
                             </div>
-                            <div className="flex gap-2 max-w-lg">
-                                <Input value={newVideoUrl} onChange={e => setNewVideoUrl(e.target.value)} placeholder="https://youtube.com/watch?v=..." className="bg-white/5 border-white/10 text-white" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addVideo(); } }} />
-                                <Button type="button" onClick={addVideo} className="bg-white/10 text-white hover:bg-white/20">Ajouter</Button>
+                            <div className="flex flex-wrap gap-2 max-w-lg items-center">
+                                <Input value={newVideoUrl} onChange={e => setNewVideoUrl(e.target.value)} placeholder="https://youtube.com/watch?v=..." className="bg-white/5 border-white/10 text-white flex-1 min-w-[200px]" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addVideo(); } }} />
+                                <Button type="button" onClick={addVideo} className="bg-white/10 text-white hover:bg-white/20">Ajouter Lien</Button>
+                                <div className="text-white/40 px-2 text-sm">ou</div>
+                                <div className="relative">
+                                    <input type="file" accept="video/*" onChange={onVideoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed" disabled={isUploadingVideo} />
+                                    <Button type="button" disabled={isUploadingVideo} className="bg-purple-600 hover:bg-purple-700 text-white w-full pointer-events-none">
+                                        {isUploadingVideo ? <span className="flex items-center"><span className="animate-spin mr-2">⚙</span> Upload...</span> : "Uploader Localement"}
+                                    </Button>
+                                </div>
                             </div>
                         </div>
 

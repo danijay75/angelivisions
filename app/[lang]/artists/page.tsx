@@ -368,13 +368,18 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                 <CarouselContent>
                                                                     {artist.videos.map((vid, i) => {
                                                                         let embedUrl = vid
-                                                                        if (vid.includes("youtube.com/watch?v=")) embedUrl = vid.replace("watch?v=", "embed/")
-                                                                        else if (vid.includes("youtu.be/")) embedUrl = vid.replace("youtu.be/", "youtube.com/embed/")
+                                                                        let isYoutube = false;
+                                                                        if (vid.includes("youtube.com/watch?v=")) { embedUrl = vid.replace("watch?v=", "embed/"); isYoutube = true; }
+                                                                        else if (vid.includes("youtu.be/")) { embedUrl = vid.replace("youtu.be/", "youtube.com/embed/"); isYoutube = true; }
 
                                                                         return (
                                                                             <CarouselItem key={i}>
-                                                                                <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10">
-                                                                                    <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
+                                                                                <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
+                                                                                    {isYoutube ? (
+                                                                                        <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
+                                                                                    ) : (
+                                                                                        <video src={embedUrl} controls className="w-full h-full object-contain" />
+                                                                                    )}
                                                                                 </div>
                                                                             </CarouselItem>
                                                                         )
