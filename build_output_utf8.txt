@@ -1,0 +1,190 @@
+﻿
+> angeli-visions-web@0.1.0 build
+> next build
+
+   Ôû▓ Next.js 15.2.8
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ Ô£ô Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+node.exe : [Upstash Redis] The 'url' property is 
+missing or undefined in your Redis config.
+Au caractère Ligne:1 : 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([Upstash 
+    Redis]...r Redis config.:String) [], RemoteExcep  
+  tion
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[AV] Upstash Redis environment variables are missing. 
+Using fallback strategy.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+ ÔÜá Using edge runtime on a page currently disables 
+static generation for that page
+   Generating static pages (0/80) ...
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[AV] Upstash Redis environment variables are missing. 
+Using fallback strategy.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'url' property is missing or 
+undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or 
+undefined in your Redis config.
+   Generating static pages (20/80) 
+   Generating static pages (40/80) 
+   Generating static pages (60/80) 
+ Ô£ô Generating static pages (80/80)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                   Size  First Load JS
+Ôöî Ôùï /                                        246 B         101 kB
+Ôö£ Ôùï /_not-found                              246 B         101 kB
+Ôö£ ÔùÅ /[lang]                                10.3 kB         168 kB
+Ôö£   Ôö£ /fr
+Ôö£   Ôö£ /en
+Ôö£   Ôöö /es
+Ôö£ ÔùÅ /[lang]/artists                        4.67 kB         154 kB
+Ôö£   Ôö£ /fr/artists
+Ôö£   Ôö£ /en/artists
+Ôö£   Ôöö /es/artists
+Ôö£ ÔùÅ /[lang]/contacts                       2.32 kB         149 kB
+Ôö£   Ôö£ /fr/contacts
+Ôö£   Ôö£ /en/contacts
+Ôö£   Ôöö /es/contacts
+Ôö£ ÔùÅ /[lang]/devis                          7.44 kB         162 kB
+Ôö£   Ôö£ /fr/devis
+Ôö£   Ôö£ /en/devis
+Ôö£   Ôöö /es/devis
+Ôö£ ÔùÅ /[lang]/eside-culture-blog             1.36 kB         102 kB
+Ôö£   Ôö£ /fr/eside-culture-blog
+Ôö£   Ôö£ /en/eside-culture-blog
+Ôö£   Ôöö /es/eside-culture-blog
+Ôö£ ãÆ /[lang]/eside-culture-blog/[slug]       1.3 kB         102 kB
+Ôö£ ÔùÅ /[lang]/investir-dans-la-culture       8.22 kB         121 kB
+Ôö£   Ôö£ /fr/investir-dans-la-culture
+Ôö£   Ôö£ /en/investir-dans-la-culture
+Ôö£   Ôöö /es/investir-dans-la-culture
+Ôö£ ÔùÅ /[lang]/mentions-legales                 246 B         101 kB
+Ôö£   Ôö£ /fr/mentions-legales
+Ôö£   Ôö£ /en/mentions-legales
+Ôö£   Ôöö /es/mentions-legales
+Ôö£ ÔùÅ /[lang]/newsletter/preferences          3.9 kB         150 kB
+Ôö£   Ôö£ /fr/newsletter/preferences
+Ôö£   Ôö£ /en/newsletter/preferences
+Ôö£   Ôöö /es/newsletter/preferences
+Ôö£ ÔùÅ /[lang]/politique-confidentialite      32.5 kB         164 kB
+Ôö£   Ôö£ /fr/politique-confidentialite
+Ôö£   Ôö£ /en/politique-confidentialite
+Ôö£   Ôöö /es/politique-confidentialite
+Ôö£ ÔùÅ /[lang]/politique-cookies              2.19 kB         110 kB
+Ôö£   Ôö£ /fr/politique-cookies
+Ôö£   Ôö£ /en/politique-cookies
+Ôö£   Ôöö /es/politique-cookies
+Ôö£ ÔùÅ /[lang]/projet/[slug]                  4.18 kB         120 kB
+Ôö£   Ôö£ /fr/projet/convention-technologique
+Ôö£   Ôö£ /fr/projet/album-midnight-vibes
+Ôö£   Ôö£ /fr/projet/festival-summer-beats
+Ôö£   Ôöö [+12 more paths]
+Ôö£ ÔùÅ /[lang]/realisations                   4.49 kB         154 kB
+Ôö£   Ôö£ /fr/realisations
+Ôö£   Ôö£ /en/realisations
+Ôö£   Ôöö /es/realisations
+Ôö£ ÔùÅ /[lang]/services                         180 B         104 kB
+Ôö£   Ôö£ /fr/services
+Ôö£   Ôö£ /en/services
+Ôö£   Ôöö /es/services
+Ôö£ ãÆ /[lang]/services/[serviceId]             180 B         104 kB
+Ôö£ ãÆ /admin                                 41.6 kB         225 kB
+Ôö£ ãÆ /admin/blog                             5.2 kB         119 kB
+Ôö£ ãÆ /admin/forgot                          4.22 kB         112 kB
+Ôö£ ãÆ /admin/login                           5.45 kB         113 kB
+Ôö£ ãÆ /admin/reset                           4.36 kB         112 kB
+Ôö£ ãÆ /admin/users                           8.54 kB         144 kB
+Ôö£ ãÆ /api/admin/users                         246 B         101 kB
+Ôö£ ãÆ /api/admin/users/[id]                    246 B         101 kB
+Ôö£ ãÆ /api/admin/users/auth                    246 B         101 kB
+Ôö£ ãÆ /api/artists                             246 B         101 kB
+Ôö£ ãÆ /api/auth/forgot                         246 B         101 kB
+Ôö£ ãÆ /api/auth/init                           246 B         101 kB
+Ôö£ ãÆ /api/auth/login                          246 B         101 kB
+Ôö£ ãÆ /api/auth/logout                         246 B         101 kB
+Ôö£ ãÆ /api/auth/reset                          246 B         101 kB
+Ôö£ ãÆ /api/auth/session                        246 B         101 kB
+Ôö£ ãÆ /api/auth/status                         246 B         101 kB
+Ôö£ ãÆ /api/categories                          246 B         101 kB
+Ôö£ ãÆ /api/contact/dpd                         246 B         101 kB
+Ôö£ ãÆ /api/devis                               246 B         101 kB
+Ôö£ ãÆ /api/email/test                          246 B         101 kB
+Ôö£ ãÆ /api/newsletter                          246 B         101 kB
+Ôö£ ãÆ /api/newsletter/preferences              246 B         101 kB
+Ôö£ ãÆ /api/projects                            246 B         101 kB
+Ôö£ ãÆ /api/services                            246 B         101 kB
+Ôö£ ãÆ /api/team                                246 B         101 kB
+Ôö£ ãÆ /api/team/[id]                           246 B         101 kB
+Ôö£ ãÆ /api/team/reorder                        246 B         101 kB
+Ôö£ Ôùï /eside-culture                           246 B         101 kB
+Ôö£ Ôùï /eside-culture-blog                      246 B         101 kB
+Ôö£ ãÆ /eside-culture-blog/[slug]               246 B         101 kB
+Ôö£ ãÆ /eside-culture/[slug]                    246 B         101 kB
+Ôö£ Ôùï /manifest.webmanifest                    246 B         101 kB
+Ôö£ ãÆ /opengraph-image                         246 B         101 kB
+Ôö£ ãÆ /projet/[slug]                           246 B         101 kB
+Ôö£ Ôùï /robots.txt                              246 B         101 kB
+Ôöö Ôùï /sitemap.xml                             246 B         101 kB
++ First Load JS shared by all               101 kB
+  Ôö£ chunks/1684-74423eab7af80216.js        45.2 kB
+  Ôö£ chunks/4bd1b696-221578f8500559b8.js    53.3 kB
+  Ôöö other shared chunks (total)            2.03 kB
+
+
+ãÆ Middleware                               33.1 kB
+
+Ôùï  (Static)   prerendered as static content
+ÔùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ãÆ  (Dynamic)  server-rendered on demand
+

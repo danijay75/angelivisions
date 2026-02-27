@@ -1,0 +1,28 @@
+﻿stitch-skills/skills/react-components/examples/gold-standard-card.tsx(20,26): error TS2307: Cannot find module '../data/mockData' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(1,27): error TS2307: Cannot find module 'remotion' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(2,24): error TS2307: Cannot find module 'remotion' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(3,20): error TS2307: Cannot find module '@remotion/transitions/fade' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(4,21): error TS2307: Cannot find module '@remotion/transitions/slide' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(5,32): error TS2307: Cannot find module '@remotion/transitions' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(6,27): error TS2307: Cannot find module './ScreenSlide' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(7,29): error TS2307: Cannot find module '../screens.json' or its corresponding type declarations.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(12,6): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(12,11): error TS7006: Parameter 'screen' implicitly has an 'any' type.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(23,37): error TS7006: Parameter 'screen' implicitly has an 'any' type.
+stitch-skills/skills/remotion/examples/WalkthroughComposition.tsx(23,45): error TS7006: Parameter 'index' implicitly has an 'any' type.
+stitch-skills/skills/remotion/resources/screen-slide-template.tsx(1,69): error TS2307: Cannot find module 'remotion' or its corresponding type declarations.
+stitch-skills/skills/remotion/resources/screen-slide-template.tsx(2,19): error TS2307: Cannot find module 'remotion' or its corresponding type declarations.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(16,8): error TS2307: Cannot find module '@tanstack/react-table' or its corresponding type declarations.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(78,16): error TS7031: Binding element 'column' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(89,14): error TS7031: Binding element 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(93,16): error TS7031: Binding element 'column' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(104,14): error TS7031: Binding element 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(109,14): error TS7031: Binding element 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(116,14): error TS7031: Binding element 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(123,14): error TS7031: Binding element 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(196,24): error TS7006: Parameter 'column' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(197,21): error TS7006: Parameter 'column' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(217,43): error TS7006: Parameter 'headerGroup' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(219,43): error TS7006: Parameter 'header' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(236,45): error TS7006: Parameter 'row' implicitly has an 'any' type.
+stitch-skills/skills/shadcn-ui/examples/data-table.tsx(241,47): error TS7006: Parameter 'cell' implicitly has an 'any' type.

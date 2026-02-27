@@ -10,7 +10,23 @@ import { Music, Eye, ImageIcon, ArrowLeft, Filter, Search, Tag } from "lucide-re
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { type Artist } from "@/data/artists"
 import { Input } from "@/components/ui/input"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Instagram, Facebook, Twitter, Youtube, Music2, Headphones, PlayCircle, Globe, X as XIcon } from "lucide-react"
 
+const getSocialIconData = (platform: string) => {
+    switch (platform.toLowerCase()) {
+        case "instagram": return { icon: Instagram, color: "text-pink-500 hover:text-pink-400" }
+        case "facebook": return { icon: Facebook, color: "text-blue-500 hover:text-blue-400" }
+        case "x": return { icon: XIcon, color: "text-slate-300 hover:text-white" }
+        case "twitter": return { icon: Twitter, color: "text-blue-400 hover:text-blue-300" }
+        case "youtube": return { icon: Youtube, color: "text-red-500 hover:text-red-400" }
+        case "tiktok": return { icon: Music2, color: "text-slate-300 hover:text-white" }
+        case "spotify": return { icon: Headphones, color: "text-green-500 hover:text-green-400" }
+        case "apple music": return { icon: Music2, color: "text-rose-500 hover:text-rose-400" }
+        case "soundcloud": return { icon: Globe, color: "text-orange-500 hover:text-orange-400" }
+        default: return { icon: Globe, color: "text-white/70 hover:text-white" }
+    }
+}
 type Locale = "fr" | "en" | "es"
 
 const LOCALE_COPY: Record<
@@ -107,24 +123,28 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
     // Extract unique values
     const types = useMemo(() => {
-        const unique = new Set(artists.map(a => a.type).filter(Boolean))
+        const unique = new Set(artists.flatMap(a => (a.type || []).map(t => t[lang])).filter(Boolean))
         return Array.from(unique)
-    }, [artists])
+    }, [artists, lang])
 
     const genres = useMemo(() => {
-        const unique = new Set(artists.map(a => a.musicalGenre).filter(Boolean))
+        const unique = new Set(artists.flatMap(a => (a.musicalGenre || []).map(g => g[lang])).filter(Boolean))
         return Array.from(unique)
-    }, [artists])
+    }, [artists, lang])
 
     const filteredArtists = useMemo(() => {
         return artists.filter(artist => {
-            const matchType = activeType === "all" || artist.type === activeType
-            const matchGenre = activeGenre === "all" || artist.musicalGenre === activeGenre
+            const artistTypes = (artist.type || []).map(t => t[lang])
+            const artistGenres = (artist.musicalGenre || []).map(g => g[lang])
+            const artistTags = (artist.tags || []).map(t => t[lang])
+
+            const matchType = activeType === "all" || artistTypes.includes(activeType)
+            const matchGenre = activeGenre === "all" || artistGenres.includes(activeGenre)
             const matchSearch = artist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                artist.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+                artistTags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
             return matchType && matchGenre && matchSearch && artist.available
         })
-    }, [artists, activeType, activeGenre, searchQuery])
+    }, [artists, activeType, activeGenre, searchQuery, lang])
 
     if (loading) {
         return (
@@ -294,12 +314,16 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
                                                 {/* Tags / Badges */}
                                                 <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
-                                                    <Badge className="bg-slate-900/80 backdrop-blur text-emerald-300 border border-emerald-500/30">
-                                                        {artist.type}
-                                                    </Badge>
-                                                    <Badge className="bg-slate-900/80 backdrop-blur text-teal-300 border border-teal-500/30">
-                                                        {artist.musicalGenre}
-                                                    </Badge>
+                                                    {artist.type?.slice(0, 2).map((t, i) => (
+                                                        <Badge key={`t-${i}`} className="bg-slate-900/80 backdrop-blur text-emerald-300 border border-emerald-500/30">
+                                                            {t[lang]}
+                                                        </Badge>
+                                                    ))}
+                                                    {artist.musicalGenre?.slice(0, 2).map((g, i) => (
+                                                        <Badge key={`g-${i}`} className="bg-slate-900/80 backdrop-blur text-teal-300 border border-teal-500/30">
+                                                            {g[lang]}
+                                                        </Badge>
+                                                    ))}
                                                     {featuredBadge && (
                                                         <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-none shadow-lg">
                                                             Populaire
@@ -311,18 +335,63 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                     <h3 className="text-white font-bold text-2xl mb-1">{artist.name}</h3>
                                                 </div>
                                             </div>
-                                            <CardContent className="p-6 flex-1 flex flex-col justify-between">
+                                            <CardContent className="p-6 flex-1 flex flex-col justify-start">
                                                 {/* Summary / description without HTML tags */}
                                                 <div
-                                                    className="text-white/70 mb-6 line-clamp-3 overflow-hidden text-sm leading-relaxed"
-                                                    dangerouslySetInnerHTML={{ __html: artist.description }}
+                                                    className="text-white/70 mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed"
+                                                    dangerouslySetInnerHTML={{ __html: artist.description[lang] }}
                                                 />
 
+                                                {/* Socials & Follow */}
+                                                {artist.socials && artist.socials.length > 0 && (
+                                                    <div className="mb-4 bg-white/5 p-3 rounded-xl border border-white/10">
+                                                        <p className="text-white/90 text-sm font-semibold mb-3">Suivez "{artist.name}"</p>
+                                                        <div className="flex flex-wrap gap-3">
+                                                            {artist.socials.map((soc, i) => {
+                                                                const { icon: SocialIcon, color } = getSocialIconData(soc.platform)
+                                                                return (
+                                                                    <a key={i} href={soc.url} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-full bg-slate-950/80 border border-white/5 transition-all w-9 h-9 flex items-center justify-center hover:scale-110 ${color}`} title={soc.platform}>
+                                                                        <SocialIcon className="w-5 h-5" />
+                                                                    </a>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Videos */}
+                                                {artist.videos && artist.videos.length > 0 && (
+                                                    <div className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10">
+                                                        <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2"><PlayCircle className="w-4 h-4 text-emerald-400" /> Vidéos</h4>
+                                                        <div className="relative">
+                                                            <Carousel className="w-full">
+                                                                <CarouselContent>
+                                                                    {artist.videos.map((vid, i) => {
+                                                                        let embedUrl = vid
+                                                                        if (vid.includes("youtube.com/watch?v=")) embedUrl = vid.replace("watch?v=", "embed/")
+                                                                        else if (vid.includes("youtu.be/")) embedUrl = vid.replace("youtu.be/", "youtube.com/embed/")
+
+                                                                        return (
+                                                                            <CarouselItem key={i}>
+                                                                                <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10">
+                                                                                    <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
+                                                                                </div>
+                                                                            </CarouselItem>
+                                                                        )
+                                                                    })}
+                                                                </CarouselContent>
+                                                                <CarouselPrevious className="absolute left-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                                                                <CarouselNext className="absolute right-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                                                            </Carousel>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 <div className="flex flex-wrap gap-2 mt-auto">
-                                                    {artist.tags.map((tag, idx) => (
+                                                    {(artist.tags || []).map((tag, idx) => (
                                                         <Badge key={idx} variant="secondary" className="bg-white/5 border border-white/10 text-white/80 text-xs px-3 py-1">
                                                             <Tag className="w-3 h-3 mr-1 inline opacity-50" />
-                                                            {tag}
+                                                            {tag[lang]}
                                                         </Badge>
                                                     ))}
                                                 </div>

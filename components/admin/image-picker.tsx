@@ -1,11 +1,11 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ImageIcon, Upload, LinkIcon, Trash2 } from "lucide-react"
+import { ImageIcon, Upload, LinkIcon, Trash2, Loader2 } from "lucide-react"
 
 interface ImagePickerProps {
   label?: string
@@ -18,14 +18,33 @@ export default function ImagePicker({ label = "Logo / Icône", value, onChange, 
   const fileRef = useRef<HTMLInputElement>(null)
   const urlRef = useRef<HTMLInputElement>(null)
 
-  const onFile = (file?: File) => {
+  const [isUploading, setIsUploading] = useState(false)
+
+  const onFile = async (file?: File) => {
     if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      const dataUrl = reader.result as string
-      onChange(dataUrl)
+    setIsUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        alert(err.error || "Erreur d'upload")
+        return
+      }
+
+      const data = await res.json()
+      onChange(data.url)
+    } catch (e) {
+      alert("Erreur de connexion lors de l'upload")
+    } finally {
+      setIsUploading(false)
     }
-    reader.readAsDataURL(file)
   }
 
   const onPickFile = () => fileRef.current?.click()
@@ -68,11 +87,12 @@ export default function ImagePicker({ label = "Logo / Icône", value, onChange, 
                 <Button
                   type="button"
                   onClick={onPickFile}
+                  disabled={isUploading}
                   className="bg-purple-600 hover:bg-purple-700 text-white"
                   size="sm"
                 >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Importer depuis l’ordinateur
+                  {isUploading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Upload className="w-4 h-4 mr-2" />}
+                  {isUploading ? "Upload en cours..." : "Importer depuis l’ordinateur"}
                 </Button>
                 <input
                   ref={fileRef}

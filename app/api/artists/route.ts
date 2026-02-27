@@ -44,7 +44,7 @@ export async function GET() {
             await redis.set("artists", JSON.stringify(artists))
         }
 
-        return NextResponse.json({ artists: artists.sort((a, b) => a.order - b.order) })
+        return NextResponse.json({ artists: (artists as Artist[]).sort((a, b) => (a.order || 0) - (b.order || 0)) })
     } catch (error) {
         console.error("[AV] Error in artists API:", error)
         return NextResponse.json({ artists: defaultArtists })
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
         }
 
-        const body = await request.json()
+        const body = (await request.json()) as Artist
         if (!redis) return NextResponse.json({ error: "Service indisponible" }, { status: 503 })
 
         const data = await redis.get("artists")
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         const newArtist: Artist = {
             ...body,
             id: body.id || `artist-${Date.now()}`,
-            order: body.order || (artists.length > 0 ? Math.max(...artists.map(a => a.order)) + 1 : 1)
+            order: body.order || (artists.length > 0 ? Math.max(...artists.map(a => a.order || 0)) + 1 : 1)
         }
 
         artists.push(newArtist)
@@ -89,7 +89,7 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
         }
 
-        const body = await request.json()
+        const body = (await request.json()) as Artist
         const { id, ...updateData } = body
         if (!redis) return NextResponse.json({ error: "Service indisponible" }, { status: 503 })
 
