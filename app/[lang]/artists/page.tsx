@@ -353,7 +353,11 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
                                                 {/* Photos & Vidéos (Combined Media Carousel) */}
                                                 {(() => {
-                                                    const medias = [...(artist.photos || []), ...(artist.videos || [])].filter(Boolean)
+                                                    const medias = [...(artist.photos || []), ...(artist.videos || [])].filter(url => {
+                                                        if (!url) return false;
+                                                        if (url.includes("placeholder")) return false;
+                                                        return true;
+                                                    })
                                                     if (medias.length === 0) return null
 
                                                     return (
@@ -382,17 +386,13 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                             let embedUrl = mediaUrl
                                                                             let isYoutube = false
 
-                                                                            // Extract clean YouTube ID
+                                                                            // Extract clean YouTube ID using robust regex
                                                                             let videoId = "";
-                                                                            try {
-                                                                                if (mediaUrl.includes("youtube.com/watch")) {
-                                                                                    videoId = new URL(mediaUrl).searchParams.get("v") || "";
-                                                                                } else if (mediaUrl.includes("youtu.be/")) {
-                                                                                    videoId = mediaUrl.split("youtu.be/")[1]?.split("?")[0];
-                                                                                } else if (mediaUrl.includes("youtube.com/embed/")) {
-                                                                                    videoId = mediaUrl.split("youtube.com/embed/")[1]?.split("?")[0];
-                                                                                }
-                                                                            } catch (e) { }
+                                                                            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+                                                                            const ytMatch = mediaUrl.match(ytRegex);
+                                                                            if (ytMatch && ytMatch[1]) {
+                                                                                videoId = ytMatch[1];
+                                                                            }
 
                                                                             if (videoId) {
                                                                                 embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`
@@ -403,7 +403,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                                 <CarouselItem key={`vid-${i}`}>
                                                                                     <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
                                                                                         {isYoutube ? (
-                                                                                            <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
+                                                                                            <iframe src={embedUrl} className="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                                                                                         ) : (
                                                                                             <video src={embedUrl} controls className="w-full h-full object-contain" />
                                                                                         )}
