@@ -33,18 +33,21 @@ export async function GET() {
         const data = await redis.get("artists")
 
         if (data) {
-            if (typeof data === "string") {
-                artists = JSON.parse(data)
-            } else {
-                artists = data as Artist[]
-            }
+            let parsed = typeof data === "string" ? JSON.parse(data) : data
+            // Migration: handle old schema where type and musicalGenre were objects
+            artists = parsed.map((a: any) => ({
+                ...a,
+                type: Array.isArray(a.type) ? a.type : (a.type ? [a.type] : []),
+                musicalGenre: Array.isArray(a.musicalGenre) ? a.musicalGenre : (a.musicalGenre ? [a.musicalGenre] : []),
+                socials: a.socials || []
+            }))
         } else {
             // Initialize with default data if empty
             artists = defaultArtists
             await redis.set("artists", JSON.stringify(artists))
         }
 
-        return NextResponse.json({ artists: (artists as Artist[]).sort((a, b) => (a.order || 0) - (b.order || 0)) })
+        return NextResponse.json({ artists: artists.sort((a, b) => (a.order || 0) - (b.order || 0)) })
     } catch (error) {
         console.error("[AV] Error in artists API:", error)
         return NextResponse.json({ artists: defaultArtists })
