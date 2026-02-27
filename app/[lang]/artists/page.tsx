@@ -342,6 +342,15 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                     dangerouslySetInnerHTML={{ __html: artist.description[lang] }}
                                                 />
 
+                                                <div className="flex flex-wrap gap-2 mb-4">
+                                                    {(artist.tags || []).map((tag, idx) => (
+                                                        <Badge key={idx} variant="secondary" className="bg-white/5 border border-white/10 text-white/80 text-xs px-3 py-1">
+                                                            <Music className="w-3 h-3 mr-1 inline opacity-50" />
+                                                            {tag[lang]}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+
                                                 {/* Photos & Vidéos (Combined Media Carousel) */}
                                                 {(() => {
                                                     const medias = [...(artist.photos || []), ...(artist.videos || [])].filter(Boolean)
@@ -374,9 +383,19 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                             let isYoutube = false
 
                                                                             // Extract clean YouTube ID
-                                                                            const ytMatch = mediaUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
-                                                                            if (ytMatch && ytMatch[1]) {
-                                                                                embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`
+                                                                            let videoId = "";
+                                                                            try {
+                                                                                if (mediaUrl.includes("youtube.com/watch")) {
+                                                                                    videoId = new URL(mediaUrl).searchParams.get("v") || "";
+                                                                                } else if (mediaUrl.includes("youtu.be/")) {
+                                                                                    videoId = mediaUrl.split("youtu.be/")[1]?.split("?")[0];
+                                                                                } else if (mediaUrl.includes("youtube.com/embed/")) {
+                                                                                    videoId = mediaUrl.split("youtube.com/embed/")[1]?.split("?")[0];
+                                                                                }
+                                                                            } catch (e) { }
+
+                                                                            if (videoId) {
+                                                                                embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`
                                                                                 isYoutube = true
                                                                             }
 
@@ -402,8 +421,8 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                 })()}
 
                                                 {/* Socials & Follow (Moved below media) */}
-                                                {artist.socials && artist.socials.length > 0 && (
-                                                    <div className="mb-4 bg-white/5 p-3 rounded-xl border border-white/10">
+                                                {artist.socials && artist.socials.length > 0 ? (
+                                                    <div className="mb-4 mt-auto bg-white/5 p-3 rounded-xl border border-white/10">
                                                         <p className="text-white/90 text-sm font-semibold mb-3">Suivez "{artist.name}"</p>
                                                         <div className="flex flex-wrap gap-3">
                                                             {artist.socials.map((soc, i) => {
@@ -416,16 +435,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                             })}
                                                         </div>
                                                     </div>
-                                                )}
-
-                                                <div className="flex flex-wrap gap-2 mt-auto">
-                                                    {(artist.tags || []).map((tag, idx) => (
-                                                        <Badge key={idx} variant="secondary" className="bg-white/5 border border-white/10 text-white/80 text-xs px-3 py-1">
-                                                            <Tag className="w-3 h-3 mr-1 inline opacity-50" />
-                                                            {tag[lang]}
-                                                        </Badge>
-                                                    ))}
-                                                </div>
+                                                ) : <div className="mt-auto"></div>}
                                             </CardContent>
                                         </Card>
                                     </motion.div>
