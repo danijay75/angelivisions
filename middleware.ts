@@ -7,12 +7,12 @@ export function middleware(request: NextRequest) {
     default-src 'self';
     script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com https://challenges.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https://challenges.cloudflare.com;
+    img-src 'self' blob: data: https://challenges.cloudflare.com https://img.youtube.com;
     font-src 'self' data: https://fonts.gstatic.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
-    frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://*.google.com;
+    frame-src 'self' https://challenges.cloudflare.com https://www.google.com https://*.google.com https://www.youtube.com;
     frame-ancestors 'self';
     connect-src 'self' https://challenges.cloudflare.com;
     upgrade-insecure-requests;

@@ -320,16 +320,6 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
                                                 {/* Tags / Badges */}
                                                 <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
-                                                    {artist.type?.slice(0, 2).map((t, i) => (
-                                                        <Badge key={`t-${i}`} className="bg-slate-900/80 backdrop-blur text-emerald-300 border border-emerald-500/30">
-                                                            {t[lang]}
-                                                        </Badge>
-                                                    ))}
-                                                    {artist.musicalGenre?.slice(0, 2).map((g, i) => (
-                                                        <Badge key={`g-${i}`} className="bg-slate-900/80 backdrop-blur text-teal-300 border border-teal-500/30">
-                                                            {g[lang]}
-                                                        </Badge>
-                                                    ))}
                                                     {featuredBadge && (
                                                         <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-none shadow-lg">
                                                             Populaire
