@@ -342,7 +342,66 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                     dangerouslySetInnerHTML={{ __html: artist.description[lang] }}
                                                 />
 
-                                                {/* Socials & Follow */}
+                                                {/* Photos & Vidéos (Combined Media Carousel) */}
+                                                {(() => {
+                                                    const medias = [...(artist.photos || []), ...(artist.videos || [])].filter(Boolean)
+                                                    if (medias.length === 0) return null
+
+                                                    return (
+                                                        <div className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10">
+                                                            <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2">
+                                                                <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
+                                                            </h4>
+                                                            <div className="relative">
+                                                                <Carousel className="w-full">
+                                                                    <CarouselContent>
+                                                                        {medias.map((mediaUrl, i) => {
+                                                                            // Detect if it's an image
+                                                                            const isImage = mediaUrl.match(/\.(jpeg|jpg|gif|png|webp|svg|base64)/i) || mediaUrl.startsWith('data:image');
+
+                                                                            if (isImage) {
+                                                                                return (
+                                                                                    <CarouselItem key={i}>
+                                                                                        <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black flex items-center justify-center">
+                                                                                            <img src={mediaUrl} alt={`${artist.name} media`} className="w-full h-full object-cover" />
+                                                                                        </div>
+                                                                                    </CarouselItem>
+                                                                                )
+                                                                            }
+
+                                                                            // Otherwise, handle as video
+                                                                            let embedUrl = mediaUrl
+                                                                            let isYoutube = false
+
+                                                                            // Extract clean YouTube ID
+                                                                            const ytMatch = mediaUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
+                                                                            if (ytMatch && ytMatch[1]) {
+                                                                                embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`
+                                                                                isYoutube = true
+                                                                            }
+
+                                                                            return (
+                                                                                <CarouselItem key={`vid-${i}`}>
+                                                                                    <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
+                                                                                        {isYoutube ? (
+                                                                                            <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
+                                                                                        ) : (
+                                                                                            <video src={embedUrl} controls className="w-full h-full object-contain" />
+                                                                                        )}
+                                                                                    </div>
+                                                                                </CarouselItem>
+                                                                            )
+                                                                        })}
+                                                                    </CarouselContent>
+                                                                    <CarouselPrevious className="absolute left-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                                                                    <CarouselNext className="absolute right-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                                                                </Carousel>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })()}
+
+                                                {/* Socials & Follow (Moved below media) */}
                                                 {artist.socials && artist.socials.length > 0 && (
                                                     <div className="mb-4 bg-white/5 p-3 rounded-xl border border-white/10">
                                                         <p className="text-white/90 text-sm font-semibold mb-3">Suivez "{artist.name}"</p>
@@ -355,39 +414,6 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                     </a>
                                                                 )
                                                             })}
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {/* Videos */}
-                                                {artist.videos && artist.videos.length > 0 && (
-                                                    <div className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10">
-                                                        <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2"><PlayCircle className="w-4 h-4 text-emerald-400" /> Vidéos</h4>
-                                                        <div className="relative">
-                                                            <Carousel className="w-full">
-                                                                <CarouselContent>
-                                                                    {artist.videos.map((vid, i) => {
-                                                                        let embedUrl = vid
-                                                                        let isYoutube = false;
-                                                                        if (vid.includes("youtube.com/watch?v=")) { embedUrl = vid.replace("watch?v=", "embed/"); isYoutube = true; }
-                                                                        else if (vid.includes("youtu.be/")) { embedUrl = vid.replace("youtu.be/", "youtube.com/embed/"); isYoutube = true; }
-
-                                                                        return (
-                                                                            <CarouselItem key={i}>
-                                                                                <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
-                                                                                    {isYoutube ? (
-                                                                                        <iframe src={embedUrl} className="w-full h-full border-0" allowFullScreen></iframe>
-                                                                                    ) : (
-                                                                                        <video src={embedUrl} controls className="w-full h-full object-contain" />
-                                                                                    )}
-                                                                                </div>
-                                                                            </CarouselItem>
-                                                                        )
-                                                                    })}
-                                                                </CarouselContent>
-                                                                <CarouselPrevious className="absolute left-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
-                                                                <CarouselNext className="absolute right-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
-                                                            </Carousel>
                                                         </div>
                                                     </div>
                                                 )}
