@@ -423,7 +423,7 @@ export default function ArtistsManager() {
 
                         <div className="space-y-4">
                             <Label className="text-white">Photos</Label>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {[0, 1, 2, 3].map(i => (
                                     <ImagePicker key={i} label={`Photo ${i + 1}`} value={formData.photos?.[i]} onChange={v => handleImageChange(i, v)} />
                                 ))}
