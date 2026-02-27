@@ -1,7 +1,7 @@
 "use client"
 
-import { use, useEffect, useState, useMemo } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { use, useEffect, useState, useMemo, useRef } from "react"
+import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -89,6 +89,87 @@ const LOCALE_COPY: Record<
         typesLabel: "Tipo de artista :",
         genresLabel: "Género musical :"
     },
+}
+
+function MediaCarousel({ medias, artistName }: { medias: string[], artistName: string }) {
+    const ref = useRef<HTMLDivElement>(null)
+    const inView = useInView(ref, { amount: 0.3 })
+    const plugin = useRef(Autoplay({ delay: 3500, stopOnInteraction: false }))
+
+    useEffect(() => {
+        if (!plugin.current) return
+        if (inView) {
+            plugin.current.play()
+        } else {
+            plugin.current.stop()
+        }
+    }, [inView])
+
+    return (
+        <div
+            ref={ref}
+            className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10"
+            onMouseEnter={() => plugin.current.play()}
+            onMouseLeave={() => { if (!inView) plugin.current.stop() }}
+        >
+            <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2">
+                <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
+            </h4>
+            <div className="relative">
+                <Carousel
+                    plugins={[plugin.current]}
+                    opts={{ loop: true }}
+                    className="w-full"
+                >
+                    <CarouselContent>
+                        {medias.map((mediaUrl, i) => {
+                            const isImage = mediaUrl.match(/\.(jpeg|jpg|gif|png|webp|svg|base64)/i) || mediaUrl.startsWith('data:image');
+
+                            if (isImage) {
+                                return (
+                                    <CarouselItem key={i}>
+                                        <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black flex items-center justify-center">
+                                            <img src={mediaUrl} alt={`${artistName} media`} className="w-full h-full object-cover" />
+                                        </div>
+                                    </CarouselItem>
+                                )
+                            }
+
+                            let isYoutube = false;
+                            let videoId = "";
+
+                            if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
+                                isYoutube = true;
+                                const match = mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([^"&?\/\s]{11})/i);
+                                if (match && match[1]) {
+                                    videoId = match[1];
+                                }
+                            }
+
+                            return (
+                                <CarouselItem key={`vid-${i}`}>
+                                    <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
+                                        {isYoutube ? (
+                                            <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
+                                                <img src={videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
+                                                    <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
+                                                </div>
+                                            </a>
+                                        ) : (
+                                            <video src={mediaUrl} controls className="w-full h-full object-contain" />
+                                        )}
+                                    </div>
+                                </CarouselItem>
+                            )
+                        })}
+                    </CarouselContent>
+                    <CarouselPrevious className="absolute left-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                    <CarouselNext className="absolute right-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
+                </Carousel>
+            </div>
+        </div>
+    )
 }
 
 export default function ArtistsPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -356,68 +437,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                     })
                                                     if (medias.length === 0) return null
 
-                                                    return (
-                                                        <div className="mb-4 bg-white/5 p-3 px-6 rounded-xl border border-white/10">
-                                                            <h4 className="text-white/90 text-sm font-semibold mb-3 flex items-center gap-2">
-                                                                <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
-                                                            </h4>
-                                                            <div className="relative">
-                                                                <Carousel
-                                                                    plugins={[Autoplay({ delay: 4000 })]}
-                                                                    opts={{ loop: true }}
-                                                                    className="w-full"
-                                                                >
-                                                                    <CarouselContent>
-                                                                        {medias.map((mediaUrl, i) => {
-                                                                            // Detect if it's an image
-                                                                            const isImage = mediaUrl.match(/\.(jpeg|jpg|gif|png|webp|svg|base64)/i) || mediaUrl.startsWith('data:image');
-
-                                                                            if (isImage) {
-                                                                                return (
-                                                                                    <CarouselItem key={i}>
-                                                                                        <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black flex items-center justify-center">
-                                                                                            <img src={mediaUrl} alt={`${artist.name} media`} className="w-full h-full object-cover" />
-                                                                                        </div>
-                                                                                    </CarouselItem>
-                                                                                )
-                                                                            }
-
-                                                                            // Otherwise, handle as video
-                                                                            let isYoutube = false;
-                                                                            let videoId = "";
-
-                                                                            if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
-                                                                                isYoutube = true;
-                                                                                const match = mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([^"&?\/\s]{11})/i);
-                                                                                if (match && match[1]) {
-                                                                                    videoId = match[1];
-                                                                                }
-                                                                            }
-
-                                                                            return (
-                                                                                <CarouselItem key={`vid-${i}`}>
-                                                                                    <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
-                                                                                        {isYoutube ? (
-                                                                                            <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
-                                                                                                <img src={videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                                                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
-                                                                                                    <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
-                                                                                                </div>
-                                                                                            </a>
-                                                                                        ) : (
-                                                                                            <video src={mediaUrl} controls className="w-full h-full object-contain" />
-                                                                                        )}
-                                                                                    </div>
-                                                                                </CarouselItem>
-                                                                            )
-                                                                        })}
-                                                                    </CarouselContent>
-                                                                    <CarouselPrevious className="absolute left-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
-                                                                    <CarouselNext className="absolute right-[-16px] w-8 h-8 rounded-full border border-white/20 bg-black/60 hover:bg-black/90 text-white z-10" />
-                                                                </Carousel>
-                                                            </div>
-                                                        </div>
-                                                    )
+                                                    return <MediaCarousel medias={medias} artistName={artist.name} />
                                                 })()}
 
                                                 {/* Socials & Follow (Moved below media) */}
