@@ -11,6 +11,7 @@ import { useI18n } from "@/components/i18n/i18n-provider"
 import { type Artist } from "@/data/artists"
 import { Input } from "@/components/ui/input"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 import { Instagram, Facebook, Twitter, Youtube, Music2, Headphones, PlayCircle, Globe, X as XIcon } from "lucide-react"
 
 const getSocialIconData = (platform: string) => {
@@ -371,7 +372,11 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                 <PlayCircle className="w-4 h-4 text-emerald-400" /> Photos & Vidéos
                                                             </h4>
                                                             <div className="relative">
-                                                                <Carousel className="w-full">
+                                                                <Carousel
+                                                                    plugins={[Autoplay({ delay: 4000 })]}
+                                                                    opts={{ loop: true }}
+                                                                    className="w-full"
+                                                                >
                                                                     <CarouselContent>
                                                                         {medias.map((mediaUrl, i) => {
                                                                             // Detect if it's an image
@@ -393,29 +398,9 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
 
                                                                             if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
                                                                                 isYoutube = true;
-                                                                                try {
-                                                                                    const urlObj = new URL(mediaUrl);
-                                                                                    if (urlObj.hostname.includes("youtube.com")) {
-                                                                                        if (urlObj.pathname === "/watch") {
-                                                                                            videoId = urlObj.searchParams.get("v") || "";
-                                                                                        } else if (urlObj.pathname.startsWith("/embed/")) {
-                                                                                            videoId = urlObj.pathname.split("/embed/")[1];
-                                                                                        } else if (urlObj.pathname.startsWith("/v/")) {
-                                                                                            videoId = urlObj.pathname.split("/v/")[1];
-                                                                                        } else if (urlObj.pathname.startsWith("/shorts/")) {
-                                                                                            videoId = urlObj.pathname.split("/shorts/")[1];
-                                                                                        } else if (urlObj.pathname.startsWith("/live/")) {
-                                                                                            videoId = urlObj.pathname.split("/live/")[1];
-                                                                                        }
-                                                                                    } else if (urlObj.hostname.includes("youtu.be")) {
-                                                                                        videoId = urlObj.pathname.slice(1).split("?")[0];
-                                                                                    }
-                                                                                } catch (e) {
-                                                                                    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-                                                                                    const ytMatch = mediaUrl.match(ytRegex);
-                                                                                    if (ytMatch && ytMatch[1]) {
-                                                                                        videoId = ytMatch[1];
-                                                                                    }
+                                                                                const match = mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([^"&?\/\s]{11})/i);
+                                                                                if (match && match[1]) {
+                                                                                    videoId = match[1];
                                                                                 }
                                                                             }
 
@@ -424,7 +409,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                                                     <div className="aspect-video w-full rounded overflow-hidden shadow-lg border border-white/10 bg-black">
                                                                                         {isYoutube ? (
                                                                                             <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
-                                                                                                <img src={videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                                                                                <img src={videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                                                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
                                                                                                     <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
                                                                                                 </div>
