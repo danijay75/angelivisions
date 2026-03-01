@@ -20,6 +20,8 @@ import {
   Star,
   ArrowRight,
   CheckCircle,
+  Ticket,
+  Trophy,
 } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
@@ -60,17 +62,17 @@ export default function InvestmentPageClient() {
     },
     {
       id: "2",
-      title: "Spectacle Immersif VR",
+      title: "Festival de Musique Électronique",
       category: t("investment.sectors.immersif"),
       categoryKey: "immersif",
-      description: "Création d'un spectacle théâtral en réalité virtuelle combinant performance live et technologie.",
+      description: "Organisation d'un festival en plein air sur 3 jours, réunissant des DJs internationaux.",
       targetAmount: 75000,
       currentAmount: 45000,
       expectedReturn: "20-30%",
       duration: "18 mois",
       risk: "high",
-      highlights: ["Technologie VR innovante", "Tournée internationale prévue", "Partenariat Meta"],
-      image: "/vr-theater-immersive.png",
+      highlights: ["Lieu d'exception", "Billetterie en pré-vente", "Partenariats sponsors"],
+      image: "/placeholder.svg?text=Festival",
     },
     {
       id: "3",
@@ -101,13 +103,28 @@ export default function InvestmentPageClient() {
       highlights: ["20+ humoristes confirmés", "Plateforme streaming dédiée", "NFT exclusifs"],
       image: "/stand-up-comedy-festival.png",
     },
+    {
+      id: "5",
+      title: "Compétition eSport / Concert de Clôture",
+      category: t("investment.sectors.sport"),
+      categoryKey: "sport",
+      description: "Un événement hybride combinant une compétition sportive (eSport) et un grand concert de clôture.",
+      targetAmount: 90000,
+      currentAmount: 50000,
+      expectedReturn: "15-22%",
+      duration: "12 mois",
+      risk: "low",
+      highlights: ["Fort engagement communautaire", "Retombées sponsoring", "Diffusion en direct"],
+      image: "/placeholder.svg?text=Sport+Event",
+    },
   ]
 
   const categories = [
     { id: "musique", name: t("investment.sectors.musique"), icon: Music, color: "bg-blue-500" },
     { id: "theatre", name: t("investment.sectors.theatre"), icon: Theater, color: "bg-purple-500" },
     { id: "humour", name: t("investment.sectors.humour"), icon: Mic, color: "bg-orange-500" },
-    { id: "immersif", name: t("investment.sectors.immersif"), icon: Gamepad2, color: "bg-green-500" },
+    { id: "immersif", name: t("investment.sectors.immersif"), icon: Ticket, color: "bg-green-500" },
+    { id: "sport", name: t("investment.sectors.sport"), icon: Trophy, color: "bg-red-500" },
   ]
 
   const filteredProjects =
@@ -209,7 +226,7 @@ export default function InvestmentPageClient() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {categories.map((category) => (
               <Card key={category.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader className="text-center">
@@ -234,14 +251,17 @@ export default function InvestmentPageClient() {
             <p className="text-xl text-gray-600">{t("investment.projectsSubtitle")}</p>
           </div>
 
-          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="all">{t("investment.tabs.all")}</TabsTrigger>
-              <TabsTrigger value="musique">{t("investment.tabs.musique")}</TabsTrigger>
-              <TabsTrigger value="theatre">{t("investment.tabs.theatre")}</TabsTrigger>
-              <TabsTrigger value="humour">{t("investment.tabs.humour")}</TabsTrigger>
-              <TabsTrigger value="immersif">{t("investment.tabs.immersif")}</TabsTrigger>
-            </TabsList>
+          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8 overflow-hidden">
+            <div className="overflow-x-auto pb-2">
+              <TabsList className="inline-flex min-w-max md:w-full md:grid md:grid-cols-6 h-auto">
+                <TabsTrigger className="py-2" value="all">{t("investment.tabs.all")}</TabsTrigger>
+                <TabsTrigger className="py-2" value="musique">{t("investment.tabs.musique")}</TabsTrigger>
+                <TabsTrigger className="py-2" value="theatre">{t("investment.tabs.theatre")}</TabsTrigger>
+                <TabsTrigger className="py-2" value="humour">{t("investment.tabs.humour")}</TabsTrigger>
+                <TabsTrigger className="py-2" value="immersif">{t("investment.tabs.immersif")}</TabsTrigger>
+                <TabsTrigger className="py-2" value="sport">{t("investment.tabs.sport")}</TabsTrigger>
+              </TabsList>
+            </div>
           </Tabs>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
