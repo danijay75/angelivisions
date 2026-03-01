@@ -197,29 +197,7 @@ export default function InvestmentPageClient() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-emerald-600 mb-2">€2.5M+</div>
-              <div className="text-gray-600">{t("investment.stats.invested")}</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-emerald-600 mb-2">150+</div>
-              <div className="text-gray-600">{t("investment.stats.projects")}</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-emerald-600 mb-2">22%</div>
-              <div className="text-gray-600">{t("investment.stats.return")}</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-emerald-600 mb-2">5000+</div>
-              <div className="text-gray-600">{t("investment.stats.investors")}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Categories Section */}
       <section className="py-16 px-4 bg-slate-50">
