@@ -12,19 +12,25 @@ import { type Artist } from "@/data/artists"
 import { Input } from "@/components/ui/input"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { Instagram, Facebook, Twitter, Youtube, Music2, Headphones, PlayCircle, Globe, X as XIcon } from "lucide-react"
+import { PlayCircle, Globe } from "lucide-react"
+import { FaInstagram, FaFacebook, FaTwitter, FaYoutube, FaTiktok, FaSpotify, FaApple, FaSoundcloud, FaDeezer } from "react-icons/fa"
+import { FaXTwitter } from "react-icons/fa6"
+import { SiTidal, SiYoutubemusic } from "react-icons/si"
 
 const getSocialIconData = (platform: string) => {
     switch (platform.toLowerCase()) {
-        case "instagram": return { icon: Instagram, color: "text-pink-500 hover:text-pink-400" }
-        case "facebook": return { icon: Facebook, color: "text-blue-500 hover:text-blue-400" }
-        case "x": return { icon: XIcon, color: "text-slate-300 hover:text-white" }
-        case "twitter": return { icon: Twitter, color: "text-blue-400 hover:text-blue-300" }
-        case "youtube": return { icon: Youtube, color: "text-red-500 hover:text-red-400" }
-        case "tiktok": return { icon: Music2, color: "text-slate-300 hover:text-white" }
-        case "spotify": return { icon: Headphones, color: "text-green-500 hover:text-green-400" }
-        case "apple music": return { icon: Music2, color: "text-rose-500 hover:text-rose-400" }
-        case "soundcloud": return { icon: Globe, color: "text-orange-500 hover:text-orange-400" }
+        case "instagram": return { icon: FaInstagram, color: "text-pink-500 hover:text-pink-400" }
+        case "facebook": return { icon: FaFacebook, color: "text-blue-500 hover:text-blue-400" }
+        case "x": return { icon: FaXTwitter, color: "text-slate-300 hover:text-white" }
+        case "twitter": return { icon: FaTwitter, color: "text-blue-400 hover:text-blue-300" }
+        case "youtube": return { icon: FaYoutube, color: "text-red-500 hover:text-red-400" }
+        case "tiktok": return { icon: FaTiktok, color: "text-slate-300 hover:text-white" }
+        case "spotify": return { icon: FaSpotify, color: "text-green-500 hover:text-green-400" }
+        case "apple music": return { icon: FaApple, color: "text-rose-500 hover:text-rose-400" }
+        case "deezer": return { icon: FaDeezer, color: "text-purple-500 hover:text-purple-400" }
+        case "tidal": return { icon: SiTidal, color: "text-slate-900 hover:text-slate-700 bg-white rounded-full scale-90" }
+        case "youtube music": return { icon: SiYoutubemusic, color: "text-red-500 hover:text-red-400" }
+        case "soundcloud": return { icon: FaSoundcloud, color: "text-orange-500 hover:text-orange-400" }
         default: return { icon: Globe, color: "text-white/70 hover:text-white" }
     }
 }
@@ -173,7 +179,7 @@ function MediaCarousel({ medias, artistName }: { medias: string[], artistName: s
                                             <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer" className="relative w-full h-full block group cursor-pointer">
                                                 <img src={videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : "/placeholder.svg?text=YouTube+Video"} alt="YouTube Video" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/30 transition-colors">
-                                                    <Youtube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
+                                                    <FaYoutube className="w-16 h-16 text-red-500 drop-shadow-lg group-hover:scale-110 transition-transform" />
                                                 </div>
                                             </a>
                                         ) : (
