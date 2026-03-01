@@ -460,9 +460,26 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                     return <MediaCarousel medias={medias} artistName={artist.name} />
                                                 })()}
 
-                                                {/* Socials & Follow (Moved below media) */}
-                                                {artist.socials && artist.socials.length > 0 ? (
+                                                {/* Music Links */}
+                                                {artist.musicLinks && artist.musicLinks.length > 0 ? (
                                                     <div className="mb-4 mt-auto bg-white/5 p-3 rounded-xl border border-white/10 text-center">
+                                                        <p className="text-white/90 text-sm font-semibold mb-3">Écouter sur</p>
+                                                        <div className="flex flex-wrap gap-3 justify-center items-center">
+                                                            {artist.musicLinks.map((link, i) => {
+                                                                const { icon: MusicIcon, color } = getSocialIconData(link.platform)
+                                                                return (
+                                                                    <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className={`p-2 rounded-full bg-slate-950/80 border border-white/5 transition-all w-9 h-9 flex items-center justify-center hover:scale-110 ${color}`} title={link.platform}>
+                                                                        <MusicIcon className="w-5 h-5" />
+                                                                    </a>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                ) : <div className="mt-auto"></div>}
+
+                                                {/* Socials & Follow (Moved below media) */}
+                                                {artist.socials && artist.socials.length > 0 && (
+                                                    <div className="mb-4 bg-white/5 p-3 rounded-xl border border-white/10 text-center">
                                                         <p className="text-white/90 text-sm font-semibold mb-3">Suivez "{artist.name}"</p>
                                                         <div className="flex flex-wrap gap-3 justify-center items-center">
                                                             {artist.socials.map((soc, i) => {
@@ -475,7 +492,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                             })}
                                                         </div>
                                                     </div>
-                                                ) : <div className="mt-auto"></div>}
+                                                )}
                                             </CardContent>
                                         </Card>
                                     </motion.div>

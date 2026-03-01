@@ -14,6 +14,7 @@ export type Artist = {
     photos: string[]
     videos: string[]
     socials?: { platform: string, url: string }[]
+    musicLinks?: { platform: string, url: string }[]
     tags: LocalizedString[]
     available: boolean
     featured: boolean

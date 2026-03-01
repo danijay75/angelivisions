@@ -31,11 +31,18 @@ export default function ArtistsManager() {
     const [newSocialPlatform, setNewSocialPlatform] = useState("Instagram")
     const [newSocialUrl, setNewSocialUrl] = useState("")
 
+    const [newMusicPlatform, setNewMusicPlatform] = useState("Spotify")
+    const [newMusicUrl, setNewMusicUrl] = useState("")
+
+    const [isUploadingPhotos, setIsUploadingPhotos] = useState(false)
+    const [newPhotoUrl, setNewPhotoUrl] = useState("")
+
     const canEdit = user?.role === "admin" || user?.role === "editor"
 
     const ARTIST_TYPES = ["DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
     const DEFAULT_MUSICAL_GENRES = ["Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
-    const SOCIAL_PLATFORMS = ["Instagram", "Facebook", "X", "YouTube", "TikTok", "Spotify", "Apple Music", "SoundCloud"]
+    const SOCIAL_PLATFORMS = ["Instagram", "Facebook", "X", "YouTube", "TikTok"]
+    const MUSIC_PLATFORMS = ["Spotify", "Apple Music", "Deezer", "Tidal", "SoundCloud", "YouTube Music"]
 
     const loadArtists = async () => {
         setLoading(true)
@@ -58,7 +65,7 @@ export default function ArtistsManager() {
 
     const handleEdit = (artist: Artist) => {
         setEditingArtist(artist)
-        setFormData({ ...artist, type: artist.type || [], musicalGenre: artist.musicalGenre || [], socials: artist.socials || [], videos: artist.videos || [] })
+        setFormData({ ...artist, type: artist.type || [], musicalGenre: artist.musicalGenre || [], socials: artist.socials || [], musicLinks: artist.musicLinks || [], videos: artist.videos || [] })
         setIsCreating(false)
     }
 
@@ -72,6 +79,7 @@ export default function ArtistsManager() {
             photos: [],
             videos: [],
             socials: [],
+            musicLinks: [],
             tags: [],
             available: true,
             featured: false,
@@ -121,15 +129,35 @@ export default function ArtistsManager() {
         }
     }
 
-    const handleImageChange = (index: number, value: string | undefined) => {
-        const photos = [...(formData.photos || [])]
-        if (value) {
-            if (index >= photos.length) photos.push(value)
-            else photos[index] = value
-        } else {
-            photos.splice(index, 1)
+    const onMultiplePhotosUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files
+        if (!files || files.length === 0) return
+
+        setIsUploadingPhotos(true)
+        const newPhotos = [...(formData.photos || [])]
+
+        try {
+            for (let i = 0; i < files.length; i++) {
+                const formDataUpload = new FormData()
+                formDataUpload.append("file", files[i])
+
+                const res = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formDataUpload,
+                })
+
+                if (res.ok) {
+                    const data = await res.json()
+                    newPhotos.push(data.url)
+                }
+            }
+            setFormData(prev => ({ ...prev, photos: newPhotos }))
+        } catch (error) {
+            alert("Erreur de connexion lors de l'upload des photos")
+        } finally {
+            setIsUploadingPhotos(false)
+            if (e.target) e.target.value = ""
         }
-        setFormData(prev => ({ ...prev, photos }))
     }
 
     // List helpers
@@ -227,6 +255,20 @@ export default function ArtistsManager() {
         const s = [...(formData.socials || [])]
         s.splice(index, 1)
         setFormData(prev => ({ ...prev, socials: s }))
+    }
+
+    const addMusicLink = () => {
+        if (!newMusicUrl.trim()) return
+        const m = [...(formData.musicLinks || [])]
+        m.push({ platform: newMusicPlatform, url: newMusicUrl })
+        setFormData(prev => ({ ...prev, musicLinks: m }))
+        setNewMusicUrl("")
+    }
+
+    const removeMusicLink = (index: number) => {
+        const m = [...(formData.musicLinks || [])]
+        m.splice(index, 1)
+        setFormData(prev => ({ ...prev, musicLinks: m }))
     }
 
     if (loading) return <div className="text-white/50 text-center p-8">Chargement des artistes...</div>
@@ -395,6 +437,32 @@ export default function ArtistsManager() {
                             </div>
                         </div>
 
+                        {/* Liens musicaux */}
+                        <div className="space-y-4">
+                            <Label className="text-white flex items-center gap-2"><Music className="w-4 h-4" /> Plateformes de Streaming</Label>
+                            <div className="space-y-2">
+                                {formData.musicLinks?.map((link, i) => (
+                                    <div key={i} className="flex gap-2 items-center bg-white/5 border border-white/10 p-2 rounded">
+                                        <Badge variant="outline" className="border-white/20 text-white w-24 justify-center">{link.platform}</Badge>
+                                        <code className="text-xs text-emerald-300 flex-1 truncate">{link.url}</code>
+                                        <Button variant="ghost" size="sm" onClick={() => removeMusicLink(i)} className="text-red-400 hover:text-red-300 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex gap-2 max-w-lg">
+                                <Select value={newMusicPlatform} onValueChange={setNewMusicPlatform}>
+                                    <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-900 border-white/10 text-white">
+                                        {MUSIC_PLATFORMS.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                                    </SelectContent>
+                                </Select>
+                                <Input value={newMusicUrl} onChange={e => setNewMusicUrl(e.target.value)} placeholder="https://..." className="flex-1 bg-white/5 border-white/10 text-white" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addMusicLink(); } }} />
+                                <Button type="button" onClick={addMusicLink} className="bg-white/10 text-white hover:bg-white/20">Ajouter</Button>
+                            </div>
+                        </div>
+
                         {/* Réseaux Sociaux */}
                         <div className="space-y-4">
                             <Label className="text-white flex items-center gap-2"><Link className="w-4 h-4" /> Réseaux Sociaux</Label>
@@ -423,10 +491,41 @@ export default function ArtistsManager() {
 
                         <div className="space-y-4">
                             <Label className="text-white">Photos</Label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {[0, 1, 2, 3].map(i => (
-                                    <ImagePicker key={i} label={`Photo ${i + 1}`} value={formData.photos?.[i]} onChange={v => handleImageChange(i, v)} />
-                                ))}
+
+                            {formData.photos && formData.photos.length > 0 && (
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/5 p-4 rounded-xl border border-white/10">
+                                    {formData.photos.map((photo, i) => (
+                                        <div key={i} className="relative group aspect-square rounded overflow-hidden border border-white/10 bg-black">
+                                            <img src={photo} alt="" className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <Button variant="destructive" size="sm" onClick={() => {
+                                                    const newPhotos = [...(formData.photos || [])];
+                                                    newPhotos.splice(i, 1);
+                                                    setFormData(prev => ({ ...prev, photos: newPhotos }));
+                                                }}>
+                                                    <Trash2 className="w-4 h-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="flex flex-col md:flex-row items-center gap-4 mt-4">
+                                <label className="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors w-full md:w-auto">
+                                    {isUploadingPhotos ? <span className="animate-spin text-xl leading-none">⚙</span> : <Plus className="w-4 h-4" />}
+                                    {isUploadingPhotos ? "Upload en cours..." : "Ajouter des photos"}
+                                    <input type="file" multiple accept="image/*" className="hidden" onChange={onMultiplePhotosUpload} disabled={isUploadingPhotos} />
+                                </label>
+
+                                <div className="flex-1 flex gap-2 w-full">
+                                    <Input value={newPhotoUrl} onChange={e => setNewPhotoUrl(e.target.value)} placeholder="Coller une URL d'image" className="bg-white/5 border-white/10 text-white" />
+                                    <Button type="button" onClick={() => {
+                                        if (!newPhotoUrl.trim()) return;
+                                        setFormData(prev => ({ ...prev, photos: [...(prev.photos || []), newPhotoUrl] }));
+                                        setNewPhotoUrl("");
+                                    }} className="bg-white/10 text-white hover:bg-white/20 whitespace-nowrap">Utiliser URL</Button>
+                                </div>
                             </div>
                         </div>
 
