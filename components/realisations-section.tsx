@@ -183,7 +183,10 @@ export default function RealisationsSection() {
                       </div>
                     </div>
                     <CardContent className="p-6">
-                      <p className="text-white/80 mb-4 line-clamp-2">{project.description}</p>
+                      <div
+                        className="text-white/80 mb-4 line-clamp-2 overflow-hidden text-sm leading-relaxed rich-text-content"
+                        dangerouslySetInnerHTML={{ __html: project.description }}
+                      />
 
                       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                         <div className="flex items-center text-white/70">
@@ -201,14 +204,14 @@ export default function RealisationsSection() {
                       </div>
 
                       <div className="flex flex-wrap gap-2">
-                        {project.services.slice(0, 2).map((service, idx) => (
+                        {(project.services || []).slice(0, 2).map((service, idx) => (
                           <Badge key={idx} variant="secondary" className="bg-white/10 text-white/80 text-xs">
                             {service}
                           </Badge>
                         ))}
-                        {project.services.length > 2 && (
+                        {(project.services || []).length > 2 && (
                           <Badge variant="secondary" className="bg-white/10 text-white/80 text-xs">
-                            +{project.services.length - 2}
+                            +{(project.services || []).length - 2}
                           </Badge>
                         )}
                       </div>

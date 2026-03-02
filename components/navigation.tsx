@@ -32,7 +32,7 @@ export default function Navigation() {
     () => [
       { href: `/${lang}#accueil`, label: t("nav.accueil") },
       { href: `/${lang}/services`, label: t("nav.services") },
-      { href: `/${lang}#realisations`, label: t("nav.realisations"), bold: true },
+      { href: `/${lang}/realisations`, label: t("nav.realisations"), bold: true },
       { href: `/${lang}/artists`, label: t("nav.artistes") },
       { href: `/${lang}/investir-dans-la-culture`, label: t("nav.investissement") },
       { href: `/${lang}/devis`, label: t("nav.devis") },
