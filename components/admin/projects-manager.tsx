@@ -30,6 +30,7 @@ interface Project {
     gallery?: string[]
     services?: string[]
     category?: string
+    linkedinUrl?: string
 }
 
 interface ImageUploadProps {
@@ -283,6 +284,27 @@ export default function ProjectsManager() {
                                     onChange={e => updateFormData("client", e.target.value)}
                                     className="bg-white/5 border-white/10 text-white focus:border-purple-500"
                                     placeholder="Ex: Entreprise Y"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label className="text-white">Date de l'événement</Label>
+                                <Input
+                                    value={formData.date || ""}
+                                    onChange={e => updateFormData("date", e.target.value)}
+                                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
+                                    placeholder="Ex: Octobre 2024"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-white">Lien LinkedIn</Label>
+                                <Input
+                                    value={formData.linkedinUrl || ""}
+                                    onChange={e => updateFormData("linkedinUrl", e.target.value)}
+                                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
+                                    placeholder="Ex: https://www.linkedin.com/posts/..."
                                 />
                             </div>
                         </div>

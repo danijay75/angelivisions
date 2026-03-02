@@ -5,7 +5,7 @@ import type { Project } from "@/data/projects"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Calendar, MapPin, Users, FolderKanban, ArrowLeft } from "lucide-react"
+import { Calendar, MapPin, Users, FolderKanban, ArrowLeft, Linkedin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useI18n } from "@/components/i18n/i18n-provider"
@@ -58,13 +58,25 @@ export default function ProjectPageClient({ project }: Props) {
               </div>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{project.title}</h1>
-          {project.client && (
-            <p className="text-sm text-white/70">
-              {t("realisations.clientLabel")}{" "}
-              {project.client}
-            </p>
-          )}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{project.title}</h1>
+              {project.client && (
+                <p className="text-sm text-white/70 mt-1">
+                  {t("realisations.clientLabel")}{" "}
+                  {project.client}
+                </p>
+              )}
+            </div>
+            {project.linkedinUrl && (
+              <Button asChild className="bg-[#0A66C2] hover:bg-[#004182] text-white w-fit">
+                <a href={project.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="w-4 h-4 mr-2" />
+                  Voir sur LinkedIn
+                </a>
+              </Button>
+            )}
+          </div>
         </header>
 
         <div className="grid gap-8 md:grid-cols-5">

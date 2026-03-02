@@ -27,6 +27,7 @@ export interface Project {
   date: string
   guests: string
   location: string
+  linkedinUrl?: string
   createdAt: string
   updatedAt: string
 }

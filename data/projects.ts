@@ -12,6 +12,7 @@ export type Project = {
   date: string
   guests: string
   location: string
+  linkedinUrl?: string
 }
 
 export const categories = [
