@@ -84,9 +84,17 @@ export default function ProjectPageClient({ project }: Props) {
             </CardContent>
           </Card>
           <div className="md:col-span-2 space-y-6">
-            {project.description && <p className="text-base leading-relaxed text-white/80">{project.description}</p>}
+            {project.description && (
+              <div
+                className="text-base leading-relaxed text-white/80 rich-text-content"
+                dangerouslySetInnerHTML={{ __html: project.description }}
+              />
+            )}
             {project.fullDescription && (
-              <p className="text-sm leading-relaxed text-white/70">{project.fullDescription}</p>
+              <div
+                className="text-sm leading-relaxed text-white/70 rich-text-content"
+                dangerouslySetInnerHTML={{ __html: project.fullDescription }}
+              />
             )}
 
             {project.services && project.services.length > 0 && (

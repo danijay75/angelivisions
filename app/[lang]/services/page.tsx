@@ -115,7 +115,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                     )}
                   </div>
                   <CardTitle className="text-white text-xl">{service.title}</CardTitle>
-                  <CardDescription className="text-slate-300">{service.description}</CardDescription>
+                  <div
+                    className="text-slate-300 text-sm mt-2 line-clamp-3 rich-text-content"
+                    dangerouslySetInnerHTML={{ __html: service.description }}
+                  />
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 mb-6">

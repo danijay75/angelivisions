@@ -22,120 +22,81 @@ import {
   CheckCircle,
   Ticket,
   Trophy,
+  Loader2,
 } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import { useEffect, useMemo } from "react"
+import Link from "next/link"
+import { type InvestmentProject } from "@/data/investments"
 
-interface Project {
-  id: string
-  title: string
-  category: string
-  categoryKey: string
-  description: string
-  targetAmount: number
-  currentAmount: number
-  expectedReturn: string
-  duration: string
-  risk: "low" | "moderate" | "high"
-  highlights: string[]
-  image: string
-}
+// Use InvestmentProject from data/investments
 
 export default function InvestmentPageClient() {
   const { t, lang } = useI18n()
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const [projects, setProjects] = useState<InvestmentProject[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const projects: Project[] = [
-    {
-      id: "1",
-      title: "Album Collectif Hip-Hop Émergent",
-      category: t("investment.sectors.musique"),
-      categoryKey: "musique",
-      description:
-        "Production d'un album collaboratif avec 8 artistes hip-hop émergents, distribution digitale et physique.",
-      targetAmount: 50000,
-      currentAmount: 32000,
-      expectedReturn: "15-25%",
-      duration: "12 mois",
-      risk: "moderate",
-      highlights: ["Artistes avec 100K+ followers", "Partenariat label indépendant", "Droits d'auteur partagés"],
-      image: "/hip-hop-studio.png",
-    },
-    {
-      id: "2",
-      title: "Festival de Musique Électronique",
-      category: t("investment.sectors.immersif"),
-      categoryKey: "immersif",
-      description: "Organisation d'un festival en plein air sur 3 jours, réunissant des DJs internationaux.",
-      targetAmount: 75000,
-      currentAmount: 45000,
-      expectedReturn: "20-30%",
-      duration: "18 mois",
-      risk: "high",
-      highlights: ["Lieu d'exception", "Billetterie en pré-vente", "Partenariats sponsors"],
-      image: "/placeholder.svg?text=Festival",
-    },
-    {
-      id: "3",
-      title: "Comédie Musicale Moderne",
-      category: t("investment.sectors.theatre"),
-      categoryKey: "theatre",
-      description:
-        "Production d'une comédie musicale originale avec des thèmes contemporains et une distribution professionnelle.",
-      targetAmount: 120000,
-      currentAmount: 89000,
-      expectedReturn: "12-18%",
-      duration: "24 mois",
-      risk: "low",
-      highlights: ["Équipe primée", "Théâtre parisien confirmé", "Pré-ventes ouvertes"],
-      image: "/musical-theater-performance.png",
-    },
-    {
-      id: "4",
-      title: "Festival Stand-Up Digital",
-      category: t("investment.sectors.humour"),
-      categoryKey: "humour",
-      description: "Organisation d'un festival de stand-up avec streaming live et NFT des meilleures performances.",
-      targetAmount: 35000,
-      currentAmount: 28000,
-      expectedReturn: "18-28%",
-      duration: "8 mois",
-      risk: "moderate",
-      highlights: ["20+ humoristes confirmés", "Plateforme streaming dédiée", "NFT exclusifs"],
-      image: "/stand-up-comedy-festival.png",
-    },
-    {
-      id: "5",
-      title: "Compétition eSport / Concert de Clôture",
-      category: t("investment.sectors.sport"),
-      categoryKey: "sport",
-      description: "Un événement hybride combinant une compétition sportive (eSport) et un grand concert de clôture.",
-      targetAmount: 90000,
-      currentAmount: 50000,
-      expectedReturn: "15-22%",
-      duration: "12 mois",
-      risk: "low",
-      highlights: ["Fort engagement communautaire", "Retombées sponsoring", "Diffusion en direct"],
-      image: "/placeholder.svg?text=Sport+Event",
-    },
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/investments")
+        const data = await res.json()
+        if (data.projects) {
+          // Filter only active projects for frontend
+          setProjects(data.projects.filter((p: InvestmentProject) => p.isActive))
+        }
+      } catch (error) {
+        console.error("Failed to fetch investment projects:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProjects()
+  }, [])
+
+  const staticCategories = [
+    { id: "musique", name: t("investment.sectors.musique"), icon: Music, color: "bg-blue-500", keyMatch: "Musique" },
+    { id: "theatre", name: t("investment.sectors.theatre"), icon: Theater, color: "bg-purple-500", keyMatch: "Théâtre" },
+    { id: "humour", name: t("investment.sectors.humour"), icon: Mic, color: "bg-orange-500", keyMatch: "Humour" },
+    { id: "immersif", name: t("investment.sectors.immersif"), icon: Ticket, color: "bg-green-500", keyMatch: "Expérience Immersive" },
+    { id: "festival", name: "Festival", icon: Star, color: "bg-amber-500", keyMatch: "Festival" },
+    { id: "sport", name: t("investment.sectors.sport"), icon: Trophy, color: "bg-red-500", keyMatch: "Événement Sportif" },
   ]
 
-  const categories = [
-    { id: "musique", name: t("investment.sectors.musique"), icon: Music, color: "bg-blue-500" },
-    { id: "theatre", name: t("investment.sectors.theatre"), icon: Theater, color: "bg-purple-500" },
-    { id: "humour", name: t("investment.sectors.humour"), icon: Mic, color: "bg-orange-500" },
-    { id: "immersif", name: t("investment.sectors.immersif"), icon: Ticket, color: "bg-green-500" },
-    { id: "sport", name: t("investment.sectors.sport"), icon: Trophy, color: "bg-red-500" },
-  ]
+  const derivedCategories = useMemo(() => {
+    const cats = new Set<string>()
+    projects.forEach(p => { if (p.category) cats.add(p.category) })
 
-  const filteredProjects =
-    selectedCategory === "all" ? projects : projects.filter((p) => p.categoryKey === selectedCategory)
+    return Array.from(cats).map(catName => {
+      const existing = staticCategories.find(sc => sc.keyMatch === catName)
+      if (existing) return existing
+      return {
+        id: catName.toLowerCase().replace(/\s+/g, "-"),
+        name: catName,
+        icon: Star,
+        color: "bg-slate-500",
+        keyMatch: catName
+      }
+    })
+  }, [projects, t])
+
+  const filteredProjects = selectedCategory === "all"
+    ? projects
+    : projects.filter((p) => {
+      const cat = derivedCategories.find(c => c.id === selectedCategory)
+      return p.category === cat?.keyMatch
+    })
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
+      case "Faible":
       case "low":
         return "text-green-600 bg-green-100"
+      case "Modéré":
       case "moderate":
         return "text-yellow-600 bg-yellow-100"
+      case "Élevé":
       case "high":
         return "text-red-600 bg-red-100"
       default:
@@ -227,8 +188,12 @@ export default function InvestmentPageClient() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {categories.map((category) => (
-              <Card key={category.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+            {derivedCategories.map((category) => (
+              <Card
+                key={category.id}
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => setSelectedCategory(category.id)}
+              >
                 <CardHeader className="text-center">
                   <div
                     className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4`}
@@ -253,79 +218,96 @@ export default function InvestmentPageClient() {
 
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-8 overflow-hidden">
             <div className="overflow-x-auto pb-2">
-              <TabsList className="inline-flex min-w-max md:w-full md:grid md:grid-cols-6 h-auto">
-                <TabsTrigger className="py-2" value="all">{t("investment.tabs.all")}</TabsTrigger>
-                <TabsTrigger className="py-2" value="musique">{t("investment.tabs.musique")}</TabsTrigger>
-                <TabsTrigger className="py-2" value="theatre">{t("investment.tabs.theatre")}</TabsTrigger>
-                <TabsTrigger className="py-2" value="humour">{t("investment.tabs.humour")}</TabsTrigger>
-                <TabsTrigger className="py-2" value="immersif">{t("investment.tabs.immersif")}</TabsTrigger>
-                <TabsTrigger className="py-2" value="sport">{t("investment.tabs.sport")}</TabsTrigger>
+              <TabsList className="inline-flex min-w-max md:w-full h-auto">
+                <TabsTrigger className="py-2 flex-1" value="all">{t("investment.tabs.all")}</TabsTrigger>
+                {derivedCategories.map(cat => (
+                  <TabsTrigger key={cat.id} className="py-2 flex-1" value={cat.id}>{cat.name}</TabsTrigger>
+                ))}
               </TabsList>
             </div>
           </Tabs>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-            {filteredProjects.map((project) => (
-              <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-shadow">
-                <div className="aspect-video relative">
-                  <img
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <Badge className="absolute top-4 left-4 bg-emerald-600">{project.category}</Badge>
-                </div>
-                <CardHeader>
-                  <div className="flex justify-between items-start mb-2">
-                    <CardTitle className="text-xl">{project.title}</CardTitle>
-                    <Badge variant="outline" className={getRiskColor(project.risk)}>
-                      {t(`investment.project.risks.${project.risk}`)}
-                    </Badge>
-                  </div>
-                  <CardDescription className="text-base">{project.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span>{t("investment.project.progression")}</span>
-                        <span>{Math.round((project.currentAmount / project.targetAmount) * 100)}%</span>
-                      </div>
-                      <Progress value={(project.currentAmount / project.targetAmount) * 100} className="h-2" />
-                      <div className="flex justify-between text-sm mt-1 text-gray-600">
-                        <span>€{project.currentAmount.toLocaleString()}</span>
-                        <span>€{project.targetAmount.toLocaleString()}</span>
-                      </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 min-h-[400px]">
+            {loading ? (
+              <div className="col-span-full flex flex-col items-center justify-center py-20 text-emerald-600">
+                <Loader2 className="h-12 w-12 animate-spin mb-4" />
+                <p className="text-xl font-medium">Chargement des projets...</p>
+              </div>
+            ) : filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
+                <Link key={project.id} href={`/${lang}/investir-dans-la-culture/${project.slug || project.id}`} className="block">
+                  <Card className="overflow-hidden hover:shadow-xl transition-shadow h-full border-none shadow-lg shadow-slate-200/50">
+                    <div className="aspect-video relative">
+                      <img
+                        src={project.image || "/placeholder.svg"}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      />
+                      <Badge className="absolute top-4 left-4 bg-emerald-600">{project.category}</Badge>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center">
-                        <TrendingUp className="h-4 w-4 mr-2 text-emerald-600" />
-                        <span>{t("investment.project.return")} {project.expectedReturn}</span>
+                    <CardHeader>
+                      <div className="flex justify-between items-start mb-2">
+                        <CardTitle className="text-xl group-hover:text-emerald-600 transition-colors">{project.title}</CardTitle>
+                        <Badge variant="outline" className={getRiskColor(project.risk)}>
+                          {(() => {
+                            const riskKey = project.risk.toLowerCase() === "faible" ? "low" :
+                              project.risk.toLowerCase() === "modéré" ? "moderate" :
+                                project.risk.toLowerCase() === "élevé" ? "high" :
+                                  project.risk.toLowerCase()
+                            return t(`investment.project.risks.${riskKey}`) || project.risk
+                          })()}
+                        </Badge>
                       </div>
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-2 text-gray-500" />
-                        <span>{t("investment.project.duration")} {project.duration}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {project.highlights.map((highlight, index) => (
-                        <div key={index} className="flex items-center text-sm">
-                          <CheckCircle className="h-4 w-4 mr-2 text-emerald-600" />
-                          <span>{highlight}</span>
+                      <div
+                        className="text-base line-clamp-2 text-slate-500 rich-text-content"
+                        dangerouslySetInnerHTML={{ __html: project.description }}
+                      />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span className="text-slate-500">{t("investment.project.progression")}</span>
+                            <span className="font-bold">{project.targetAmount > 0 ? Math.round((project.currentAmount / project.targetAmount) * 100) : 0}%</span>
+                          </div>
+                          <Progress value={project.targetAmount > 0 ? (project.currentAmount / project.targetAmount) * 100 : 0} className="h-2" />
+                          <div className="flex justify-between text-sm mt-3 pt-3 border-t border-slate-50">
+                            <div className="flex flex-col">
+                              <span className="text-xs text-slate-400">Collecté</span>
+                              <span className="font-bold text-emerald-600">€{project.currentAmount.toLocaleString()}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-xs text-slate-400">Objectif</span>
+                              <span className="font-bold text-slate-900">€{project.targetAmount.toLocaleString()}</span>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
 
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
-                      <Coins className="mr-2 h-4 w-4" />
-                      {t("investment.project.investNow")}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                        <div className="grid grid-cols-2 gap-3 pb-2">
+                          <div className="flex items-center p-2 rounded-lg bg-slate-50 border border-slate-100">
+                            <TrendingUp className="h-4 w-4 mr-2 text-emerald-600" />
+                            <span className="text-sm font-semibold">{project.expectedReturn}</span>
+                          </div>
+                          <div className="flex items-center p-2 rounded-lg bg-slate-50 border border-slate-100">
+                            <Clock className="h-4 w-4 mr-2 text-slate-400" />
+                            <span className="text-sm font-semibold">{project.duration}</span>
+                          </div>
+                        </div>
+
+                        <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                          {t("investment.project.investNow")}
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 bg-white/50 rounded-lg border-2 border-dashed border-gray-200">
+                <p className="text-xl text-gray-500">Aucun projet trouvé dans cette catégorie.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

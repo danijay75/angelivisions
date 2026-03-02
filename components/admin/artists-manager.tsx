@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Edit, Trash2, Save, X, Music, Video, Tag, Check, ArrowUp, ArrowDown, Link } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import ImagePicker from "@/components/admin/image-picker"
+import RichTextEditor from "@/components/admin/rich-text-editor"
 import type { Artist, LocalizedString } from "@/data/artists"
 
 export default function ArtistsManager() {
@@ -43,6 +44,87 @@ export default function ArtistsManager() {
     const DEFAULT_MUSICAL_GENRES = ["Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
     const SOCIAL_PLATFORMS = ["Instagram", "Facebook", "X", "YouTube", "TikTok"]
     const MUSIC_PLATFORMS = ["Spotify", "Apple Music", "Deezer", "Tidal", "SoundCloud", "YouTube Music"]
+
+    // Dynamic presets derived from all artists
+    const [globalTypes, setGlobalTypes] = useState<string[]>([])
+    const [globalGenres, setGlobalGenres] = useState<string[]>([])
+
+    useEffect(() => {
+        const types = new Set<string>()
+        const genres = new Set<string>()
+
+        // Default presets as base
+        const defaultTypes = ["DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
+        const defaultGenres = ["Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
+
+        defaultTypes.forEach(t => types.add(t))
+        defaultGenres.forEach(g => genres.add(g))
+
+        artists.forEach(artist => {
+            (artist.type || []).forEach(t => types.add(t.fr));
+            (artist.musicalGenre || []).forEach(g => genres.add(g.fr));
+        })
+
+        setGlobalTypes(Array.from(types).sort())
+        setGlobalGenres(Array.from(genres).sort())
+    }, [artists])
+
+    const handleBulkUpdate = async (category: "type" | "musicalGenre", oldValue: string, newValue: string | null) => {
+        const action = newValue === null ? "supprimer" : `renommer en "${newValue}"`
+        if (!confirm(`Voulez-vous ${action} "${oldValue}" pour TOUS les artistes ?`)) return
+
+        setLoading(true)
+        try {
+            const updatedArtists = artists.map(artist => {
+                const list = (artist[category] as LocalizedString[]) || []
+                let newList = [...list]
+
+                if (newValue === null) {
+                    // Delete
+                    newList = newList.filter(item => item.fr !== oldValue)
+                } else {
+                    // Rename
+                    newList = newList.map(item =>
+                        item.fr === oldValue
+                            ? { ...item, fr: newValue, en: newValue, es: newValue }
+                            : item
+                    )
+                }
+
+                return { ...artist, [category]: newList }
+            })
+
+            // Filter only affected artists to save time/bandwidth
+            const affectedArtists = updatedArtists.filter((artist, index) => {
+                const originalList = (artists[index][category] as LocalizedString[]) || []
+                const newList = (artist[category] as LocalizedString[]) || []
+                return JSON.stringify(originalList) !== JSON.stringify(newList)
+            })
+
+            if (affectedArtists.length === 0) {
+                alert("Aucun artiste n'est affecté par ce changement.")
+                setLoading(false)
+                return
+            }
+
+            // Execute all updates
+            await Promise.all(affectedArtists.map(a =>
+                fetch("/api/artists", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(a)
+                })
+            ))
+
+            loadArtists()
+            alert("Mise à jour globale effectuée avec succès.")
+        } catch (error) {
+            console.error("Bulk update failed", error)
+            alert("Une erreur est survenue lors de la mise à jour globale.")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const loadArtists = async () => {
         setLoading(true)
@@ -357,8 +439,37 @@ export default function ArtistsManager() {
                                     <Button type="button" onClick={addType} className="bg-white/10 text-white hover:bg-white/20"><Plus className="w-4 h-4" /></Button>
                                 </div>
                                 <div className="flex flex-wrap gap-2 mt-2">
-                                    {ARTIST_TYPES.map(preset => (
-                                        <Button key={preset} type="button" variant="ghost" size="sm" className="text-xs text-white/50 hover:text-white" onClick={() => { setNewType(preset); }}>{preset}</Button>
+                                    {globalTypes.map(preset => (
+                                        <div key={preset} className="flex items-center gap-1 bg-white/5 rounded-md pr-1 hover:bg-white/10 transition-colors group">
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-xs text-white/50 hover:text-white h-7 px-2"
+                                                onClick={() => { setNewType(preset); }}
+                                            >
+                                                {preset}
+                                            </Button>
+                                            <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button
+                                                    onClick={() => {
+                                                        const name = prompt("Nouveau nom pour ce type ?", preset)
+                                                        if (name && name !== preset) handleBulkUpdate("type", preset, name)
+                                                    }}
+                                                    className="px-1 text-blue-400 hover:text-blue-300"
+                                                    title="Renommer globalement"
+                                                >
+                                                    <Edit className="w-3 h-3" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleBulkUpdate("type", preset, null)}
+                                                    className="px-1 text-red-400 hover:text-red-300"
+                                                    title="Supprimer globalement"
+                                                >
+                                                    <Trash2 className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -379,22 +490,50 @@ export default function ArtistsManager() {
                                     <Button type="button" onClick={addGenre} className="bg-white/10 text-white hover:bg-white/20"><Plus className="w-4 h-4" /></Button>
                                 </div>
                                 <div className="flex flex-wrap gap-2 mt-2">
-                                    {DEFAULT_MUSICAL_GENRES.map(preset => (
-                                        <Button key={preset} type="button" variant="ghost" size="sm" className="text-xs text-white/50 hover:text-white" onClick={() => { setNewGenre(preset); }}>{preset}</Button>
+                                    {globalGenres.map(preset => (
+                                        <div key={preset} className="flex items-center gap-1 bg-white/5 rounded-md pr-1 hover:bg-white/10 transition-colors group">
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-xs text-white/50 hover:text-white h-7 px-2"
+                                                onClick={() => { setNewGenre(preset); }}
+                                            >
+                                                {preset}
+                                            </Button>
+                                            <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button
+                                                    onClick={() => {
+                                                        const name = prompt("Nouveau nom pour ce genre ?", preset)
+                                                        if (name && name !== preset) handleBulkUpdate("musicalGenre", preset, name)
+                                                    }}
+                                                    className="px-1 text-blue-400 hover:text-blue-300"
+                                                    title="Renommer globalement"
+                                                >
+                                                    <Edit className="w-3 h-3" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleBulkUpdate("musicalGenre", preset, null)}
+                                                    className="px-1 text-red-400 hover:text-red-300"
+                                                    title="Supprimer globalement"
+                                                >
+                                                    <Trash2 className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <Label className="text-white">Description FR (HTML accepté)</Label>
-                            <Textarea
-                                value={formData.description?.fr || ""}
-                                onChange={e => {
+                            <Label className="text-white">Description FR</Label>
+                            <RichTextEditor
+                                content={formData.description?.fr || ""}
+                                onChange={v => {
                                     const currentDesc = formData.description || { fr: "", en: "", es: "" };
-                                    setFormData({ ...formData, description: { ...currentDesc, fr: e.target.value } });
+                                    setFormData({ ...formData, description: { ...currentDesc, fr: v } });
                                 }}
-                                className="bg-white/5 border-white/10 text-white h-32"
                             />
                         </div>
 

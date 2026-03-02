@@ -21,6 +21,16 @@ const nextConfig = {
             },
         ];
     },
+    async rewrites() {
+        return {
+            fallback: [
+                {
+                    source: '/uploads/:path*',
+                    destination: '/api/uploads/:path*',
+                },
+            ],
+        };
+    },
     images: {
         remotePatterns: [
             {

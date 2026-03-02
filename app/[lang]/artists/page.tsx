@@ -12,10 +12,17 @@ import { type Artist } from "@/data/artists"
 import { Input } from "@/components/ui/input"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { PlayCircle, Globe } from "lucide-react"
+import { PlayCircle, Globe, ChevronDown } from "lucide-react"
 import { FaInstagram, FaFacebook, FaTwitter, FaYoutube, FaTiktok, FaSpotify, FaApple, FaSoundcloud, FaDeezer } from "react-icons/fa"
 import { FaXTwitter } from "react-icons/fa6"
 import { SiTidal, SiYoutubemusic } from "react-icons/si"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const getSocialIconData = (platform: string) => {
     switch (platform.toLowerCase()) {
@@ -246,8 +253,8 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
             const artistGenres = (artist.musicalGenre || []).map(g => g[lang])
             const artistTags = (artist.tags || []).map(t => t[lang])
 
-            const matchType = activeType === "all" || artistTypes.includes(activeType)
-            const matchGenre = activeGenre === "all" || artistGenres.includes(activeGenre)
+            const matchType = activeType === "all" || artistTypes.some(t => t === activeType)
+            const matchGenre = activeGenre === "all" || artistGenres.some(g => g === activeGenre)
             const matchSearch = artist.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 artistTags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
             return matchType && matchGenre && matchSearch && artist.available
@@ -291,7 +298,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                         <p className="text-xl text-white/80 max-w-4xl mx-auto mb-12">{copy.subtitle}</p>
 
                         {/* Filters and Search */}
-                        <div className="flex flex-col items-center justify-center gap-6 mb-8 max-w-5xl mx-auto">
+                        <div className="flex flex-col items-center justify-center gap-6 mb-8 max-w-5xl mx-auto w-full">
                             <div className="relative w-full max-w-md">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50" />
                                 <Input
@@ -302,66 +309,102 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                 />
                             </div>
 
-                            {/* Type Filter */}
-                            <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
-                                <div className="flex items-center text-white/60">
-                                    <Filter className="w-4 h-4 mr-2" />
-                                    <span className="text-sm font-medium whitespace-nowrap">{copy.typesLabel}</span>
-                                </div>
-                                <div className="flex flex-wrap justify-center gap-2">
-                                    <Button
-                                        size="sm"
-                                        variant={activeType === "all" ? "default" : "outline"}
-                                        onClick={() => setActiveType("all")}
-                                        className={`rounded-full h-8 px-4 ${activeType === "all" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : "border-white/20 hover:bg-white/10"}`}
-                                    >
-                                        {copy.filterAll}
-                                    </Button>
-                                    {types.map(t => (
-                                        <Button
-                                            key={t}
-                                            size="sm"
-                                            variant={activeType === t ? "default" : "outline"}
-                                            onClick={() => setActiveType(t)}
-                                            className={`rounded-full h-8 px-4 ${activeType === t ? "bg-emerald-500 hover:bg-emerald-600 border-none" : "border-white/20 hover:bg-white/10"}`}
-                                        >
-                                            {t}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
+                            {/* Filters Container */}
+                            <div className="grid grid-cols-1 md:flex md:flex-col gap-6 w-full max-w-4xl">
+                                {/* Type Filter */}
+                                <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
+                                    <div className="flex items-center text-white/60">
+                                        <Filter className="w-4 h-4 mr-2" />
+                                        <span className="text-sm font-medium whitespace-nowrap">{copy.typesLabel}</span>
+                                    </div>
 
-                            {/* Genre Filter */}
-                            <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
-                                <div className="flex items-center text-white/60">
-                                    <Music className="w-4 h-4 mr-2" />
-                                    <span className="text-sm font-medium whitespace-nowrap">{copy.genresLabel}</span>
-                                </div>
-                                <div className="flex flex-wrap justify-center gap-2">
-                                    <Button
-                                        size="sm"
-                                        variant={activeGenre === "all" ? "default" : "outline"}
-                                        onClick={() => setActiveGenre("all")}
-                                        className={`rounded-full h-8 px-4 ${activeGenre === "all" ? "bg-teal-500 hover:bg-teal-600 border-none" : "border-white/20 hover:bg-white/10"}`}
-                                    >
-                                        {copy.filterAll}
-                                    </Button>
-                                    {genres.map(g => (
+                                    {/* Mobile Select */}
+                                    <div className="md:hidden w-full px-4">
+                                        <Select value={activeType} onValueChange={setActiveType}>
+                                            <SelectTrigger className="w-full bg-white/5 border-white/20 text-white rounded-full h-10">
+                                                <SelectValue placeholder={copy.filterAll} />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-slate-900 border-white/20 text-white">
+                                                <SelectItem value="all">{copy.filterAll}</SelectItem>
+                                                {types.map(t => (
+                                                    <SelectItem key={t} value={t}>{t}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Desktop Buttons */}
+                                    <div className="hidden md:flex flex-wrap justify-center gap-2">
                                         <Button
-                                            key={g}
                                             size="sm"
-                                            variant={activeGenre === g ? "default" : "outline"}
-                                            onClick={() => setActiveGenre(g)}
-                                            className={`rounded-full h-8 px-4 ${activeGenre === g ? "bg-teal-500 hover:bg-teal-600 border-none" : "border-white/20 hover:bg-white/10"}`}
+                                            variant={activeType === "all" ? "default" : "outline"}
+                                            onClick={() => setActiveType("all")}
+                                            className={`rounded-full h-8 px-4 ${activeType === "all" ? "bg-emerald-500 hover:bg-emerald-600 border-none" : "border-white/20 hover:bg-white/10"}`}
                                         >
-                                            {g}
+                                            {copy.filterAll}
                                         </Button>
-                                    ))}
+                                        {types.map(t => (
+                                            <Button
+                                                key={t}
+                                                size="sm"
+                                                variant={activeType === t ? "default" : "outline"}
+                                                onClick={() => setActiveType(t)}
+                                                className={`rounded-full h-8 px-4 ${activeType === t ? "bg-emerald-500 hover:bg-emerald-600 border-none" : "border-white/20 hover:bg-white/10"}`}
+                                            >
+                                                {t}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Genre Filter */}
+                                <div className="flex flex-col md:flex-row items-center gap-4 w-full justify-center">
+                                    <div className="flex items-center text-white/60">
+                                        <Music className="w-4 h-4 mr-2" />
+                                        <span className="text-sm font-medium whitespace-nowrap">{copy.genresLabel}</span>
+                                    </div>
+
+                                    {/* Mobile Select */}
+                                    <div className="md:hidden w-full px-4">
+                                        <Select value={activeGenre} onValueChange={setActiveGenre}>
+                                            <SelectTrigger className="w-full bg-white/5 border-white/20 text-white rounded-full h-10">
+                                                <SelectValue placeholder={copy.filterAll} />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-slate-900 border-white/20 text-white">
+                                                <SelectItem value="all">{copy.filterAll}</SelectItem>
+                                                {genres.map(g => (
+                                                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {/* Desktop Buttons */}
+                                    <div className="hidden md:flex flex-wrap justify-center gap-2">
+                                        <Button
+                                            size="sm"
+                                            variant={activeGenre === "all" ? "default" : "outline"}
+                                            onClick={() => setActiveGenre("all")}
+                                            className={`rounded-full h-8 px-4 ${activeGenre === "all" ? "bg-teal-500 hover:bg-teal-600 border-none" : "border-white/20 hover:bg-white/10"}`}
+                                        >
+                                            {copy.filterAll}
+                                        </Button>
+                                        {genres.map(g => (
+                                            <Button
+                                                key={g}
+                                                size="sm"
+                                                variant={activeGenre === g ? "default" : "outline"}
+                                                onClick={() => setActiveGenre(g)}
+                                                className={`rounded-full h-8 px-4 ${activeGenre === g ? "bg-teal-500 hover:bg-teal-600 border-none" : "border-white/20 hover:bg-white/10"}`}
+                                            >
+                                                {g}
+                                            </Button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <p className="text-white/60 text-sm mb-8">{copy.artistsCount(filteredArtists.length)}</p>
                     </motion.div>
                 </div>
             </div>
@@ -418,7 +461,11 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                                 {/* Hover Overlay */}
                                                 <div className="absolute inset-0 bg-emerald-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                                     <div className="flex space-x-3">
-                                                        <Button size="sm" className="bg-emerald-500/80 backdrop-blur-md hover:bg-emerald-500 text-white border-none">
+                                                        <Button
+                                                            onClick={() => router.push(`/${lang}/artists/${artist.slug}`)}
+                                                            size="sm"
+                                                            className="bg-emerald-500/80 backdrop-blur-md hover:bg-emerald-500 text-white border-none"
+                                                        >
                                                             <Eye className="w-4 h-4 mr-2" />
                                                             {copy.seeArtist}
                                                         </Button>
@@ -441,7 +488,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                             <CardContent className="p-6 flex-1 flex flex-col justify-start">
                                                 {/* Summary / description without HTML tags */}
                                                 <div
-                                                    className="text-white/70 mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed"
+                                                    className="text-white/70 mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed rich-text-content"
                                                     dangerouslySetInnerHTML={{ __html: artist.description[lang] }}
                                                 />
 

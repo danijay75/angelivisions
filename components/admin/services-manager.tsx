@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Save, X, Trash2, Check, GripVertical, RefreshCw } from "lucide-react"
 import ImagePicker from "@/components/admin/image-picker"
+import RichTextEditor from "@/components/admin/rich-text-editor"
 
 const colorOptions = [
   { id: "purple-pink", label: "Violet-Rose", value: "from-purple-500 to-pink-500" },
@@ -389,11 +390,9 @@ export default function ServicesManager() {
 
                 <div>
                   <Label className="text-white mb-2 block">Description</Label>
-                  <Textarea
-                    value={services[editIndex].description}
-                    onChange={(e) => updateField(editIndex, "description", e.target.value)}
-                    className="bg-white/10 border-white/20 text-white"
-                    rows={3}
+                  <RichTextEditor
+                    content={services[editIndex].description || ""}
+                    onChange={(v) => updateField(editIndex, "description", v)}
                   />
                 </div>
 

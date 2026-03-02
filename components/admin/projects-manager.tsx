@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2, Save, X, ImageIcon as ImageIconLucide, Calendar, Users as UsersIcon, MapPin, RefreshCw } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import ImagePicker from "@/components/admin/image-picker"
+import RichTextEditor from "@/components/admin/rich-text-editor"
 // Removed unused CategoryManager import to fix build error
 // import CategoryManager from "@/components/admin/category-manager"
 
@@ -287,11 +288,10 @@ export default function ProjectsManager() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label className="text-white">Description courte</Label>
-                            <Textarea
-                                value={formData.description || ""}
-                                onChange={e => updateFormData("description", e.target.value)}
-                                className="bg-white/5 border-white/10 text-white focus:border-purple-500 h-20"
+                            <Label className="text-white">Description</Label>
+                            <RichTextEditor
+                                content={formData.description || ""}
+                                onChange={v => updateFormData("description", v)}
                             />
                         </div>
 
