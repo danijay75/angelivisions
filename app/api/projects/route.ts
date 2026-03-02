@@ -136,7 +136,7 @@ export async function GET() {
 
 import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
 
-// POST /api/projects - Créer un nouveau projet
+// POST /api/projects - Sauvegarder les projets
 export async function POST(request: NextRequest) {
   try {
     const sessionToken = getSessionCookieFromRequest(request)
@@ -144,56 +144,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
     }
 
-    const body = await request.json()
-    console.log("[v0] Creating new project:", body.title)
+    const { projects } = await request.json()
+    console.log("[v0] Saving projects:", projects?.length)
+
+    if (!Array.isArray(projects)) {
+      return NextResponse.json({ error: "Projects must be an array" }, { status: 400 })
+    }
 
     if (!redis) {
       return NextResponse.json({ error: "Redis not available" }, { status: 503 })
     }
 
-    // Récupérer les projets existants
-    let projects: Project[] = fallbackProjects
-
-    try {
-      const projectsData = await redis.get("projects")
-      if (
-        projectsData &&
-        typeof projectsData === "string" &&
-        (projectsData.trim().startsWith("[") || projectsData.trim().startsWith("{"))
-      ) {
-        projects = JSON.parse(projectsData)
-      }
-    } catch (error) {
-      console.error("[v0] Error fetching existing projects:", error)
-      projects = fallbackProjects
-    }
-
-    // Générer un nouvel ID
-    const newId = projects.length > 0 ? Math.max(...projects.map((p) => p.id)) + 1 : 1
-
-    // Créer le nouveau projet
-    const newProject: Project = {
-      ...body,
-      id: newId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }
-
-    // Ajouter le projet à la liste
-    projects.push(newProject)
-
-    // Sauvegarder dans Redis
     try {
       await redis.set("projects", JSON.stringify(projects))
-      console.log("[v0] Project created with ID:", newId)
+      console.log("[v0] Successfully saved projects to Redis")
     } catch (error) {
       console.error("[v0] Failed to save to Redis:", error)
+      return NextResponse.json({ error: "Failed to save to Redis" }, { status: 500 })
     }
 
-    return NextResponse.json({ project: newProject })
+    return NextResponse.json({ success: true, projects })
   } catch (error) {
-    console.error("[v0] Error creating project:", error)
-    return NextResponse.json({ error: "Failed to create project" }, { status: 500 })
+    console.error("[v0] Error saving projects:", error)
+    return NextResponse.json({ error: "Failed to save projects" }, { status: 500 })
   }
 }
 
