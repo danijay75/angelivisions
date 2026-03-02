@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
+export const dynamic = "force-dynamic"
 import { Redis } from "@upstash/redis"
 import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
 

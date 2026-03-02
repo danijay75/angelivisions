@@ -46,7 +46,7 @@ export function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarPr
 
     const menuItems = [
         { id: "services", label: "Services", icon: Layers },
-        { id: "projects", label: "Projets", icon: FolderKanban },
+        { id: "projects", label: "Réalisations", icon: FolderKanban },
         { id: "artists", label: "Artistes", icon: Mic2 },
         { id: "investment", label: "Investissement", icon: TrendingUp },
         { id: "team", label: "Équipe", icon: UsersIcon },

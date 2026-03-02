@@ -194,7 +194,7 @@ export default function ProjectsManager() {
                 <>
                     <div className="flex justify-between items-center bg-white/5 p-6 rounded-xl border border-white/10">
                         <div>
-                            <h2 className="text-2xl font-bold text-white">Projets ({projects.length})</h2>
+                            <h2 className="text-2xl font-bold text-white">Réalisations ({projects.length})</h2>
                             <p className="text-white/50 text-sm">Gérez vos réalisations et études de cas</p>
                         </div>
                         <Button onClick={handleCreate} disabled={!canEdit} className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-purple-500/25 transition-all">
