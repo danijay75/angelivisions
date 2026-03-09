@@ -31,6 +31,25 @@ const nextConfig = {
             ],
         };
     },
+    async redirects() {
+        return [
+            {
+                source: '/author/:path*',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/shop',
+                destination: '/fr',
+                permanent: true,
+            },
+            {
+                source: '/backstage/:path*',
+                destination: '/',
+                permanent: true,
+            }
+        ];
+    },
     images: {
         remotePatterns: [
             {
