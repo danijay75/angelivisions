@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/politique-confidentialite',
         '/politique-cookies',
         '/newsletter',
+        '/artists',
     ]
 
     LOCALES.forEach((lang) => {

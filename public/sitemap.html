@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +8,12 @@
   <meta name="description" content="Plan du site d'Angeli Visions — organisateur d'événements et maison de disque." />
   <meta name="robots" content="noindex, follow" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0f172a;
@@ -15,38 +21,50 @@
       min-height: 100vh;
       padding: 2rem 1rem;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 3rem 0;
     }
+
     header {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 3rem;
     }
+
     header img {
       height: 60px;
       width: auto;
     }
+
     h1 {
       font-size: 2.5rem;
       font-weight: 800;
       color: #fff;
     }
+
     h1 span {
       background: linear-gradient(135deg, #60a5fa, #22d3ee);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .subtitle { color: #94a3b8; margin-top: 0.5rem; }
+
+    .subtitle {
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+
     .sections {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
     }
+
     .section-card {
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(100, 116, 139, 0.3);
@@ -54,6 +72,7 @@
       padding: 1.5rem;
       backdrop-filter: blur(10px);
     }
+
     .section-card h2 {
       font-size: 1rem;
       font-weight: 700;
@@ -64,12 +83,17 @@
       border-bottom: 1px solid rgba(100, 116, 139, 0.2);
       padding-bottom: 0.5rem;
     }
-    .section-card ul { list-style: none; }
+
+    .section-card ul {
+      list-style: none;
+    }
+
     .section-card li {
       margin-bottom: 0.5rem;
       padding-left: 1rem;
       position: relative;
     }
+
     .section-card li::before {
       content: '›';
       position: absolute;
@@ -77,13 +101,18 @@
       color: #22d3ee;
       font-weight: 700;
     }
+
     .section-card a {
       color: #cbd5e1;
       text-decoration: none;
       font-size: 0.925rem;
       transition: color 0.2s;
     }
-    .section-card a:hover { color: #fff; }
+
+    .section-card a:hover {
+      color: #fff;
+    }
+
     .back-link {
       display: inline-flex;
       align-items: center;
@@ -94,7 +123,11 @@
       font-size: 0.9rem;
       transition: color 0.2s;
     }
-    .back-link:hover { color: #93c5fd; }
+
+    .back-link:hover {
+      color: #93c5fd;
+    }
+
     footer {
       margin-top: 3rem;
       padding-top: 2rem;
@@ -105,6 +138,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -145,6 +179,7 @@
           <li><a href="/fr/services/technical">Prestations Techniques</a></li>
           <li><a href="/fr/services/led-walls">Murs de LED</a></li>
           <li><a href="/fr/services/media">Tournage multicaméras</a></li>
+          <li><a href="/fr/services/sport">Événements Sportifs</a></li>
         </ul>
       </div>
 
@@ -194,4 +229,5 @@
     </footer>
   </div>
 </body>
+
 </html>
