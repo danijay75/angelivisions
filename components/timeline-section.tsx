@@ -116,7 +116,7 @@ export default function TimelineSection() {
                             <h3 className="text-white font-bold text-lg">{step.title}</h3>
                             <span className="text-cyan-400 text-sm font-medium">{step.duration}</span>
                           </div>
-                          <p className="text-white/80">{step.description}</p>
+                          <p className="text-white">{step.description}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -144,7 +144,7 @@ export default function TimelineSection() {
         >
           <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-md rounded-2xl p-8 border border-white/10">
             <h3 className="text-2xl font-bold text-white mb-4">{t("timeline.cta.title")}</h3>
-            <p className="text-white/80 mb-6 max-w-2xl mx-auto">
+            <p className="text-white mb-6 max-w-2xl mx-auto">
               {t("timeline.cta.description")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -146,7 +146,7 @@ export default function InvestmentPageClient() {
               <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
                 {t("investment.heroTitle")}<span className="text-emerald-200">{t("investment.heroHighlight")}</span>
               </h1>
-              <p className="text-xl mb-8 text-emerald-100">
+              <p className="text-xl mb-8 text-white">
                 {t("investment.heroDesc")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -396,7 +396,7 @@ export default function InvestmentPageClient() {
       <section className="py-16 px-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">{t("investment.cta.title")}</h2>
-          <p className="text-xl mb-8 text-emerald-100">
+          <p className="text-xl mb-8 text-white">
             {t("investment.cta.subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

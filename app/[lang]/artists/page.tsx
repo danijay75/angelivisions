@@ -295,7 +295,7 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                             </span>
                         </h1>
 
-                        <p className="text-xl text-white/80 max-w-4xl mx-auto mb-12">{copy.subtitle}</p>
+                        <p className="text-xl text-white max-w-4xl mx-auto mb-12">{copy.subtitle}</p>
 
                         {/* Filters and Search */}
                         <div className="flex flex-col items-center justify-center gap-6 mb-8 max-w-5xl mx-auto w-full">
@@ -488,13 +488,13 @@ export default function ArtistsPage({ params }: { params: Promise<{ lang: string
                                             <CardContent className="p-6 flex-1 flex flex-col justify-start">
                                                 {/* Summary / description without HTML tags */}
                                                 <div
-                                                    className="text-white/70 mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed rich-text-content"
+                                                    className="text-white mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed rich-text-content"
                                                     dangerouslySetInnerHTML={{ __html: artist.description[lang] }}
                                                 />
 
                                                 <div className="flex flex-wrap gap-2 mb-4">
                                                     {(artist.tags || []).map((tag, idx) => (
-                                                        <Badge key={idx} variant="secondary" className="bg-white/5 border border-white/10 text-white/80 text-xs px-3 py-1">
+                                                        <Badge key={idx} variant="secondary" className="bg-white/5 border border-white/10 text-white text-xs px-3 py-1">
                                                             <Music className="w-3 h-3 mr-1 inline opacity-50" />
                                                             {tag[lang]}
                                                         </Badge>

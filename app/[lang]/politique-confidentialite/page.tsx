@@ -39,7 +39,7 @@ export default async function PrivacyPolicyPage({
           {dictionary.legalPages?.privacyPolicy?.title || "Politique de Confidentialité"}
         </h1>
 
-        <div className="space-y-10 text-slate-300">
+        <div className="space-y-10 text-white">
           <section>
             <p>
               La protection de vos données personnelles est une priorité pour Angeli Visions.
@@ -53,7 +53,7 @@ export default async function PrivacyPolicyPage({
             <p>
               Le responsable du traitement des données est la société <strong>Angeli Visions</strong>, représentée par son Président.
             </p>
-            <div className="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg">
+            <div className="mt-4 p-4 bg-slate-900/50 border border-slate-800 rounded-lg text-white">
               <p><strong className="text-white">Délégué à la Protection des Données (DPD) :</strong> M. Dani JELASSI</p>
             </div>
           </section>
@@ -101,7 +101,7 @@ export default async function PrivacyPolicyPage({
               Pour toute demande concernant vos données personnelles ou pour exercer vos droits, vous pouvez contacter notre Délégué à la Protection des Données (DPD) via le formulaire ci-dessous.
             </p>
 
-            <Card className="bg-slate-900 border-slate-700">
+            <Card className="bg-slate-900 border-slate-700 text-white">
               <CardContent className="p-6">
                 <h3 className="text-xl font-medium text-white mb-4">Contacter M. Dani JELASSI (DPD)</h3>
                 <DpdContactForm />

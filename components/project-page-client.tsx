@@ -25,7 +25,7 @@ export default function ProjectPageClient({ project }: Props) {
     <main className="min-h-[60vh] py-10 bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
       <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
         <div className="mb-6">
-          <Button asChild variant="ghost" className="gap-2 px-0 text-white/70 hover:text-white">
+          <Button asChild variant="ghost" className="gap-2 px-0 text-white hover:text-white/80">
             <Link href={`/${lang}#realisations`} aria-label={t("realisations.backToList")}>
               <ArrowLeft className="h-4 w-4" />
               {t("realisations.backToList")}
@@ -40,19 +40,19 @@ export default function ProjectPageClient({ project }: Props) {
               {project.category}
             </Badge>
             {project.date && (
-              <div className="flex items-center gap-2 text-sm text-white/70">
+              <div className="flex items-center gap-2 text-sm text-white">
                 <Calendar className="h-4 w-4" />
                 <span>{project.date}</span>
               </div>
             )}
             {project.location && (
-              <div className="flex items-center gap-2 text-sm text-white/70">
+              <div className="flex items-center gap-2 text-sm text-white">
                 <MapPin className="h-4 w-4" />
                 <span>{project.location}</span>
               </div>
             )}
             {project.guests && (
-              <div className="flex items-center gap-2 text-sm text-white/70">
+              <div className="flex items-center gap-2 text-sm text-white">
                 <Users className="h-4 w-4" />
                 <span>{project.guests}</span>
               </div>
@@ -62,7 +62,7 @@ export default function ProjectPageClient({ project }: Props) {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{project.title}</h1>
               {project.client && (
-                <p className="text-sm text-white/70 mt-1">
+                 <p className="text-sm text-white mt-1">
                   {t("realisations.clientLabel")}{" "}
                   {project.client}
                 </p>
@@ -98,24 +98,24 @@ export default function ProjectPageClient({ project }: Props) {
           <div className="md:col-span-2 space-y-6">
             {project.description && (
               <div
-                className="text-base leading-relaxed text-white/80 rich-text-content"
+                className="text-base leading-relaxed text-white rich-text-content"
                 dangerouslySetInnerHTML={{ __html: project.description }}
               />
             )}
             {project.fullDescription && (
               <div
-                className="text-sm leading-relaxed text-white/70 rich-text-content"
+                className="text-sm leading-relaxed text-slate-100 rich-text-content"
                 dangerouslySetInnerHTML={{ __html: project.fullDescription }}
               />
             )}
 
             {project.services && project.services.length > 0 && (
               <div>
-                <h2 className="mb-2 text-sm font-semibold tracking-wide text-white/90">{t("realisations.servicesLabel")}</h2>
+                <h2 className="mb-2 text-sm font-semibold tracking-wide text-white">{t("realisations.servicesLabel")}</h2>
                 <ul className="flex flex-wrap gap-2">
                   {project.services.map((s: string, i: number) => (
                     <li key={i}>
-                      <Badge className={cn("bg-white/10 text-white/90 border-white/10")}>{s}</Badge>
+                      <Badge className={cn("bg-white/10 text-white border-white/10")}>{s}</Badge>
                     </li>
                   ))}
                 </ul>

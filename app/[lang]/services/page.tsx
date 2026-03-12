@@ -84,7 +84,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
             Nos{" "}
             <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Services</span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+          <p className="text-xl text-white max-w-3xl mx-auto">
             Découvrez notre gamme complète de services pour vos événements et projets musicaux
           </p>
         </div>
@@ -116,7 +116,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                   </div>
                   <CardTitle className="text-white text-xl">{service.title}</CardTitle>
                   <div
-                    className="text-slate-300 text-sm mt-2 line-clamp-3 rich-text-content"
+                    className="text-slate-100 text-sm mt-2 line-clamp-3 rich-text-content"
                     dangerouslySetInnerHTML={{ __html: service.description }}
                   />
                 </CardHeader>
@@ -143,7 +143,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
         <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-2xl p-8 border border-blue-500/20">
             <h2 className="text-3xl font-bold text-white mb-4">Vous avez un projet ?</h2>
-            <div className="text-sm text-slate-300 mb-6">Contactez-nous pour discuter de votre projet</div>
+            <div className="text-sm text-white mb-6">Contactez-nous pour discuter de votre projet</div>
             <Link href={`/${resolvedParams.lang}/devis`}>
               <Button
                 size="lg"

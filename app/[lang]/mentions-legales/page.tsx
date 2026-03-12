@@ -39,14 +39,14 @@ export default async function MentionsLegalesPage({
           {dictionary.legalPages?.mentionsLegales?.title || "Mentions Légales"}
         </h1>
 
-        <div className="space-y-8 text-slate-300">
+        <div className="space-y-8 text-white">
           {/* 1. Éditeur du site */}
           <section>
             <h2 className="text-2xl font-semibold text-white mb-4">1. Éditeur du site</h2>
-            <Card className="bg-slate-900/50 border-slate-800">
+            <Card className="bg-slate-900/50 border-slate-800 text-white">
               <CardContent className="p-6 space-y-2">
                 <p><strong className="text-white">Dénomination sociale :</strong> Angeli Visions</p>
-                <p><strong className="text-white">Forme juridique :</strong> Société par Actions Simplifiée (SAS)</p>
+                <p><strong className="text-white">Forme juridique :</strong> Société par Actions Simplifiées Unipersonnelle (SASU)</p>
                 <p><strong className="text-white">Capital social :</strong> Variable</p>
                 <p><strong className="text-white">Siège social :</strong> 79 rue du Général Leclerc, 78400 Chatou, France</p>
                 <p><strong className="text-white">Immatriculation :</strong> RCS de Versailles n° 898 018 221</p>
@@ -93,6 +93,19 @@ export default async function MentionsLegalesPage({
             <p>
               L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle.
               Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.
+            </p>
+          </section>
+
+          {/* 6. Réclamations */}
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-4">6. Réclamations</h2>
+            <p>
+              Pour toute réclamation, vous pouvez remplir notre formulaire dédié en cliquant sur le lien ci-dessous :
+            </p>
+            <p className="mt-4">
+              <a href={`/${lang}/reclamations`} className="text-blue-400 hover:text-blue-300 underline font-semibold transition-colors">
+                Accéder au formulaire de réclamations
+              </a>
             </p>
           </section>
         </div>

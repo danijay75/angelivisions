@@ -69,7 +69,7 @@ export default function ServicesSection() {
                 {t("services.subtitle")}
               </span>
             </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">{t("services.description")}</p>
+            <p className="text-xl text-white max-w-3xl mx-auto">{t("services.description")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -101,7 +101,7 @@ export default function ServicesSection() {
               {t("services.subtitle")}
             </span>
           </h2>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">{t("services.description")}</p>
+          <p className="text-xl text-white max-w-3xl mx-auto">{t("services.description")}</p>
         </motion.div>
 
         {/* Main Services Grid */}
@@ -145,7 +145,7 @@ export default function ServicesSection() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-slate-300 mb-6 line-clamp-2">{displayDescription}</p>
+                      <p className="text-slate-100 mb-6 line-clamp-2">{displayDescription}</p>
                       <div className="space-y-2">
                         {(service.features || []).slice(0, 3).map((feature, idx) => {
                           const translatedFeature = t(`services.items.${service.id}.features.${idx}`)
@@ -154,7 +154,7 @@ export default function ServicesSection() {
                               ? translatedFeature
                               : feature
                           return (
-                            <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-400 text-sm">
+                            <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-200 text-sm">
                               <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
                               {displayFeature}
                             </div>

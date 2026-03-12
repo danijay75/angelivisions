@@ -116,7 +116,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         {/* Back Button */}
         <div className="mb-8">
           <Link href={`/${resolvedParams.lang}/services`}>
-            <Button variant="ghost" className="text-slate-300 hover:text-white">
+            <Button variant="ghost" className="text-white hover:text-white/80">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Retour aux services
             </Button>
@@ -139,7 +139,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{service.title}</h1>
           <div
-            className="text-xl text-slate-300 max-w-3xl mx-auto rich-text-content"
+            className="text-xl text-white max-w-3xl mx-auto rich-text-content"
             dangerouslySetInnerHTML={{ __html: service.description }}
           />
         </div>
@@ -156,7 +156,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   {service.features.map((feature, index) => (
                     <div key={index} className="flex items-center space-x-3">
                       <CheckCircle className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                      <span className="text-slate-300">{feature}</span>
+                      <span className="text-white">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -167,7 +167,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <CardHeader>
                 <CardTitle className="text-white text-2xl">Détails du service</CardTitle>
               </CardHeader>
-              <CardContent className="text-slate-300 space-y-4">
+              <CardContent className="text-white space-y-4">
                 {service.id === "production" && (
                   <>
                     <p>Notre équipe de producteurs expérimentés vous accompagne dans la création de compositions musicales originales, adaptées à vos besoins spécifiques.</p>
@@ -219,7 +219,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <Card className="bg-gradient-to-br from-blue-600/25 via-cyan-600/20 to-blue-600/10 border-blue-500/30 shadow-xl shadow-blue-500/10 overflow-hidden">
               <CardHeader className="pb-4">
                 <CardTitle className="text-white text-2xl">Vous avez un projet ?</CardTitle>
-                <div className="text-sm text-slate-300">Contactez-nous pour discuter de votre projet</div>
+                <div className="text-sm text-white">Contactez-nous pour discuter de votre projet</div>
               </CardHeader>
               <CardContent className="space-y-6">
                 <Link href={`/${resolvedParams.lang}/devis`} className="block">
@@ -228,7 +228,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   </Button>
                 </Link>
                 <div className="space-y-4 pt-4 border-t border-white/10">
-                  <div className="flex items-center text-slate-300 group">
+                  <div className="flex items-center text-white group">
                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 group-hover:bg-blue-500/20 transition-colors">
                       <Phone className="w-4 h-4 text-blue-400" />
                     </div>
@@ -236,7 +236,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                       +33 6 63 79 67 42
                     </a>
                   </div>
-                  <div className="flex items-center text-slate-300 group">
+                  <div className="flex items-center text-white group">
                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-3 group-hover:bg-blue-500/20 transition-colors">
                       <Mail className="w-4 h-4 text-blue-400" />
                     </div>

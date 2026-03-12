@@ -106,7 +106,7 @@ export default function RealisationsSection() {
             </span>
           </h2>
 
-          <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">{t("realisations.subtitle")}</p>
+          <p className="text-xl text-white max-w-3xl mx-auto mb-8">{t("realisations.subtitle")}</p>
 
           <div className="flex flex-wrap justify-center gap-4">
             {allCategories.map((category) => (
@@ -179,12 +179,12 @@ export default function RealisationsSection() {
                       </div>
                       <div className="absolute bottom-4 left-4 right-4">
                         <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
-                        <p className="text-white/80 text-sm">{project.client}</p>
+                        <p className="text-white text-sm">{project.client}</p>
                       </div>
                     </div>
                     <CardContent className="p-6">
                       <div
-                        className="text-white/80 mb-4 line-clamp-2 overflow-hidden text-sm leading-relaxed rich-text-content"
+                        className="text-slate-100 mb-4 line-clamp-2 overflow-hidden text-sm leading-relaxed rich-text-content"
                         dangerouslySetInnerHTML={{ __html: project.description }}
                       />
 
@@ -193,11 +193,11 @@ export default function RealisationsSection() {
                           <Calendar className="w-4 h-4 mr-2" />
                           {project.date}
                         </div>
-                        <div className="flex items-center text-white/70">
+                        <div className="flex items-center text-slate-200">
                           <Users className="w-4 h-4 mr-2" />
                           {project.guests}
                         </div>
-                        <div className="flex items-center text-white/70 col-span-2">
+                        <div className="flex items-center text-slate-200 col-span-2">
                           <MapPin className="w-4 h-4 mr-2" />
                           {project.location}
                         </div>
@@ -205,12 +205,12 @@ export default function RealisationsSection() {
 
                       <div className="flex flex-wrap gap-2">
                         {(project.services || []).slice(0, 2).map((service, idx) => (
-                          <Badge key={idx} variant="secondary" className="bg-white/10 text-white/80 text-xs">
+                          <Badge key={idx} variant="secondary" className="bg-white/10 text-white text-xs">
                             {service}
                           </Badge>
                         ))}
                         {(project.services || []).length > 2 && (
-                          <Badge variant="secondary" className="bg-white/10 text-white/80 text-xs">
+                          <Badge variant="secondary" className="bg-white/10 text-white text-xs">
                             +{(project.services || []).length - 2}
                           </Badge>
                         )}

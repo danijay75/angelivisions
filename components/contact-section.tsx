@@ -4,9 +4,11 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import { useLang } from "@/hooks/use-lang"
 
 export default function ContactSection() {
   const { t } = useI18n()
+  const lang = useLang()
   const hours = {
     title: t("contact.hoursTitle"),
     content: t("contact.hoursContent"),
@@ -26,7 +28,7 @@ export default function ContactSection() {
           className="text-center mb-10"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{t("contact.title")}</h2>
-          <p className="text-white/80 max-w-2xl mx-auto">{t("contact.description")}</p>
+          <p className="text-white max-w-2xl mx-auto">{t("contact.description")}</p>
         </motion.div>
 
         {/* Opening hours */}
@@ -39,7 +41,7 @@ export default function ContactSection() {
           <Card className="bg-white/5 backdrop-blur-md border-white/10">
             <CardContent className="p-6">
               <h3 className="text-white font-semibold mb-2">{hours.title}</h3>
-              <p className="text-white/80 whitespace-pre-line">{hours.content}</p>
+              <p className="text-white whitespace-pre-line">{hours.content}</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -78,16 +80,16 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
           className="max-w-5xl mx-auto mb-12"
         >
-          <Card className="bg-gradient-to-r from-red-600/20 via-rose-600/25 to-red-800/30 border-red-500/30 ring-1 ring-inset ring-white/10">
+          <Card className="bg-gradient-to-r from-red-900 via-rose-900 to-red-950 border-red-500/30 ring-1 ring-inset ring-white/10">
             <CardContent className="p-6 md:p-7">
-              <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide text-white mb-3">
+              <h3 className="text-lg md:text-xl font-semibold uppercase tracking-wide text-red-100 mb-3">
                 {t("contact.conciergerieTitle")}
               </h3>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                <p className="text-white text-lg">{t("contact.conciergerieUrgencies")}</p>
+                <p className="text-red-50 text-lg">{t("contact.conciergerieUrgencies")}</p>
                 <a
                   href="tel:+33663796742"
-                  className="inline-flex items-center gap-2 rounded-lg bg-white/15 hover:bg-white/25 transition-colors text-white px-3 py-2 font-semibold"
+                  className="inline-flex items-center gap-2 rounded-lg bg-red-800/80 hover:bg-red-700 transition-colors text-white px-3 py-2 font-semibold"
                 >
                   <Phone className="w-4 h-4" aria-hidden="true" />
                   <span>{"06.63.79.67.42"}</span>
@@ -95,6 +97,21 @@ export default function ContactSection() {
               </div>
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Réclamations link */}
+        <motion.div
+           initial={{ opacity: 0, y: 18 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.6 }}
+           className="max-w-5xl mx-auto mb-12 text-center"
+        >
+          <p className="text-white text-lg">
+            Besoin de faire une réclamation ?{" "}
+            <a href={`/${lang}/reclamations`} className="text-blue-400 hover:text-blue-300 underline font-semibold transition-colors">
+              Remplissez le formulaire de réclamations en cliquant ici
+            </a>
+          </p>
         </motion.div>
 
       </div>

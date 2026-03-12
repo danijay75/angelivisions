@@ -102,10 +102,10 @@ export default function Footer() {
                 />
               </div>
               <h3 className="text-white font-semibold text-lg mb-4">Angeli Visions</h3>
-              <p className="text-slate-300 mb-4">{t("footer.description")}</p>
+              <p className="text-white mb-4">{t("footer.description")}</p>
 
               {/* Legal Information */}
-              <div className="space-y-2 text-sm text-slate-400">
+              <div className="space-y-2 text-sm text-slate-200">
                 <p>{t("footer.legalInfo1")}</p>
                 <p>{t("footer.legalInfo2")}</p>
                 <p className="mt-4">
@@ -126,13 +126,13 @@ export default function Footer() {
           >
             <h3 className="text-white font-semibold text-lg mb-6">{t("footer.contacts")}</h3>
             <div className="space-y-4">
-              <div className="flex items-center text-slate-300">
+              <div className="flex items-center text-white">
                 <Phone className="w-5 h-5 mr-3 text-blue-400" />
                 <a href="tel:+33663796742" className="hover:text-white transition-colors">
                   +33 6 63 79 67 42
                 </a>
               </div>
-              <div className="flex items-center text-slate-300">
+              <div className="flex items-center text-white">
                 <Mail className="w-5 h-5 mr-3 text-blue-400" />
                 <a href="mailto:contact@angelivisions.com" className="hover:text-white transition-colors">
                   contact@angelivisions.com
@@ -151,7 +151,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-slate-400 hover:text-white transition-colors duration-200">
+                  <Link href={link.href} className="text-slate-200 hover:text-white transition-colors duration-200">
                     {link.label}
                   </Link>
                 </li>
@@ -197,7 +197,7 @@ export default function Footer() {
                   className="mt-1 accent-blue-500 min-w-[16px]"
                   required
                 />
-                <span className="text-xs text-slate-400 leading-relaxed">
+                <span className="text-xs text-slate-200 leading-relaxed">
                   {t("footer.newsletterConsent")}
                 </span>
               </label>
@@ -239,7 +239,7 @@ export default function Footer() {
           className="border-t border-slate-700/50 mt-12 pt-8"
         >
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="text-slate-400 text-sm mb-4 md:mb-0">
+            <div className="text-slate-200 text-sm mb-4 md:mb-0">
               © 2025 {t("footer.rights")} |
               <Link href={`/${lang}/politique-confidentialite`} className="hover:text-white ml-1 text-white">
                 {t("footer.privacy")}

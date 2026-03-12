@@ -121,7 +121,7 @@ export default function DevisForm() {
                   <CheckCircle className="w-10 h-10 text-white" />
                 </motion.div>
                 <h3 className="text-2xl font-bold text-white mb-4">{t("devis.success.title")}</h3>
-                <p className="text-white/80 mb-6">
+                <p className="text-white mb-6">
                   {t("devis.success.message")}
                 </p>
                 <Button
@@ -156,7 +156,7 @@ export default function DevisForm() {
               {t("devis.highlight")}
             </span>
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
+          <p className="text-xl text-white max-w-3xl mx-auto">
             {t("devis.description")}
           </p>
         </motion.div>
@@ -357,7 +357,7 @@ export default function DevisForm() {
                     className="mt-1 accent-blue-500 min-w-[16px]"
                     required
                   />
-                  <span className="text-sm text-white/70 leading-relaxed">
+                  <span className="text-sm text-slate-100 leading-relaxed">
                     {t("devis.consent")}
                   </span>
                 </label>
@@ -395,7 +395,7 @@ export default function DevisForm() {
                     <Send className="w-5 h-5 mr-2" />
                     {loading ? t("devis.sending") : t("devis.submit")}
                   </Button>
-                  <p className="text-white/60 text-sm mt-4">
+                  <p className="text-slate-300 text-sm mt-4">
                     {t("devis.guarantee")}
                   </p>
                 </motion.div>

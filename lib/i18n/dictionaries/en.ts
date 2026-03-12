@@ -297,7 +297,7 @@ const en = {
   },
   footer: {
     description: "Cultural event organizer and music producer",
-    legalInfo1: "Angeli Visions is a SAS registered with the RCS of Versailles under n° 898018221.",
+    legalInfo1: "Angeli Visions is a Société par Actions Simplifiées Unipersonnelle (SASU) registered with the RCS of Versailles under n° 898018221.",
     legalInfo2: "Show Entrepeneur License n° PLATESV-D-2022-000968",
     essInfo: "The company is a member of the Social and Solidarity Economy (ESS). We fight against all forms of discrimination and sexist violence.",
     kitLink: "Check out the kit here.",

@@ -20,7 +20,8 @@ import {
     X,
     LayoutDashboard,
     FileText,
-    Mic2
+    Mic2,
+    AlertTriangle
 } from "lucide-react"
 
 export type AdminSection =
@@ -34,6 +35,7 @@ export type AdminSection =
     | "newsletter"
     | "devis"
     | "users"
+    | "reclamations"
 
 interface AdminSidebarProps {
     currentSection: string
@@ -54,6 +56,7 @@ export function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarPr
         { id: "blog", label: "Blog / Actu", icon: Newspaper },
         { id: "newsletter", label: "Newsletter", icon: Mail },
         { id: "devis", label: "Devis", icon: FileText },
+        { id: "reclamations", label: "Réclamations", icon: AlertTriangle },
         { id: "users", label: "Utilisateurs", icon: UserCog, adminOnly: true },
     ]
 

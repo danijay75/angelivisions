@@ -297,7 +297,7 @@ const fr = {
   },
   footer: {
     description: "Organisateur d'événements culturels et producteur de musique",
-    legalInfo1: "Angeli Visions est une SAS immatriculée au RCS de Versailles sous le n° 898018221.",
+    legalInfo1: "Angeli Visions est une Société par Actions Simplifiées Unipersonnelle (SASU) immatriculée au RCS de Versailles sous le n° 898018221.",
     legalInfo2: "Licence entrepreneur de spectacles n° PLATESV-D-2022-000968",
     essInfo: "La société est adhérente de l'Économie Sociale et Solidaire (ESS). Nous luttons contre toute forme de discrimination et violence sexiste.",
     kitLink: "Consultez le kit ici.",

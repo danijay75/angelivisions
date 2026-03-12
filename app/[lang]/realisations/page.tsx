@@ -149,7 +149,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-white/60 text-lg">{copy.loading}</div>
+          <div className="text-white text-lg">{copy.loading}</div>
         </div>
       </div>
     )
@@ -169,7 +169,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
             <Button
               variant="ghost"
               onClick={() => router.push(`/${lang}`)}
-              className="mb-8 text-white/70 hover:text-white hover:bg-white/10"
+              className="mb-8 text-white hover:text-white/80 hover:bg-white/10"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               {copy.backToHome}
@@ -181,11 +181,11 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
               </span>
             </h1>
 
-            <p className="text-xl text-white/80 max-w-4xl mx-auto mb-12">{copy.subtitle}</p>
+            <p className="text-xl text-white max-w-4xl mx-auto mb-12">{copy.subtitle}</p>
 
             {/* Category Filters */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center text-white/60 mr-4">
+              <div className="flex items-center text-slate-200 mr-4">
                 <Filter className="w-4 h-4 mr-2" />
                 <span className="text-sm font-medium">Filtrer par catégorie :</span>
               </div>
@@ -208,7 +208,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
             </div>
 
             {/* Projects Count */}
-            <p className="text-white/60 text-sm mb-8">{copy.projectsCount(filteredProjects.length)}</p>
+            <p className="text-slate-300 text-sm mb-8">{copy.projectsCount(filteredProjects.length)}</p>
           </motion.div>
         </div>
       </div>
@@ -217,7 +217,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
       <div className="container mx-auto px-4 pb-20">
         {filteredProjects.length === 0 ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
-            <p className="text-white/60 text-lg">{copy.noProjects}</p>
+            <p className="text-slate-300 text-lg">{copy.noProjects}</p>
           </motion.div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -243,7 +243,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
                     <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300 h-full">
                       <div className="relative overflow-hidden">
                         <div className="w-full h-64 bg-slate-900 flex items-center justify-center">
-                          <div className="text-white/60 text-center">
+                          <div className="text-slate-200 text-center">
                             <ImageIcon className="w-12 h-12 mx-auto mb-2" />
                             <p className="text-sm">{project.title}</p>
                           </div>
@@ -274,25 +274,25 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
                         </div>
                         <div className="absolute bottom-4 left-4 right-4">
                           <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
-                          <p className="text-white/80 text-sm">{project.client}</p>
+                          <p className="text-white text-sm">{project.client}</p>
                         </div>
                       </div>
                       <CardContent className="p-6 flex-1 flex flex-col">
                         <div
-                          className="text-white/80 mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed flex-1 rich-text-content"
+                          className="text-white mb-4 line-clamp-3 overflow-hidden text-sm leading-relaxed flex-1 rich-text-content"
                           dangerouslySetInnerHTML={{ __html: project.description }}
                         />
 
                         <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                          <div className="flex items-center text-white/70">
+                          <div className="flex items-center text-slate-100">
                             <Calendar className="w-4 h-4 mr-2" />
                             {project.date}
                           </div>
-                          <div className="flex items-center text-white/70">
+                          <div className="flex items-center text-slate-100">
                             <Users className="w-4 h-4 mr-2" />
                             {project.guests}
                           </div>
-                          <div className="flex items-center text-white/70 col-span-2">
+                          <div className="flex items-center text-slate-100 col-span-2">
                             <MapPin className="w-4 h-4 mr-2" />
                             {project.location}
                           </div>
@@ -300,7 +300,7 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
 
                         <div className="flex flex-wrap gap-2">
                           {(project.services || []).slice(0, 3).map((service, idx) => (
-                            <Badge key={idx} variant="secondary" className="bg-white/10 text-white/80 text-xs">
+                            <Badge key={idx} variant="secondary" className="bg-white/10 text-white text-xs">
                               {service}
                             </Badge>
                           ))}

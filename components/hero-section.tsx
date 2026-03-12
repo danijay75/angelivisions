@@ -150,7 +150,7 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-slate-300 mb-8 max-w-4xl mx-auto whitespace-pre-line"
+            className="text-xl md:text-2xl text-white mb-8 max-w-4xl mx-auto whitespace-pre-line"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -214,7 +214,7 @@ export default function HeroSection() {
                   <service.icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-white font-semibold mb-2">{service.title}</h3>
-                <p className="text-slate-400 text-sm">{service.desc}</p>
+                <p className="text-slate-200 text-sm">{service.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -227,8 +227,8 @@ export default function HeroSection() {
         transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
-        <div className="w-6 h-10 border-2 border-slate-400/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-slate-400/50 rounded-full mt-2"></div>
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
         </div>
       </motion.div>
     </section>

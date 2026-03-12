@@ -38,7 +38,7 @@ export default async function CookiePolicyPage({
           {dictionary.legalPages?.cookiePolicy?.title || "Politique de Cookies"}
         </h1>
 
-        <div className="space-y-8 text-slate-300">
+        <div className="space-y-8 text-white">
           <section>
             <p>
               Cette politique explique comment Angeli Visions utilise des cookies et technologies similaires pour vous reconnaître lorsque vous visitez notre site Web.
@@ -59,7 +59,7 @@ export default async function CookiePolicyPage({
               <div>
                 <h3 className="text-xl font-medium text-white mb-2">Cookies Essentiels</h3>
                 <p>Ces cookies sont nécessaires au fonctionnement technique du site. Ils ne peuvent pas être désactivés.</p>
-                <ul className="list-disc pl-5 mt-2 text-sm text-slate-400">
+                <ul className="list-disc pl-5 mt-2 text-sm text-slate-200">
                   <li>Sécurité (protection CSRF)</li>
                   <li>Session utilisateur</li>
                   <li>Préférences de langue</li>

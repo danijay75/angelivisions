@@ -4,10 +4,14 @@ import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
 
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN!,
-})
+function getRedis() {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) return null
+  return new Redis({ url, token })
+}
+
+const redis = getRedis()
 
 const INDEX_KEY = "devis_submissions"
 
@@ -100,6 +104,10 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    if (!redis) {
+      return NextResponse.json({ success: true, devis: [] })
+    }
+
     const ids = await redis.smembers(INDEX_KEY)
     const devisList: DevisPayload[] = []
 
@@ -162,8 +170,12 @@ export async function POST(req: NextRequest) {
     // Remove sensitive/unused fields for storage
     delete submission.captchaToken
 
-    await redis.hset(devisKey(id), submission as unknown as Record<string, string>)
-    await redis.sadd(INDEX_KEY, id)
+    if (redis) {
+      await redis.hset(devisKey(id), submission as unknown as Record<string, string>)
+      await redis.sadd(INDEX_KEY, id)
+    } else {
+      console.warn("Redis non configuré, sauvegarde devis ignorée en local.")
+    }
 
     const adminEmail = process.env.ADMIN_EMAIL || "contact@angelivisions.com"
 
@@ -213,8 +225,10 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: false, message: "ID requis." }, { status: 400 })
     }
 
-    await redis.del(devisKey(id))
-    await redis.srem(INDEX_KEY, id)
+    if (redis) {
+      await redis.del(devisKey(id))
+      await redis.srem(INDEX_KEY, id)
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -105,7 +105,7 @@ export default function Navigation() {
               const active = isItemActive(item)
               const baseLink =
                 "transition-colors relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 rounded-md"
-              const normalClasses = ["text-slate-300 hover:text-white", item.bold ? "font-bold" : ""]
+              const normalClasses = ["text-white hover:text-white/80", item.bold ? "font-bold" : ""]
                 .filter(Boolean)
                 .join(" ")
               const featuredClasses = [
@@ -199,7 +199,7 @@ export default function Navigation() {
               const mobileClass = `block py-2 transition-colors ${item.featured
                 ? `text-emerald-200 hover:text-emerald-100 border border-emerald-400/50 rounded-lg px-3 py-2 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/30 ${active ? "bg-emerald-500/15 ring-emerald-400/60 text-emerald-50" : ""
                 }`
-                : `text-slate-300 hover:text-white ${item.bold ? "font-bold" : ""} ${active ? "text-white" : ""}`
+                : `text-white hover:text-white/80 ${item.bold ? "font-bold" : ""} ${active ? "text-white" : ""}`
                 }`
 
               return isPath ? (

@@ -18,6 +18,7 @@ import AudioManager from "@/components/admin/audio-manager"
 import NewsletterManager from "@/components/admin/newsletter-manager"
 import DevisManager from "@/components/admin/devis-manager"
 import ArtistsManager from "@/components/admin/artists-manager"
+import ReclamationsManager from "@/components/admin/reclamations-manager"
 
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth()
@@ -61,6 +62,7 @@ export default function AdminPage() {
               {section === "devis" && "Devis"}
               {section === "artists" && "Gestion des Artistes"}
               {section === "users" && "Gestion Utilisateurs"}
+              {section === "reclamations" && "Réclamations"}
             </h1>
             <p className="text-white/40 mt-1 text-sm">
               Gestion de contenu et administration
@@ -125,6 +127,11 @@ export default function AdminPage() {
             {/* DEVIS MANAGER (Safe) */}
             {section === "devis" && (
               <DevisManager />
+            )}
+
+            {/* RECLAMATIONS MANAGER (Safe) */}
+            {section === "reclamations" && (
+              <ReclamationsManager />
             )}
           </motion.div>
         </AnimatePresence>

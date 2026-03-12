@@ -97,7 +97,7 @@ export default function TeamSection({
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">{sectionTitle}</h2>
-          <p className="text-white/70 max-w-2xl mx-auto">{sectionSubtitle}</p>
+          <p className="text-white max-w-2xl mx-auto">{sectionSubtitle}</p>
         </motion.div>
 
         {loading ? (
@@ -127,7 +127,7 @@ export default function TeamSection({
                   </div>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-white text-xl">{m.name}</CardTitle>
-                    <p className="text-white/70">{m.title}</p>
+                    <p className="text-slate-100">{m.title}</p>
                     {m.roles && m.roles.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {m.roles.map((r, i) => (
