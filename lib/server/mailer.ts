@@ -18,7 +18,7 @@ function getResendClient(): any {
   return _resend
 }
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivision.com"
+const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivisions.com"
 const FROM_NAME = process.env.FROM_NAME || "Angeli Visions"
 const REPLY_TO = process.env.REPLY_TO || "contact@angelivisions.com"
 

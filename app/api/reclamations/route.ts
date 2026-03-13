@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
       console.warn("Redis non configuré, sauvegarde ignorée en local.")
     }
 
-    const adminEmail = process.env.ADMIN_EMAIL || "contact@angelivisions.com"
+    const adminEmail = process.env.RECLAMATIONS_EMAIL || "reclamations@angelivisions.com"
 
     try {
       await sendMail({
