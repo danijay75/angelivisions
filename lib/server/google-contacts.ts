@@ -1,20 +1,9 @@
 import { google } from "googleapis";
 
-// Initialize an OAuth2 client.
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI || "http://localhost:3000/api/auth/google/callback"
-);
+// Moved initialization inside the function to ensure process.env is correctly captured.
+// and refresh tokens are handled properly.
 
-// If we have a refresh token (recommended for automated creation), set it
-if (process.env.GOOGLE_REFRESH_TOKEN) {
-  oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-  });
-}
-
-const peopleApi = google.people({ version: "v1", auth: oauth2Client });
+// Removed top-level peopleApi definition
 
 export interface ContactData {
   firstName: string;
@@ -27,12 +16,25 @@ export interface ContactData {
 }
 
 export async function createGoogleContact(data: ContactData) {
-  if (!process.env.GOOGLE_REFRESH_TOKEN) {
-    console.warn("GOOGLE_REFRESH_TOKEN n'est pas configuré. Le contact ne sera pas sauvegardé dans Google Contacts.");
+  console.log(`[Google Contacts] Tentative de création pour: ${data.email} (${data.label || 'Sans libellé'})`);
+  
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.GOOGLE_REFRESH_TOKEN) {
+    console.error("[Google Contacts] ERREUR: Variables d'environnement manquantes (ID, SECRET ou REFRESH_TOKEN)");
     return false;
   }
 
   try {
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_REDIRECT_URI || "http://localhost:3000/api/auth/google/callback"
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+    });
+
+    const peopleApi = google.people({ version: "v1", auth: oauth2Client });
     const names = [];
     if (data.firstName || data.lastName) {
       names.push({
