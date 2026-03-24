@@ -107,15 +107,6 @@ export default function ServicesSection() {
         {/* Main Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {services.map((service, index) => {
-            const translatedTitle = t(`services.items.${service.id}.title`)
-            const translatedDescription = t(`services.items.${service.id}.description`)
-            // Only translate if the key exists (i.e. not the key itself)
-            const displayTitle = translatedTitle !== `services.items.${service.id}.title` ? translatedTitle : service.title
-            const displayDescription =
-              translatedDescription !== `services.items.${service.id}.description`
-                ? translatedDescription
-                : service.description
-
             return (
               <motion.div
                 key={service.id}
@@ -126,33 +117,27 @@ export default function ServicesSection() {
               >
                 <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
                   <Card className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 h-full hover:bg-slate-800/50 hover:border-slate-600/50 transition-all duration-300 relative overflow-hidden">
-                    {/* Hover indicator overlay */}
                     <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-5 h-5 text-blue-400" />
                     </div>
                     <CardHeader>
                       <img
                         src={service.image || "/placeholder.svg"}
-                        alt={displayTitle}
+                        alt={service.title}
                         className="w-20 h-20 rounded-xl object-cover mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500"
                       />
                       <CardTitle className="text-white text-xl group-hover:text-blue-400 transition-colors">
-                        {displayTitle}
+                        {service.title}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-slate-100 mb-6 line-clamp-2">{displayDescription}</p>
+                      <p className="text-slate-100 mb-6 line-clamp-2">{service.description}</p>
                       <div className="space-y-2">
                         {(service.features || []).slice(0, 3).map((feature, idx) => {
-                          const translatedFeature = t(`services.items.${service.id}.features.${idx}`)
-                          const displayFeature =
-                            translatedFeature !== `services.items.${service.id}.features.${idx}`
-                              ? translatedFeature
-                              : feature
                           return (
                             <div key={`${service.id}-feat-${idx}`} className="flex items-center text-slate-200 text-sm">
                               <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mr-3"></div>
-                              {displayFeature}
+                              {feature}
                             </div>
                           )
                         })}
