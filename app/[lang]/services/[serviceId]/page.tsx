@@ -4,7 +4,7 @@ import type { ServiceItem } from "@/data/services"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { ArrowLeft, CheckCircle, Phone, Mail, Music, Calendar, Users, Mic, Monitor, Camera } from "lucide-react"
+import { ArrowLeft, CheckCircle, Phone, Mail } from "lucide-react"
 
 import { Redis } from "@upstash/redis"
 
@@ -17,14 +17,7 @@ interface ServicePageProps {
 
 export const dynamic = "force-dynamic"
 
-const serviceIcons = {
-  production: Music,
-  organization: Calendar,
-  booking: Users,
-  technical: Mic,
-  "led-walls": Monitor,
-  media: Camera,
-}
+
 
 const SERVICES_KEY = "av_services_v1"
 
@@ -108,7 +101,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
     notFound()
   }
 
-  const IconComponent = serviceIcons[service.id as keyof typeof serviceIcons] || Music
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -126,14 +118,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
         {/* Service Header */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-6 mb-6">
-            <div className={`w-24 h-24 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center`}>
-              <IconComponent className="w-12 h-12 text-white" />
-            </div>
             {service.image && (
               <img
                 src={service.image || "/placeholder.svg"}
                 alt={service.title}
-                className="w-24 h-24 rounded-2xl object-cover"
+                className="w-28 h-28 rounded-2xl object-cover shadow-lg"
               />
             )}
           </div>

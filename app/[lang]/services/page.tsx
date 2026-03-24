@@ -3,19 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { ArrowRight, Music, Calendar, Users, Mic, Monitor, Camera } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import type { ServiceItem } from "@/data/services"
 
 import { Redis } from "@upstash/redis"
 
-const serviceIcons = {
-  production: Music,
-  organization: Calendar,
-  booking: Users,
-  technical: Mic,
-  "led-walls": Monitor,
-  media: Camera,
-}
+
 
 export const dynamic = "force-dynamic"
 const SERVICES_KEY = "av_services_v1"
@@ -92,7 +85,6 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => {
-            const IconComponent = serviceIcons[service.id as keyof typeof serviceIcons] || Music
 
             return (
               <Card
@@ -100,20 +92,13 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                 className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-300"
               >
                 <CardHeader>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className={`w-16 h-16 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center flex-shrink-0`}
-                    >
-                      <IconComponent className="w-8 h-8 text-white" />
-                    </div>
-                    {service.image && (
-                      <img
-                        src={service.image || "/placeholder.svg"}
-                        alt={service.title}
-                        className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                      />
-                    )}
-                  </div>
+                  {service.image && (
+                    <img
+                      src={service.image || "/placeholder.svg"}
+                      alt={service.title}
+                      className="w-20 h-20 rounded-lg object-cover mb-4 shadow-lg"
+                    />
+                  )}
                   <CardTitle className="text-white text-xl">{service.title}</CardTitle>
                   <div
                     className="text-slate-100 text-sm mt-2 line-clamp-3 rich-text-content"

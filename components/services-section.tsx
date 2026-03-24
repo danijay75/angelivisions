@@ -74,7 +74,7 @@ export default function ServicesSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 rounded-lg p-6 animate-pulse">
-                <div className="w-16 h-16 bg-slate-700 rounded-xl mb-4"></div>
+                <div className="w-20 h-20 bg-slate-700 rounded-xl mb-4"></div>
                 <div className="h-6 bg-slate-700 rounded mb-4"></div>
                 <div className="h-4 bg-slate-700 rounded mb-2"></div>
                 <div className="h-4 bg-slate-700 rounded mb-2"></div>
@@ -131,15 +131,11 @@ export default function ServicesSection() {
                       <ArrowRight className="w-5 h-5 text-blue-400" />
                     </div>
                     <CardHeader>
-                      <div
-                        className={`w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 shadow-lg overflow-hidden group-hover:scale-110 transition-transform duration-500`}
-                      >
-                        <img
-                          src={service.image || "/placeholder.svg"}
-                          alt={displayTitle}
-                          className="w-12 h-12 object-contain"
-                        />
-                      </div>
+                      <img
+                        src={service.image || "/placeholder.svg"}
+                        alt={displayTitle}
+                        className="w-20 h-20 rounded-xl object-cover mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500"
+                      />
                       <CardTitle className="text-white text-xl group-hover:text-blue-400 transition-colors">
                         {displayTitle}
                       </CardTitle>
