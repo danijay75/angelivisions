@@ -8,6 +8,8 @@ import { Sparkles, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { defaultServices, type ServiceItem, SERVICES_STORAGE_KEY } from "@/data/services"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import Image from "next/image"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ServicesSection() {
   const { t, lang } = useI18n()
@@ -73,12 +75,13 @@ export default function ServicesSection() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 rounded-lg p-6 animate-pulse">
-                <div className="w-20 h-20 bg-slate-700 rounded-xl mb-4"></div>
-                <div className="h-6 bg-slate-700 rounded mb-4"></div>
-                <div className="h-4 bg-slate-700 rounded mb-2"></div>
-                <div className="h-4 bg-slate-700 rounded mb-2"></div>
-              </div>
+              <Card key={i} className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 p-6">
+                <Skeleton className="w-20 h-20 rounded-xl mb-4 bg-slate-700" />
+                <Skeleton className="h-6 w-3/4 mb-4 bg-slate-700" />
+                <Skeleton className="h-4 w-full mb-2 bg-slate-700" />
+                <Skeleton className="h-4 w-full mb-2 bg-slate-700" />
+                <Skeleton className="h-4 w-2/3 bg-slate-700" />
+              </Card>
             ))}
           </div>
         </div>
@@ -121,9 +124,11 @@ export default function ServicesSection() {
                       <ArrowRight className="w-5 h-5 text-blue-400" />
                     </div>
                     <CardHeader>
-                      <img
+                      <Image
                         src={service.image || "/placeholder.svg"}
                         alt={service.title}
+                        width={80}
+                        height={80}
                         className="w-20 h-20 rounded-xl object-cover mb-4 shadow-lg group-hover:scale-110 transition-transform duration-500"
                       />
                       <CardTitle className="text-white text-xl group-hover:text-blue-400 transition-colors">

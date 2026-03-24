@@ -19,6 +19,7 @@ export default function HeroSection() {
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
+    const isMobile = window.innerWidth < 768
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
@@ -35,8 +36,9 @@ export default function HeroSection() {
 
     const colors = ["#0ea5e9", "#22d3ee", "#3b82f6", "#0891b2", "#1d4ed8"]
 
-    // Create particles
-    for (let i = 0; i < 120; i++) {
+    // Create particles - fewer on mobile for performance
+    const particleCount = isMobile ? 50 : 120
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -48,8 +50,24 @@ export default function HeroSection() {
       })
     }
 
+    let animationFrameId: number
+    let isVisible = true
+
+    // Intersection Observer to stop animation when section is not visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0].isIntersecting
+      },
+      { threshold: 0.1 },
+    )
+    const section = document.getElementById("accueil")
+    if (section) observer.observe(section)
+
     function animate() {
-      if (!ctx || !canvas) return
+      if (!ctx || !canvas || !isVisible) {
+        animationFrameId = requestAnimationFrame(animate)
+        return
+      }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -60,17 +78,21 @@ export default function HeroSection() {
         if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1
         if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1
 
-        // Create glowing effect
-        ctx.shadowBlur = 15
-        ctx.shadowColor = particle.color
+        // Create glowing effect - disabled on mobile as it's very expensive
+        if (!isMobile) {
+          ctx.shadowBlur = 15
+          ctx.shadowColor = particle.color
+        }
+        
         ctx.globalAlpha = particle.alpha
         ctx.fillStyle = particle.color
         ctx.beginPath()
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
         ctx.fill()
 
-        // Reset shadow
-        ctx.shadowBlur = 0
+        if (!isMobile) {
+          ctx.shadowBlur = 0
+        }
 
         // Connect nearby particles with subtle lines
         particles.slice(index + 1).forEach((otherParticle) => {
@@ -90,7 +112,7 @@ export default function HeroSection() {
         })
       })
 
-      requestAnimationFrame(animate)
+      animationFrameId = requestAnimationFrame(animate)
     }
 
     animate()
@@ -101,7 +123,11 @@ export default function HeroSection() {
     }
 
     window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      cancelAnimationFrame(animationFrameId)
+      observer.disconnect()
+    }
   }, [])
 
   return (
@@ -133,6 +159,7 @@ export default function HeroSection() {
               width={800}
               height={224}
               priority
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, 800px"
               className="h-48 md:h-56 w-auto mx-auto object-contain drop-shadow-2xl"
             />
           </motion.div>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { ExternalLink, Calendar, Users, MapPin, Eye, ImageIcon } from "lucide-react"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface Project {
   id: number
@@ -40,6 +41,7 @@ export default function RealisationsSection() {
   const [activeCategory, setActiveCategory] = useState("all")
   const [projects, setProjects] = useState<Project[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     loadData()
@@ -60,6 +62,8 @@ export default function RealisationsSection() {
       }
     } catch (error) {
       console.error("[v0] Error loading data:", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -126,7 +130,10 @@ export default function RealisationsSection() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, i) => <ProjectSkeleton key={i} />)
+          ) : (
+            <AnimatePresence>
             {filteredProjects.map((project, index) => {
               const categoryColor = getCategoryColor(project.category)
               const categoryLabel =
@@ -220,7 +227,8 @@ export default function RealisationsSection() {
                 </motion.div>
               )
             })}
-          </AnimatePresence>
+            </AnimatePresence>
+          )}
         </div>
 
         <motion.div
@@ -240,5 +248,38 @@ export default function RealisationsSection() {
         </motion.div>
       </div>
     </section>
+  )
+}
+
+function ProjectSkeleton() {
+  return (
+    <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden h-full">
+      <div className="relative">
+        <Skeleton className="w-full h-48 bg-slate-900" />
+        <div className="absolute top-4 right-4">
+          <Skeleton className="h-6 w-16 rounded-full bg-white/10" />
+        </div>
+        <div className="absolute bottom-4 left-4 right-4">
+          <Skeleton className="h-6 w-3/4 mb-2 bg-white/20" />
+          <Skeleton className="h-4 w-1/2 bg-white/10" />
+        </div>
+      </div>
+      <CardContent className="p-6">
+        <div className="space-y-2 mb-4">
+          <Skeleton className="h-4 w-full bg-white/10" />
+          <Skeleton className="h-4 w-full bg-white/10" />
+          <Skeleton className="h-4 w-2/3 bg-white/10" />
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <Skeleton className="h-4 w-20 bg-white/10" />
+          <Skeleton className="h-4 w-20 bg-white/10" />
+          <Skeleton className="h-4 w-28 col-span-2 bg-white/10" />
+        </div>
+        <div className="flex gap-2">
+          <Skeleton className="h-5 w-16 rounded-full bg-white/10" />
+          <Skeleton className="h-5 w-16 rounded-full bg-white/10" />
+        </div>
+      </CardContent>
+    </Card>
   )
 }

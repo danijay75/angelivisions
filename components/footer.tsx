@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail, Phone, Instagram, Facebook, ArrowUp } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
@@ -95,9 +96,11 @@ export default function Footer() {
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center mb-6">
-                <img
+                <Image
                   src="/images/angeli-visions-logo-white.png"
                   alt="Angeli Visions"
+                  width={200}
+                  height={56}
                   className="h-20 w-auto object-contain"
                 />
               </div>

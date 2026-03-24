@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Globe, Mail } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
@@ -92,9 +93,12 @@ export default function Navigation() {
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
             <Link href={`/${lang}`} title="Angeli Visions – Accueil" aria-label="Retour à l'accueil">
-              <img
+              <Image
                 src="/images/angeli-visions-logo-white.png"
                 alt="Angeli Visions"
+                width={300}
+                height={84}
+                priority
                 className="h-20 w-auto object-contain"
               />
             </Link>

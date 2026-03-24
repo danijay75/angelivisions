@@ -7,6 +7,8 @@ import { Instagram, Linkedin, Globe, Twitter, Facebook } from "lucide-react"
 import { motion } from "framer-motion"
 import type { TeamMember } from "@/data/team"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import Image from "next/image"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type TeamSectionProps = {
   id?: string
@@ -103,7 +105,25 @@ export default function TeamSection({
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-64 bg-white/5 rounded-xl border border-white/10 animate-pulse" />
+              <Card key={i} className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
+                <Skeleton className="w-full h-56 bg-white/10" />
+                <CardHeader className="pb-2">
+                  <Skeleton className="h-6 w-1/2 mb-2 bg-white/10" />
+                  <Skeleton className="h-4 w-1/3 bg-white/5" />
+                  <div className="flex gap-2 mt-3">
+                    <Skeleton className="h-5 w-16 rounded-full bg-white/10" />
+                    <Skeleton className="h-5 w-16 rounded-full bg-white/10" />
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0 pb-6">
+                  <Skeleton className="h-4 w-3/4 mb-4 bg-white/5" />
+                  <div className="flex gap-3">
+                    <Skeleton className="h-4 w-4 rounded-full bg-white/10" />
+                    <Skeleton className="h-4 w-4 rounded-full bg-white/10" />
+                    <Skeleton className="h-4 w-4 rounded-full bg-white/10" />
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
@@ -117,11 +137,13 @@ export default function TeamSection({
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
               >
                 <Card className="bg-white/5 border-white/10 overflow-hidden hover:bg-white/10 transition-all rounded-2xl">
-                  <div className="relative">
-                    <img
+                  <div className="relative h-56 w-full overflow-hidden">
+                    <Image
                       src={m.photo || "/placeholder.svg?height=240&width=240&query=portrait%20team%20member"}
                       alt={`${t("team.photoAlt")} ${m.name}`}
-                      className="w-full h-56 object-cover"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   </div>
