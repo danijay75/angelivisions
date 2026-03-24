@@ -3,6 +3,7 @@ import { Redis } from "@upstash/redis"
 import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
+import { createGoogleContact } from "@/lib/server/google-contacts"
 
 function getRedis() {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
@@ -191,6 +192,19 @@ export async function POST(req: NextRequest) {
       })
     } catch (mailError) {
       console.error("[Reclamations API] Client mail error:", mailError)
+    }
+
+    try {
+      await createGoogleContact({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        label: "Réclamation",
+        notes: `Réclamation [${number}]\nSujet: ${data.subject}\nMessage: ${data.message}`
+      });
+    } catch (contactError) {
+      console.error("[Reclamations API] Google Contact error:", contactError)
     }
 
     return NextResponse.json({ success: true, number })

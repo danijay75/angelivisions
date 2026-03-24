@@ -1,6 +1,7 @@
 
 import { NextResponse } from "next/server"
 import { sendMail } from "@/lib/server/mailer"
+import { createGoogleContact } from "@/lib/server/google-contacts"
 
 export async function POST(req: Request) {
     try {
@@ -37,6 +38,22 @@ export async function POST(req: Request) {
             html: htmlContent,
             replyTo: email,
         })
+        
+        try {
+            const nameParts = name.trim().split(" ");
+            const firstName = nameParts[0] || "Inconnu";
+            const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined;
+            
+            await createGoogleContact({
+              firstName,
+              lastName,
+              email: email,
+              label: "RGPD",
+              notes: `Demande RGPD de type: ${typeLabel}\nMessage: ${message}`
+            });
+        } catch (contactError) {
+            console.error("[DPD API] Google Contact error:", contactError)
+        }
 
         return NextResponse.json({ success: true })
     } catch (error) {

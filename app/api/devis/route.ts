@@ -3,6 +3,7 @@ import { Redis } from "@upstash/redis"
 import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
+import { createGoogleContact } from "@/lib/server/google-contacts"
 
 function getRedis() {
   const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
@@ -175,6 +176,25 @@ export async function POST(req: NextRequest) {
       await redis.sadd(INDEX_KEY, id)
     } else {
       console.warn("Redis non configuré, sauvegarde devis ignorée en local.")
+    }
+
+    // Sauvegarder dans Google Contacts
+    try {
+      const nameParts = data.name.trim().split(" ");
+      const firstName = nameParts[0] || "Inconnu";
+      const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined;
+      
+      await createGoogleContact({
+        firstName,
+        lastName,
+        email: data.email,
+        phone: data.phone,
+        company: data.company,
+        label: "Prospect (Devis)",
+        notes: `Demande de Devis: ${data.eventType || "Événement"}\nServices demandés: ${data.services ? data.services.join(", ") : "Aucun"}\nClient message: ${data.description || "Aucun message"}`
+      });
+    } catch (contactError) {
+      console.error("[Devis API] Google Contact error:", contactError)
     }
 
     const adminEmail = process.env.ADMIN_EMAIL || "contact@angelivisions.com"

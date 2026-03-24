@@ -3,6 +3,7 @@ import { Redis } from "@upstash/redis"
 import { requireAdmin } from "@/lib/server/admin-session"
 import { sendMail } from "@/lib/server/mailer"
 import { getNewsletterConfirmationEmail, getAdminNotificationEmail } from "@/lib/emails/newsletter-templates"
+import { createGoogleContact } from "@/lib/server/google-contacts"
 
 const redis = new Redis({
     url: process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL!,
@@ -119,6 +120,23 @@ export async function POST(req: NextRequest) {
             })
         } catch (mailError) {
             console.error("Newsletter admin notification mail error:", mailError)
+        }
+
+        // Save to Google Contacts
+        try {
+            const nameParts = subscriber.name.trim().split(" ");
+            const firstName = nameParts[0] || "Inconnu";
+            const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined;
+            
+            await createGoogleContact({
+              firstName,
+              lastName,
+              email: subscriber.email,
+              label: "Newsletter",
+              notes: `Abonné à la newsletter depuis la langue : ${lang}`
+            });
+        } catch (contactError) {
+            console.error("Newsletter Google Contact error:", contactError)
         }
 
         return NextResponse.json({ success: true })
