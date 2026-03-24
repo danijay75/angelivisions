@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
         description:
             "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
         start_url: "/fr",
-        display: "standalone",
+        display: "browser",
         background_color: "#020617",
         theme_color: "#7c3aed",
         icons: [

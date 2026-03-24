@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Globe } from "lucide-react"
+import { Menu, X, Globe, Mail } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
@@ -15,6 +15,7 @@ type MenuItem = {
   label: string
   bold?: boolean
   featured?: boolean
+  icon?: React.ReactNode
 }
 
 const SECTION_IDS = ["accueil"] // removed contact anchor; now a page
@@ -136,6 +137,7 @@ export default function Navigation() {
                       className={className}
                       onClick={() => setIsMenuOpen(false)}
                     >
+                      {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
                       {item.label}
                       {!item.featured && (
                         <span
@@ -153,6 +155,7 @@ export default function Navigation() {
                       className={className}
                       onClick={() => setIsMenuOpen(false)}
                     >
+                      {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
                       {item.label}
                       {!item.featured && (
                         <span
@@ -167,8 +170,18 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Language Switcher & Mobile Menu */}
-          <div className="flex items-center space-x-4">
+          {/* Newsletter, Language Switcher & Mobile Menu */}
+          <div className="flex items-center space-x-3">
+            <a
+              href="#newsletter"
+              title={t("nav.newsletter")}
+              aria-label={t("nav.newsletter")}
+              className="hidden md:inline-flex items-center gap-1.5 text-sm text-emerald-200 hover:text-emerald-100 border border-emerald-400/40 rounded-full px-3 py-1.5 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/20 transition-all duration-200"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              {t("nav.newsletter")}
+            </a>
+
             <LanguageSelector />
 
             <Button
@@ -212,6 +225,7 @@ export default function Navigation() {
                   className={mobileClass}
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
                   {item.label}
                 </Link>
               ) : (
@@ -224,6 +238,7 @@ export default function Navigation() {
                   className={mobileClass}
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
                   {item.label}
                 </a>
               )

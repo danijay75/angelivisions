@@ -7,6 +7,7 @@ const fr = {
     investissement: "Investir dans la Culture",
     devis: "Devis Express",
     contact: "Contact",
+    newsletter: "Newsletter",
   },
   investment: {
     title: "Investir dans la Culture",

@@ -7,6 +7,7 @@ const en = {
     investissement: "Invest in Culture",
     devis: "Quote Request",
     contact: "Contact",
+    newsletter: "Newsletter",
   },
   investment: {
     title: "Invest in Culture",

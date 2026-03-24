@@ -161,6 +161,7 @@ export default function Footer() {
 
           {/* Newsletter */}
           <motion.div
+            id="newsletter"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
