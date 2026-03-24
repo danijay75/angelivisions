@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import Link from "next/link"
+import Image from "next/image"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Sparkles, ArrowRight } from "lucide-react"
-import Link from "next/link"
 import { defaultServices, type ServiceItem, SERVICES_STORAGE_KEY } from "@/data/services"
 import { useI18n } from "@/components/i18n/i18n-provider"
-import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ServicesSection() {
