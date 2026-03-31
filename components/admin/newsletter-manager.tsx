@@ -8,18 +8,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Mail, Trash2, Edit2, Check, X, Search, RefreshCw, User, CalendarDays } from "lucide-react"
 
 interface Subscriber {
+    resourceName: string
     name: string
     email: string
     subscribedAt: string
-    consentGiven: boolean
 }
 
 export default function NewsletterManager() {
     const [subscribers, setSubscribers] = useState<Subscriber[]>([])
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
-    const [editingEmail, setEditingEmail] = useState<string | null>(null)
-    const [editValue, setEditValue] = useState("")
+    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editName, setEditName] = useState("")
+    const [editEmail, setEditEmail] = useState("")
 
     useEffect(() => {
         fetchSubscribers()
@@ -40,39 +41,47 @@ export default function NewsletterManager() {
         }
     }
 
-    const handleDelete = async (email: string) => {
+    const handleDelete = async (resourceName: string, email: string) => {
         if (!confirm(`Supprimer ${email} de la liste ?`)) return
         try {
             const res = await fetch("/api/newsletter", {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ resourceName }),
             })
             if (res.ok) {
-                setSubscribers((prev) => prev.filter((s) => s.email !== email))
+                setSubscribers((prev) => prev.filter((s) => s.resourceName !== resourceName))
             }
         } catch (error) {
             console.error("Error deleting subscriber:", error)
         }
     }
 
-    const handleUpdate = async (oldEmail: string) => {
-        if (!editValue || !editValue.includes("@")) return
+    const handleUpdate = async (resourceName: string) => {
+        if (!editEmail || !editEmail.includes("@")) return
         try {
             const res = await fetch("/api/newsletter", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ oldEmail, newEmail: editValue }),
+                body: JSON.stringify({ resourceName, name: editName, email: editEmail }),
             })
             if (res.ok) {
                 setSubscribers((prev) =>
-                    prev.map((s) => (s.email === oldEmail ? { ...s, email: editValue } : s))
+                    prev.map((s) =>
+                        s.resourceName === resourceName ? { ...s, name: editName, email: editEmail } : s
+                    )
                 )
-                setEditingEmail(null)
+                setEditingId(null)
             }
         } catch (error) {
             console.error("Error updating subscriber:", error)
         }
+    }
+
+    const startEditing = (sub: Subscriber) => {
+        setEditingId(sub.resourceName)
+        setEditName(sub.name)
+        setEditEmail(sub.email)
     }
 
     const formatDate = (dateStr: string): string => {
@@ -99,7 +108,7 @@ export default function NewsletterManager() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h2 className="text-3xl font-bold text-white">Gestion Newsletter</h2>
-                    <p className="text-slate-400">Gérez les inscriptions de vos utilisateurs ({subscribers.length} abonnés)</p>
+                    <p className="text-slate-400">Gérez les inscriptions de vos utilisateurs ({subscribers.length} abonnés) — synchronisé avec Google Contacts</p>
                 </div>
                 <Button onClick={fetchSubscribers} variant="outline" className="border-slate-700 text-slate-300">
                     <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
@@ -140,7 +149,7 @@ export default function NewsletterManager() {
                                 {loading ? (
                                     <TableRow>
                                         <TableCell colSpan={4} className="text-center py-8 text-slate-500">
-                                            Chargement des abonnés...
+                                            Chargement depuis Google Contacts...
                                         </TableCell>
                                     </TableRow>
                                 ) : filteredSubscribers.length === 0 ? (
@@ -151,15 +160,26 @@ export default function NewsletterManager() {
                                     </TableRow>
                                 ) : (
                                     filteredSubscribers.map((sub) => (
-                                        <TableRow key={sub.email} className="border-slate-700 hover:bg-white/5">
+                                        <TableRow key={sub.resourceName} className="border-slate-700 hover:bg-white/5">
                                             <TableCell className="text-slate-200">
-                                                {sub.name ? String(sub.name) : <span className="text-slate-500 italic text-xs">Non renseigné</span>}
+                                                {editingId === sub.resourceName ? (
+                                                    <Input
+                                                        value={editName}
+                                                        onChange={(e) => setEditName(e.target.value)}
+                                                        className="bg-slate-900 border-blue-500 text-white h-8 max-w-[200px]"
+                                                        placeholder="Nom"
+                                                    />
+                                                ) : sub.name ? (
+                                                    String(sub.name)
+                                                ) : (
+                                                    <span className="text-slate-500 italic text-xs">Non renseigné</span>
+                                                )}
                                             </TableCell>
                                             <TableCell className="font-medium text-slate-200">
-                                                {editingEmail === sub.email ? (
+                                                {editingId === sub.resourceName ? (
                                                     <Input
-                                                        value={editValue}
-                                                        onChange={(e) => setEditValue(e.target.value)}
+                                                        value={editEmail}
+                                                        onChange={(e) => setEditEmail(e.target.value)}
                                                         className="bg-slate-900 border-blue-500 text-white h-8 max-w-sm"
                                                         autoFocus
                                                     />
@@ -175,13 +195,13 @@ export default function NewsletterManager() {
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-1.5">
-                                                    {editingEmail === sub.email ? (
+                                                    {editingId === sub.resourceName ? (
                                                         <>
                                                             <Button
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-green-400 hover:text-green-300 hover:bg-green-400/10 h-8 w-8 p-0"
-                                                                onClick={() => handleUpdate(sub.email)}
+                                                                onClick={() => handleUpdate(sub.resourceName)}
                                                             >
                                                                 <Check className="w-4 h-4" />
                                                             </Button>
@@ -189,7 +209,7 @@ export default function NewsletterManager() {
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-slate-400 hover:text-slate-300 hover:bg-slate-400/10 h-8 w-8 p-0"
-                                                                onClick={() => setEditingEmail(null)}
+                                                                onClick={() => setEditingId(null)}
                                                             >
                                                                 <X className="w-4 h-4" />
                                                             </Button>
@@ -200,10 +220,7 @@ export default function NewsletterManager() {
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-white/40 hover:text-blue-400 hover:bg-blue-400/10 h-8 w-8 p-0"
-                                                                onClick={() => {
-                                                                    setEditingEmail(sub.email)
-                                                                    setEditValue(sub.email)
-                                                                }}
+                                                                onClick={() => startEditing(sub)}
                                                             >
                                                                 <Edit2 className="w-3.5 h-3.5" />
                                                             </Button>
@@ -211,7 +228,7 @@ export default function NewsletterManager() {
                                                                 size="sm"
                                                                 variant="ghost"
                                                                 className="text-white/40 hover:text-red-400 hover:bg-red-400/10 h-8 w-8 p-0"
-                                                                onClick={() => handleDelete(sub.email)}
+                                                                onClick={() => handleDelete(sub.resourceName, sub.email)}
                                                             >
                                                                 <Trash2 className="w-3.5 h-3.5" />
                                                             </Button>
