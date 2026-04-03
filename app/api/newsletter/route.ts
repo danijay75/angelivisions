@@ -37,14 +37,14 @@ export async function GET(req: NextRequest) {
 // ---------- POST: subscribe (public) ----------
 export async function POST(req: NextRequest) {
   try {
-    const { email, name, consent, lang = "fr" } = await req.json()
+    const { email, firstName, lastName, consent, lang = "fr" } = await req.json()
 
     if (!email || !email.includes("@")) {
       return NextResponse.json({ error: "Email invalide" }, { status: 400 })
     }
 
-    if (!name || name.trim().length === 0) {
-      return NextResponse.json({ error: "Nom requis" }, { status: 400 })
+    if (!firstName || firstName.trim().length === 0) {
+      return NextResponse.json({ error: "Prénom requis" }, { status: 400 })
     }
 
     if (!consent) {
@@ -52,15 +52,14 @@ export async function POST(req: NextRequest) {
     }
 
     const normalizedEmail = email.toLowerCase().trim()
-    const trimmedName = name.trim()
-    const nameParts = trimmedName.split(" ")
-    const firstName = nameParts[0] || "Inconnu"
-    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : undefined
+    const trimmedFirstName = firstName.trim()
+    const trimmedLastName = lastName?.trim()
+    const fullName = `${trimmedFirstName}${trimmedLastName ? " " + trimmedLastName : ""}`
 
     // Create the contact in Google Contacts (single source of truth)
     const resourceName = await createGoogleContact({
-      firstName,
-      lastName,
+      firstName: trimmedFirstName,
+      lastName: trimmedLastName,
       email: normalizedEmail,
       label: "Newsletter",
       notes: `Abonné à la newsletter depuis la langue : ${lang}`,
@@ -73,7 +72,7 @@ export async function POST(req: NextRequest) {
     // Send Confirmation Email
     try {
       const preferencesUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/newsletter/preferences?email=${encodeURIComponent(normalizedEmail)}`
-      const emailContent = getNewsletterConfirmationEmail(trimmedName, preferencesUrl, lang)
+      const emailContent = getNewsletterConfirmationEmail(fullName, preferencesUrl, lang)
 
       await sendMail({
         to: normalizedEmail,
@@ -86,7 +85,7 @@ export async function POST(req: NextRequest) {
 
     // Send Admin Notification
     try {
-      const adminContent = getAdminNotificationEmail(trimmedName, normalizedEmail)
+      const adminContent = getAdminNotificationEmail(fullName, normalizedEmail)
       await sendMail({
         to: process.env.FROM_EMAIL || "contact@angelivisions.com",
         subject: adminContent.subject,

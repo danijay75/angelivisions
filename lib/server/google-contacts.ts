@@ -15,6 +15,7 @@ export interface NewsletterContact {
   name: string;
   email: string;
   subscribedAt: string;
+  company?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -44,39 +45,32 @@ function getPeopleApi() {
 // ---------------------------------------------------------------------------
 
 function buildBiography(label: string | undefined, notes: string | undefined): string {
-  const dateStr = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
   let fullNote = notes || "";
 
-  if (label) {
-    fullNote = `📌 Libellé : ${label}\n📅 Date d'action : ${dateStr}\n\n${fullNote}`;
-  } else {
-    fullNote = `📅 Date d'action : ${dateStr}\n\n${fullNote}`;
+  // For Newsletter, the label is already in the Company field, and date is in Birthday
+  if (label && label !== "Newsletter") {
+    fullNote = `📌 Libellé : ${label}\n\n${fullNote}`;
   }
 
   return fullNote.trim();
 }
 
 // ---------------------------------------------------------------------------
-// Helper: extract subscription date from a biography string
+// Helper: extract date from Birthdays
 // ---------------------------------------------------------------------------
 
-function extractDateFromBio(bio: string): string {
-  const match = bio.match(/📅 Date d'action\s*:\s*(.+)/);
-  if (!match) return "";
-
-  const raw = match[1].trim();
-
-  // Try parsing French date format "dd/mm/yyyy hh:mm:ss"
-  const frMatch = raw.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2}):?(\d{2})?/);
-  if (frMatch) {
-    const [, day, month, year, hour, min, sec] = frMatch;
-    return new Date(`${year}-${month}-${day}T${hour}:${min}:${sec || "00"}`).toISOString();
+function extractDateFromBirthday(birthdays: any[] | undefined): string {
+  if (!birthdays || birthdays.length === 0) return "";
+  const bday = birthdays[0].date;
+  if (bday) {
+    const { year, month, day } = bday;
+    // Note: Date constructor with year, month (0-indexed), day
+    const d = new Date(year, month - 1, day);
+    return isNaN(d.getTime()) ? "" : d.toISOString();
   }
-
-  // Fallback: try native Date parse
-  const d = new Date(raw);
-  return isNaN(d.getTime()) ? "" : d.toISOString();
+  return "";
 }
+
 
 // ---------------------------------------------------------------------------
 // CREATE — generic contact creation (used by all forms)
@@ -99,7 +93,23 @@ export async function createGoogleContact(data: ContactData) {
 
     const emailAddresses = data.email ? [{ value: data.email, type: "work" }] : [];
     const phoneNumbers = data.phone ? [{ value: data.phone, type: "mobile" }] : [];
-    const organizations = data.company ? [{ name: data.company }] : [];
+    
+    // LOGIC: Use Company and Birthday fields
+    let companyName = data.company;
+    if (data.label === "Newsletter" && !companyName) {
+      companyName = "Newsletter";
+    }
+    const organizations = companyName ? [{ name: companyName }] : [];
+
+    const now = new Date();
+    const birthdays = [{
+      date: {
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate()
+      }
+    }];
+
     const userDefined = data.label ? [{ key: "Catégorie / Source", value: data.label }] : [];
     const biography = buildBiography(data.label, data.notes);
     const biographies = biography ? [{ value: biography }] : [];
@@ -111,6 +121,7 @@ export async function createGoogleContact(data: ContactData) {
         phoneNumbers: phoneNumbers.length > 0 ? phoneNumbers : undefined,
         organizations: organizations.length > 0 ? organizations : undefined,
         biographies: biographies.length > 0 ? biographies : undefined,
+        birthdays: birthdays.length > 0 ? birthdays : undefined,
         userDefined: userDefined.length > 0 ? userDefined : undefined,
       },
     });
@@ -139,7 +150,7 @@ export async function listNewsletterContacts(): Promise<NewsletterContact[]> {
       const res = await peopleApi.people.connections.list({
         resourceName: "people/me",
         pageSize: 100,
-        personFields: "names,emailAddresses,biographies,userDefined",
+        personFields: "names,emailAddresses,biographies,userDefined,organizations,birthdays",
         pageToken: nextPageToken,
       });
 
@@ -156,14 +167,17 @@ export async function listNewsletterContacts(): Promise<NewsletterContact[]> {
         const firstName = person.names?.[0]?.givenName || "";
         const lastName = person.names?.[0]?.familyName || "";
         const fullName = [firstName, lastName].filter(Boolean).join(" ");
-        const bio = person.biographies?.[0]?.value || "";
-        const subscribedAt = extractDateFromBio(bio);
+        const company = person.organizations?.[0]?.name || "";
+        
+        // Use Birthday field for subscription date
+        const subscribedAt = extractDateFromBirthday(person.birthdays);
 
         contacts.push({
           resourceName: person.resourceName || "",
           name: fullName,
           email,
           subscribedAt,
+          company,
         });
       }
 

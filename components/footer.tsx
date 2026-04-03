@@ -14,7 +14,8 @@ import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function Footer() {
   const [email, setEmail] = useState("")
-  const [newsletterName, setNewsletterName] = useState("")
+  const [newsletterFirstName, setNewsletterFirstName] = useState("")
+  const [newsletterLastName, setNewsletterLastName] = useState("")
   const [newsletterConsent, setNewsletterConsent] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
   const lang = useLang()
@@ -30,14 +31,15 @@ export default function Footer() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name: newsletterName, consent: newsletterConsent, lang }),
+        body: JSON.stringify({ email, firstName: newsletterFirstName, lastName: newsletterLastName, consent: newsletterConsent, lang }),
       })
       if (res.ok) {
         setIsSubscribed(true)
         setTimeout(() => {
           setIsSubscribed(false)
           setEmail("")
-          setNewsletterName("")
+          setNewsletterFirstName("")
+          setNewsletterLastName("")
           setNewsletterConsent(false)
         }, 3000)
       } else {
@@ -55,9 +57,7 @@ export default function Footer() {
       { label: t("footer.services.booking"), href: `/${lang}/services/booking` },
       { label: t("footer.services.production"), href: `/${lang}/services/production` },
       { label: t("footer.services.organization"), href: `/${lang}/services/organization` },
-      { label: t("footer.services.technical"), href: `/${lang}/services/technical` },
-      { label: t("footer.services.ledWalls"), href: `/${lang}/services/led-walls` },
-      { label: t("footer.services.media"), href: `/${lang}/services/media` },
+      { label: t("footer.services.technical"), href: `/${lang}/services/prestations-techniques-audiovisuelles` },
     ],
   }
 
@@ -171,16 +171,30 @@ export default function Footer() {
           >
             <h3 className="text-white font-semibold text-lg mb-6">{t("footer.newsletterTitle")}</h3>
             <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-              <Input
-                type="text"
-                id="newsletterName"
-                name="newsletterName"
-                placeholder={t("footer.newsletterName")}
-                value={newsletterName}
-                onChange={(e) => setNewsletterName(e.target.value)}
-                required
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
-              />
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  id="newsletterFirstName"
+                  name="newsletterFirstName"
+                  placeholder={t("footer.newsletterFirstName")}
+                  value={newsletterFirstName}
+                  onChange={(e) => setNewsletterFirstName(e.target.value)}
+                  required
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 flex-1"
+                  aria-label={t("footer.newsletterFirstName")}
+                />
+                <Input
+                  type="text"
+                  id="newsletterLastName"
+                  name="newsletterLastName"
+                  placeholder={t("footer.newsletterLastName")}
+                  value={newsletterLastName}
+                  onChange={(e) => setNewsletterLastName(e.target.value)}
+                  required
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 flex-1"
+                  aria-label={t("footer.newsletterLastName")}
+                />
+              </div>
               <Input
                 type="email"
                 id="newsletterEmail"
@@ -190,6 +204,7 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
+                aria-label="Email"
               />
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
@@ -226,6 +241,8 @@ export default function Footer() {
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="w-10 h-10 bg-slate-800/50 backdrop-blur-md rounded-lg flex items-center justify-center border border-slate-700/50 hover:bg-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
+                    aria-label={social.label}
+                    title={social.label}
                   >
                     <social.icon className="w-5 h-5 text-slate-300" />
                   </motion.a>
