@@ -59,7 +59,7 @@ export default function LanguageSelector() {
                 className="text-slate-300 hover:text-white hover:bg-slate-800/50 flex items-center gap-2 px-3 py-2 transition-all duration-200"
                 aria-label="Choisir la langue / Select language"
             >
-                <Globe className="w-4 h-4 text-emerald-400" />
+                <Globe className="w-4 h-4 text-white/70" />
                 <span className="font-medium">{lang.toUpperCase()}</span>
                 <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
@@ -87,13 +87,13 @@ export default function LanguageSelector() {
                                 onClick={() => handleLanguageChange(l as Locale)}
                                 className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-all duration-200 group
                   ${lang === l
-                                        ? "text-emerald-400 bg-emerald-500/10"
-                                        : "text-slate-300 hover:text-white hover:bg-white/5"
+                                        ? "text-white bg-white/10 font-medium"
+                                        : "text-slate-300 hover:text-white hover:bg-white/5 font-normal"
                                     }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <span className="text-lg leading-none">{languageFlags[l as Locale]}</span>
-                                    <span className={`${lang === l ? "font-semibold" : "font-normal"}`}>
+                                    <span>
                                         {languageNames[l as Locale]}
                                     </span>
                                 </div>
@@ -101,9 +101,9 @@ export default function LanguageSelector() {
                                     <motion.div
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
-                                        className="w-4 h-4 flex items-center justify-center bg-emerald-500 rounded-full"
+                                        className="w-4 h-4 flex items-center justify-center bg-white/20 rounded-full"
                                     >
-                                        <Check className="w-2.5 h-2.5 text-slate-900" strokeWidth={4} />
+                                        <Check className="w-2.5 h-2.5 text-white" strokeWidth={4} />
                                     </motion.div>
                                 )}
                             </button>

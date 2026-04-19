@@ -1,231 +1,89 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Play, Sparkles, Music, Calendar, Phone } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { Play, Phone, ChevronRight } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function HeroSection() {
   const { t, lang } = useI18n()
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { scrollY } = useScroll()
+  const [mounted, setMounted] = useState(false)
+
+  const y1 = useTransform(scrollY, [0, 500], [0, 200])
+  const opacity = useTransform(scrollY, [0, 300], [1, 0])
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    const isMobile = window.innerWidth < 768
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-
-    // Particle system inspired by the logo's aesthetic
-    const particles: Array<{
-      x: number
-      y: number
-      vx: number
-      vy: number
-      size: number
-      color: string
-      alpha: number
-    }> = []
-
-    const colors = ["#0ea5e9", "#22d3ee", "#3b82f6", "#0891b2", "#1d4ed8"]
-
-    // Create particles - fewer on mobile for performance
-    const particleCount = isMobile ? 50 : 120
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1.5,
-        vy: (Math.random() - 0.5) * 1.5,
-        size: Math.random() * 4 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.8 + 0.2,
-      })
-    }
-
-    let animationFrameId: number
-    let isVisible = true
-
-    // Intersection Observer to stop animation when section is not visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        isVisible = entries[0].isIntersecting
-      },
-      { threshold: 0.1 },
-    )
-    const section = document.getElementById("accueil")
-    if (section) observer.observe(section)
-
-    function animate() {
-      if (!ctx || !canvas || !isVisible) {
-        animationFrameId = requestAnimationFrame(animate)
-        return
-      }
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      particles.forEach((particle, index) => {
-        particle.x += particle.vx
-        particle.y += particle.vy
-
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1
-
-        // Create glowing effect - disabled on mobile as it's very expensive
-        if (!isMobile) {
-          ctx.shadowBlur = 15
-          ctx.shadowColor = particle.color
-        }
-        
-        ctx.globalAlpha = particle.alpha
-        ctx.fillStyle = particle.color
-        ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fill()
-
-        if (!isMobile) {
-          ctx.shadowBlur = 0
-        }
-
-        // Connect nearby particles with subtle lines
-        particles.slice(index + 1).forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x
-          const dy = particle.y - otherParticle.y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < 80) {
-            ctx.globalAlpha = ((80 - distance) / 80) * 0.2
-            ctx.strokeStyle = particle.color
-            ctx.lineWidth = 0.5
-            ctx.beginPath()
-            ctx.moveTo(particle.x, particle.y)
-            ctx.lineTo(otherParticle.x, otherParticle.y)
-            ctx.stroke()
-          }
-        })
-      })
-
-      animationFrameId = requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    window.addEventListener("resize", handleResize)
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      cancelAnimationFrame(animationFrameId)
-      observer.disconnect()
-    }
+    setMounted(true)
   }, [])
+
+  if (!mounted) return null
 
   return (
     <section
       id="accueil"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-40" />
-
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-slate-950 to-cyan-900/10" />
-
-      <div className="container mx-auto px-4 pt-24 text-center relative z-10">
+      <div className="container mx-auto px-4 pt-40 md:pt-32 text-center relative z-10 flex flex-col items-center justify-center min-h-[80vh]">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="max-w-5xl mx-auto"
+           style={{ y: y1, opacity }}
+           className="max-w-5xl mx-auto w-full"
         >
-          {/* Logo Integration */}
+          {/* Logo */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1, duration: 0.8 }}
-            className="mb-6"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-12"
           >
             <Image
               src="/images/angeli-visions-logo-white.png"
               alt="Angeli Visions"
-              width={1000}
-              height={280}
+              width={800}
+              height={220}
               priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1000px"
-              className="h-60 md:h-72 w-auto mx-auto object-contain drop-shadow-2xl"
+              className="h-32 md:h-48 w-auto mx-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
             />
           </motion.div>
 
-          <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-medium text-white mb-6 leading-tight tracking-normal"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            {t("hero.titlePart1")}
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent block">
-              {t("hero.titlePart2")}
-            </span>
-          </motion.h1>
-
-          <motion.p
-            className="text-xl md:text-2xl text-white mb-8 max-w-4xl mx-auto whitespace-pre-line"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
-            {t("hero.description")}
-          </motion.p>
-
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="mb-16"
           >
-            <Button
-              asChild
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/25 pointer-events-auto"
-            >
-              <Link href={`/${lang}/realisations`}>
-                <Play className="w-5 h-5 mr-2" />
-                {t("hero.cta")}
-              </Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              className="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-full px-8 py-3 shadow-lg shadow-emerald-500/25 pointer-events-auto"
-            >
-              <a href="tel:+33663796742" title={t("hero.callUs")}>
-                <Phone className="w-5 h-5 mr-2" />
-                {t("hero.callUs")}
-              </a>
-            </Button>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-white leading-[1.1] tracking-tight">
+              {t("hero.titlePart1")}<br />
+              <span className="italic font-light text-white/80">{t("hero.titlePart2")}</span>
+            </h1>
           </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full max-w-2xl mx-auto"
+          >
+            <Link 
+              href={`/${lang}/realisations`}
+              className="w-full sm:w-auto min-w-[240px] px-10 py-5 sunset-gradient text-white font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-3"
+            >
+              <Play className="w-5 h-5 fill-current" />
+              {t("hero.cta")}
+            </Link>
+
+            <a 
+              href="tel:+33663796742"
+              className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/20 text-white font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-md flex items-center justify-center gap-3"
+            >
+              <Phone className="w-5 h-5" />
+              {t("hero.callUs")}
+            </a>
+          </motion.div>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
-        </div>
-      </motion.div>
     </section>
   )
 }

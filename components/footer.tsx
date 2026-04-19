@@ -84,9 +84,12 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-slate-900/80 backdrop-blur-md border-t border-slate-700/50">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-midnight-bg border-t border-white/5 pt-24 pb-12 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sunset-deep/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20">
           {/* Brand & Company Info */}
           <div className="lg:col-span-1">
             <motion.div
@@ -94,33 +97,34 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-8">
                 <Image
                   src="/images/angeli-visions-logo-white.png"
                   alt="Angeli Visions"
                   width={200}
                   height={56}
-                  className="h-20 w-auto object-contain"
+                  className="h-16 w-auto object-contain"
                 />
               </div>
-              <h3 className="text-white font-semibold text-lg mb-4">Angeli Visions</h3>
-              <p className="text-white mb-4">{t("footer.description")}</p>
+              <p className="text-white/40 text-sm font-display leading-relaxed mb-8">
+                {t("footer.description")}
+              </p>
 
-              {/* Legal Information */}
-              <div className="space-y-2 text-sm text-slate-200">
-                <p>{t("footer.legalInfo1")}</p>
-                <p>{t("footer.legalInfo2")}</p>
-                <p className="mt-4">
-                  {t("footer.essInfo")}
-                  <a 
-                    href="/docs/attestation-vss.jpg" 
-                    target="_blank" 
+              {/* Social Links */}
+              <div className="flex space-x-3">
+                {socialLinks.map((social) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.url}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 ml-1"
+                    whileHover={{ y: -4 }}
+                    className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300"
+                    aria-label={social.label}
                   >
-                    {t("footer.kitLink")}
-                  </a>
-                </p>
+                    <social.icon className="w-4 h-4" />
+                  </motion.a>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -131,17 +135,23 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-6">{t("footer.contacts")}</h3>
-            <div className="space-y-4">
-              <div className="flex items-center text-white">
-                <Phone className="w-5 h-5 mr-3 text-blue-400" />
-                <a href="tel:+33663796742" className="hover:text-white transition-colors">
+            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+               {t("footer.contacts")}
+            </h3>
+            <div className="space-y-6">
+              <div className="group flex items-center text-white/60 hover:text-white transition-colors cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center mr-4 group-hover:bg-white/[0.08] transition-colors">
+                   <Phone className="w-3.5 h-3.5 text-sunset-orange" />
+                </div>
+                <a href="tel:+33663796742" className="text-sm font-display">
                   +33 6 63 79 67 42
                 </a>
               </div>
-              <div className="flex items-center text-white">
-                <Mail className="w-5 h-5 mr-3 text-blue-400" />
-                <a href="mailto:contact@angelivisions.com" className="hover:text-white transition-colors">
+              <div className="group flex items-center text-white/60 hover:text-white transition-colors cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center mr-4 group-hover:bg-white/[0.08] transition-colors">
+                   <Mail className="w-3.5 h-3.5 text-sunset-orange" />
+                </div>
+                <a href="mailto:contact@angelivisions.com" className="text-sm font-display">
                   contact@angelivisions.com
                 </a>
               </div>
@@ -154,11 +164,14 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-6">{t("nav.services")}</h3>
-            <ul className="space-y-3">
+            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+               {t("nav.services")}
+            </h3>
+            <ul className="space-y-4">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-slate-200 hover:text-white transition-colors duration-200">
+                  <Link href={link.href} className="text-sm text-white/40 hover:text-white font-display transition-colors duration-300 flex items-center group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sunset-orange/0 group-hover:bg-sunset-orange mr-0 group-hover:mr-3 transition-all duration-300" />
                     {link.label}
                   </Link>
                 </li>
@@ -173,141 +186,69 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h3 className="text-white font-semibold text-lg mb-6">{t("footer.newsletterTitle")}</h3>
-            <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-              <div className="flex gap-2">
-                <Input
+            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+               Newsletter
+            </h3>
+            <form onSubmit={handleNewsletterSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <input
                   type="text"
-                  id="newsletterFirstName"
-                  name="newsletterFirstName"
                   placeholder={t("footer.newsletterFirstName")}
                   value={newsletterFirstName}
                   onChange={(e) => setNewsletterFirstName(e.target.value)}
-                  required
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 flex-1"
-                  aria-label={t("footer.newsletterFirstName")}
+                  className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
                 />
-                <Input
+                <input
                   type="text"
-                  id="newsletterLastName"
-                  name="newsletterLastName"
                   placeholder={t("footer.newsletterLastName")}
                   value={newsletterLastName}
                   onChange={(e) => setNewsletterLastName(e.target.value)}
-                  required
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400 flex-1"
-                  aria-label={t("footer.newsletterLastName")}
+                  className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
                 />
               </div>
-              <Input
+              <input
                 type="email"
-                id="newsletterEmail"
-                name="newsletterEmail"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-blue-400"
-                aria-label="Email"
+                className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
               />
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  id="newsletterConsent"
-                  name="newsletterConsent"
-                  checked={newsletterConsent}
-                  onChange={(e) => setNewsletterConsent(e.target.checked)}
-                  className="mt-1 accent-blue-500 min-w-[16px]"
-                  required
-                />
-                <span className="text-xs text-slate-200 leading-relaxed">
-                  {t("footer.newsletterConsent")}
-                </span>
-              </label>
-              <Button
+              <button
                 type="submit"
-                disabled={isSubscribed || !newsletterConsent}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg disabled:opacity-50"
+                disabled={isSubscribed}
+                className="slim-btn w-full sunset-gradient text-white font-display text-[10px] uppercase tracking-widest shadow-lg shadow-sunset-deep/20 py-3 block text-center"
               >
                 {isSubscribed ? t("footer.subscribed") : t("footer.subscribe")}
-              </Button>
+              </button>
             </form>
-
-            {/* Social Links */}
-            <div className="mt-8">
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-slate-800/50 backdrop-blur-md rounded-lg flex items-center justify-center border border-slate-700/50 hover:bg-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
-                    aria-label={social.label}
-                    title={social.label}
-                  >
-                    <social.icon className="w-5 h-5 text-slate-300" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
           </motion.div>
         </div>
 
         {/* Bottom Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="border-t border-slate-700/50 mt-12 pt-8"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="text-slate-200 text-sm mb-4 md:mb-0">
-              © 2025 {t("footer.rights")} |
-              <Link href={`/${lang}/politique-confidentialite`} className="hover:text-white ml-1 text-white">
-                {t("footer.privacy")}
-              </Link>{" "}
-              |
-              <Link href={`/${lang}/mentions-legales`} className="hover:text-white ml-1 text-white">
-                {t("footer.legal")}
-              </Link>{" "}
-              |
-              <Link href={`/${lang}/politique-cookies`} className="hover:text-white ml-1 text-white">
-                {t("footer.cookies")}
-              </Link>{" "}
-              |
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  window.openCookiePreferences?.()
-                }}
-                className="hover:text-white ml-1 text-white"
-                aria-label={t("footer.manageCookies")}
-              >
-                {t("footer.manageCookies")}
-              </a>{" "}
-              |
-              <a href="/sitemap.html" className="hover:text-white ml-1 text-white">
-                {t("footer.sitemap")}
-              </a>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={scrollToTop}
-                variant="ghost"
-                size="sm"
-                className="text-slate-400 hover:text-white hover:bg-slate-800/50"
-              >
-                <ArrowUp className="w-4 h-4 mr-2" />
-                {t("footer.backToTop")}
-              </Button>
-            </div>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-[10px] uppercase tracking-widest font-display text-white/30">
+          <div className="mb-6 md:mb-0">
+            © 2025 Angeli Visions — {t("footer.rights")}
           </div>
-        </motion.div>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <Link href={`/${lang}/politique-confidentialite`} className="hover:text-white transition-colors">
+              {t("footer.privacy")}
+            </Link>
+            <Link href={`/${lang}/mentions-legales`} className="hover:text-white transition-colors">
+              {t("footer.legal")}
+            </Link>
+            <Link href={`/${lang}/politique-cookies`} className="hover:text-white transition-colors">
+              {t("footer.cookies")}
+            </Link>
+            <button
+              onClick={scrollToTop}
+              className="flex items-center gap-2 hover:text-white transition-colors group"
+            >
+              {t("footer.backToTop")}
+              <ArrowUp className="w-3 h-3 group-hover:-translate-y-1 transition-transform" />
+            </button>
+          </div>
+        </div>
       </div>
     </footer>
   )

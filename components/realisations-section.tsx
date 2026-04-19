@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Calendar, Users, MapPin, Eye, ImageIcon } from "lucide-react"
+import { ExternalLink, Calendar, Users, MapPin, Eye, ImageIcon, ChevronRight, Sparkles, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -91,152 +92,125 @@ export default function RealisationsSection() {
     allCategories.find((cat) => cat.id === categoryId)?.color || "from-gray-500 to-gray-600"
 
   return (
-    <section id="realisations" className="py-20 bg-slate-950">
-      <div className="container mx-auto px-4">
+    <section id="realisations" className="py-32 relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="max-w-6xl mx-auto mb-16 text-center px-4"
+          className="max-w-6xl mx-auto mb-20 text-center px-4"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium text-white tracking-normal leading-tight">
-            L'art de l'évènement,
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent block">
-              de la conception à la Scène
-            </span>
+          <h2 className="text-5xl md:text-7xl font-display font-medium text-white tracking-tight leading-tight mb-8">
+            {t("realisations.title")}
           </h2>
-          <motion.div 
-            initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: "120px", opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="h-2 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 mx-auto mt-10 rounded-full shadow-lg shadow-blue-500/20" 
-          />
+          <div className="w-24 h-[2px] bg-white/20 mx-auto" />
         </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-4 mb-16">
-            {allCategories.map((category) => (
-              <Button
+        {/* Categories / Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
+          {allCategories.map((category) => {
+            const active = activeCategory === category.id
+            return (
+              <button
                 key={category.id}
-                variant={activeCategory === category.id ? "default" : "outline"}
                 onClick={() => setActiveCategory(category.id)}
-                className={`rounded-full ${activeCategory === category.id
-                  ? `bg-gradient-to-r ${category.color} text-white hover:opacity-90`
-                  : "border-white/30 text-white hover:bg-white/10 bg-transparent"
-                  }`}
+                className={`px-8 py-3 rounded-full font-display text-sm border transition-all duration-300 ${
+                  active 
+                    ? "bg-sunset-orange text-white border-transparent shadow-xl scale-105" 
+                    : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white"
+                }`}
               >
                 {category.label}
-              </Button>
-            ))}
-          </div>
+              </button>
+            )
+          })}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading ? (
             Array.from({ length: 6 }).map((_, i) => <ProjectSkeleton key={i} />)
           ) : (
-            <AnimatePresence>
-            {filteredProjects.map((project, index) => {
-              const categoryColor = getCategoryColor(project.category)
-              const categoryLabel =
-                allCategories.find((cat) => cat.id === project.category)?.label || t("realisations.noCategory")
-              const galleryCount = (project.gallery || []).length
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => {
+                const categoryLabel =
+                  allCategories.find((cat) => cat.id === project.category)?.label || t("realisations.noCategory")
 
-              return (
-                <motion.div
-                  key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -10 }}
-                  className="group cursor-pointer"
-                  onClick={() => handleProjectClick(project.slug)}
-                >
-                  <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300">
-                    <div className="relative overflow-hidden">
-                      <div className="w-full h-48 bg-slate-900 flex items-center justify-center">
-                        <div className="text-white/60 text-center">
-                          <ImageIcon className="w-12 h-12 mx-auto mb-2" />
-                          <p className="text-sm">{project.title}</p>
+                return (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ delay: index * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="group"
+                    onClick={() => handleProjectClick(project.slug)}
+                  >
+                    <div className="glassy-card overflow-hidden h-full flex flex-col transition-all duration-500 hover:scale-[1.03] cursor-pointer">
+                      <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:scale-110 transition-transform duration-700">
+                           <ImageIcon className="w-12 h-12 text-white/20" />
                         </div>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="flex space-x-3">
-                          <Button size="sm" className="bg-white/20 backdrop-blur-md text-white hover:bg-white/30">
-                            <Eye className="w-4 h-4 mr-2" />
-                            {t("realisations.seeProject")}
-                          </Button>
+                        
+                        <div className="absolute top-6 left-6">
+                           <span className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] text-white uppercase tracking-widest font-medium">
+                             {categoryLabel}
+                           </span>
                         </div>
+                        
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F23] via-transparent to-transparent opacity-60" />
                       </div>
 
-                      <div className="absolute top-4 right-4">
-                        <Badge className={`bg-gradient-to-r ${categoryColor} text-white`}>{categoryLabel}</Badge>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white font-bold text-lg mb-1">{project.title}</h3>
-                        <p className="text-white text-sm">{project.client}</p>
+                      <div className="p-8 flex-1 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 text-sunset-orange text-[10px] uppercase tracking-widest mb-4 font-medium">
+                             <Calendar className="w-3 h-3" />
+                             {project.date}
+                          </div>
+                          <h3 className="text-2xl font-display font-medium text-white mb-2 group-hover:text-sunset-light transition-colors">
+                            {project.title}
+                          </h3>
+                          <p className="text-white/50 text-sm font-display mb-6 line-clamp-2">
+                             {project.client}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-between items-center pt-6 border-t border-white/10 mt-auto">
+                          <div className="flex -space-x-2">
+                             {(project.services || []).slice(0, 3).map((s, i) => (
+                               <div key={i} className="w-9 h-9 rounded-full bg-white/[0.05] border border-midnight-deep flex items-center justify-center" title={s}>
+                                  <Sparkles className="w-3.5 h-3.5 text-white/40" />
+                               </div>
+                             ))}
+                          </div>
+                          <div className="w-11 h-11 rounded-full bg-white text-[#121212] flex items-center justify-center opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all duration-500 shadow-xl">
+                             <ChevronRight className="w-6 h-6" />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <CardContent className="p-6">
-                      <div
-                        className="text-slate-100 mb-4 line-clamp-2 overflow-hidden text-sm leading-relaxed rich-text-content"
-                        dangerouslySetInnerHTML={{ __html: project.description }}
-                      />
-
-                      <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                        <div className="flex items-center text-white/70">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          {project.date}
-                        </div>
-                        <div className="flex items-center text-slate-200">
-                          <Users className="w-4 h-4 mr-2" />
-                          {project.guests}
-                        </div>
-                        <div className="flex items-center text-slate-200 col-span-2">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          {project.location}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2">
-                        {(project.services || []).slice(0, 2).map((service, idx) => (
-                          <Badge key={idx} variant="secondary" className="bg-white/10 text-white text-xs">
-                            {service}
-                          </Badge>
-                        ))}
-                        {(project.services || []).length > 2 && (
-                          <Badge variant="secondary" className="bg-white/10 text-white text-xs">
-                            +{(project.services || []).length - 2}
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )
-            })}
+                  </motion.div>
+                )
+              })}
             </AnimatePresence>
           )}
         </div>
 
+        {/* View All CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mt-16"
+          viewport={{ once: true }}
+          className="text-center mt-24"
         >
-          <Button
-            size="lg"
-            onClick={() => router.push(`/${lang}/realisations`)}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full"
+          <Link 
+            href={`/${lang}/realisations`}
+            className="group inline-flex items-center gap-3 px-10 py-5 sunset-gradient text-white font-display font-medium rounded-full transition-all duration-500 hover:scale-105 shadow-2xl"
           >
-            <ExternalLink className="w-5 h-5 mr-2" />
             {t("realisations.viewAllCta")}
-          </Button>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </motion.div>
       </div>
     </section>

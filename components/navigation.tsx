@@ -80,16 +80,30 @@ export default function Navigation() {
 
   // Removed switchLanguage function as it's now handled by LanguageSelector component
 
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50"
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled 
+          ? "bg-midnight-bg/80 backdrop-blur-xl border-b border-white/10 py-4" 
+          : "bg-transparent py-8"
+      }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-28">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
+          <motion.div whileHover={{ scale: 1.02 }} className="flex items-center">
             <Link 
               href={`/${lang}`} 
               title={t("nav.accueil")} 
@@ -98,82 +112,60 @@ export default function Navigation() {
               <Image
                 src="/images/angeli-visions-logo-white.png"
                 alt="Angeli Visions Logo"
-                width={360}
-                height={100}
+                width={500}
+                height={150}
                 priority
-                className="h-[6.5rem] w-auto object-contain"
+                className="h-16 md:h-20 w-auto object-contain transition-all duration-500"
               />
             </Link>
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center">
             {items.map((item, index) => {
               const active = isItemActive(item)
               const isDevis = item.href.endsWith("/devis")
-              const baseLink =
-                "transition-colors relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 rounded-md"
-              const normalClasses = ["text-white hover:text-white/80", item.bold ? "font-bold" : ""]
-                .filter(Boolean)
-                .join(" ")
-              const featuredClasses = [
-                "text-emerald-200 hover:text-emerald-100",
-                "border border-emerald-400/40",
-                "rounded-full px-3 py-1",
-                "bg-emerald-500/5 hover:bg-emerald-500/10",
-                "ring-1 ring-inset ring-emerald-400/20",
-                "shadow-[0_0_0_1px_rgba(16,185,129,0.10)]",
-                active
-                  ? "bg-emerald-500/15 ring-emerald-400/60 shadow-[0_0_0_2px_rgba(16,185,129,0.15)] text-emerald-50"
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")
-
-              const className = `${baseLink} ${item.featured ? featuredClasses : normalClasses}`
+              
+              // Map labels to have line breaks where requested/needed to match image
+              let label = item.label;
+              if (label === t("nav.prestation")) {
+                label = "Prestation technique<br />audiovisuelle";
+              } else if (label === t("nav.artistes")) {
+                label = "Booking DJ &<br />Musiciens";
+              } else if (label === t("nav.label")) {
+                label = "Label<br />Musical";
+              }
 
               const isPath = item.href.startsWith("/")
+
+              // Define specific glow classes based on index
+              const glowClass = !isDevis ? `glow-item-${(index % 3) + 1}` : "";
+              
+              const baseClass = isDevis ? "nav-pill-devis" : "nav-pill-identic";
+              const itemClasses = isDevis ? "" : `${glowClass} text-white/90 hover:text-white`;
+
               return (
                 <div key={`${item.href}-${item.label}`} className="flex items-center">
-                  {isDevis && (
-                    <span className="text-slate-700/60 select-none mr-8 text-lg font-light">|</span>
+                  {index > 0 && (
+                    <div className="dot-separator" />
                   )}
-                  <motion.div whileHover={{ y: -2 }}>
+                  
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
                     {isPath ? (
                       <Link
                         href={item.href}
-                        title={item.label}
-                        aria-label={item.label}
-                        aria-current={active ? "page" : undefined}
-                        className={className}
+                        className={`${baseClass} ${itemClasses}`}
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                        {item.label}
-                        {!item.featured && (
-                          <span
-                            className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                              }`}
-                          />
-                        )}
+                        <span dangerouslySetInnerHTML={{ __html: label }} />
                       </Link>
                     ) : (
                       <a
                         href={item.href}
-                        title={item.label}
-                        aria-label={item.label}
-                        aria-current={active ? "page" : undefined}
-                        className={className}
+                        className={`${baseClass} ${itemClasses}`}
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                        {item.label}
-                        {!item.featured && (
-                          <span
-                            className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                              }`}
-                          />
-                        )}
+                        <span dangerouslySetInnerHTML={{ __html: label }} />
                       </a>
                     )}
                   </motion.div>
@@ -186,23 +178,21 @@ export default function Navigation() {
           <div className="flex items-center space-x-3">
             <a
               href="#newsletter"
-              title={t("nav.newsletter")}
-              aria-label={t("nav.newsletter")}
-              className="hidden md:inline-flex items-center gap-1.5 text-sm text-emerald-200 hover:text-emerald-100 border border-emerald-400/40 rounded-full px-3 py-1.5 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/20 transition-all duration-200"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-white/20 rounded-full px-4 py-2 text-white/80 hover:bg-white/10 transition-all duration-300"
             >
               <Mail className="w-3.5 h-3.5" />
               {t("nav.newsletter")}
             </a>
 
-            <LanguageSelector />
+            <div>
+              <LanguageSelector />
+            </div>
 
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-white hover:bg-slate-800/50"
+              className="md:hidden text-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>

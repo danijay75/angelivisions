@@ -82,8 +82,8 @@ const en = {
     },
   },
   hero: {
-    titlePart1: "Your Premier Partner",
-    titlePart2: "for entertainment and events",
+    titlePart1: "Event excellence,",
+    titlePart2: "musical audacity",
     description: "",
     cta: "Discover our projects",
     callUs: "Call Us",
@@ -95,7 +95,7 @@ const en = {
     highlight3Desc: "DJ sets, VJing & audiovisual performances",
   },
   services: {
-    statement: "The art of events, mastered from concept to the stage.",
+    statement: "Event excellence, from vision to stage",
     description:
       "From musical creation to full organization, we master all aspects of events and entertainment to create unique and memorable experiences.",
     clientsTitle: "Our Clients",
@@ -139,7 +139,7 @@ const en = {
     },
   },
   realisations: {
-    title: "Our Projects & Shows",
+    title: "Event excellence, from vision to stage",
     highlight: "",
     highlightSuffix: "Creative Portfolio",
     subtitle: "Explore our standout work: bespoke events, original music productions, and innovative audiovisual shows.",

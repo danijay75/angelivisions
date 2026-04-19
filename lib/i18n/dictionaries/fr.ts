@@ -82,10 +82,10 @@ const fr = {
     },
   },
   hero: {
-    titlePart1: "Votre Partenaire Privilégié",
+    titlePart1: "Votre partenaire privilégié",
     titlePart2: "pour le spectacle et l'événementiel",
     description: "",
-    cta: "Découvrir nos réalisations",
+    cta: "Découvrez nos projets",
     callUs: "Appelez-nous",
     highlight1Title: "Label musical",
     highlight1Desc: "Compositions originales & jingles personnalisés",
@@ -95,7 +95,7 @@ const fr = {
     highlight3Desc: "DJ sets, VJ & Performances immersives",
   },
   services: {
-    statement: "L'art de l'évènement, de la conception à la Scène",
+    statement: "L'art de l'évènement de la Conception à la Scène",
     description:
       "De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et du spectacle pour créer des expériences uniques et mémorables.",
     clientsTitle: "Nos Clients",
@@ -139,7 +139,7 @@ const fr = {
     },
   },
   realisations: {
-    title: "L'art de l'évènement, de la conception à la Scène",
+    title: "L'art de l'évènement de la Conception à la Scène",
     highlight: "",
     highlightSuffix: "",
     subtitle: "",

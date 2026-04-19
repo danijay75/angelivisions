@@ -61,52 +61,44 @@ export default function PartnersSection() {
   if (partners.length === 0) return null
 
   return (
-    <section id="partenaires" className="py-8 bg-slate-900 border-t border-slate-800/50">
+    <section id="partenaires" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4">
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="text-center mb-8"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <span className="sunset-gradient bg-clip-text text-transparent text-[10px] uppercase tracking-[0.3em] font-display mb-4 block font-bold">
+             Expertises & Réseaux
+          </span>
+          <h2 className="text-3xl md:text-5xl font-display font-medium text-white">
             {t("partners.title")}
           </h2>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-6 items-center">
+        <div className="flex flex-wrap justify-center gap-8 items-center max-w-5xl mx-auto opacity-50 hover:opacity-100 transition-opacity duration-700">
           {partners.map((partner, index) => {
-            const PartnerLogo = (
-              <div className="relative w-[110px] h-[110px] md:w-[140px] md:h-[140px] group grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-105 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden shadow-xl flex items-center justify-center">
-                <div className="relative w-full h-full p-2">
-                  <Image
-                    src={partner.logo}
-                    alt={partner.name}
-                    fill
-                    className="object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-500"
-                  />
-                </div>
-              </div>
-            )
-
             return (
               <motion.div
                 key={partner.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true }}
+                className="relative group"
               >
-                {partner.url ? (
-                  <a href={partner.url} target="_blank" rel="noopener noreferrer" className="block outline-none focus:ring-2 focus:ring-blue-500 rounded-2xl p-1" title={partner.name}>
-                    {PartnerLogo}
-                  </a>
-                ) : (
-                  <div title={partner.name} className="p-1">
-                    {PartnerLogo}
-                  </div>
-                )}
+                <div className="w-[120px] h-[120px] rounded-[32px] bg-white/[0.05] border border-white/10 flex items-center justify-center p-6 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:bg-white/[0.08] group-hover:border-white/20 group-hover:scale-110 shadow-lg">
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                </div>
               </motion.div>
             )
           })}

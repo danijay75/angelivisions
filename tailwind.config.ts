@@ -10,9 +10,25 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ["var(--font-poppins)", "sans-serif"],
+                display: ["var(--font-space-grotesk)", "sans-serif"],
+            },
             colors: {
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
+                sunset: {
+                    light: '#fdba74',
+                    orange: '#f59e0b',
+                    deep: '#c2410c',
+                },
+                midnight: {
+                    bg: '#0F0F23',
+                    card: '#1E1B4B',
+                    accent: '#07274b',
+                    deep: '#0A0A16',
+                },
+
                 card: {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))'

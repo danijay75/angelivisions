@@ -1,9 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Space_Grotesk, Poppins } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+})
+
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+})
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
@@ -78,7 +87,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning lang="fr">
-      <body className={`${inter.className} min-h-screen bg-slate-950 antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${poppins.variable} font-sans min-h-screen bg-slate-950 antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
