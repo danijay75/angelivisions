@@ -107,7 +107,7 @@ export default function ServicesSection() {
               viewport={{ once: true }}
             >
               <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
-                <Card className="glassy-card h-full border-black/5 bg-white/40 hover:bg-white/60 transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-sm">
+                <Card className="h-full border-black/10 bg-white/80 hover:bg-white/95 backdrop-blur-lg transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-md hover:shadow-xl">
                   <CardHeader>
                     <div className="w-16 h-16 rounded-2xl bg-slate-900/5 border border-slate-900/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                       <Image

@@ -54,9 +54,9 @@ export default function HeroSection() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="mb-16"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-slate-900 leading-[1.1] tracking-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-slate-900 leading-[1.1] tracking-tight" style={{ textShadow: '0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.6)' }}>
               {t("hero.titlePart1")}<br />
-              <span className="italic font-light text-slate-800/70">{t("hero.titlePart2")}</span>
+              <span className="italic font-light text-slate-700" style={{ textShadow: '0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.6)' }}>{t("hero.titlePart2")}</span>
             </h1>
           </motion.div>
 
@@ -76,7 +76,7 @@ export default function HeroSection() {
 
             <a 
               href="tel:+33663796742"
-              className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-slate-900/5 hover:bg-slate-900/10 border-2 border-slate-900/10 text-slate-900 font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-md flex items-center justify-center gap-3"
+              className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-slate-900 hover:bg-slate-800 border-2 border-slate-900 text-white font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-3"
             >
               <Phone className="w-5 h-5" />
               {t("hero.callUs")}

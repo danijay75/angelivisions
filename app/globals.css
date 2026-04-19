@@ -104,7 +104,9 @@
   }
 
   .nav-pill-identic {
-    @apply relative flex items-center justify-center text-center px-6 py-2 rounded-full border border-black/5 [background:rgba(0,0,0,0.02)] backdrop-blur-md transition-all duration-300 min-h-[64px] min-w-[190px] leading-tight text-[13px] font-medium overflow-visible text-slate-800;
+    @apply relative flex items-center justify-center text-center px-6 py-2 rounded-full border border-black/10 backdrop-blur-md transition-all duration-300 min-h-[64px] min-w-[190px] leading-tight text-[13px] font-semibold overflow-visible text-slate-900;
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
   /* The "Comma" Color Accent - Fixed with explicit styles */
@@ -115,22 +117,22 @@
   }
 
   .glow-item-1::before { 
-    background-color: #FFD700; 
-    box-shadow: 0 0 20px #FFD700, 0 0 40px rgba(255, 215, 0, 0.5);
+    background-color: #f59e0b; 
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
   }
   .glow-item-2::before { 
-    background-color: #FF4500; 
-    box-shadow: 0 0 20px #FF4500, 0 0 40px rgba(255, 69, 0, 0.5);
+    background-color: #c2410c; 
+    box-shadow: 0 0 10px rgba(194, 65, 12, 0.4);
   }
   .glow-item-3::before { 
-    background-color: #00FFFF; 
-    box-shadow: 0 0 20px #00FFFF, 0 0 40px rgba(0, 255, 255, 0.5);
+    background-color: #d97706; 
+    box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
   }
 
   .nav-pill-identic:hover {
-    @apply border-black/10;
-    background: rgba(0, 0, 0, 0.05);
-    @apply text-slate-900;
+    @apply border-black/20 text-slate-950;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   .nav-pill-devis {
@@ -139,9 +141,9 @@
   }
 
   .dot-separator {
-    @apply w-2 h-2 rounded-full mx-4 self-center;
-    background: #00FFFF;
-    box-shadow: 0 0 15px #00FFFF, 0 0 30px rgba(0, 255, 255, 0.5);
+    @apply w-1.5 h-1.5 rounded-full mx-3 self-center;
+    background: #d97706;
+    box-shadow: 0 0 6px rgba(217, 119, 6, 0.3);
   }
 
   /* Sophisticated Navigation Accents */
