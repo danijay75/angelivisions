@@ -62,7 +62,7 @@ export default function ServicesSection() {
 
   if (!mounted) {
     return (
-      <section id="services" className="py-20 bg-slate-800/50">
+      <section id="services" className="py-20 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -88,10 +88,10 @@ export default function ServicesSection() {
            whileInView={{ opacity: 1, y: 0 }}
            className="mb-16 text-left"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-slate-900 mb-4">
             Nos Expertises
           </h2>
-          <p className="text-white/60 font-display max-w-xl">
+          <p className="text-slate-600 font-display max-w-xl">
              Des solutions sur mesure pour vos événements et votre carrière musicale.
           </p>
         </motion.div>
@@ -107,24 +107,24 @@ export default function ServicesSection() {
               viewport={{ once: true }}
             >
               <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
-                <Card className="glassy-card h-full border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-500 hover:scale-[1.02] flex flex-col">
+                <Card className="glassy-card h-full border-black/5 bg-white/40 hover:bg-white/60 transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-sm">
                   <CardHeader>
-                    <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-900/5 border border-slate-900/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                       <Image
                         src={service.image || "/placeholder.svg"}
                         alt=""
                         width={40}
                         height={40}
-                        className="w-10 h-10 object-contain filter brightness-110"
+                        className="w-10 h-10 object-contain filter brightness-90 grayscale group-hover:grayscale-0 transition-all"
                       />
                     </div>
-                    <CardTitle className="text-2xl font-display font-medium text-white group-hover:text-sunset-orange transition-colors duration-300">
+                    <CardTitle className="text-2xl font-display font-medium text-slate-900 group-hover:text-sunset-orange transition-colors duration-300">
                       {service.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col flex-grow">
                     <div 
-                      className="text-white/60 font-display mb-8 line-clamp-3 leading-relaxed flex-grow"
+                      className="text-slate-600 font-display mb-8 line-clamp-3 leading-relaxed flex-grow"
                       dangerouslySetInnerHTML={{ __html: service.description }}
                     />
                     
@@ -132,7 +132,7 @@ export default function ServicesSection() {
                       {(service.features || []).slice(0, 3).map((feature, i) => (
                         <span 
                           key={i}
-                          className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-white/40 uppercase tracking-wider"
+                          className="px-3 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-[10px] text-slate-500 uppercase tracking-wider"
                         >
                           {feature}
                         </span>

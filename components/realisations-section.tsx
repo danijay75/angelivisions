@@ -101,10 +101,10 @@ export default function RealisationsSection() {
           transition={{ duration: 0.8 }}
           className="max-w-6xl mx-auto mb-20 text-center px-4"
         >
-          <h2 className="text-5xl md:text-7xl font-display font-medium text-white tracking-tight leading-tight mb-8">
+          <h2 className="text-5xl md:text-7xl font-display font-medium text-slate-900 tracking-tight leading-tight mb-8">
             {t("realisations.title")}
           </h2>
-          <div className="w-24 h-[2px] bg-white/20 mx-auto" />
+          <div className="w-24 h-[2px] bg-black/10 mx-auto" />
         </motion.div>
 
         {/* Categories / Filter */}
@@ -117,8 +117,8 @@ export default function RealisationsSection() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-8 py-3 rounded-full font-display text-sm border transition-all duration-300 ${
                   active 
-                    ? "bg-sunset-orange text-white border-transparent shadow-xl scale-105" 
-                    : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:text-white"
+                    ? "bg-blue-600 text-white border-transparent shadow-lg shadow-blue-600/20 scale-105" 
+                    : "bg-black/5 border-black/5 text-slate-600 hover:bg-black/10 hover:text-slate-900"
                 }`}
               >
                 {category.label}
@@ -168,10 +168,10 @@ export default function RealisationsSection() {
                              <Calendar className="w-3 h-3" />
                              {project.date}
                           </div>
-                          <h3 className="text-2xl font-display font-medium text-white mb-2 group-hover:text-sunset-light transition-colors">
+                          <h3 className="text-2xl font-display font-medium text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
                             {project.title}
                           </h3>
-                          <p className="text-white/50 text-sm font-display mb-6 line-clamp-2">
+                          <p className="text-slate-500 text-sm font-display mb-6 line-clamp-2">
                              {project.client}
                           </p>
                         </div>
@@ -219,15 +219,15 @@ export default function RealisationsSection() {
 
 function ProjectSkeleton() {
   return (
-    <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden h-full">
+    <Card className="bg-white/40 backdrop-blur-md border-black/5 overflow-hidden h-full">
       <div className="relative">
-        <Skeleton className="w-full h-48 bg-slate-900" />
+        <Skeleton className="w-full h-48 bg-black/5" />
         <div className="absolute top-4 right-4">
-          <Skeleton className="h-6 w-16 rounded-full bg-white/10" />
+          <Skeleton className="h-6 w-16 rounded-full bg-black/5" />
         </div>
         <div className="absolute bottom-4 left-4 right-4">
-          <Skeleton className="h-6 w-3/4 mb-2 bg-white/20" />
-          <Skeleton className="h-4 w-1/2 bg-white/10" />
+          <Skeleton className="h-6 w-3/4 mb-2 bg-black/10" />
+          <Skeleton className="h-4 w-1/2 bg-black/5" />
         </div>
       </div>
       <CardContent className="p-6">

@@ -84,7 +84,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-midnight-bg border-t border-white/5 pt-24 pb-12 relative overflow-hidden">
+    <footer className="bg-white/40 backdrop-blur-md border-t border-black/5 pt-24 pb-12 relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sunset-deep/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -103,10 +103,10 @@ export default function Footer() {
                   alt="Angeli Visions"
                   width={200}
                   height={56}
-                  className="h-16 w-auto object-contain"
+                  className="h-16 w-auto object-contain brightness-0 opacity-80"
                 />
               </div>
-              <p className="text-white/40 text-sm font-display leading-relaxed mb-8">
+              <p className="text-slate-500 text-sm font-display leading-relaxed mb-8">
                 {t("footer.description")}
               </p>
 
@@ -119,7 +119,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     whileHover={{ y: -4 }}
-                    className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all duration-300"
+                    className="w-10 h-10 rounded-xl bg-black/5 border border-black/5 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-black/10 hover:border-black/20 transition-all duration-300"
                     aria-label={social.label}
                   >
                     <social.icon className="w-4 h-4" />
@@ -135,21 +135,21 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
           >
-            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+            <h3 className="text-slate-900 font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
                {t("footer.contacts")}
             </h3>
             <div className="space-y-6">
-              <div className="group flex items-center text-white/60 hover:text-white transition-colors cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center mr-4 group-hover:bg-white/[0.08] transition-colors">
-                   <Phone className="w-3.5 h-3.5 text-sunset-orange" />
+              <div className="group flex items-center text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-black/5 border border-black/5 flex items-center justify-center mr-4 group-hover:bg-black/10 transition-colors">
+                   <Phone className="w-3.5 h-3.5 text-blue-600" />
                 </div>
                 <a href="tel:+33663796742" className="text-sm font-display">
                   +33 6 63 79 67 42
                 </a>
               </div>
-              <div className="group flex items-center text-white/60 hover:text-white transition-colors cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center mr-4 group-hover:bg-white/[0.08] transition-colors">
-                   <Mail className="w-3.5 h-3.5 text-sunset-orange" />
+              <div className="group flex items-center text-slate-600 hover:text-slate-900 transition-colors cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-black/5 border border-black/5 flex items-center justify-center mr-4 group-hover:bg-black/10 transition-colors">
+                   <Mail className="w-3.5 h-3.5 text-blue-600" />
                 </div>
                 <a href="mailto:contact@angelivisions.com" className="text-sm font-display">
                   contact@angelivisions.com
@@ -164,14 +164,14 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+            <h3 className="text-slate-900 font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
                {t("nav.services")}
             </h3>
             <ul className="space-y-4">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/40 hover:text-white font-display transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sunset-orange/0 group-hover:bg-sunset-orange mr-0 group-hover:mr-3 transition-all duration-300" />
+                  <Link href={link.href} className="text-sm text-slate-500 hover:text-slate-900 font-display transition-colors duration-300 flex items-center group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600/0 group-hover:bg-blue-600 mr-0 group-hover:mr-3 transition-all duration-300" />
                     {link.label}
                   </Link>
                 </li>
@@ -186,7 +186,7 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+            <h3 className="text-slate-900 font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
                Newsletter
             </h3>
             <form onSubmit={handleNewsletterSubmit} className="space-y-4">
@@ -196,14 +196,14 @@ export default function Footer() {
                   placeholder={t("footer.newsletterFirstName")}
                   value={newsletterFirstName}
                   onChange={(e) => setNewsletterFirstName(e.target.value)}
-                  className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
+                  className="w-full bg-black/5 border border-black/5 font-display text-xs text-slate-900 p-3 rounded-xl focus:outline-none focus:border-blue-600/50 transition-colors placeholder:text-slate-400"
                 />
                 <input
                   type="text"
                   placeholder={t("footer.newsletterLastName")}
                   value={newsletterLastName}
                   onChange={(e) => setNewsletterLastName(e.target.value)}
-                  className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
+                  className="w-full bg-black/5 border border-black/5 font-display text-xs text-slate-900 p-3 rounded-xl focus:outline-none focus:border-blue-600/50 transition-colors placeholder:text-slate-400"
                 />
               </div>
               <input
@@ -211,12 +211,12 @@ export default function Footer() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white/[0.03] border border-white/5 font-display text-xs text-white p-3 rounded-xl focus:outline-none focus:border-sunset-orange/50 transition-colors"
+                className="w-full bg-black/5 border border-black/5 font-display text-xs text-slate-900 p-3 rounded-xl focus:outline-none focus:border-blue-600/50 transition-colors placeholder:text-slate-400"
               />
               <button
                 type="submit"
                 disabled={isSubscribed}
-                className="slim-btn w-full sunset-gradient text-white font-display text-[10px] uppercase tracking-widest shadow-lg shadow-sunset-deep/20 py-3 block text-center"
+                className="slim-btn w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-display text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/20 py-3 block text-center"
               >
                 {isSubscribed ? t("footer.subscribed") : t("footer.subscribe")}
               </button>
@@ -225,24 +225,24 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-[10px] uppercase tracking-widest font-display text-white/30">
+        <div className="pt-8 border-t border-black/5 flex flex-col md:flex-row items-center justify-between text-[10px] uppercase tracking-widest font-display text-slate-400">
           <div className="mb-6 md:mb-0">
             © 2025 Angeli Visions — {t("footer.rights")}
           </div>
 
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <Link href={`/${lang}/politique-confidentialite`} className="hover:text-white transition-colors">
+            <Link href={`/${lang}/politique-confidentialite`} className="hover:text-slate-900 transition-colors">
               {t("footer.privacy")}
             </Link>
-            <Link href={`/${lang}/mentions-legales`} className="hover:text-white transition-colors">
+            <Link href={`/${lang}/mentions-legales`} className="hover:text-slate-900 transition-colors">
               {t("footer.legal")}
             </Link>
-            <Link href={`/${lang}/politique-cookies`} className="hover:text-white transition-colors">
+            <Link href={`/${lang}/politique-cookies`} className="hover:text-slate-900 transition-colors">
               {t("footer.cookies")}
             </Link>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-2 hover:text-white transition-colors group"
+              className="flex items-center gap-2 hover:text-slate-900 transition-colors group"
             >
               {t("footer.backToTop")}
               <ArrowUp className="w-3 h-3 group-hover:-translate-y-1 transition-transform" />

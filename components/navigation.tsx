@@ -96,7 +96,7 @@ export default function Navigation() {
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? "bg-midnight-bg/80 backdrop-blur-xl border-b border-white/10 py-4" 
+          ? "bg-white/40 backdrop-blur-xl border-b border-black/5 py-4" 
           : "bg-transparent py-8"
       }`}
     >
@@ -115,7 +115,7 @@ export default function Navigation() {
                 width={500}
                 height={150}
                 priority
-                className="h-16 md:h-20 w-auto object-contain transition-all duration-500"
+                className="h-16 md:h-20 w-auto object-contain transition-all duration-500 brightness-0 opacity-80"
               />
             </Link>
           </motion.div>
@@ -142,7 +142,7 @@ export default function Navigation() {
               const glowClass = !isDevis ? `glow-item-${(index % 3) + 1}` : "";
               
               const baseClass = isDevis ? "nav-pill-devis" : "nav-pill-identic";
-              const itemClasses = isDevis ? "" : `${glowClass} text-white/90 hover:text-white`;
+              const itemClasses = isDevis ? "" : `${glowClass} text-slate-800 hover:text-slate-900`;
 
               return (
                 <div key={`${item.href}-${item.label}`} className="flex items-center">
@@ -178,7 +178,7 @@ export default function Navigation() {
           <div className="flex items-center space-x-3">
             <a
               href="#newsletter"
-              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-white/20 rounded-full px-4 py-2 text-white/80 hover:bg-white/10 transition-all duration-300"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-slate-900/10 rounded-full px-4 py-2 text-slate-600 hover:bg-slate-900/5 transition-all duration-300"
             >
               <Mail className="w-3.5 h-3.5" />
               {t("nav.newsletter")}
@@ -191,7 +191,7 @@ export default function Navigation() {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-white"
+              className="md:hidden text-slate-900"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -206,7 +206,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-800/90 backdrop-blur-md rounded-lg mt-2 p-4"
+            className="md:hidden bg-white/70 backdrop-blur-xl rounded-2xl mt-2 p-4 border border-black/5 shadow-xl"
           >
             {items.map((item) => {
               const active = isItemActive(item)
@@ -214,7 +214,7 @@ export default function Navigation() {
               const mobileClass = `block py-2 transition-colors ${item.featured
                 ? `text-emerald-200 hover:text-emerald-100 border border-emerald-400/50 rounded-lg px-3 py-2 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/30 ${active ? "bg-emerald-500/15 ring-emerald-400/60 text-emerald-50" : ""
                 }`
-                : `text-white hover:text-white/80 ${item.bold ? "font-bold" : ""} ${active ? "text-white" : ""}`
+                : `text-slate-800 hover:text-slate-900 ${item.bold ? "font-bold" : ""} ${active ? "text-slate-900" : ""}`
                 }`
 
               return isPath ? (

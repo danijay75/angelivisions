@@ -41,16 +41,16 @@ export default function PartnersSection() {
 
   if (!mounted || loading) {
     return (
-      <section id="partenaires" className="py-8 bg-slate-900 border-t border-slate-800/50">
+      <section id="partenaires" className="py-8 bg-transparent border-t border-black/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
               {mounted ? t("partners.title") : "Nos partenaires"}
             </h2>
           </div>
           <div className="flex flex-wrap justify-center gap-6 items-center">
              {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="w-[110px] h-[110px] md:w-[140px] md:h-[140px] rounded-3xl bg-slate-800/50" />
+                <Skeleton key={i} className="w-[110px] h-[110px] md:w-[140px] md:h-[140px] rounded-3xl bg-black/5" />
              ))}
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function PartnersSection() {
           <span className="sunset-gradient bg-clip-text text-transparent text-[10px] uppercase tracking-[0.3em] font-display mb-4 block font-bold">
              Expertises & Réseaux
           </span>
-          <h2 className="text-3xl md:text-5xl font-display font-medium text-white">
+          <h2 className="text-3xl md:text-5xl font-display font-medium text-slate-900">
             {t("partners.title")}
           </h2>
         </motion.div>
@@ -90,7 +90,7 @@ export default function PartnersSection() {
                 viewport={{ once: true }}
                 className="relative group"
               >
-                <div className="w-[120px] h-[120px] rounded-[32px] bg-white/[0.05] border border-white/10 flex items-center justify-center p-6 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:bg-white/[0.08] group-hover:border-white/20 group-hover:scale-110 shadow-lg">
+                <div className="w-[120px] h-[120px] rounded-[32px] bg-white/40 border border-black/5 flex items-center justify-center p-6 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:bg-white/60 group-hover:border-black/10 group-hover:scale-110 shadow-sm">
                   <Image
                     src={partner.logo}
                     alt={partner.name}

@@ -44,7 +44,7 @@ export default function HeroSection() {
               width={800}
               height={220}
               priority
-              className="h-32 md:h-48 w-auto mx-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+              className="h-32 md:h-48 w-auto mx-auto object-contain brightness-0 opacity-80 drop-shadow-[0_4px_10px_rgba(0,0,0,0.1)]"
             />
           </motion.div>
 
@@ -54,9 +54,9 @@ export default function HeroSection() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="mb-16"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-white leading-[1.1] tracking-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-slate-900 leading-[1.1] tracking-tight">
               {t("hero.titlePart1")}<br />
-              <span className="italic font-light text-white/80">{t("hero.titlePart2")}</span>
+              <span className="italic font-light text-slate-800/70">{t("hero.titlePart2")}</span>
             </h1>
           </motion.div>
 
@@ -76,7 +76,7 @@ export default function HeroSection() {
 
             <a 
               href="tel:+33663796742"
-              className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-white/10 hover:bg-white/20 border-2 border-white/20 text-white font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-md flex items-center justify-center gap-3"
+              className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-slate-900/5 hover:bg-slate-900/10 border-2 border-slate-900/10 text-slate-900 font-display font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-md flex items-center justify-center gap-3"
             >
               <Phone className="w-5 h-5" />
               {t("hero.callUs")}

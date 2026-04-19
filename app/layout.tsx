@@ -87,7 +87,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning lang="fr">
-      <body className={`${spaceGrotesk.variable} ${poppins.variable} font-sans min-h-screen bg-slate-950 antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${poppins.variable} font-sans min-h-screen antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -137,6 +137,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }),
           }}
         />
+        <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+          <div className="bg-orb orb-orange animate-orb w-[600px] h-[600px] -top-20 -right-20 opacity-40" />
+          <div className="bg-orb orb-blue animate-orb w-[800px] h-[800px] top-1/4 -left-40 delay-700 opacity-20" />
+          <div className="bg-orb orb-white animate-orb w-[500px] h-[500px] bottom-0 right-1/4 delay-1000 opacity-10" />
+        </div>
         {children}
       </body>
     </html>

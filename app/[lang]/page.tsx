@@ -56,7 +56,7 @@ export async function generateMetadata({
 
 export default function LocalizedHomePage() {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-transparent">
       <section id="accueil">
         <HeroSection />
       </section>
