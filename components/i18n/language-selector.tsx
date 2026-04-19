@@ -57,6 +57,7 @@ export default function LanguageSelector() {
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-slate-300 hover:text-white hover:bg-slate-800/50 flex items-center gap-2 px-3 py-2 transition-all duration-200"
+                aria-label="Choisir la langue / Select language"
             >
                 <Globe className="w-4 h-4 text-emerald-400" />
                 <span className="font-medium">{lang.toUpperCase()}</span>

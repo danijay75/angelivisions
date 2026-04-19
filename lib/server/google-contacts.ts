@@ -23,7 +23,13 @@ export interface NewsletterContact {
 // ---------------------------------------------------------------------------
 
 function getPeopleApi() {
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.GOOGLE_REFRESH_TOKEN) {
+  const missing = [];
+  if (!process.env.GOOGLE_CLIENT_ID) missing.push("GOOGLE_CLIENT_ID");
+  if (!process.env.GOOGLE_CLIENT_SECRET) missing.push("GOOGLE_CLIENT_SECRET");
+  if (!process.env.GOOGLE_REFRESH_TOKEN) missing.push("GOOGLE_REFRESH_TOKEN");
+
+  if (missing.length > 0) {
+    console.error("[Google Contacts] ERREUR: Variables manquantes:", missing.join(", "));
     return null;
   }
 
@@ -143,6 +149,13 @@ export async function listNewsletterContacts(): Promise<NewsletterContact[]> {
   if (!peopleApi) return [];
 
   try {
+    const groupsRes = await peopleApi.contactGroups.list({ pageSize: 1000 });
+    const newsletterGroup = groupsRes.data.contactGroups?.find(
+      (g) => g.name === "Newsletter" || g.formattedName === "Newsletter"
+    );
+    const newsletterGroupResourceName = newsletterGroup?.resourceName;
+    console.log(`[Google Contacts] Groupe Newsletter trouvé: ${newsletterGroupResourceName || "NON"} (${newsletterGroup?.memberCount || 0} membres)`);
+
     const contacts: NewsletterContact[] = [];
     let nextPageToken: string | undefined;
 
@@ -150,31 +163,46 @@ export async function listNewsletterContacts(): Promise<NewsletterContact[]> {
       const res = await peopleApi.people.connections.list({
         resourceName: "people/me",
         pageSize: 100,
-        personFields: "names,emailAddresses,biographies,userDefined,organizations,birthdays",
+        personFields: "names,emailAddresses,biographies,userDefined,organizations,birthdays,memberships",
         pageToken: nextPageToken,
       });
 
       const connections = res.data.connections || [];
+      console.log(`[Google Contacts] ${connections.length} connexions analysées dans cette page.`);
 
       for (const person of connections) {
-        const isNewsletter = person.userDefined?.some(
-          (ud) => ud.key === "Catégorie / Source" && ud.value === "Newsletter"
+        // Tag logic: 
+        // 1. UserDefined field "Newsletter" (case insensitive)
+        const isUserDefinedNewsletter = person.userDefined?.some(
+          (ud) => ud.key === "Catégorie / Source" && ud.value?.toLowerCase() === "newsletter"
+        );
+        
+        // 2. Organization name is "Newsletter" (case insensitive)
+        const isCompanyNewsletter = person.organizations?.some(
+          (org) => org.name?.toLowerCase() === "newsletter"
         );
 
-        if (!isNewsletter) continue;
+        // 3. Membership in "Newsletter" group
+        const isGroupNewsletter = person.memberships?.some(
+          (m) => m.contactGroupMembership?.contactGroupResourceName === newsletterGroupResourceName
+        );
+
+        // If it matches any criteria
+        if (!isUserDefinedNewsletter && !isCompanyNewsletter && !isGroupNewsletter) continue;
 
         const email = person.emailAddresses?.[0]?.value || "";
+        if (!email) continue; // Skip contacts without email
+
         const firstName = person.names?.[0]?.givenName || "";
         const lastName = person.names?.[0]?.familyName || "";
         const fullName = [firstName, lastName].filter(Boolean).join(" ");
         const company = person.organizations?.[0]?.name || "";
         
-        // Use Birthday field for subscription date
         const subscribedAt = extractDateFromBirthday(person.birthdays);
 
         contacts.push({
           resourceName: person.resourceName || "",
-          name: fullName,
+          name: fullName || email.split("@")[0],
           email,
           subscribedAt,
           company,

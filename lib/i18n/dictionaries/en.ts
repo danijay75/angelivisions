@@ -1,13 +1,14 @@
 const en = {
   nav: {
     accueil: "Home",
-    services: "Services",
+    prestation: "Audiovisual technical production",
+    artistes: "DJ & Musicians Booking",
+    label: "Music Label",
     realisations: "Portfolio",
-    artistes: "Our Artists",
-    investissement: "Invest in Culture",
-    devis: "Quote Request",
+    devis: "Quick Quote",
     contact: "Contact",
     newsletter: "Newsletter",
+    services: "Services",
   },
   investment: {
     title: "Invest in Culture",
@@ -32,7 +33,6 @@ const en = {
       theatre: "Theater",
       humour: "Comedy",
       immersif: "Festival",
-      sport: "Sports Event",
     },
     projectsTitle: "Current Projects",
     projectsSubtitle: "Invest now in these promising cultural projects",
@@ -42,7 +42,6 @@ const en = {
       theatre: "Theater",
       humour: "Comedy",
       immersif: "Festival",
-      sport: "Sports Event",
     },
     project: {
       progression: "Progression",
@@ -84,10 +83,10 @@ const en = {
   },
   hero: {
     titlePart1: "Your Premier Partner",
-    titlePart2: "for Cultural Events and Entertainment",
-    description:
-      "DJ Booking • Music Production • Event Planning\nSound • Lighting • VJ / Video Mapping • Musical Animations\nMulti-camera filming",
+    titlePart2: "for entertainment and events",
+    description: "",
     cta: "Discover our projects",
+    callUs: "Call Us",
     highlight1Title: "Music Production",
     highlight1Desc: "Original compositions & custom jingles",
     highlight2Title: "Event Design & Planning",
@@ -96,8 +95,7 @@ const en = {
     highlight3Desc: "DJ sets, VJing & audiovisual performances",
   },
   services: {
-    title: "Our Services",
-    subtitle: "Complete expertise in all cultural fields",
+    statement: "The art of events, mastered from concept to the stage.",
     description:
       "From musical creation to full organization, we master all aspects of events and entertainment to create unique and memorable experiences.",
     clientsTitle: "Our Clients",
@@ -153,6 +151,7 @@ const en = {
     backToList: "Back to Portfolio",
     clientLabel: "Client:",
     servicesLabel: "Included services",
+    videosLabel: "Project Videos",
     galleryLabel: "Gallery",
   },
   timeline: {
@@ -251,6 +250,11 @@ const en = {
       newRequest: "New Request",
     },
   },
+  partners: {
+    title: "Our Partners",
+    subtitle: "They trust us and support our projects",
+    description: "They trust us and support our projects",
+  },
   contact: {
     title: "Contact",
     description: "We are available during our opening hours. You can also find our team below.",
@@ -260,13 +264,6 @@ const en = {
     conciergerieUrgencies: "Urgent matter for your event in the evening or weekend?",
     teamTitle: "Our Team",
     teamSubtitle: "Meet the talents behind our Projects",
-  },
-  audio: {
-    title: "Audio Player",
-    creations: "Our Creations",
-    minimize: "Minimize",
-    close: "Close player",
-    coverAlt: "Cover",
   },
   cookies: {
     title: "Cookie Management",
@@ -318,10 +315,10 @@ const en = {
     backToTop: "Back to top",
     rights: "All rights reserved.",
     services: {
-      booking: "DJ Booking",
+      booking: "Booking DJ / Musicians",
       production: "Music Production",
       organization: "Event Organization",
-      technical: "Prestations techniques audiovisuelles",
+      technical: "Audiovisual Technical Provider",
       ledWalls: "LED Walls",
       media: "Multi-camera filming",
     },

@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "angelivisions",
-            script: "npm",
+            script: "node_modules/.bin/next",
             args: "start",
             cwd: "/var/www/angelivisions",
             env: {

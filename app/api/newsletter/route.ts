@@ -11,13 +11,17 @@ import {
 
 // ---------- GET: list all newsletter subscribers (admin only) ----------
 export async function GET(req: NextRequest) {
+  console.log("[Newsletter API] Requête GET reçue");
   const gate = await requireAdmin()
   if (!gate.ok) {
+    console.warn("[Newsletter API] Authentification admin échouée:", gate.status);
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
   try {
+    console.log("[Newsletter API] Appel à listNewsletterContacts...");
     const contacts = await listNewsletterContacts()
+    console.log(`[Newsletter API] ${contacts.length} contacts récupérés.`);
 
     // Map to the shape the frontend expects
     const subscribers = contacts.map((c) => ({

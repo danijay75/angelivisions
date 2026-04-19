@@ -129,6 +129,7 @@ export default function ImagePicker({ label = "Logo / Icône", value, onChange, 
               </div>
 
               {hint && <p className="text-white/60 text-xs">{hint}</p>}
+              {!value && <p className="text-white/40 text-[10px] uppercase tracking-wider font-medium">Formats: JPG, PNG, WEBP (MAX: 100 MO)</p>}
             </div>
           </div>
         </CardContent>

@@ -66,6 +66,28 @@ async function getServices(): Promise<ServiceItem[]> {
       color: "from-cyan-500 to-teal-500",
       image: "/event-organization.jpg",
     },
+    {
+      id: "booking",
+      title: "Booking DJ & Musiciens",
+      description: "DJs professionnels, animation live audiovisuel, VJing et performances audiovisuelles personnalisées",
+      features: ["DJ sets professionnels", "VJ live performances", "Animation interactive", "Streaming en direct"],
+      color: "from-teal-500 to-emerald-500",
+      image: "/placeholder.svg?height=128&width=128",
+    },
+    {
+      id: "prestations-techniques-audiovisuelles",
+      title: "Prestataire technique audiovisuel",
+      description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
+      features: [
+        "Sonorisation événementielle",
+        "Éclairage scénique",
+        "Murs de LED",
+        "VJ / Vidéo mapping",
+        "Régie technique",
+      ],
+      color: "from-emerald-500 to-blue-500",
+      image: "/placeholder.svg?height=128&width=128",
+    },
   ]
 }
 
@@ -178,7 +200,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                     <p>Possibilité de streaming en direct pour étendre la portée de votre événement au-delà du lieu physique.</p>
                   </>
                 )}
-                {service.id === "technical" && (
+                {service.id === "prestations-techniques-audiovisuelles" && (
                   <>
                     <p>Notre équipe technique expérimentée met à votre disposition un matériel de pointe pour la sonorisation, l'éclairage et la vidéo.</p>
                     <p>Nous concevons des installations techniques sur-mesure adaptées à vos besoins et à la configuration de votre lieu.</p>
@@ -205,7 +227,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
           {/* Sidebar */}
           <div className="space-y-6 lg:sticky lg:top-24 h-fit">
-            <Card className="bg-gradient-to-br from-blue-600/25 via-cyan-600/20 to-blue-600/10 border-blue-500/30 shadow-xl shadow-blue-500/10 overflow-hidden">
+            <Card className="bg-gradient-to-br from-slate-800/90 via-slate-900/95 to-slate-800/90 border-blue-500/30 shadow-2xl shadow-blue-500/5 overflow-hidden backdrop-blur-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="text-white text-2xl">Vous avez un projet ?</CardTitle>
                 <div className="text-sm text-white">Contactez-nous pour discuter de votre projet</div>

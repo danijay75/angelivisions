@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -241,14 +242,25 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
                     onClick={() => handleProjectClick(project.slug)}
                   >
                     <Card className="bg-white/5 backdrop-blur-md border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300 h-full">
-                      <div className="relative overflow-hidden">
-                        <div className="w-full h-64 bg-slate-900 flex items-center justify-center">
-                          <div className="text-slate-200 text-center">
-                            <ImageIcon className="w-12 h-12 mx-auto mb-2" />
-                            <p className="text-sm">{project.title}</p>
-                          </div>
+                      <div className="relative overflow-hidden aspect-[16/9]">
+                        {/* Image de couverture avec zoom au survol */}
+                        <div className="w-full h-full bg-slate-900 group-hover:scale-110 transition-transform duration-500 ease-in-out">
+                          {project.image ? (
+                            <Image
+                              src={project.image}
+                              alt={project.title}
+                              fill
+                              unoptimized={project.image.startsWith("http")}
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-slate-400">
+                              <ImageIcon className="w-12 h-12 mb-2 opacity-20" />
+                              <p className="text-sm opacity-20 font-medium tracking-wider uppercase">{project.title}</p>
+                            </div>
+                          )}
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <div className="flex space-x-3">

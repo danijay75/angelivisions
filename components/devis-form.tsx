@@ -93,6 +93,7 @@ export default function DevisForm() {
         setError(json.message || t("devis.error"))
         return
       }
+
       setIsSubmitted(true)
     } catch {
       setError(t("devis.error"))

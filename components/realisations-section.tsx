@@ -94,25 +94,28 @@ export default function RealisationsSection() {
     <section id="realisations" className="py-20 bg-slate-950">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="max-w-6xl mx-auto mb-16 text-center px-4"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {t("realisations.title")}{" "}
-            <span className="block">
-              <span className="text-white">{t("realisations.highlight")}</span>
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                {" "}
-                {t("realisations.highlightSuffix")}
-              </span>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium text-white tracking-normal leading-tight">
+            L'art de l'évènement,
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent block">
+              de la conception à la Scène
             </span>
           </h2>
+          <motion.div 
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: "120px", opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="h-2 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 mx-auto mt-10 rounded-full shadow-lg shadow-blue-500/20" 
+          />
+        </motion.div>
 
-          <p className="text-xl text-white max-w-3xl mx-auto mb-8">{t("realisations.subtitle")}</p>
-
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
             {allCategories.map((category) => (
               <Button
                 key={category.id}
@@ -127,7 +130,6 @@ export default function RealisationsSection() {
               </Button>
             ))}
           </div>
-        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading ? (
@@ -168,16 +170,6 @@ export default function RealisationsSection() {
                             <Eye className="w-4 h-4 mr-2" />
                             {t("realisations.seeProject")}
                           </Button>
-                          {galleryCount > 1 && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="border-white/30 text-white hover:bg-white/10 bg-transparent backdrop-blur-md"
-                            >
-                              <ImageIcon className="w-4 h-4 mr-2" />
-                              {galleryCount} {t("realisations.photosCount")}
-                            </Button>
-                          )}
                         </div>
                       </div>
 

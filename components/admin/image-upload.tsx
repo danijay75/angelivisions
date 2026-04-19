@@ -6,7 +6,8 @@ import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Upload, X, ImageIcon, Camera, Monitor, Trash2 } from "lucide-react"
+import { Upload, X, ImageIcon, Camera, Monitor, Trash2, Edit, Loader2 } from "lucide-react"
+import ImageCropper from "./image-cropper"
 
 interface ImageUploadProps {
   images: string[]
@@ -18,10 +19,36 @@ interface ImageUploadProps {
 export default function ImageUpload({ images, onImagesChange, maxImages = 10, label = "Images" }: ImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [cropperOpen, setCropperOpen] = useState(false)
+  const [selectedImageForCrop, setSelectedImageForCrop] = useState<{ src: string; index: number } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileSelect = (files: FileList | null) => {
-    if (!files) return
+  const uploadFile = async (file: File | Blob, originalName?: string): Promise<string | null> => {
+    try {
+      const formData = new FormData()
+      formData.append("file", file, originalName || "image.png")
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        alert(err.error || "Erreur lors de l'upload")
+        return null
+      }
+
+      const data = await res.json()
+      return data.url
+    } catch (e) {
+      alert("Erreur de connexion lors de l'upload")
+      return null
+    }
+  }
+
+  const handleFileSelect = async (files: FileList | null) => {
+    if (!files || files.length === 0) return
 
     const fileArray = Array.from(files)
     const imageFiles = fileArray.filter((file) => file.type.startsWith("image/"))
@@ -38,28 +65,18 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
 
     setUploading(true)
 
-    // Simuler le téléchargement et convertir en URL blob
-    const newImages: string[] = []
-    let processed = 0
+    const uploadedUrls: string[] = []
+    for (const file of imageFiles) {
+      const url = await uploadFile(file, file.name)
+      if (url) uploadedUrls.push(url)
+    }
 
-    imageFiles.forEach((file) => {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          // Créer une URL blob pour l'image
-          const blob = new Blob([file], { type: file.type })
-          const imageUrl = URL.createObjectURL(blob)
-          newImages.push(imageUrl)
-        }
-        processed++
-
-        if (processed === imageFiles.length) {
-          onImagesChange([...images, ...newImages])
-          setUploading(false)
-        }
-      }
-      reader.readAsArrayBuffer(file)
-    })
+    if (uploadedUrls.length > 0) {
+      onImagesChange([...images, ...uploadedUrls])
+    }
+    
+    setUploading(false)
+    if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -87,74 +104,90 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
     fileInputRef.current?.click()
   }
 
+  const startCropping = (src: string, index: number) => {
+    setSelectedImageForCrop({ src, index })
+    setCropperOpen(true)
+  }
+
+  const onCropCompleted = async (croppedBlob: Blob) => {
+    setCropperOpen(false)
+    if (!selectedImageForCrop) return
+
+    setUploading(true)
+    const url = await uploadFile(croppedBlob, `cropped-${Date.now()}.png`)
+    
+    if (url) {
+      const newImages = [...images]
+      newImages[selectedImageForCrop.index] = url
+      onImagesChange(newImages)
+    }
+    
+    setUploading(false)
+    setSelectedImageForCrop(null)
+  }
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <label className="text-white font-medium">{label}</label>
-        <span className="text-white/60 text-sm">
-          {images.length}/{maxImages} images
+      <div className="flex items-center justify-between text-white/90">
+        <label className="font-semibold text-sm tracking-wide uppercase">{label}</label>
+        <span className="text-white/40 text-[10px] font-mono bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
+          {images.length} / {maxImages} MAX
         </span>
       </div>
 
       {/* Zone de téléchargement */}
       <Card
-        className={`border-2 border-dashed transition-all duration-300 cursor-pointer ${
+        className={`group relative overflow-hidden border-2 border-dashed transition-all duration-500 cursor-pointer ${
           isDragging
-            ? "border-purple-400 bg-purple-500/10"
-            : "border-white/30 bg-white/5 hover:border-white/50 hover:bg-white/10"
+            ? "border-purple-500/50 bg-purple-500/5"
+            : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={openFileDialog}
       >
-        <CardContent className="p-8 text-center">
-          <motion.div animate={{ scale: isDragging ? 1.1 : 1 }} transition={{ duration: 0.2 }} className="space-y-4">
-            <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
-              {uploading ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
-                />
-              ) : (
-                <Upload className="w-8 h-8 text-white" />
-              )}
-            </div>
-
-            <div>
-              <h3 className="text-white font-semibold mb-2">
-                {uploading ? "Téléchargement en cours..." : "Télécharger des images"}
-              </h3>
-              <p className="text-white/70 text-sm mb-4">Glissez-déposez vos images ici ou cliquez pour sélectionner</p>
-
-              <div className="flex items-center justify-center space-x-4 text-white/50 text-xs">
-                <div className="flex items-center">
-                  <Monitor className="w-4 h-4 mr-1" />
-                  Ordinateur
-                </div>
-                <div className="flex items-center">
-                  <Camera className="w-4 h-4 mr-1" />
-                  Mobile
-                </div>
+        <CardContent className="p-10 text-center relative z-10">
+          <motion.div animate={{ scale: isDragging ? 1.05 : 1 }} transition={{ duration: 0.2 }} className="space-y-4">
+            <div className="w-20 h-20 mx-auto relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20 blur-2xl rounded-full animate-pulse" />
+              <div className="relative w-full h-full bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(168,85,247,0.3)] border border-white/20">
+                {uploading ? (
+                  <Loader2 className="w-10 h-10 text-white animate-spin" />
+                ) : (
+                  <Upload className="w-10 h-10 text-white" />
+                )}
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2">
-              <span className="bg-white/10 text-white/80 px-2 py-1 rounded text-xs">JPG</span>
-              <span className="bg-white/10 text-white/80 px-2 py-1 rounded text-xs">PNG</span>
-              <span className="bg-white/10 text-white/80 px-2 py-1 rounded text-xs">WEBP</span>
-              <span className="bg-white/10 text-white/80 px-2 py-1 rounded text-xs">GIF</span>
+            <div className="space-y-1">
+              <h3 className="text-white font-bold text-lg">
+                {uploading ? "Transfert en cours..." : "Téléchargez vos fichiers"}
+              </h3>
+              <p className="text-white/40 text-sm max-w-xs mx-auto">
+                Faites glisser vos images ici ou <span className="text-purple-400 hover:text-purple-300 font-medium">parcourez</span> vos dossiers
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-3 pt-2">
+              {["JPG", "PNG", "WEBP"].map((ext) => (
+                <span key={ext} className="text-[10px] font-bold text-white/30 tracking-widest px-2 py-0.5 rounded border border-white/5 bg-white/5 uppercase">
+                  {ext}
+                </span>
+              ))}
             </div>
           </motion.div>
         </CardContent>
+        {/* Glow effect */}
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-600/10 blur-[100px] rounded-full" />
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-pink-600/10 blur-[100px] rounded-full" />
       </Card>
 
       {/* Input file caché */}
       <input
         ref={fileInputRef}
         type="file"
-        multiple
+        multiple={maxImages > 1}
         accept="image/*"
         className="hidden"
         onChange={(e) => handleFileSelect(e.target.files)}
@@ -162,47 +195,61 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
 
       {/* Prévisualisation des images */}
       {images.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-white font-medium flex items-center">
-            <ImageIcon className="w-4 h-4 mr-2" />
-            Images téléchargées
+        <div className="space-y-4 pt-4">
+          <h4 className="text-white/60 text-xs font-bold tracking-widest uppercase flex items-center">
+            <ImageIcon className="w-3.5 h-3.5 mr-2 text-purple-400" />
+            VOTRE SÉLECTION
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <AnimatePresence>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+            <AnimatePresence mode="popLayout">
               {images.map((image, index) => (
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="relative group"
+                  key={image + index}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  className="relative group aspect-square"
                 >
-                  <div className="relative overflow-hidden rounded-lg bg-white/5 border border-white/10">
+                  <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 group-hover:border-white/20 transition-all duration-300 shadow-xl">
                     <img
                       src={image || "/placeholder.svg"}
                       alt={`Image ${index + 1}`}
-                      className="w-full h-24 object-cover"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
-                        // Fallback si l'image ne charge pas
                         const target = e.target as HTMLImageElement
-                        target.src = "/placeholder.svg?height=96&width=128&text=Erreur"
+                        target.src = "/placeholder.svg?height=96&width=96&text=Error"
                       }}
                     />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                    
+                    {/* Overlay Control */}
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3">
+                      <Button
+                        onClick={() => startCropping(image, index)}
+                        size="icon"
+                        className="bg-white/10 hover:bg-white/20 text-white rounded-xl w-10 h-10 border border-white/20 backdrop-blur-md"
+                        title="Modifier / Recadrer"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
                       <Button
                         onClick={(e) => {
                           e.stopPropagation()
                           removeImage(index)
                         }}
-                        size="sm"
+                        size="icon"
                         variant="destructive"
-                        className="bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 p-0"
+                        className="bg-red-500/80 hover:bg-red-500 text-white rounded-xl w-10 h-10 border border-red-400/20 backdrop-blur-md"
+                        title="Supprimer"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
-                  <p className="text-white/60 text-xs mt-1 text-center truncate">Image {index + 1}</p>
+                  <div className="mt-2 px-1 flex justify-between items-center bg-black/20 rounded-lg p-1 border border-white/5">
+                    <p className="text-[10px] font-mono text-white/30 truncate flex-1">IMG_{index + 1}</p>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_5px_rgba(16,185,129,0.5)]" />
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -211,45 +258,60 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
       )}
 
       {/* Actions rapides */}
-      <div className="flex flex-wrap gap-2">
-        <Button
-          onClick={openFileDialog}
-          size="sm"
-          className="bg-purple-600 hover:bg-purple-700 text-white"
-          disabled={uploading || images.length >= maxImages}
-        >
-          <Upload className="w-4 h-4 mr-2" />
-          Ajouter des images
-        </Button>
-
-        {images.length > 0 && (
+      {images.length > 0 && (
+        <div className="flex gap-3 pt-2">
           <Button
             onClick={() => onImagesChange([])}
-            size="sm"
             variant="outline"
-            className="border-red-500/50 text-red-400 hover:bg-red-500/10 bg-transparent"
+            size="sm"
+            className="border-red-500/20 text-red-400 hover:bg-red-500/10 bg-black/20 rounded-xl"
           >
-            <X className="w-4 h-4 mr-2" />
-            Tout supprimer
+            <Trash2 className="w-4 h-4 mr-2" />
+            Libérer tout
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Informations */}
-      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
-        <div className="flex items-start space-x-2">
-          <ImageIcon className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm">
-            <p className="text-blue-200 font-medium mb-1">Conseils pour de meilleures images :</p>
-            <ul className="text-blue-100 text-xs space-y-1">
-              <li>• Utilisez des images de haute qualité (min. 800x600px)</li>
-              <li>• Formats recommandés : JPG pour les photos, PNG pour les logos</li>
-              <li>• Taille maximale : 5MB par image</li>
-              <li>• Les images seront automatiquement optimisées</li>
+      {/* Informations Premium */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-500/5 to-purple-500/5 border border-white/5 rounded-2xl p-5">
+        <div className="relative z-10 flex items-start space-x-4">
+          <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0 border border-blue-500/20">
+            <ImageIcon className="w-5 h-5 text-blue-400" />
+          </div>
+          <div className="space-y-2">
+            <h5 className="text-white font-bold text-sm">Guide d'optimisation UI</h5>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+              <li className="text-[11px] text-white/50 flex items-center">
+                <span className="w-1 h-1 rounded-full bg-blue-400 mr-2" />
+                Haute résolution (min. 800px)
+              </li>
+              <li className="text-[11px] text-white/50 flex items-center">
+                <span className="w-1 h-1 rounded-full bg-blue-400 mr-2" />
+                Format PNG pour les logos
+              </li>
+              <li className="text-[11px] text-white/50 flex items-center">
+                <span className="w-1 h-1 rounded-full bg-blue-400 mr-2" />
+                Poids max conseillé 5Mo
+              </li>
+              <li className="text-[11px] text-white/50 flex items-center">
+                <span className="w-1 h-1 rounded-full bg-blue-400 mr-2" />
+                Recadrage carré recommandé
+              </li>
             </ul>
           </div>
         </div>
       </div>
+
+      {/* Cropper Modal */}
+      {selectedImageForCrop && (
+        <ImageCropper
+          imageSrc={selectedImageForCrop.src}
+          open={cropperOpen}
+          onClose={() => setCropperOpen(false)}
+          onCompleted={onCropCompleted}
+          aspect={1} // Always square as requested
+        />
+      )}
     </div>
   )
 }

@@ -32,13 +32,11 @@ export default function Navigation() {
 
   const items: MenuItem[] = useMemo(
     () => [
-      { href: `/${lang}#accueil`, label: t("nav.accueil") },
-      { href: `/${lang}/services`, label: t("nav.services") },
-      { href: `/${lang}/realisations`, label: t("nav.realisations"), bold: true },
+      { href: `/${lang}/services/prestation-technique-audiovisuelle`, label: t("nav.prestation") },
       { href: `/${lang}/artists`, label: t("nav.artistes") },
-      { href: `/${lang}/investir-dans-la-culture`, label: t("nav.investissement") },
+      { href: `/${lang}/services/label-musical`, label: t("nav.label") },
       { href: `/${lang}/devis`, label: t("nav.devis") },
-      { href: `/${lang}/contacts`, label: t("nav.contact") }, // now a page
+      { href: `/${lang}/contacts`, label: t("nav.contact") },
     ],
     [lang, t],
   )
@@ -89,25 +87,30 @@ export default function Navigation() {
       className="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50"
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-28">
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex items-center">
-            <Link href={`/${lang}`} title="Angeli Visions – Accueil" aria-label="Retour à l'accueil">
+            <Link 
+              href={`/${lang}`} 
+              title={t("nav.accueil")} 
+              aria-label={t("nav.accueil")}
+            >
               <Image
                 src="/images/angeli-visions-logo-white.png"
-                alt="Angeli Visions"
-                width={300}
-                height={84}
+                alt="Angeli Visions Logo"
+                width={360}
+                height={100}
                 priority
-                className="h-20 w-auto object-contain"
+                className="h-[6.5rem] w-auto object-contain"
               />
             </Link>
           </motion.div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {items.map((item) => {
+            {items.map((item, index) => {
               const active = isItemActive(item)
+              const isDevis = item.href.endsWith("/devis")
               const baseLink =
                 "transition-colors relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 rounded-md"
               const normalClasses = ["text-white hover:text-white/80", item.bold ? "font-bold" : ""]
@@ -131,45 +134,50 @@ export default function Navigation() {
 
               const isPath = item.href.startsWith("/")
               return (
-                <motion.div key={`${item.href}-${item.label}`} whileHover={{ y: -2 }}>
-                  {isPath ? (
-                    <Link
-                      href={item.href}
-                      title={item.label}
-                      aria-label={item.label}
-                      aria-current={active ? "page" : undefined}
-                      className={className}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                      {item.label}
-                      {!item.featured && (
-                        <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                            }`}
-                        />
-                      )}
-                    </Link>
-                  ) : (
-                    <a
-                      href={item.href}
-                      title={item.label}
-                      aria-label={item.label}
-                      aria-current={active ? "page" : undefined}
-                      className={className}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                      {item.label}
-                      {!item.featured && (
-                        <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
-                            }`}
-                        />
-                      )}
-                    </a>
+                <div key={`${item.href}-${item.label}`} className="flex items-center">
+                  {isDevis && (
+                    <span className="text-slate-700/60 select-none mr-8 text-lg font-light">|</span>
                   )}
-                </motion.div>
+                  <motion.div whileHover={{ y: -2 }}>
+                    {isPath ? (
+                      <Link
+                        href={item.href}
+                        title={item.label}
+                        aria-label={item.label}
+                        aria-current={active ? "page" : undefined}
+                        className={className}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
+                        {item.label}
+                        {!item.featured && (
+                          <span
+                            className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
+                              }`}
+                          />
+                        )}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        title={item.label}
+                        aria-label={item.label}
+                        aria-current={active ? "page" : undefined}
+                        className={className}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
+                        {item.label}
+                        {!item.featured && (
+                          <span
+                            className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-300 transition-all duration-300 ${active ? "w-full opacity-100" : "w-0 opacity-80 group-hover:w-full"
+                              }`}
+                          />
+                        )}
+                      </a>
+                    )}
+                  </motion.div>
+                </div>
               )
             })}
           </div>

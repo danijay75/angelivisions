@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { turnstileSiteKey, captchaBypass } from "@/lib/public-config"
 import Turnstile from "@/components/ui/turnstile"
 
-const SITEKEY = turnstileSiteKey
+const SITEKEY = "0x4AAAAAACd_mGSE8A3NZiQ0"
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -27,10 +27,8 @@ export default function AdminLoginPage() {
   const [message, setMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    // Bypass total: on envoie l'utilisateur directement au tableau de bord
-    if (captchaBypass) {
-      router.replace(nextUrl || "/admin")
-    }
+    // We removed the automatic redirect for safety. 
+    // Captcha bypass now only affects whether the captcha is rendered.
   }, [router, nextUrl])
 
   useEffect(() => {
@@ -99,13 +97,6 @@ export default function AdminLoginPage() {
     }
   }
 
-  if (captchaBypass) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="text-white/90">Bypass admin actif — redirection vers le tableau de bord…</div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">

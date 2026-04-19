@@ -8,10 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Edit, Trash2, Save, X, ImageIcon as ImageIconLucide, Calendar, Users as UsersIcon, MapPin, RefreshCw } from "lucide-react"
+import { Plus, Edit, Trash2, Save, X, ImageIcon as ImageIconLucide, Calendar, Users as UsersIcon, MapPin, RefreshCw, Tag, ListChecks } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import ImagePicker from "@/components/admin/image-picker"
+import ImageGallery from "@/components/admin/image-gallery"
+import VideoUpload from "@/components/admin/video-upload"
 import RichTextEditor from "@/components/admin/rich-text-editor"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 // Removed unused CategoryManager import to fix build error
 // import CategoryManager from "@/components/admin/category-manager"
 
@@ -31,58 +40,20 @@ interface Project {
     services?: string[]
     category?: string
     linkedinUrl?: string
+    videos?: string[]
 }
 
-interface ImageUploadProps {
-    images: string[]
-    onImagesChange: (images: string[]) => void
-    maxImages?: number
-    label?: string
-}
-
-function ImageUpload({ images, onImagesChange, maxImages = 1, label }: ImageUploadProps) {
-    const handleChange = (index: number, value: string | undefined) => {
-        const newImages = [...images]
-        if (value) {
-            if (index >= newImages.length) {
-                newImages.push(value)
-            } else {
-                newImages[index] = value
-            }
-        } else {
-            newImages.splice(index, 1)
-        }
-        onImagesChange(newImages)
-    }
-
-    return (
-        <div className="space-y-4">
-            {label && <Label className="text-white block mb-2">{label}</Label>}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {images.map((img, index) => (
-                    <ImagePicker
-                        key={index}
-                        label={`Image ${index + 1}`}
-                        value={img}
-                        onChange={(v) => handleChange(index, v)}
-                    />
-                ))}
-                {images.length < maxImages && (
-                    <ImagePicker
-                        label={`Nouvelle image`}
-                        value={undefined}
-                        onChange={(v) => handleChange(images.length, v)}
-                    />
-                )}
-            </div>
-        </div>
-    )
-}
+const slugify = (str: string) => {
+    if (!str) return "";
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+};
 
 export default function ProjectsManager() {
     const { user } = useAuth()
     const [projects, setProjects] = useState<Project[]>([])
     const [categories, setCategories] = useState<any[]>([])
+    const [availableServices, setAvailableServices] = useState<any[]>([])
+    const [serviceInput, setServiceInput] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
     // Edit State
@@ -95,9 +66,10 @@ export default function ProjectsManager() {
     const loadData = async () => {
         setIsLoading(true)
         try {
-            const [projRes, catRes] = await Promise.all([
+            const [projRes, catRes, servRes] = await Promise.all([
                 fetch("/api/projects"),
-                fetch("/api/categories")
+                fetch("/api/categories"),
+                fetch("/api/services")
             ])
 
             if (projRes.ok) {
@@ -108,6 +80,11 @@ export default function ProjectsManager() {
             if (catRes.ok) {
                 const data = await catRes.json()
                 setCategories(data.categories || [])
+            }
+
+            if (servRes.ok) {
+                const data = await servRes.json()
+                setAvailableServices(data.services || [])
             }
         } catch (error) {
             console.error("Failed to load data", error)
@@ -136,12 +113,29 @@ export default function ProjectsManager() {
         setFormData(prev => ({ ...prev, [key]: value }))
     }
 
+    const addServiceTag = (service: string) => {
+        const trimmed = service.trim()
+        if (!trimmed) return
+
+        const currentServices = formData.services || []
+        if (!currentServices.includes(trimmed)) {
+            updateFormData("services", [...currentServices, trimmed])
+        }
+        setServiceInput("")
+    }
+
+    const removeServiceTag = (service: string) => {
+        const currentServices = formData.services || []
+        updateFormData("services", currentServices.filter(s => s !== service))
+    }
+
     const handleSave = async () => {
         if (!formData.title) return alert("Le titre est requis")
 
-        // Auto-generate ID/Slug if missing
-        const id = formData.id || formData.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
-        const slug = formData.slug || id
+        // Auto-generate ID/Slug
+        const generatedSlug = slugify(formData.title);
+        const id = typeof formData.id === "string" && formData.id.trim() !== "" ? formData.id : generatedSlug;
+        const slug = generatedSlug; // Force slug to align with current title
 
         const finalProject = {
             ...formData,
@@ -149,7 +143,8 @@ export default function ProjectsManager() {
             slug,
             image: formData.image || "",
             gallery: formData.gallery || [],
-            services: formData.services || []
+            services: formData.services || [],
+            videos: formData.videos || []
         }
 
         // Optimistic Update
@@ -267,25 +262,19 @@ export default function ProjectsManager() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <Label className="text-white">Titre du projet</Label>
-                                <Input
-                                    value={formData.title || ""}
-                                    onChange={e => updateFormData("title", e.target.value)}
-                                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
-                                    placeholder="Ex: Lancement Produit X"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label className="text-white">Client</Label>
-                                <Input
-                                    value={formData.client || ""}
-                                    onChange={e => updateFormData("client", e.target.value)}
-                                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
-                                    placeholder="Ex: Entreprise Y"
-                                />
-                            </div>
+                        <div className="space-y-2">
+                            <Label className="text-white">Titre du projet</Label>
+                            <Input
+                                value={formData.title || ""}
+                                onChange={e => updateFormData("title", e.target.value)}
+                                className="bg-white/5 border-white/10 text-white focus:border-purple-500"
+                                placeholder="Ex: Lancement Produit X"
+                            />
+                            {formData.title && (
+                                <p className="text-xs text-white/50 mt-1 pl-1">
+                                    Lien : <span className="text-purple-400">/projet/{slugify(formData.title)}</span>
+                                </p>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -299,6 +288,36 @@ export default function ProjectsManager() {
                                 />
                             </div>
                             <div className="space-y-2">
+                                <Label className="text-white">Catégorie de services</Label>
+                                <Select
+                                    value={formData.category || ""}
+                                    onValueChange={v => updateFormData("category", v)}
+                                >
+                                    <SelectTrigger className="bg-white/5 border-white/10 text-white focus:ring-purple-500">
+                                        <SelectValue placeholder="Sélectionner une catégorie" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-900 border-white/10 text-white">
+                                        {categories.map((cat) => (
+                                            <SelectItem key={cat.id} value={cat.id} className="focus:bg-purple-600 focus:text-white">
+                                                {cat.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label className="text-white">Client</Label>
+                                <Input
+                                    value={formData.client || ""}
+                                    onChange={e => updateFormData("client", e.target.value)}
+                                    className="bg-white/5 border-white/10 text-white focus:border-purple-500"
+                                    placeholder="Ex: Entreprise Y"
+                                />
+                            </div>
+                            <div className="space-y-2">
                                 <Label className="text-white">Lien LinkedIn</Label>
                                 <Input
                                     value={formData.linkedinUrl || ""}
@@ -309,6 +328,60 @@ export default function ProjectsManager() {
                             </div>
                         </div>
 
+                        <div className="space-y-4">
+                            <Label className="text-white flex items-center gap-2">
+                                <ListChecks className="w-4 h-4 text-purple-400" />
+                                Prestations incluses
+                            </Label>
+                            <div className="flex flex-wrap gap-2 mb-3">
+                                {(formData.services || []).map((service, idx) => (
+                                    <Badge key={idx} className="bg-purple-600/30 text-purple-200 border-purple-500/50 py-1 px-2 gap-1">
+                                        {service}
+                                        <X className="w-3 h-3 cursor-pointer hover:text-white" onClick={() => removeServiceTag(service)} />
+                                    </Badge>
+                                ))}
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="relative flex-1">
+                                    <Input
+                                        value={serviceInput}
+                                        onChange={e => setServiceInput(e.target.value)}
+                                        onKeyDown={e => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault()
+                                                addServiceTag(serviceInput)
+                                            }
+                                        }}
+                                        className="bg-white/5 border-white/10 text-white focus:border-purple-500 pr-10"
+                                        placeholder="Ex: Sonorisation, Vidéo Mapping..."
+                                    />
+                                    <button
+                                        onClick={() => addServiceTag(serviceInput)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 hover:text-purple-300"
+                                    >
+                                        <Plus className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                            {availableServices.length > 0 && serviceInput && (
+                                <div className="bg-slate-800 border border-white/10 rounded-md p-2 mt-2 max-h-40 overflow-y-auto">
+                                    <p className="text-xs text-white/40 mb-2 px-2 uppercase font-bold">Suggestions de services</p>
+                                    {availableServices
+                                        .filter(s => s.title.toLowerCase().includes(serviceInput.toLowerCase()))
+                                        .map(s => (
+                                            <button
+                                                key={s.id}
+                                                onClick={() => addServiceTag(s.title)}
+                                                className="w-full text-left px-2 py-1.5 text-sm text-white/80 hover:bg-white/10 rounded transition-colors flex items-center gap-2"
+                                            >
+                                                <Tag className="w-3 h-3 text-purple-400" />
+                                                {s.title}
+                                            </button>
+                                        ))}
+                                </div>
+                            )}
+                        </div>
+
                         <div className="space-y-2">
                             <Label className="text-white">Description</Label>
                             <RichTextEditor
@@ -317,10 +390,22 @@ export default function ProjectsManager() {
                             />
                         </div>
 
-                        <ImageUpload
-                            label="Image de couverture"
-                            images={formData.image ? [formData.image] : []}
-                            onImagesChange={(imgs) => updateFormData("image", imgs[0] || "")}
+                        <ImagePicker
+                            label="Image de couverture (Vignette projet)"
+                            value={formData.image || ""}
+                            onChange={(val) => updateFormData("image", val || "")}
+                        />
+
+                        <ImageGallery
+                            label="Galerie de photos"
+                            images={formData.gallery || []}
+                            onImagesChange={(imgs) => updateFormData("gallery", imgs)}
+                        />
+
+                        <VideoUpload
+                            label="Vidéos du projet"
+                            videos={formData.videos || []}
+                            onVideosChange={(vids) => updateFormData("videos", vids)}
                         />
 
                         <div className="flex gap-4 pt-4 border-t border-white/10">

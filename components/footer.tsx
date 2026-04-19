@@ -54,10 +54,9 @@ export default function Footer() {
 
   const footerLinks = {
     services: [
-      { label: t("footer.services.booking"), href: `/${lang}/services/booking` },
-      { label: t("footer.services.production"), href: `/${lang}/services/production` },
-      { label: t("footer.services.organization"), href: `/${lang}/services/organization` },
-      { label: t("footer.services.technical"), href: `/${lang}/services/prestations-techniques-audiovisuelles` },
+      { label: t("nav.prestation"), href: `/${lang}/services/prestation-technique-audiovisuelle` },
+      { label: t("nav.artistes"), href: `/${lang}/artists` },
+      { label: t("nav.label"), href: `/${lang}/services/label-musical` },
     ],
   }
 
@@ -67,7 +66,7 @@ export default function Footer() {
     {
       icon: ({ className }: { className?: string }) => (
         <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.219-5.160 1.219-5.160s-.312-.623-.312-1.544c0-1.448.839-2.529 1.884-2.529.888 0 1.317.667 1.317 1.466 0 .893-.568 2.229-.861 3.467-.245 1.040.522 1.887 1.549 1.887 1.857 0 3.285-1.958 3.285-4.789 0-2.503-1.799-4.253-4.370-4.253-2.977 0-4.727 2.234-4.727 4.546 0 .901.347 1.869.780 2.393.085.104.098.195.072.301-.079.329-.255 1.045-.290 1.193-.047.189-.153.229-.353.138-1.316-.612-2.140-2.536-2.140-4.078 0-3.298 2.397-6.325 6.913-6.325 3.628 0 6.449 2.586 6.449 6.041 0 3.604-2.273 6.505-5.42 6.505-1.058 0-2.055-.549-2.394-1.275l-.651 2.479c-.236.915-.872 2.062-1.297 2.759.977.302 2.010.461 3.070.461 6.624 0 11.990-5.367 11.990-11.987C24.007 5.367 18.641.001 12.017.001z" />
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.28-2.26.74-4.63 2.58-5.91 1.64-1.15 3.7-1.49 5.66-1.02v4.01c-1.25-.43-2.71-.14-3.67.76-.73.66-1.1 1.65-1.01 2.62.06.98.57 1.95 1.41 2.45.65.42 1.45.62 2.23.55.82-.04 1.6-.45 2.15-1.07.57-.63.86-1.48.83-2.33-.03-4.3-.01-8.59-.02-12.89z" />
         </svg>
       ),
       url: "https://tiktok.com/@angelivisions",
@@ -113,7 +112,12 @@ export default function Footer() {
                 <p>{t("footer.legalInfo2")}</p>
                 <p className="mt-4">
                   {t("footer.essInfo")}
-                  <a href="#" className="text-blue-400 hover:text-blue-300 ml-1">
+                  <a 
+                    href="/docs/attestation-vss.jpg" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 ml-1"
+                  >
                     {t("footer.kitLink")}
                   </a>
                 </p>

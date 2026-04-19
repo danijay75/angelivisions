@@ -13,6 +13,7 @@ export type Project = {
   guests: string
   location: string
   linkedinUrl?: string
+  videos?: string[]
 }
 
 export const categories = [

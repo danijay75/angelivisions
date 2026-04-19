@@ -21,15 +21,14 @@ export interface Project {
   image: string
   gallery: string[]
   description: string
-  fullDescription: string
   services: string[]
   client: string
   date: string
   guests: string
   location: string
-  linkedinUrl?: string
   createdAt: string
   updatedAt: string
+  videos?: string[]
 }
 
 export interface Category {
@@ -49,8 +48,6 @@ const fallbackProjects: Project[] = [
     image: "/corporate-event-stage.jpg",
     gallery: ["/corporate-presentation.jpg", "/business-networking.png"],
     description: "Un gala d'exception au Grand Palais avec sonorisation premium et éclairage scénique.",
-    fullDescription:
-      "Organisation complète d'un gala de prestige avec sonorisation haute qualité, éclairage d'ambiance, DJ professionnel et coordination technique parfaite pour une soirée inoubliable.",
     services: ["Sonorisation", "Éclairage", "DJ", "Coordination technique"],
     client: "Groupe Industriel",
     date: "Juin 2024",
@@ -67,8 +64,6 @@ const fallbackProjects: Project[] = [
     image: "/corporate-event-stage.jpg",
     gallery: ["/corporate-presentation.jpg", "/business-networking.png"],
     description: "Lancement produit avec spectacle audiovisuel immersif et sonorisation professionnelle.",
-    fullDescription:
-      "Création d'un événement corporate mémorable avec mapping vidéo, sonorisation multi-zones et coordination technique complète pour le lancement d'un nouveau produit.",
     services: ["Vidéo Mapping", "Sonorisation", "Éclairage scénique", "Régie technique"],
     client: "TechCorp Industries",
     date: "Mars 2024",
@@ -81,12 +76,21 @@ const fallbackProjects: Project[] = [
 
 // GET /api/projects - Récupérer tous les projets
 export async function GET() {
+  const problematicString = "Organisation complète d'un gala de prestige avec sonorisation haute qualité, éclairage d'ambiance, DJ professionnel et coordination technique parfaite pour une soirée inoubliable.";
+  
   try {
     console.log("[v0] Fetching projects from Redis...")
-
+    
     if (!redis) {
       console.log("[v0] Redis not available, using fallback data")
-      return NextResponse.json({ projects: fallbackProjects })
+      return NextResponse.json({ 
+        projects: fallbackProjects.map(p => ({
+          ...p,
+          description: p.description?.includes(problematicString) 
+            ? p.description.replace(problematicString, "").trim() 
+            : p.description
+        })) 
+      })
     }
 
     let projects: Project[] = []
@@ -126,12 +130,26 @@ export async function GET() {
       projects = fallbackProjects
     }
 
-    console.log("[v0] Loaded projects:", projects.length)
-    return NextResponse.json({ projects })
+    // Special cleanup for problematic hardcoded strings from past sessions
+    const cleanedProjects = projects.map(p => ({
+      ...p,
+      description: p.description?.includes(problematicString) 
+        ? p.description.replace(problematicString, "").trim() 
+        : p.description
+    }));
+
+    console.log("[v0] Loaded projects:", cleanedProjects.length)
+    return NextResponse.json({ projects: cleanedProjects })
   } catch (error) {
-    console.error("[v0] Error in projects API:", error)
-    // Always return valid JSON, even on error
-    return NextResponse.json({ projects: fallbackProjects })
+    console.error("[v0] Error in projects API:", error);
+    return NextResponse.json({ 
+      projects: fallbackProjects.map(p => ({
+        ...p,
+        description: p.description?.includes(problematicString)
+          ? p.description.replace(problematicString, "").trim()
+          : p.description
+      })) 
+    })
   }
 }
 

@@ -26,7 +26,7 @@ export default function InvestmentManager() {
   const [newCategoryPreset, setNewCategoryPreset] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const DEFAULT_CATEGORIES = ["Musique", "Théâtre", "Humour", "Expérience Immersive", "Festival", "Événement Sportif"]
+  const DEFAULT_CATEGORIES = ["Musique", "Théâtre", "Humour", "Expérience Immersive", "Festival"]
 
   const fetchProjects = async () => {
     setLoading(true)

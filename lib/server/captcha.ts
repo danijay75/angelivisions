@@ -1,4 +1,5 @@
 export function isCaptchaBypassed() {
+    if (process.env.NODE_ENV === 'production') return false
     const serverFlag = (process.env.CAPTCHA_BYPASS ?? "false") === "true"
     const clientFlag = (process.env.NEXT_PUBLIC_CAPTCHA_BYPASS ?? "false") === "true"
     return serverFlag || clientFlag

@@ -67,7 +67,10 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ services })
+    // Ultimate safety filter to ensure 'sport' is NEVER returned
+    const filteredServices = services.filter((s: any) => s.id !== "sport")
+
+    return NextResponse.json({ services: filteredServices })
   } catch (error) {
     console.log("Redis operation failed:", error)
     return NextResponse.json({ services: fallbackServices })

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Phone } from "lucide-react"
+import Link from "next/link"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { useLang } from "@/hooks/use-lang"
 
@@ -108,9 +109,13 @@ export default function ContactSection() {
         >
           <p className="text-white text-lg">
             Besoin de faire une réclamation ?{" "}
-            <a href={`/${lang}/reclamations`} className="text-blue-400 hover:text-blue-300 underline font-semibold transition-colors">
-              Remplissez le formulaire de réclamations en cliquant ici
-            </a>
+            <Link 
+              href={`/${lang}/reclamations`} 
+              className="text-blue-400 hover:text-blue-300 underline font-semibold transition-colors"
+              aria-label="Accéder au formulaire de réclamations"
+            >
+              Accéder au formulaire de réclamations
+            </Link>
           </p>
         </motion.div>
 

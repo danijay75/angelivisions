@@ -1,13 +1,14 @@
 const es = {
   nav: {
     accueil: "Inicio",
-    services: "Servicios",
+    prestation: "Producción técnica audiovisual",
+    artistes: "Reserva de DJ y Músicos",
+    label: "Sello Discográfico",
     realisations: "Realizaciones",
-    artistes: "Nuestros Artistas",
-    investissement: "Invertir en Cultura",
     devis: "Presupuesto Rápido",
     contact: "Contacto",
     newsletter: "Boletín",
+    services: "Servicios",
   },
   investment: {
     title: "Invertir en Cultura",
@@ -32,7 +33,6 @@ const es = {
       theatre: "Teatro",
       humour: "Humor",
       immersif: "Festival",
-      sport: "Evento Deportivo",
     },
     projectsTitle: "Proyectos en Curso",
     projectsSubtitle: "Invierta ahora en estos prometedores proyectos culturales",
@@ -42,7 +42,6 @@ const es = {
       theatre: "Teatro",
       humour: "Humor",
       immersif: "Festival",
-      sport: "Evento Deportivo",
     },
     project: {
       progression: "Progresión",
@@ -84,10 +83,10 @@ const es = {
   },
   hero: {
     titlePart1: "Su Socio Privilegiado",
-    titlePart2: "para sus Eventos Culturales y Espectáculos",
-    description:
-      "Reserva de DJ • Producción Musical • Organización de Eventos\nSonido • Iluminación • VJ / Video Mapping • Animaciones Musicales\nRodaje multicámara",
+    titlePart2: "para el espectáculo y los eventos",
+    description: "",
     cta: "Descubra nuestras realizaciones",
+    callUs: "Llámenos",
     highlight1Title: "Producción Musical",
     highlight1Desc: "Composiciones originales y jingles personalizados",
     highlight2Title: "Diseño y Organización de Eventos",
@@ -96,8 +95,7 @@ const es = {
     highlight3Desc: "Sets de DJ, VJing y actuaciones audiovisuales",
   },
   services: {
-    title: "Nuestros Servicios",
-    subtitle: "Una experiencia completa en todos los campos culturales",
+    statement: "El arte de los eventos, dominado desde el concepto hasta el escenario.",
     description:
       "Desde la creación musical hasta la organización completa, dominamos todos los aspectos de los eventos y el espectáculo para crear experiencias únicas y memorables.",
     clientsTitle: "Nuestros Clientes",
@@ -153,6 +151,7 @@ const es = {
     backToList: "Volver al Portafolio",
     clientLabel: "Cliente:",
     servicesLabel: "Servicios incluidos",
+    videosLabel: "Videos del proyecto",
     galleryLabel: "Galería",
   },
   timeline: {
@@ -251,6 +250,11 @@ const es = {
       newRequest: "Nueva solicitud",
     },
   },
+  partners: {
+    title: "Nuestros Socios",
+    subtitle: "Confían en nosotros y nos apoyan en nuestros proyectos",
+    description: "Confían en nosotros y nos apoyan en nuestros proyectos",
+  },
   contact: {
     title: "Contactos",
     description: "Estamos disponibles durante nuestro horario de atención. También puede encontrar a nuestro equipo a continuación.",
@@ -261,13 +265,7 @@ const es = {
     teamTitle: "Nuestro Equipo",
     teamSubtitle: "Conozca los talentos detrás de nuestros proyectos",
   },
-  audio: {
-    title: "Reproductor de audio",
-    creations: "Nuestras Creaciones",
-    minimize: "Minimizar",
-    close: "Cerrar reproductor",
-    coverAlt: "Portada",
-  },
+
   cookies: {
     title: "Gestión de cookies",
     description: "Utilizamos cookies para mejorar su experiencia en nuestro sitio web, analizar el tráfico y personalizar le contenido. Puede elegir aceptar todas las cookies o personalizar sus preferencias.",
@@ -318,10 +316,10 @@ const es = {
     backToTop: "Volver arriba",
     rights: "Todos los derechos reservados.",
     services: {
-      booking: "Reserva de DJ",
+      booking: "Booking DJ / Músicos",
       production: "Producción Musical",
       organization: "Organización de Eventos",
-      technical: "Prestations techniques audiovisuelles",
+      technical: "Proveedor Técnico Audiovisual",
       ledWalls: "Paredes de LED",
       media: "Rodaje multicámara",
     },

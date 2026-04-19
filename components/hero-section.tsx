@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Play, Sparkles, Music, Calendar } from "lucide-react"
+import { Play, Sparkles, Music, Calendar, Phone } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 
 export default function HeroSection() {
@@ -156,16 +156,16 @@ export default function HeroSection() {
             <Image
               src="/images/angeli-visions-logo-white.png"
               alt="Angeli Visions"
-              width={800}
-              height={224}
+              width={1000}
+              height={280}
               priority
-              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, 800px"
-              className="h-48 md:h-56 w-auto mx-auto object-contain drop-shadow-2xl"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1000px"
+              className="h-60 md:h-72 w-auto mx-auto object-contain drop-shadow-2xl"
             />
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-medium text-white mb-6 leading-tight tracking-normal"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -201,50 +201,18 @@ export default function HeroSection() {
                 {t("hero.cta")}
               </Link>
             </Button>
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white rounded-full px-8 py-3 shadow-lg shadow-emerald-500/25 pointer-events-auto"
+            >
+              <a href="tel:+33663796742" title={t("hero.callUs")}>
+                <Phone className="w-5 h-5 mr-2" />
+                {t("hero.callUs")}
+              </a>
+            </Button>
           </motion.div>
 
-          {/* Services highlights */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
-            {[
-              {
-                icon: Music,
-                title: t("hero.highlight1Title"),
-                desc: t("hero.highlight1Desc"),
-                color: "from-blue-600 to-cyan-600",
-              },
-              {
-                icon: Sparkles,
-                title: t("hero.highlight2Title"),
-                desc: t("hero.highlight2Desc"),
-                color: "from-cyan-600 to-blue-500",
-              },
-              {
-                icon: Calendar,
-                title: t("hero.highlight3Title"),
-                desc: t("hero.highlight3Desc"),
-                color: "from-blue-500 to-cyan-500",
-              },
-            ].map((service) => (
-              <motion.div
-                key={service.title}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="bg-slate-900/40 backdrop-blur-md rounded-xl p-6 border border-blue-500/10 hover:border-cyan-500/30 transition-all duration-300"
-              >
-                <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-4 mx-auto shadow-lg`}
-                >
-                  <service.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-white font-semibold mb-2">{service.title}</h3>
-                <p className="text-slate-200 text-sm">{service.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
         </motion.div>
       </div>
 

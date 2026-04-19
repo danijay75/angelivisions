@@ -33,8 +33,8 @@ export const defaultServices: ServiceItem[] = [
     image: "/placeholder.svg?height=128&width=128",
   },
   {
-    id: "technical",
-    title: "Prestations Techniques",
+    id: "prestations-techniques-audiovisuelles",
+    title: "Prestations techniques audiovisuelles",
     description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
     features: [
       "Sonorisation événementielle",
@@ -60,14 +60,6 @@ export const defaultServices: ServiceItem[] = [
     description: "Captations multicaméras, émissions TV et création de podcasts pour vos événements",
     features: ["Captations multicaméras", "Émissions TV", "Création de Podcasts", "Post-production vidéo"],
     color: "from-blue-700 to-cyan-800",
-    image: "/placeholder.svg?height=128&width=128",
-  },
-  {
-    id: "sport",
-    title: "Événements Sportifs",
-    description: "Organisation et animation d'événements sportifs : soirées de remise de prix, galas sportifs et couverture médiatique",
-    features: ["Galas & remises de prix", "Soirées supporters", "Couverture médiatique", "Animation & sono de stade"],
-    color: "from-orange-500 to-red-500",
     image: "/placeholder.svg?height=128&width=128",
   },
 ]

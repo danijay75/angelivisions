@@ -3,9 +3,7 @@ import { LOCALES, type Locale } from "@/lib/i18n/locales"
 import HeroSection from "@/components/hero-section"
 import ServicesSection from "@/components/services-section"
 import RealisationsSection from "@/components/realisations-section"
-import ContactSection from "@/components/contact-section"
-import AudioPlayer from "@/components/audio-player"
-
+import PartnersSection from "@/components/partners-section"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 
@@ -71,12 +69,9 @@ export default function LocalizedHomePage() {
         <RealisationsSection />
       </section>
 
-      <section id="contact" className="scroll-mt-24">
-        <ContactSection />
+      <section id="partenaires" className="scroll-mt-24">
+        <PartnersSection />
       </section>
-
-      <AudioPlayer />
-
     </div>
   )
 }

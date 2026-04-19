@@ -14,11 +14,11 @@ import ProjectsManager from "@/components/admin/projects-manager"
 import BlogManager from "@/components/admin/blog-manager"
 import InvestmentManager from "@/components/admin/investment-manager"
 import TeamManager from "@/components/admin/team-manager"
-import AudioManager from "@/components/admin/audio-manager"
 import NewsletterManager from "@/components/admin/newsletter-manager"
 import DevisManager from "@/components/admin/devis-manager"
 import ArtistsManager from "@/components/admin/artists-manager"
 import ReclamationsManager from "@/components/admin/reclamations-manager"
+import PartnersManager from "@/components/admin/partners-manager"
 
 export default function AdminPage() {
   const { user, loading: authLoading } = useAuth()
@@ -56,13 +56,13 @@ export default function AdminPage() {
               {section === "projects" && "Projets & Réalisations"}
               {section === "investment" && "Investissement"}
               {section === "team" && "Équipe"}
-              {section === "player" && "Lecteur Audio"}
               {section === "blog" && "Blog & Actualités"}
               {section === "newsletter" && "Newsletter"}
               {section === "devis" && "Devis"}
               {section === "artists" && "Gestion des Artistes"}
               {section === "users" && "Gestion Utilisateurs"}
               {section === "reclamations" && "Réclamations"}
+              {section === "partners" && "Partenaires"}
             </h1>
             <p className="text-white/40 mt-1 text-sm">
               Gestion de contenu et administration
@@ -114,11 +114,6 @@ export default function AdminPage() {
               <TeamManager />
             )}
 
-            {/* AUDIO MANAGER (Safe) */}
-            {section === "player" && (
-              <AudioManager />
-            )}
-
             {/* NEWSLETTER MANAGER (Safe) */}
             {section === "newsletter" && (
               <NewsletterManager />
@@ -132,6 +127,11 @@ export default function AdminPage() {
             {/* RECLAMATIONS MANAGER (Safe) */}
             {section === "reclamations" && (
               <ReclamationsManager />
+            )}
+
+            {/* PARTNERS MANAGER */}
+            {section === "partners" && (
+              <PartnersManager />
             )}
           </motion.div>
         </AnimatePresence>

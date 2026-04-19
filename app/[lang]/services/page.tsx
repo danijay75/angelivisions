@@ -57,6 +57,28 @@ async function getServices(): Promise<ServiceItem[]> {
       color: "from-cyan-500 to-teal-500",
       image: "/event-organization.jpg",
     },
+    {
+      id: "booking",
+      title: "Booking DJ & Musiciens",
+      description: "DJs professionnels, animation live audiovisuel, VJing et performances audiovisuelles personnalisées",
+      features: ["DJ sets professionnels", "VJ live performances", "Animation interactive", "Streaming en direct"],
+      color: "from-teal-500 to-emerald-500",
+      image: "/placeholder.svg?height=128&width=128",
+    },
+    {
+      id: "prestations-techniques-audiovisuelles",
+      title: "Prestataire technique audiovisuel",
+      description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
+      features: [
+        "Sonorisation événementielle",
+        "Éclairage scénique",
+        "Murs de LED",
+        "VJ / Vidéo mapping",
+        "Régie technique",
+      ],
+      color: "from-emerald-500 to-blue-500",
+      image: "/placeholder.svg?height=128&width=128",
+    },
   ]
 }
 

@@ -1,13 +1,14 @@
 const fr = {
   nav: {
     accueil: "Accueil",
-    services: "Services",
+    prestation: "Prestation technique audiovisuelle",
+    artistes: "Booking DJ & Musiciens",
+    label: "Label Musical",
     realisations: "Réalisations",
-    artistes: "Nos Artistes",
-    investissement: "Investir dans la Culture",
     devis: "Devis Express",
     contact: "Contact",
     newsletter: "Newsletter",
+    services: "Services",
   },
   investment: {
     title: "Investir dans la Culture",
@@ -32,7 +33,6 @@ const fr = {
       theatre: "Théâtre",
       humour: "Humour",
       immersif: "Festival",
-      sport: "Événement Sportif",
     },
     projectsTitle: "Projets en Cours",
     projectsSubtitle: "Investissez dès maintenant dans ces projets culturels prometteurs",
@@ -42,7 +42,6 @@ const fr = {
       theatre: "Théâtre",
       humour: "Humour",
       immersif: "Festival",
-      sport: "Événement Sportif",
     },
     project: {
       progression: "Progression",
@@ -84,20 +83,19 @@ const fr = {
   },
   hero: {
     titlePart1: "Votre Partenaire Privilégié",
-    titlePart2: "pour vos Événements Culturels et le spectacle",
-    description:
-      "Booking DJ • Production Musicale • Organisation d'Événements\nSonorisation • Éclairage • VJ / Vidéo Mapping • Animations musicales\nTournage multicaméras",
+    titlePart2: "pour le spectacle et l'événementiel",
+    description: "",
     cta: "Découvrir nos réalisations",
-    highlight1Title: "Production Musicale",
+    callUs: "Appelez-nous",
+    highlight1Title: "Label musical",
     highlight1Desc: "Compositions originales & jingles personnalisés",
     highlight2Title: "Conception et organisation d'événements",
-    highlight2Desc: "Organisation complète de A à Z",
+    highlight2Desc: "Direction technique audiovisuelle",
     highlight3Title: "Animations musicales",
-    highlight3Desc: "DJ sets, VJing & performances audiovisuelles",
+    highlight3Desc: "DJ sets, VJ & Performances immersives",
   },
   services: {
-    title: "Nos Services",
-    subtitle: "Une expertise complète dans tout le domaine culturel",
+    statement: "L'art de l'évènement, de la conception à la Scène",
     description:
       "De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et du spectacle pour créer des expériences uniques et mémorables.",
     clientsTitle: "Nos Clients",
@@ -141,10 +139,10 @@ const fr = {
     },
   },
   realisations: {
-    title: "Nos Projets et Spectacles",
+    title: "L'art de l'évènement, de la conception à la Scène",
     highlight: "",
-    highlightSuffix: "auxquels nous avons participé",
-    subtitle: "Découvrez nos réalisations marquantes : événements sur-mesure, productions musicales originales et spectacles audiovisuels innovants.",
+    highlightSuffix: "",
+    subtitle: "",
     filterAll: "Tous les Projets",
     seeProject: "Voir le projet",
     photosCount: "photos",
@@ -153,6 +151,7 @@ const fr = {
     backToList: "Retour aux Réalisations",
     clientLabel: "Client :",
     servicesLabel: "Prestations incluses",
+    videosLabel: "Vidéos du projet",
     galleryLabel: "Galerie",
   },
   timeline: {
@@ -261,12 +260,10 @@ const fr = {
     teamTitle: "Notre Équipe",
     teamSubtitle: "Rencontrez les talents derrière nos Projets",
   },
-  audio: {
-    title: "Lecteur audio",
-    creations: "Nos Créations",
-    minimize: "Réduire",
-    close: "Fermer le lecteur",
-    coverAlt: "Couverture",
+  partners: {
+    title: "Nos Partenaires",
+    subtitle: "Ils nous font confiance et nous accompagnent dans la réalisation d'événements d'exception.",
+    description: "Ils nous font confiance et nous accompagnent dans la réalisation d'événements d'exception.",
   },
   cookies: {
     title: "Gestion des cookies",
@@ -318,10 +315,10 @@ const fr = {
     backToTop: "Retour en haut",
     rights: "Tous droits réservés.",
     services: {
-      booking: "Booking DJ",
+      booking: "Booking DJ / Musiciens",
       production: "Production Musicale",
       organization: "Organisation Événements",
-      technical: "Prestations techniques audiovisuelles",
+      technical: "Prestataire technique audiovisuel",
       ledWalls: "Murs de LED",
       media: "Tournage multicaméras",
     },

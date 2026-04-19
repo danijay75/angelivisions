@@ -11,7 +11,6 @@ import {
     FolderKanban,
     TrendingUp,
     Users as UsersIcon,
-    Music4,
     Newspaper,
     Mail,
     UserCog,
@@ -30,12 +29,12 @@ export type AdminSection =
     | "artists"
     | "investment"
     | "team"
-    | "player"
     | "blog"
     | "newsletter"
     | "devis"
     | "users"
     | "reclamations"
+    | "partners"
 
 interface AdminSidebarProps {
     currentSection: string
@@ -52,11 +51,10 @@ export function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarPr
         { id: "artists", label: "Artistes", icon: Mic2 },
         { id: "investment", label: "Investissement", icon: TrendingUp },
         { id: "team", label: "Équipe", icon: UsersIcon },
-        { id: "player", label: "Lecteur Audio", icon: Music4 },
         { id: "blog", label: "Blog / Actu", icon: Newspaper },
         { id: "newsletter", label: "Newsletter", icon: Mail },
         { id: "devis", label: "Devis", icon: FileText },
-        { id: "reclamations", label: "Réclamations", icon: AlertTriangle },
+        { id: "partners", label: "Partenaires", icon: Layers },
         { id: "users", label: "Utilisateurs", icon: UserCog, adminOnly: true },
     ]
 

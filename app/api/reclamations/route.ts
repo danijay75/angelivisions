@@ -1,24 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { Redis } from "@upstash/redis"
 import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
 import { createGoogleContact } from "@/lib/server/google-contacts"
-
-function getRedis() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
-  if (!url || !token) return null
-  return new Redis({ url, token })
-}
-
-const redis = getRedis()
-
-const INDEX_KEY = "reclamation_submissions"
-
-function reclamationKey(id: string): string {
-  return `reclamation:${id}`
-}
 
 function generateReclamationNumber(): string {
   const date = new Date()
@@ -96,35 +80,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
-  try {
-    if (!redis) {
-      return NextResponse.json({ success: true, reclamations: [] })
-    }
-
-    const ids = await redis.smembers(INDEX_KEY)
-    const list: ReclamationPayload[] = []
-
-    for (const id of ids) {
-      const data = await redis.hgetall(reclamationKey(id))
-      if (data && Object.keys(data).length > 0) {
-        list.push(data as unknown as ReclamationPayload)
-      }
-    }
-
-    list.sort((a, b) => {
-      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0
-      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0
-      return dateB - dateA
-    })
-
-    return NextResponse.json({ success: true, reclamations: list })
-  } catch (error) {
-    console.error("[Reclamations API GET] Error:", error)
-    return NextResponse.json(
-      { success: false, message: "Erreur lors de la récupération des réclamations." },
-      { status: 500 }
-    )
-  }
+  // Désormais, la lecture se fait sur Google Sheets de leur côté.
+  // L'API renvoie vide pour ne pas faire d'erreur sur l'Admin.
+  return NextResponse.json({ success: true, reclamations: [] })
 }
 
 export async function POST(req: NextRequest) {
@@ -152,31 +110,18 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const id = crypto.randomUUID()
     const number = generateReclamationNumber()
     
-    const submission: ReclamationPayload = {
-      ...data,
-      id,
-      number,
-      createdAt: new Date().toISOString(),
-    }
-    delete submission.captchaToken
+    const submissionData = { ...data, number }
 
-    if (redis) {
-      await redis.hset(reclamationKey(id), submission as unknown as Record<string, string>)
-      await redis.sadd(INDEX_KEY, id)
-    } else {
-      console.warn("Redis non configuré, sauvegarde ignorée en local.")
-    }
-
+    // 1. Emails Admin et Client
     const adminEmail = process.env.RECLAMATIONS_EMAIL || "reclamations@angelivisions.com"
 
     try {
       await sendMail({
         to: adminEmail,
         subject: `⚠️ Nouvelle réclamation [${number}] — ${data.firstName} ${data.lastName}`,
-        html: buildHtmlEmail(submission),
+        html: buildHtmlEmail(submissionData),
         replyTo: data.email,
       })
     } catch (mailError) {
@@ -187,13 +132,40 @@ export async function POST(req: NextRequest) {
       await sendMail({
         to: data.email,
         subject: `Accusé de réception - Réclamation ${number}`,
-        html: buildConfirmationEmail(submission),
+        html: buildConfirmationEmail(submissionData),
         replyTo: adminEmail,
       })
     } catch (mailError) {
       console.error("[Reclamations API] Client mail error:", mailError)
     }
 
+    // 4. Synchronisation avec Google Sheets (via Apps Script)
+    const scriptUrl = process.env.GOOGLE_SCRIPT_URL
+    if (scriptUrl) {
+      try {
+        await fetch(scriptUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "reclamation",
+            number: number,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone || "",
+            subject: data.subject || "",
+            message: data.message || "",
+            consent: data.consent ? "Oui" : "Non"
+          })
+        })
+      } catch (scriptError) {
+        console.error("Erreur sync Google Sheets:", scriptError)
+      }
+    } else {
+      console.warn("GOOGLE_SCRIPT_URL manquant. Les données n'ont pas de lien avec Google Sheets.")
+    }
+
+    // 3. Sauvegarder dans Google Contacts
     try {
       await createGoogleContact({
         firstName: data.firstName,
@@ -202,7 +174,7 @@ export async function POST(req: NextRequest) {
         phone: data.phone,
         label: "Réclamation",
         notes: `Réclamation [${number}]\nSujet: ${data.subject}\nMessage: ${data.message}`
-      });
+      })
     } catch (contactError) {
       console.error("[Reclamations API] Google Contact error:", contactError)
     }
@@ -223,23 +195,6 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
-  try {
-    const { id } = await req.json()
-    if (!id) {
-      return NextResponse.json({ success: false, message: "ID requis." }, { status: 400 })
-    }
-
-    if (redis) {
-      await redis.del(reclamationKey(id))
-      await redis.srem(INDEX_KEY, id)
-    }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("[Reclamations API DELETE] Error:", error)
-    return NextResponse.json(
-      { success: false, message: "Erreur lors de la suppression." },
-      { status: 500 }
-    )
-  }
+  // Désactivé
+  return NextResponse.json({ success: true })
 }

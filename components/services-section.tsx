@@ -29,7 +29,7 @@ export default function ServicesSection() {
         if (res.ok) {
           const data = await res.json()
           if (data.services && Array.isArray(data.services)) {
-            const valid = data.services.filter((s: any) => s && s.id && s.title);
+            const valid = data.services.filter((s: any) => s && s.id && s.title && s.id !== "sport");
             if (valid.length > 0) {
               setServices(valid)
               return
@@ -46,7 +46,7 @@ export default function ServicesSection() {
         if (raw) {
           const parsed = JSON.parse(raw) as ServiceItem[]
           if (Array.isArray(parsed)) {
-            const valid = parsed.filter((s: any) => s && s.id && s.title);
+            const valid = parsed.filter((s: any) => s && s.id && s.title && s.id !== "sport");
             if (valid.length > 0) {
               setServices(valid)
             }
@@ -64,15 +64,6 @@ export default function ServicesSection() {
     return (
       <section id="services" className="py-20 bg-slate-800/50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {t("services.title")}
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
-                {t("services.subtitle")}
-              </span>
-            </h2>
-            <p className="text-xl text-white max-w-3xl mx-auto">{t("services.description")}</p>
-          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} className="bg-slate-800/30 backdrop-blur-md border-slate-700/50 p-6">
@@ -92,20 +83,6 @@ export default function ServicesSection() {
   return (
     <section id="services" className="py-20 bg-slate-950">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {t("services.title")}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
-              {t("services.subtitle")}
-            </span>
-          </h2>
-          <p className="text-xl text-white max-w-3xl mx-auto">{t("services.description")}</p>
-        </motion.div>
 
         {/* Main Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
@@ -136,7 +113,10 @@ export default function ServicesSection() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-slate-100 mb-6 line-clamp-2">{service.description}</p>
+                      <div 
+                        className="text-slate-100 mb-6 line-clamp-2"
+                        dangerouslySetInnerHTML={{ __html: service.description }}
+                      />
                       <div className="space-y-2">
                         {(service.features || []).slice(0, 3).map((feature, idx) => {
                           return (

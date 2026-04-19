@@ -5,10 +5,14 @@ import type { Project } from "@/data/projects"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Calendar, MapPin, Users, FolderKanban, ArrowLeft, Linkedin } from "lucide-react"
+import { Calendar, MapPin, Users, FolderKanban, ArrowLeft, Linkedin, Image as ImageIcon } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import { useState } from "react"
+import VideoLightbox from "./video-lightbox"
+import VideoPlayerSmart from "./video-player-smart"
+import { Play } from "lucide-react"
 
 type Props = {
   project: Project
@@ -16,9 +20,12 @@ type Props = {
 
 export default function ProjectPageClient({ project }: Props) {
   const { t, lang } = useI18n()
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(0)
 
   const mainSrc = project.image || "/placeholder.svg?height=720&width=1280"
-  const gallery: string[] = project.gallery?.length ? project.gallery : ["/placeholder.svg?height=600&width=800"]
+  const gallery = project.gallery || []
+  const videos = project.videos || []
   const isRemote = /^https?:\/\//i.test(mainSrc)
 
   return (
@@ -102,12 +109,7 @@ export default function ProjectPageClient({ project }: Props) {
                 dangerouslySetInnerHTML={{ __html: project.description }}
               />
             )}
-            {project.fullDescription && (
-              <div
-                className="text-sm leading-relaxed text-slate-100 rich-text-content"
-                dangerouslySetInnerHTML={{ __html: project.fullDescription }}
-              />
-            )}
+
 
             {project.services && project.services.length > 0 && (
               <div>
@@ -124,33 +126,85 @@ export default function ProjectPageClient({ project }: Props) {
           </div>
         </div>
 
-        {gallery.length > 0 && (
-          <section className="mt-10">
-            <h3 className="mb-4 text-lg font-semibold tracking-tight text-white">{t("realisations.galleryLabel")}</h3>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-              {gallery.map((src, idx) => {
-                const remote = /^https?:\/\//i.test(src)
-                return (
-                  <div
-                    key={idx}
-                    className="relative w-full aspect-[4/3] overflow-hidden rounded-lg border border-white/10"
-                  >
-                    <Image
-                      src={src || "/placeholder.svg?height=600&width=800&query=galerie"}
-                      alt={`Image ${idx + 1} du projet ${project.title}`}
-                      fill
-                      unoptimized={remote}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
-                      className="object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          </section>
+        {/* Media Layout: 2 Columns if both exist, otherwise 1 column */}
+        {(gallery.length > 0 || videos.length > 0) && (
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            {/* Gallery Section */}
+            {gallery.length > 0 && (
+              <section className={videos.length === 0 ? "md:col-span-2" : ""}>
+                <h3 className="mb-6 text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <ImageIcon className="w-5 h-5 text-emerald-500" />
+                  {t("realisations.galleryLabel") || "Galerie Photos"}
+                </h3>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${videos.length === 0 ? "md:grid-cols-3 lg:grid-cols-4" : ""}`}>
+                  {gallery.map((src, idx) => {
+                    const remote = /^https?:\/\//i.test(src)
+                    return (
+                      <div
+                        key={idx}
+                        className="relative w-full aspect-[4/3] overflow-hidden rounded-xl border border-white/10 group"
+                      >
+                        <Image
+                          src={src || "/placeholder.svg?height=600&width=800"}
+                          alt={`Image ${idx + 1} du projet ${project.title}`}
+                          fill
+                          unoptimized={remote}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* Videos Section */}
+            {videos.length > 0 && (
+              <section className={gallery.length === 0 ? "md:col-span-2" : ""}>
+                <h3 className="mb-6 text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <Play className="w-5 h-5 text-purple-500 fill-purple-500" />
+                  {t("realisations.videosLabel") || "Vidéos du projet"}
+                </h3>
+                <div className={`grid grid-cols-1 gap-4 ${gallery.length === 0 ? "sm:grid-cols-2 md:grid-cols-3" : ""}`}>
+                  {videos.map((src, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        setSelectedVideoIndex(idx)
+                        setLightboxOpen(true)
+                      }}
+                      className="group relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-black cursor-pointer hover:border-purple-500/50 transition-all"
+                    >
+                      <VideoPlayerSmart
+                        src={src}
+                        muted
+                        loop
+                        autoplay={false}
+                        className="group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <Play className="w-5 h-5 text-white fill-white" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         )}
       </div>
+
+      <VideoLightbox
+        videos={project.videos || []}
+        isOpen={lightboxOpen}
+        initialIndex={selectedVideoIndex}
+        onClose={() => setLightboxOpen(false)}
+      />
     </main>
   )
 }

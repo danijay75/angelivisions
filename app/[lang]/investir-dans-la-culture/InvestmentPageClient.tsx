@@ -61,7 +61,6 @@ export default function InvestmentPageClient() {
     { id: "humour", name: t("investment.sectors.humour"), icon: Mic, color: "bg-orange-500", keyMatch: "Humour" },
     { id: "immersif", name: t("investment.sectors.immersif"), icon: Ticket, color: "bg-green-500", keyMatch: "Expérience Immersive" },
     { id: "festival", name: "Festival", icon: Star, color: "bg-amber-500", keyMatch: "Festival" },
-    { id: "sport", name: t("investment.sectors.sport"), icon: Trophy, color: "bg-red-500", keyMatch: "Événement Sportif" },
   ]
 
   const derivedCategories = useMemo(() => {
