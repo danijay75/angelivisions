@@ -133,7 +133,7 @@ export default function ContactSection() {
               {t("contact.reclamationsQuestion")}{" "}
               <Link 
                 href={`/${lang}/reclamations`} 
-                className="sunset-gradient bg-clip-text text-transparent underline font-bold transition-all hover:opacity-80"
+                className="title-gradient inline-block underline font-bold transition-all hover:opacity-80"
                 aria-label={t("contact.reclamationsCta")}
               >
                 {t("contact.reclamationsCta")}
