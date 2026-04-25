@@ -1,85 +1,14 @@
 const es = {
   nav: {
     accueil: "Inicio",
-    prestation: "Producción técnica audiovisual",
+    prestation: "Grabación - Streaming - Podcast",
     artistes: "Reserva de DJ y Músicos",
-    label: "Sello Discográfico",
+    label: "Sello Discográfico & Booking",
     realisations: "Realizaciones",
-    devis: "Presupuesto Rápido",
+    devis: "Presupuesto",
     contact: "Contacto",
     newsletter: "Boletín",
     services: "Servicios",
-  },
-  investment: {
-    title: "Invertir en Cultura",
-    subtitle: "Oportunidades de inversión en proyectos culturales innovadores a través de blockchain.",
-    heroTitle: "Invertir en la ",
-    heroHighlight: "Cultura",
-    heroDesc: "Descubra oportunidades de inversión únicas en proyectos culturales innovadores. Apoye a los artistas del mañana mientras genera rendimientos atractivos a través de blockchain.",
-    startInvesting: "Empezar a invertir",
-    discoverProjects: "Descubrir proyectos",
-    stats: {
-      invested: "Invertido hasta la fecha",
-      projects: "Proyectos financiados",
-      return: "Rendimiento medio",
-      investors: "Inversores activos",
-    },
-    sectorsTitle: "Sectores de Inversión",
-    sectorsSubtitle: "Diversifique su portafolio cultural invirtiendo en different sectores artísticos",
-    schemaAboutName: "Inversión Cultural en Blockchain",
-    schemaAboutDesc: "Plataforma de inversión para proyectos culturales utilizando tecnología blockchain y NFT",
-    sectors: {
-      musique: "Música",
-      theatre: "Teatro",
-      humour: "Humor",
-      immersif: "Festival",
-    },
-    projectsTitle: "Proyectos en Curso",
-    projectsSubtitle: "Invierta ahora en estos prometedores proyectos culturales",
-    tabs: {
-      all: "Todos",
-      musique: "Música",
-      theatre: "Teatro",
-      humour: "Humor",
-      immersif: "Festival",
-    },
-    project: {
-      progression: "Progresión",
-      return: "Rendimiento:",
-      duration: "Duración:",
-      investNow: "Invertir ahora",
-      risks: {
-        low: "Bajo",
-        moderate: "Moderado",
-        high: "Alto",
-      },
-    },
-    howItWorks: {
-      title: "Cómo funciona",
-      subtitle: "Un proceso sencillo y seguro para invertir en cultura",
-      step1Title: "1. Elija su proyecto",
-      step1Desc: "Explore nuestra selección de proyectos culturales verificados y elija los que le inspiren.",
-      step2Title: "2. Invierta con seguridad",
-      step2Desc: "Utilice nuestra plataforma blockchain segura para invertir la cantidad que desee.",
-      step3Title: "3. Recoja los beneficios",
-      step3Desc: "Siga la evolución de sus inversiones y reciba sus rendimientos automáticamente.",
-    },
-    security: {
-      title: "Seguridad y Transparencia",
-      subtitle: "Sus inversiones están protegidas por la tecnología blockchain y nuestros socios financieros autorizados.",
-      blockchainTitle: "Blockchain seguro",
-      blockchainDesc: "Todas las inversiones se registran en blockchain para una transparencia total.",
-      verifiedTitle: "Proyectos verificados",
-      verifiedDesc: "Cada proyecto es auditado por nuestro equipo de expertos culturales y financieros.",
-      complianceTitle: "Cumplimiento normativo",
-      complianceDesc: "Plataforma autorizada y conforme a las regulaciones financieras europeas.",
-    },
-    cta: {
-      title: "¿Listo para invertir en la cultura del mañana?",
-      subtitle: "Únase a nuestra comunidad de inversores apasionados y apoye proyectos culturales innovadores.",
-      createAccount: "Crear mi cuenta de inversor",
-      viewPerformance: "Ver rendimiento",
-    },
   },
   hero: {
     titlePart1: "Su Socio Privilegiado",
@@ -95,9 +24,10 @@ const es = {
     highlight3Desc: "Sets de DJ, VJing y actuaciones audiovisuales",
   },
   services: {
-    statement: "El arte de los eventos, dominado desde el concepto hasta el escenario.",
+    statement: "Excelencia en eventos, de la visión al escenario",
+    subtitle: "Descubra nuestra gama completa de servicios para sus eventos y proyectos musicales",
     description:
-      "Desde la creación musical hasta la organización completa, dominamos todos los aspectos de los eventos y el espectáculo para crear experiencias únicas y memorables.",
+      "Desde la creación musical hasta la organización completa, dominamos todos los aspectos de eventos y entretenimiento para crear experiencias únicas y memorables.",
     clientsTitle: "Nuestros Clientes",
     cta: "¡Hablemos!",
     clientTypes: {
@@ -139,8 +69,8 @@ const es = {
     },
   },
   realisations: {
-    title: "Nuestros Proyectos y Espectáculos",
-    highlight: "",
+    titlePart1: "Nuestros Proyectos",
+    titlePart2: "y Espectáculos",
     highlightSuffix: "Portafolio Creativo",
     subtitle: "Descubre nuestros proyectos destacados: eventos a medida, producciones musicales originales y espectáculos audiovisuales innovadores.",
     filterAll: "Todos los proyectos",
@@ -256,7 +186,7 @@ const es = {
     description: "Confían en nosotros y nos apoyan en nuestros proyectos",
   },
   contact: {
-    title: "Contactos",
+    title: "Contacto",
     description: "Estamos disponibles durante nuestro horario de atención. También puede encontrar a nuestro equipo a continuación.",
     hoursTitle: "Horario de apertura",
     hoursContent: "Lun-Vie: 9h-19h\nSáb: 10h-16h\nDom: Con cita previa",
@@ -264,6 +194,8 @@ const es = {
     conciergerieUrgencies: "¿Alguna urgencia para su evento por la tarde o fin de semana?",
     teamTitle: "Nuestro Equipo",
     teamSubtitle: "Conozca los talentos detrás de nuestros proyectos",
+    reclamationsQuestion: "¿Necesita hacer una reclamación?",
+    reclamationsCta: "Acceder al formulario de reclamaciones",
   },
 
   cookies: {
@@ -300,7 +232,7 @@ const es = {
     legalInfo2: "Licencia de empresario de espectáculos n° PLATESV-D-2022-000968",
     essInfo: "La empresa es miembro de la Economía Social y Solidaria (ESS). Luchamos contra todas las formas de discriminación y violencia sexista.",
     kitLink: "Consulte la certificación aquí.",
-    contacts: "Contactos",
+    contacts: "Contacto",
     newsletterTitle: "Boletín informativo",
     newsletterFirstName: "Nombre",
     newsletterLastName: "Apellido",
@@ -324,14 +256,6 @@ const es = {
       media: "Rodaje multicámara",
     },
   },
-  blog: {
-    title: "eSide Culture",
-    notFound: "Artículo no encontrado.",
-    backToBlog: "Volver al blog",
-    readingTime: "{min} min de lectura",
-    dateLocale: "es-ES",
-  },
-
   legalPages: {
     mentionsLegales: { title: "Aviso Legal" },
     privacyPolicy: { title: "Política de Privacidad" },
@@ -360,6 +284,8 @@ const es = {
     save: "Guardar",
     cancel: "Cancelar",
     backToHome: "Volver al inicio",
+    learnMore: "Saber más",
+    expertise: "Nuestra Experiencia",
   },
 }
 export default es

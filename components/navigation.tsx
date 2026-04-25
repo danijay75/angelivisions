@@ -19,7 +19,7 @@ type MenuItem = {
   icon?: React.ReactNode
 }
 
-const SECTION_IDS = ["accueil"] // removed contact anchor; now a page
+const SECTION_IDS = ["accueil", "services", "realisations", "partenaires", "contact"]
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -32,11 +32,10 @@ export default function Navigation() {
 
   const items: MenuItem[] = useMemo(
     () => [
-      { href: `/${lang}/services/prestation-technique-audiovisuelle`, label: t("nav.prestation") },
-      { href: `/${lang}/artists`, label: t("nav.artistes") },
-      { href: `/${lang}/services/label-musical`, label: t("nav.label") },
+      { href: `/${lang}/services`, label: t("nav.prestation") },
+      { href: `/${lang}/services/label-de-musique`, label: t("nav.label") },
       { href: `/${lang}/devis`, label: t("nav.devis") },
-      { href: `/${lang}/contacts`, label: t("nav.contact") },
+      { href: `/${lang}#contact`, label: t("nav.contact") },
     ],
     [lang, t],
   )
@@ -96,7 +95,7 @@ export default function Navigation() {
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? "bg-white/40 backdrop-blur-xl border-b border-black/5 py-4" 
+          ? "bg-black/60 backdrop-blur-2xl border-b border-white/5 py-4" 
           : "bg-transparent py-8"
       }`}
     >
@@ -115,7 +114,7 @@ export default function Navigation() {
                 width={500}
                 height={150}
                 priority
-                className="h-16 md:h-20 w-auto object-contain transition-all duration-500 brightness-0 opacity-80"
+                className="h-16 md:h-20 w-auto object-contain transition-all duration-500 hover:opacity-100"
               />
             </Link>
           </motion.div>
@@ -129,11 +128,9 @@ export default function Navigation() {
               // Map labels to have line breaks where requested/needed to match image
               let label = item.label;
               if (label === t("nav.prestation")) {
-                label = "Prestation technique<br />audiovisuelle";
-              } else if (label === t("nav.artistes")) {
-                label = "Booking DJ &<br />Musiciens";
+                label = label.replace(" - Podcast", "<br />Podcast");
               } else if (label === t("nav.label")) {
-                label = "Label<br />Musical";
+                label = label.replace(" & Booking", "<br />& Booking");
               }
 
               const isPath = item.href.startsWith("/")
@@ -142,7 +139,7 @@ export default function Navigation() {
               const glowClass = !isDevis ? `glow-item-${(index % 3) + 1}` : "";
               
               const baseClass = isDevis ? "nav-pill-devis" : "nav-pill-identic";
-              const itemClasses = isDevis ? "" : `${glowClass} text-slate-800 hover:text-slate-900`;
+              const itemClasses = isDevis ? "" : `${glowClass} text-white/90 hover:text-white`;
 
               return (
                 <div key={`${item.href}-${item.label}`} className="flex items-center">
@@ -178,7 +175,7 @@ export default function Navigation() {
           <div className="flex items-center space-x-3">
             <a
               href="#newsletter"
-              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-slate-900/10 rounded-full px-4 py-2 text-slate-600 hover:bg-slate-900/5 transition-all duration-300"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-white/10 rounded-full px-4 py-2 text-white/60 hover:bg-white/5 transition-all duration-300"
             >
               <Mail className="w-3.5 h-3.5" />
               {t("nav.newsletter")}
@@ -191,7 +188,7 @@ export default function Navigation() {
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-slate-900"
+              className="md:hidden text-white"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -206,7 +203,7 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/70 backdrop-blur-xl rounded-2xl mt-2 p-4 border border-black/5 shadow-xl"
+            className="md:hidden bg-black/80 backdrop-blur-3xl rounded-3xl mt-2 p-4 border border-white/10 shadow-2xl"
           >
             {items.map((item) => {
               const active = isItemActive(item)
