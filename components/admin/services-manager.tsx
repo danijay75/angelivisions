@@ -38,6 +38,12 @@ function genId(title: string) {
 
 export default function ServicesManager() {
   const [services, setServices] = useState<ServiceItem[]>(defaultServices)
+  const [pageConfig, setPageConfig] = useState({
+    title: "Nos <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600\">Services</span>",
+    subtitle: "",
+    showBadge: false,
+    badgeText: "Notre expertise"
+  })
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [featureInput, setFeatureInput] = useState("")
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
@@ -51,9 +57,19 @@ export default function ServicesManager() {
     setIsLoading(true)
     try {
       console.log("[v0] Loading services from API...")
-      const response = await fetch("/api/services")
-      if (response.ok) {
-        const data = await response.json()
+      
+      const [servicesRes, configRes] = await Promise.all([
+        fetch("/api/services"),
+        fetch("/api/services/config")
+      ])
+
+      if (configRes.ok) {
+        const configData = await configRes.json()
+        setPageConfig(configData)
+      }
+
+      if (servicesRes.ok) {
+        const data = await servicesRes.json()
         if (data.services && Array.isArray(data.services)) {
           // Sanitize data to avoid React crash if API returns objects/mixed types
           try {
@@ -104,16 +120,26 @@ export default function ServicesManager() {
   const saveAll = async () => {
     setIsSaving(true)
     try {
-      console.log("[v0] Saving services to API...")
-      const response = await fetch("/api/services", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ services }),
-      })
+      console.log("[v0] Saving services & config to API...")
+      
+      const [servicesRes, configRes] = await Promise.all([
+        fetch("/api/services", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ services }),
+        }),
+        fetch("/api/services/config", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pageConfig),
+        })
+      ])
 
-      if (response.ok) {
+      if (servicesRes.ok && configRes.ok) {
         console.log("[v0] Services saved successfully to API")
         alert("Services enregistrés avec succès.")
       } else {
@@ -262,6 +288,62 @@ export default function ServicesManager() {
 
   return (
     <div className="space-y-6">
+      <Card className="bg-white/5 border-white/10 mb-8">
+        <CardHeader>
+          <CardTitle className="text-white">Paramètres de la page Services</CardTitle>
+          <p className="text-white/60 text-sm">Configurez l'en-tête de la page</p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-white mb-2 block">Titre principal (HTML autorisé, ex: &lt;span class=&quot;text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600&quot;&gt;Services&lt;/span&gt;)</Label>
+            <Input
+              value={pageConfig.title}
+              onChange={(e) => setPageConfig(prev => ({ ...prev, title: e.target.value }))}
+              className="bg-white/10 border-white/20 text-white font-mono text-sm"
+            />
+          </div>
+          <div>
+            <Label className="text-white mb-2 block">Sous-titre (Laissez vide pour masquer)</Label>
+            <Textarea
+              value={pageConfig.subtitle || ""}
+              onChange={(e) => setPageConfig(prev => ({ ...prev, subtitle: e.target.value }))}
+              className="bg-white/10 border-white/20 text-white"
+              rows={2}
+            />
+          </div>
+          <div className="flex items-center gap-4 border border-white/10 p-4 rounded-lg bg-white/5">
+            <div className="flex flex-col gap-1 w-full max-w-[200px]">
+              <Label className="text-white">Badge (au-dessus du titre)</Label>
+              <div className="flex items-center gap-2 mt-2">
+                <input 
+                  type="checkbox" 
+                  id="showBadge" 
+                  checked={pageConfig.showBadge}
+                  onChange={(e) => setPageConfig(prev => ({ ...prev, showBadge: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-300 focus:ring-purple-500"
+                />
+                <Label htmlFor="showBadge" className="text-white cursor-pointer">Afficher le badge</Label>
+              </div>
+            </div>
+            <div className="flex-1">
+              <Label className="text-white/60 text-xs mb-1 block">Texte du badge</Label>
+              <Input
+                value={pageConfig.badgeText || ""}
+                onChange={(e) => setPageConfig(prev => ({ ...prev, badgeText: e.target.value }))}
+                disabled={!pageConfig.showBadge}
+                className="bg-white/10 border-white/20 text-white disabled:opacity-50"
+              />
+            </div>
+          </div>
+          <div className="flex pt-2">
+            <Button onClick={saveAll} disabled={isSaving} className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
+              {isSaving ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+              {isSaving ? "Enregistrement..." : "Enregistrer les paramètres"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="bg-white/5 border-white/10">
         <CardHeader>
           <CardTitle className="text-white">Services ({services.length})</CardTitle>

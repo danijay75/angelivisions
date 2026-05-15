@@ -4,26 +4,10 @@ import HeroSection from "@/components/hero-section"
 import ServicesSection from "@/components/services-section"
 import RealisationsSection from "@/components/realisations-section"
 import PartnersSection from "@/components/partners-section"
+import ContactSection from "@/components/contact-section"
+import { getDictionary } from "@/lib/i18n/get-dictionary"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
-
-const META: Record<Locale, { title: string; description: string }> = {
-  fr: {
-    title: "Angeli Visions — Organisateur d'événements & Maison de disque",
-    description:
-      "Production musicale, organisation événementielle, DJ booking, murs LED et mapping vidéo. Créons ensemble votre événement inoubliable.",
-  },
-  en: {
-    title: "Angeli Visions — Event Organizer & Record Label",
-    description:
-      "Music production, event organization, DJ booking, LED walls and video mapping. Let's create your unforgettable event together.",
-  },
-  es: {
-    title: "Angeli Visions — Organizador de eventos & Sello discográfico",
-    description:
-      "Producción musical, organización de eventos, DJ booking, pantallas LED y video mapping. Creemos juntos su evento inolvidable.",
-  },
-}
 
 export async function generateMetadata({
   params,
@@ -32,7 +16,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params
   const locale = LOCALES.includes(lang) ? lang : "fr"
-  const meta = META[locale]
+  const dict = await getDictionary(locale)
+  
+  const title = dict.hero.titlePart1 + " " + dict.hero.titlePart2
+  const description = dict.hero.description || (locale === 'fr' ? "Production audiovisuelle, murs LED et mapping vidéo pour des événements d'exception." : "Audiovisual production, LED walls and video mapping for exceptional events.")
 
   const alternates: Record<string, string> = {}
   LOCALES.forEach((l) => {
@@ -40,15 +27,15 @@ export async function generateMetadata({
   })
 
   return {
-    title: meta.title,
-    description: meta.description,
+    title,
+    description,
     alternates: {
       canonical: `${BASE_URL}/${locale}`,
       languages: alternates,
     },
     openGraph: {
-      title: meta.title,
-      description: meta.description,
+      title,
+      description,
       url: `${BASE_URL}/${locale}`,
     },
   }
@@ -71,6 +58,10 @@ export default function LocalizedHomePage() {
 
       <section id="partenaires" className="scroll-mt-24">
         <PartnersSection />
+      </section>
+
+      <section id="contact" className="scroll-mt-24">
+        <ContactSection />
       </section>
     </div>
   )

@@ -3,6 +3,14 @@ import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
 import { createGoogleContact } from "@/lib/server/google-contacts"
+import { Redis } from "@upstash/redis"
+
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+})
+
+const DEVIS_KEY = "av:devis:list"
 
 function generateDevisNumber(): string {
   const date = new Date()
@@ -24,6 +32,7 @@ interface DevisPayload {
   email: string
   phone: string
   company: string
+  subject: string
   description: string
   consent?: boolean
   captchaToken?: string
@@ -46,6 +55,7 @@ function buildHtmlEmail(data: DevisPayload): string {
         <p><strong>Email :</strong> <a href="mailto:${data.email}" style="color: #c084fc;">${data.email}</a></p>
         ${data.phone ? `<p><strong>Téléphone :</strong> ${data.phone}</p>` : ""}
         ${data.company ? `<p><strong>Entreprise :</strong> ${data.company}</p>` : ""}
+        ${data.subject ? `<p><strong>Sujet :</strong> ${data.subject}</p>` : ""}
 
         <h2 style="color: #c084fc; border-bottom: 1px solid #374151; padding-bottom: 8px;">🎪 Événement</h2>
         <p><strong>Type :</strong> ${data.eventType || "Non spécifié"}</p>
@@ -97,9 +107,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
-  // Les devis sont désormais stockés dans Google Forms/Sheets.
-  // L'API renvoie un tableau vide pour ne pas faire planter l'interface Admin.
-  return NextResponse.json({ success: true, devis: [] })
+  try {
+    const devis = await redis.get(DEVIS_KEY)
+    return NextResponse.json({ 
+      success: true, 
+      devis: devis || [] 
+    })
+  } catch (error) {
+    console.error("[Devis API GET] Redis error:", error)
+    return NextResponse.json({ success: false, devis: [] }, { status: 500 })
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -128,6 +145,16 @@ export async function POST(req: NextRequest) {
     }
 
     const number = generateDevisNumber()
+    const createdAt = new Date().toISOString()
+    const newDevis = { ...data, id: crypto.randomUUID(), number, createdAt }
+
+    // 0. Sauvegarder dans Redis pour l'Admin
+    try {
+      const existing = await redis.get<any[]>(DEVIS_KEY) || []
+      await redis.set(DEVIS_KEY, [newDevis, ...existing.slice(0, 499)]) // On garde les 500 derniers
+    } catch (redisError) {
+      console.error("[Devis API] Redis Save Error:", redisError)
+    }
 
     // 4. Synchronisation avec Google Sheets (via Apps Script)
     const scriptUrl = process.env.GOOGLE_SCRIPT_URL
@@ -148,6 +175,7 @@ export async function POST(req: NextRequest) {
             guestCount: data.guestCount || "",
             location: data.location || "",
             services: data.services ? data.services.join(", ") : "",
+            subject: data.subject || "",
             description: data.description || "",
             consent: data.consent ? "Oui" : "Non"
           })
@@ -185,7 +213,7 @@ export async function POST(req: NextRequest) {
     try {
       await sendMail({
         to: adminEmail,
-        subject: `🎪 Nouveau devis [${number}] — ${data.name} (${data.eventType || "Événement"})`,
+        subject: `🎪 Nouveau devis [${number}] — ${data.name} ${data.subject ? `(${data.subject})` : `(${data.eventType || "Événement"})`}`,
         html: buildHtmlEmail(payloadWithNumber),
         replyTo: data.email, 
       })

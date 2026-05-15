@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 export const dynamic = "force-dynamic"
+import { defaultServices, type ServiceItem } from "@/data/services"
 import { Redis } from "@upstash/redis"
-import type { ServiceItem } from "@/data/services"
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL!,
@@ -10,31 +10,16 @@ const redis = new Redis({
 
 const SERVICES_KEY = "av_services_v1"
 
-// Fallback data in case Redis fails
-const fallbackServices: ServiceItem[] = [
-  {
-    id: "production",
-    title: "Production Musicale",
-    description: "Compositions originales, jingles personnalisés, musiques d'ambiance pour vos événements",
-    features: ["Jingles d'entreprise", "Musiques d'ambiance", "Compositions originales", "Arrangements personnalisés"],
-    color: "from-blue-500 to-cyan-500",
-    image: "/music-production-setup.png",
-  },
-  {
-    id: "organization",
-    title: "Organisation d'Événements",
-    description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-    features: ["Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
-    color: "from-cyan-500 to-teal-500",
-    image: "/event-organization.jpg",
-  },
-]
+// Use centralized default services as fallback
+const fallbackServices: ServiceItem[] = defaultServices
+
 
 export async function GET() {
   try {
     console.log("Fetching services from Redis...")
 
     const servicesData = await redis.get(SERVICES_KEY)
+    
     console.log("Redis response type:", typeof servicesData)
     console.log("Redis response preview:", String(servicesData).substring(0, 100))
 
@@ -68,7 +53,7 @@ export async function GET() {
     }
 
     // Ultimate safety filter to ensure 'sport' is NEVER returned
-    const filteredServices = services.filter((s: any) => s.id !== "sport")
+    const filteredServices = services
 
     return NextResponse.json({ services: filteredServices })
   } catch (error) {

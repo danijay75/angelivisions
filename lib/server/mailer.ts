@@ -6,8 +6,9 @@ function getResendClient(): any {
     return {
       emails: {
         send: async () => {
-          console.warn("[Mailer] RESEND_API_KEY is missing. Skipping email.");
-          return { data: null, error: null };
+          const error = { message: "RESEND_API_KEY is missing in environment variables.", name: "MissingKeyError" };
+          console.warn("[Mailer] " + error.message);
+          return { data: null, error };
         }
       }
     };
@@ -18,7 +19,7 @@ function getResendClient(): any {
   return _resend
 }
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@angelivisions.com"
+const FROM_EMAIL = process.env.FROM_EMAIL || "contact@angelivisions.com"
 const FROM_NAME = process.env.FROM_NAME || "Angeli Visions"
 const REPLY_TO = process.env.REPLY_TO || "contact@angelivisions.com"
 

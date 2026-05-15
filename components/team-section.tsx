@@ -9,6 +9,7 @@ import type { TeamMember } from "@/data/team"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import Image from "next/image"
 import { Skeleton } from "@/components/ui/skeleton"
+import { SplitTitle } from "@/components/ui/split-title"
 
 type TeamSectionProps = {
   id?: string
@@ -98,7 +99,9 @@ export default function TeamSection({
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-3">{sectionTitle}</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-3">
+            <SplitTitle text={sectionTitle} />
+          </h2>
           <p className="text-white max-w-2xl mx-auto">{sectionSubtitle}</p>
         </motion.div>
 

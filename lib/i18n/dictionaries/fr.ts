@@ -12,8 +12,8 @@ const fr = {
   },
 
   hero: {
-    titlePart1: "Votre partenaire privilégié",
-    titlePart2: "pour le spectacle et l'événementiel",
+    titlePart1: "Votre partenaire technique",
+    titlePart2: "pour la Captation, le Streaming et le Podcast",
     description: "",
     cta: "Découvrez nos projets",
     callUs: "Appelez-nous",
@@ -25,6 +25,7 @@ const fr = {
     highlight3Desc: "DJ sets, VJ & Performances immersives",
   },
   services: {
+    sectionTitle: "Nous proposons",
     statement: "L'excellence événementielle, de la vision à la scène",
     subtitle: "Découvrez notre gamme complète de services pour vos événements et projets musicaux",
     description:
@@ -37,35 +38,35 @@ const fr = {
       spectacles: { title: "Spectacles", desc: "Concerts, festivals, performances" },
     },
     items: {
-      production: {
-        title: "Production Musicale",
-        description: "Compositions originales, jingles personnalisés, musiques d'ambiance pour vos événements",
-        features: ["Jingles d'entreprise", "Musiques d'ambiance", "Compositions originales", "Arrangements personnalisés"],
+      "captation-video": {
+        title: "Captation vidéo",
+        description: "Système multicaméra professionnel pour l'enregistrement de vos événements en très haute définition.",
+        features: ["4K & 8K", "Multicaméra", "Élimination des bruits", "Équipe dédiée"],
       },
-      organization: {
-        title: "Organisation d'Événements",
-        description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-        features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
+      "streaming-live": {
+        title: "Streaming Live",
+        description: "Diffusion en direct sur vos plateformes avec régie dynamique intégrée, idéal pour étendre votre audience.",
+        features: ["YouTube Live", "Twitch", "Réseaux Sociaux", "Faible latence"],
       },
-      booking: {
+      "podcast": {
+        title: "Podcast",
+        description: "Création, enregistrement et distribution de podcasts audio et vidéo avec des locaux insonorisés.",
+        features: ["Studio professionnel", "Prise de son HD", "Montage experte", "Mixage"],
+      },
+      "booking": {
         title: "Booking DJ & Musiciens",
-        description: "DJs professionnels, animation live audiovisuel, VJing et performances audiovisuelles personnalisées",
-        features: ["DJ sets professionnels", "VJ live performances", "Animation interactive", "Streaming en direct"],
+        description: "Trouvez l'artiste parfait pour animer vos événements, soirées privées ou conventions.",
+        features: ["DJs internationaux", "Groupes live", "Artistes exclusifs", "Clé en main"],
       },
-      technical: {
-        title: "Prestations techniques audiovisuelles",
-        description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
-        features: ["Sonorisation événementielle", "Éclairage scénique", "Murs de LED", "VJ / Vidéo mapping", "Régie technique"],
+      "vj-video-mapping": {
+        title: "VJ / Vidéo mapping",
+        description: "Création de décors visuels immersifs et d'animations projetées sur mesure pour sublimer l'architecture de vos événements.",
+        features: ["Mapping 3D", "VJing en direct", "Scénographie", "Contenus sur mesure"],
       },
-      "led-walls": {
-        title: "Murs de LED",
-        description: "Écrans LED haute définition pour créer des expériences visuelles immersives et spectaculaires",
-        features: ["Écrans LED géants", "Affichage haute résolution", "Installation sur-mesure", "Contenu personnalisé"],
-      },
-      media: {
-        title: "Tournage multicaméras",
-        description: "Captations multicaméras, émissions TV et création de podcasts pour vos événements",
-        features: ["Tournage multicaméras", "Émissions TV", "Création de Podcasts", "Post-production vidéo"],
+      "label-de-musique": {
+        title: "Label de musique",
+        description: "Production phonographique, développement d'artistes et distribution numérique à l'échelle internationale.",
+        features: ["Direction artistique", "Distribution digitale", "Édition musicale", "Promotion"],
       },
     },
   },
@@ -87,7 +88,7 @@ const fr = {
   },
   timeline: {
     title: "Notre Processus",
-    highlight: "Votre Partenaire Privilégié",
+    highlight: "Votre Partenaire Technique",
     description: "De l'idée à la réalisation, nous vous accompagnons à chaque étape pour créer des événements culturels exceptionnels et mémorables.",
     steps: {
       consultation: {
@@ -140,8 +141,8 @@ const fr = {
     website: "Site web",
   },
   devis: {
-    title: "Devis Express",
-    highlight: "Gratuit & Personnalisé",
+    title: "Devis gratuit",
+    highlight: "",
     description: "Dites-nous en plus sur votre projet. Nous vous répondons dans les plus brefs délais avec une proposition sur-mesure.",
     formTitle: "Parlez-nous de votre projet",
     eventType: "Type d'événement",
@@ -153,17 +154,17 @@ const fr = {
     },
     servicesTitle: "Services souhaités (plusieurs choix possibles)",
     services: {
-      dj: "DJ & Musiciens",
-      production: "Production Musicale",
-      organization: "Organisation d'Événements",
-      technical: "Prestations techniques audiovisuelles",
-      ledWalls: "Murs de LED",
-      mapping: "VJ / Vidéo Mapping",
-      media: "Tournage multicaméras & Podcast",
+      "captation-video": "Captation vidéo",
+      "streaming-live": "Streaming Live",
+      "podcast": "Podcast",
+      "booking": "Booking DJ & Musiciens",
+      "vj-video-mapping": "VJ / Vidéo Mapping",
+      "label-de-musique": "Label de musique",
     },
     date: "Date de l'événement",
     guests: "Nombre d'invités",
     location: "Lieu / Ville",
+    subject: "Sujet de votre demande",
     name: "Nom complet *",
     email: "Email *",
     phone: "Téléphone",
@@ -186,8 +187,6 @@ const fr = {
     description: "Nous restons disponibles pendant nos horaires d’ouverture. Retrouvez également notre équipe ci-dessous.",
     hoursTitle: "Horaires d'ouverture",
     hoursContent: "Lun-Ven: 9h-19h\nSam: 10h-16h\nDim: Sur rendez-vous",
-    conciergerieTitle: "Conciergerie de l'événement",
-    conciergerieUrgencies: "Une urgence pour votre événement le soir et week-end ?",
     teamTitle: "Notre Équipe",
     teamSubtitle: "Rencontrez les talents derrière nos Projets",
     reclamationsQuestion: "Besoin de faire une réclamation ?",

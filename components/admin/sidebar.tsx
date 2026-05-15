@@ -20,16 +20,16 @@ import {
     LayoutDashboard,
     FileText,
     Mic2,
-    AlertTriangle
+    AlertTriangle,
+    Images
 } from "lucide-react"
 
 export type AdminSection =
     | "services"
+    | "hero-carousel"
     | "projects"
     | "artists"
-    | "investment"
     | "team"
-    | "blog"
     | "newsletter"
     | "devis"
     | "users"
@@ -46,12 +46,11 @@ export function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarPr
     const [isMobileOpen, setIsMobileOpen] = useState(false)
 
     const menuItems = [
+        { id: "hero-carousel", label: "Carrousel Accueil", icon: Images },
         { id: "services", label: "Services", icon: Layers },
         { id: "projects", label: "Réalisations", icon: FolderKanban },
         { id: "artists", label: "Artistes", icon: Mic2 },
-        { id: "investment", label: "Investissement", icon: TrendingUp },
         { id: "team", label: "Équipe", icon: UsersIcon },
-        { id: "blog", label: "Blog / Actu", icon: Newspaper },
         { id: "newsletter", label: "Newsletter", icon: Mail },
         { id: "devis", label: "Devis", icon: FileText },
         { id: "partners", label: "Partenaires", icon: Layers },

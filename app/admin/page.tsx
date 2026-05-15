@@ -8,11 +8,10 @@ import { AdminSidebar, type AdminSection } from "@/components/admin/sidebar"
 import { RefreshCw } from "lucide-react"
 
 // Import components safely
+import HeroCarouselManager from "@/components/admin/hero-carousel-manager"
 import ServicesManager from "@/components/admin/services-manager"
 import UsersManager from "@/components/admin/users-manager"
 import ProjectsManager from "@/components/admin/projects-manager"
-import BlogManager from "@/components/admin/blog-manager"
-import InvestmentManager from "@/components/admin/investment-manager"
 import TeamManager from "@/components/admin/team-manager"
 import NewsletterManager from "@/components/admin/newsletter-manager"
 import DevisManager from "@/components/admin/devis-manager"
@@ -52,11 +51,10 @@ export default function AdminPage() {
         <header className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
+              {section === "hero-carousel" && "Carrousel Accueil"}
               {section === "services" && "Services"}
               {section === "projects" && "Projets & Réalisations"}
-              {section === "investment" && "Investissement"}
               {section === "team" && "Équipe"}
-              {section === "blog" && "Blog & Actualités"}
               {section === "newsletter" && "Newsletter"}
               {section === "devis" && "Devis"}
               {section === "artists" && "Gestion des Artistes"}
@@ -79,6 +77,11 @@ export default function AdminPage() {
             transition={{ duration: 0.2 }}
             className="w-full max-w-7xl"
           >
+            {/* CAROUSEL MANAGER */}
+            {section === "hero-carousel" && (
+              <HeroCarouselManager />
+            )}
+
             {/* SERVICES MANAGER (Safe) */}
             {section === "services" && (
               <ServicesManager />
@@ -94,19 +97,9 @@ export default function AdminPage() {
               <ArtistsManager />
             )}
 
-            {/* BLOG MANAGER (Safe) */}
-            {section === "blog" && (
-              <BlogManager />
-            )}
-
             {/* USERS MANAGER (Safe) */}
             {section === "users" && (
               <UsersManager />
-            )}
-
-            {/* INVESTMENT MANAGER (Safe) */}
-            {section === "investment" && (
-              <InvestmentManager />
             )}
 
             {/* TEAM MANAGER (Safe) */}
