@@ -14,9 +14,10 @@ interface ImageUploadProps {
   onImagesChange: (images: string[]) => void
   maxImages?: number
   label?: string
+  cropAspect?: number
 }
 
-export default function ImageUpload({ images, onImagesChange, maxImages = 10, label = "Images" }: ImageUploadProps) {
+export default function ImageUpload({ images, onImagesChange, maxImages = 10, label = "Images", cropAspect = 1 }: ImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [cropperOpen, setCropperOpen] = useState(false)
@@ -98,6 +99,22 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
   const removeImage = (index: number) => {
     const newImages = images.filter((_, i) => i !== index)
     onImagesChange(newImages)
+  }
+
+  const moveImage = (index: number, direction: 'left' | 'right') => {
+    if (direction === 'left' && index > 0) {
+      const newImages = [...images]
+      const temp = newImages[index - 1]
+      newImages[index - 1] = newImages[index]
+      newImages[index] = temp
+      onImagesChange(newImages)
+    } else if (direction === 'right' && index < images.length - 1) {
+      const newImages = [...images]
+      const temp = newImages[index + 1]
+      newImages[index + 1] = newImages[index]
+      newImages[index] = temp
+      onImagesChange(newImages)
+    }
   }
 
   const openFileDialog = () => {
@@ -224,6 +241,34 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
                     
                     {/* Overlay Control */}
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3">
+                      {index > 0 && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            moveImage(index, 'left')
+                          }}
+                          size="icon"
+                          className="bg-white/10 hover:bg-white/20 text-white rounded-md w-8 h-8 border border-white/20 backdrop-blur-md absolute left-2"
+                          title="Déplacer à gauche"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                        </Button>
+                      )}
+                      
+                      {index < images.length - 1 && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            moveImage(index, 'right')
+                          }}
+                          size="icon"
+                          className="bg-white/10 hover:bg-white/20 text-white rounded-md w-8 h-8 border border-white/20 backdrop-blur-md absolute right-2"
+                          title="Déplacer à droite"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+                        </Button>
+                      )}
+
                       <Button
                         onClick={() => startCropping(image, index)}
                         size="icon"
@@ -309,7 +354,7 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 10, la
           open={cropperOpen}
           onClose={() => setCropperOpen(false)}
           onCompleted={onCropCompleted}
-          aspect={1} // Always square as requested
+          aspect={cropAspect}
         />
       )}
     </div>

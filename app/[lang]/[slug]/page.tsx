@@ -87,7 +87,7 @@ export default function ArtistDetailPage({ params }: { params: Promise<{ lang: s
         return (
             <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-white p-4">
                 <h1 className="text-3xl font-bold mb-4">Artiste non trouvé</h1>
-                <Button onClick={() => router.push(`/${currentLang}/artists`)} variant="outline" className="border-white/20 text-white">
+                <Button onClick={() => router.push(`/${currentLang}/services/label-de-musique`)} variant="outline" className="border-white/20 text-white">
                     Retour à la liste
                 </Button>
             </div>

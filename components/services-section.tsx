@@ -10,6 +10,7 @@ import { Sparkles, ArrowRight } from "lucide-react"
 import { defaultServices, type ServiceItem, SERVICES_STORAGE_KEY } from "@/data/services"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { Skeleton } from "@/components/ui/skeleton"
+import { SplitTitle } from "@/components/ui/split-title"
 
 export default function ServicesSection() {
   const { t, lang } = useI18n()
@@ -84,16 +85,20 @@ export default function ServicesSection() {
     <section id="services" className="py-32 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
+           initial={{ opacity: 0, y: 40 }}
            whileInView={{ opacity: 1, y: 0 }}
-           className="mb-16 text-left"
+           viewport={{ once: true }}
+           transition={{ duration: 0.8 }}
+           className="max-w-6xl mx-auto mb-20 text-center px-4"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-slate-900 mb-4">
-            Nos Expertises
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-[1px] w-10 bg-gradient-to-r from-transparent to-amber-500/40" />
+            <div className="h-1 w-32 md:w-48 rounded-full bg-gradient-to-r from-amber-500 to-orange-500" />
+            <div className="h-[1px] w-10 bg-gradient-to-l from-transparent to-amber-500/40" />
+          </div>
+          <h2 className="text-4xl md:text-6xl font-display font-bold">
+            <SplitTitle text={t("services.sectionTitle")} />
           </h2>
-          <p className="text-slate-600 font-display max-w-xl">
-             Des solutions sur mesure pour vos événements et votre carrière musicale.
-          </p>
         </motion.div>
 
         {/* Services Grid */}
@@ -107,24 +112,24 @@ export default function ServicesSection() {
               viewport={{ once: true }}
             >
               <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
-                <Card className="h-full border-black/10 bg-white/80 hover:bg-white/95 backdrop-blur-lg transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-md hover:shadow-xl">
+                <Card className="h-full border-white/10 bg-black/50 hover:bg-black/70 backdrop-blur-3xl transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-2xl hover:shadow-white/5 rounded-[2.5rem] overflow-hidden">
                   <CardHeader>
-                    <div className="w-16 h-16 rounded-2xl bg-slate-900/5 border border-slate-900/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                       <Image
                         src={service.image || "/placeholder.svg"}
                         alt=""
                         width={40}
                         height={40}
-                        className="w-10 h-10 object-contain filter brightness-90 grayscale group-hover:grayscale-0 transition-all"
+                        className="w-10 h-10 object-contain invert group-hover:invert-0 transition-all opacity-90"
                       />
                     </div>
-                    <CardTitle className="text-2xl font-display font-medium text-slate-900 group-hover:text-sunset-orange transition-colors duration-300">
-                      {service.title}
+                    <CardTitle className="text-2xl font-display font-medium transition-colors duration-300 drop-shadow-md">
+                      <SplitTitle text={service.title} />
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col flex-grow">
                     <div 
-                      className="text-slate-600 font-display mb-8 line-clamp-3 leading-relaxed flex-grow"
+                      className="text-slate-200 font-display mb-8 line-clamp-3 leading-relaxed flex-grow text-[15px]"
                       dangerouslySetInnerHTML={{ __html: service.description }}
                     />
                     
@@ -132,14 +137,14 @@ export default function ServicesSection() {
                       {(service.features || []).slice(0, 3).map((feature, i) => (
                         <span 
                           key={i}
-                          className="px-3 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-[10px] text-slate-500 uppercase tracking-wider"
+                          className="px-3 py-1 rounded-full bg-white/10 border border-white/5 text-[10px] text-slate-100 uppercase tracking-widest font-medium"
                         >
                           {feature}
                         </span>
                       ))}
                     </div>
 
-                    <div className="mt-8 flex items-center text-sunset-light font-display text-sm font-medium group/btn">
+                    <div className="mt-8 flex items-center text-amber-500 font-display text-sm font-medium group/btn">
                       <span className="mr-2">{t("realisations.seeProject")}</span>
                       <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-2" />
                     </div>

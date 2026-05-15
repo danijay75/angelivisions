@@ -6,6 +6,7 @@ import { MessageCircle, Lightbulb, FileText, Calendar, Settings, Music, CheckCir
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { useLang } from "@/hooks/use-lang"
 import { useRouter } from "next/navigation"
+import { SplitTitle } from "@/components/ui/split-title"
 
 export default function TimelineSection() {
   const { t } = useI18n()
@@ -73,9 +74,9 @@ export default function TimelineSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {t("timeline.title")}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent block">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <SplitTitle text={t("timeline.title")} className="block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 block">
               {t("timeline.highlight")}
             </span>
           </h2>

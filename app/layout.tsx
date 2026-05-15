@@ -84,10 +84,13 @@ export const metadata: Metadata = {
   },
 }
 
+import { Toaster } from "sonner"
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html suppressHydrationWarning lang="fr">
       <body className={`${spaceGrotesk.variable} ${poppins.variable} font-sans min-h-screen antialiased`}>
+        <Toaster position="top-center" richColors />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

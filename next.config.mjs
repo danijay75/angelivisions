@@ -47,6 +47,16 @@ const nextConfig = {
                 source: '/backstage/:path*',
                 destination: '/',
                 permanent: true,
+            },
+            {
+                source: '/:lang/contacts',
+                destination: '/:lang#contact',
+                permanent: true,
+            },
+            {
+                source: '/contacts',
+                destination: '/#contact',
+                permanent: true,
             }
         ];
     },

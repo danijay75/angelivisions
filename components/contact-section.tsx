@@ -6,6 +6,7 @@ import { MapPin, Phone, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { useLang } from "@/hooks/use-lang"
+import { SplitTitle } from "@/components/ui/split-title"
 
 export default function ContactSection() {
   const { t } = useI18n()
@@ -29,7 +30,7 @@ export default function ContactSection() {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="title-gradient">{t("contact.title")}</span>
+            <SplitTitle text={t("contact.title")} />
           </h2>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
             {t("contact.description")}
@@ -38,15 +39,16 @@ export default function ContactSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-6xl mx-auto">
           {/* Info Column */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-4 space-y-8">
             {/* Opening hours */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
+              className="h-full"
             >
-              <Card className="glassy-card border-white/10 rounded-[2rem] overflow-hidden group hover:border-amber-500/30 transition-all duration-500">
-                <CardContent className="p-8">
+              <Card className="glassy-card border-white/10 rounded-[2rem] overflow-hidden group hover:border-amber-500/30 transition-all duration-500 h-full">
+                <CardContent className="p-8 h-full flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
                       <Sparkles className="w-6 h-6" />
@@ -59,40 +61,10 @@ export default function ContactSection() {
                 </CardContent>
               </Card>
             </motion.div>
-
-            {/* Conciergerie de l'événement - Luxury Amber style */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="sunset-gradient border-none rounded-[2rem] overflow-hidden shadow-2xl group transition-all duration-500 hover:scale-[1.02]">
-                <CardContent className="p-8 relative">
-                  {/* Decorative element */}
-                  <div className="absolute top-0 right-0 p-4 opacity-20">
-                    <Phone className="w-20 h-20 text-black rotate-12" />
-                  </div>
-                  
-                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-black/60 mb-2">
-                    {t("contact.conciergerieTitle")}
-                  </h3>
-                  <p className="text-2xl font-bold text-black mb-6 leading-tight">
-                    {t("contact.conciergerieUrgencies")}
-                  </p>
-                  <a
-                    href="tel:+33663796742"
-                    className="inline-flex items-center gap-3 rounded-xl bg-black text-white px-6 py-4 font-bold shadow-xl transition-all hover:translate-y-[-2px] hover:shadow-black/20"
-                  >
-                    <Phone className="w-5 h-5 fill-white" aria-hidden="true" />
-                    <span className="text-lg">{"06.63.79.67.42"}</span>
-                  </a>
-                </CardContent>
-              </Card>
-            </motion.div>
           </div>
 
           {/* Map Column */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-8">
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}

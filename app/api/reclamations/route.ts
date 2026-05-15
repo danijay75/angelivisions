@@ -3,6 +3,14 @@ import { sendMail } from "@/lib/server/mailer"
 import { verifyCaptcha } from "@/lib/server/captcha"
 import { requireAdmin } from "@/lib/server/admin-session"
 import { createGoogleContact } from "@/lib/server/google-contacts"
+import { Redis } from "@upstash/redis"
+
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+})
+
+const RECLAMATIONS_KEY = "av:reclamations:list"
 
 function generateReclamationNumber(): string {
   const date = new Date()
@@ -80,9 +88,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
-  // Désormais, la lecture se fait sur Google Sheets de leur côté.
-  // L'API renvoie vide pour ne pas faire d'erreur sur l'Admin.
-  return NextResponse.json({ success: true, reclamations: [] })
+  try {
+    const data = await redis.get(RECLAMATIONS_KEY)
+    return NextResponse.json({ 
+      success: true, 
+      reclamations: data || [] 
+    })
+  } catch (error) {
+    console.error("[Reclamations API GET] Redis error:", error)
+    return NextResponse.json({ success: false, reclamations: [] }, { status: 500 })
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -111,32 +126,49 @@ export async function POST(req: NextRequest) {
     }
 
     const number = generateReclamationNumber()
-    
+    const createdAt = new Date().toISOString()
+    const newReclamation = { ...data, id: crypto.randomUUID(), number, createdAt }
+
+    // 0. Sauvegarder dans Redis pour l'Admin
+    try {
+      const existing = await redis.get<any[]>(RECLAMATIONS_KEY) || []
+      await redis.set(RECLAMATIONS_KEY, [newReclamation, ...existing.slice(0, 499)])
+    } catch (redisError) {
+      console.error("[Reclamations API] Redis Save Error:", redisError)
+    }
+
     const submissionData = { ...data, number }
 
     // 1. Emails Admin et Client
-    const adminEmail = process.env.RECLAMATIONS_EMAIL || "reclamations@angelivisions.com"
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.RECLAMATIONS_EMAIL || "contact@angelivisions.com"
+    console.log(`[Reclamations API] Target admin email: ${adminEmail}`)
 
     try {
+      console.log("[Reclamations API] Sending admin notification...")
       await sendMail({
         to: adminEmail,
         subject: `⚠️ Nouvelle réclamation [${number}] — ${data.firstName} ${data.lastName}`,
         html: buildHtmlEmail(submissionData),
         replyTo: data.email,
       })
+      console.log("[Reclamations API] Admin notification sent successfully.")
     } catch (mailError) {
-      console.error("[Reclamations API] Admin mail error:", mailError)
+      console.error("[Reclamations API] CRITICAL: Admin mail failed:", mailError)
+      throw new Error(`Erreur lors de l'envoi de l'email de notification : ${mailError instanceof Error ? mailError.message : String(mailError)}`)
     }
 
     try {
+      console.log("[Reclamations API] Sending client confirmation...")
       await sendMail({
         to: data.email,
         subject: `Accusé de réception - Réclamation ${number}`,
         html: buildConfirmationEmail(submissionData),
         replyTo: adminEmail,
       })
+      console.log("[Reclamations API] Client confirmation sent successfully.")
     } catch (mailError) {
-      console.error("[Reclamations API] Client mail error:", mailError)
+      console.error("[Reclamations API] Client mail warning (ignored):", mailError)
+      // On ne bloque pas tout si seul l'email client échoue, mais on le logue
     }
 
     // 4. Synchronisation avec Google Sheets (via Apps Script)

@@ -1,167 +1,72 @@
 import { notFound } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import type { ServiceItem } from "@/data/services"
-
 import { Redis } from "@upstash/redis"
-
-
+import ServicesClient from "./ServicesClient"
+import { defaultServices, type ServiceItem } from "@/data/services"
 
 export const dynamic = "force-dynamic"
-const SERVICES_KEY = "av_services_v1"
+export const revalidate = 0
 
 async function getServices(): Promise<ServiceItem[]> {
-  try {
-    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-      const redis = new Redis({
-        url: process.env.KV_REST_API_URL,
-        token: process.env.KV_REST_API_TOKEN,
-      })
-      const servicesData = await redis.get(SERVICES_KEY)
+  const fallbackServices = defaultServices
 
-      if (servicesData) {
-        if (typeof servicesData === "string") {
-          return JSON.parse(servicesData)
-        } else if (typeof servicesData === "object" && Array.isArray(servicesData)) {
-          return servicesData
-        }
+  try {
+
+    const redis = new Redis({
+      url: process.env.KV_REST_API_URL || "",
+      token: process.env.KV_REST_API_TOKEN || "",
+    })
+    
+    const SERVICES_KEY = "av_services_v1"
+    const servicesData = await redis.get(SERVICES_KEY)
+    
+    if (servicesData) {
+      if (typeof servicesData === "string") {
+        return JSON.parse(servicesData)
+      } else if (typeof servicesData === "object" && Array.isArray(servicesData)) {
+        return servicesData
       }
     }
   } catch (error) {
-    console.log("[v0] Error fetching services directly from Redis:", error)
+    console.error("Failed to fetch services layout, using fallback.", error)
   }
-
-  // Fallback to default services if API fails
-  return [
-    {
-      id: "production",
-      title: "Production Musicale",
-      description: "Compositions originales, jingles personnalisés, musiques d'ambiance pour vos événements",
-      features: [
-        "Jingles d'entreprise",
-        "Musiques d'ambiance",
-        "Compositions originales",
-        "Arrangements personnalisés",
-      ],
-      color: "from-blue-500 to-cyan-500",
-      image: "/music-production-setup.png",
-    },
-    {
-      id: "organization",
-      title: "Organisation d'Événements",
-      description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-      features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
-      color: "from-cyan-500 to-teal-500",
-      image: "/event-organization.jpg",
-    },
-    {
-      id: "booking",
-      title: "Booking DJ & Musiciens",
-      description: "DJs professionnels, animation live audiovisuel, VJing et performances audiovisuelles personnalisées",
-      features: ["DJ sets professionnels", "VJ live performances", "Animation interactive", "Streaming en direct"],
-      color: "from-teal-500 to-emerald-500",
-      image: "/placeholder.svg?height=128&width=128",
-    },
-    {
-      id: "prestations-techniques-audiovisuelles",
-      title: "Prestataire technique audiovisuel",
-      description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
-      features: [
-        "Sonorisation événementielle",
-        "Éclairage scénique",
-        "Murs de LED",
-        "VJ / Vidéo mapping",
-        "Régie technique",
-      ],
-      color: "from-emerald-500 to-blue-500",
-      image: "/placeholder.svg?height=128&width=128",
-    },
-  ]
+  
+  return fallbackServices
 }
 
 export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params
-  if (!resolvedParams.lang || !["fr", "en"].includes(resolvedParams.lang)) {
+  
+  if (!resolvedParams.lang || !["fr", "en", "es"].includes(resolvedParams.lang)) {
     notFound()
   }
 
-  const services = await getServices()
+  const rawServices = await getServices()
+  // Ultimate safety filter to replicate existing API behavior 
+  const servicesList = rawServices
+  
+  let pageConfig = {
+    title: "Nos <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-amber-500\">Services</span>",
+    subtitle: "",
+    showBadge: false,
+    badgeText: "Notre expertise"
+  }
+  
+  try {
+    const redis = new Redis({
+      url: process.env.KV_REST_API_URL || "",
+      token: process.env.KV_REST_API_TOKEN || "",
+    })
+    const configData = await redis.get("av_services_config_v1")
+    if (configData) {
+      if (typeof configData === "string") {
+        pageConfig = JSON.parse(configData)
+      } else if (typeof configData === "object") {
+        pageConfig = configData as any
+      }
+    }
+  } catch (err) {
+    console.error("Failed to fetch page config", err)
+  }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <div className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Nos{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Services</span>
-          </h1>
-          <p className="text-xl text-white max-w-3xl mx-auto">
-            Découvrez notre gamme complète de services pour vos événements et projets musicaux
-          </p>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => {
-
-            return (
-              <Card
-                key={service.id}
-                className="bg-slate-800/50 border-slate-700 hover:bg-slate-800/70 transition-all duration-300"
-              >
-                <CardHeader>
-                  {service.image && (
-                    <img
-                      src={service.image || "/placeholder.svg"}
-                      alt={service.title}
-                      className="w-20 h-20 rounded-lg object-cover mb-4 shadow-lg"
-                    />
-                  )}
-                  <CardTitle className="text-white text-xl">{service.title}</CardTitle>
-                  <div
-                    className="text-slate-100 text-sm mt-2 line-clamp-3 rich-text-content"
-                    dangerouslySetInnerHTML={{ __html: service.description }}
-                  />
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3 mb-6">
-                    {service.features.map((feature, index) => (
-                      <Badge key={index} variant="secondary" className="bg-slate-700/50 text-slate-200 mr-2 mb-2">
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Link href={`/${resolvedParams.lang}/services/${service.id}`}>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
-                      En savoir plus
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
-
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-2xl p-8 border border-blue-500/20">
-            <h2 className="text-3xl font-bold text-white mb-4">Vous avez un projet ?</h2>
-            <div className="text-sm text-white mb-6">Contactez-nous pour discuter de votre projet</div>
-            <Link href={`/${resolvedParams.lang}/devis`}>
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 font-bold px-10"
-              >
-                Parlons-en !
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <ServicesClient servicesList={servicesList} lang={resolvedParams.lang} pageConfig={pageConfig} />
 }

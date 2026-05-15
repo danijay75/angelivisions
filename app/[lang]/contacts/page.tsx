@@ -43,10 +43,20 @@ export async function generateMetadata({
   }
 }
 
-export default function ContactsPage() {
+export default async function ContactsPage({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}) {
+  const { lang } = await params
+  
   return (
-    <main className="min-h-screen bg-slate-900">
-      <div className="pt-28">
+    <main className="min-h-screen bg-[#020617] relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orb orb-orange animate-orb opacity-30" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orb orb-blue animate-orb opacity-20" />
+      
+      <div className="pt-28 relative z-10">
         <ContactSection />
       </div>
     </main>

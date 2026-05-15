@@ -11,11 +11,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Calendar, Users, MapPin, Music, Mic, Zap, Camera, Send, CheckCircle, Monitor, Home } from "lucide-react"
-import Link from "next/link"
+import { Calendar, Users, MapPin, Music, Mic, Zap, Camera, Send, CheckCircle, Monitor, Sparkles } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import Turnstile from "@/components/ui/turnstile"
 import { captchaBypass } from "@/lib/public-config"
+import { SplitTitle } from "@/components/ui/split-title"
 
 export default function DevisForm() {
   const { t } = useI18n()
@@ -25,6 +25,7 @@ export default function DevisForm() {
     eventDate: "",
     guestCount: "",
     location: "",
+    subject: "",
     name: "",
     email: "",
     phone: "",
@@ -39,21 +40,21 @@ export default function DevisForm() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(captchaBypass ? "bypass" : null)
 
   const eventTypes = useMemo(() => [
-    { id: "corporate", label: t("devis.eventTypes.corporate"), icon: "🏢" },
-    { id: "private", label: t("devis.eventTypes.private"), icon: "🎉" },
-    { id: "festival", label: t("devis.eventTypes.festival"), icon: "🎵" },
-    { id: "other", label: t("devis.eventTypes.other"), icon: "✨" },
-  ], [t])
+    { id: "corporate", label: "Événement d'entreprise", icon: "🏢" },
+    { id: "festival", label: "Festival / Concert", icon: "🎵" },
+    { id: "council", label: "Conseil municipal / Investiture", icon: "🏛️" },
+    { id: "interview", label: "Interview", icon: "🎤" },
+    { id: "other", label: "Autre", icon: "✨" },
+  ], [])
 
   const services = useMemo(() => [
-    { id: "dj", label: t("devis.services.dj"), icon: Mic, color: "from-blue-600 to-cyan-600" },
-    { id: "production", label: t("devis.services.production"), icon: Music, color: "from-blue-500 to-cyan-500" },
-    { id: "organization", label: t("devis.services.organization"), icon: Calendar, color: "from-green-500 to-emerald-500" },
-    { id: "technical", label: t("devis.services.technical"), icon: Zap, color: "from-orange-500 to-red-500" },
-    { id: "led-walls", label: t("devis.services.ledWalls"), icon: Monitor, color: "from-blue-500 to-cyan-500" },
-    { id: "mapping", label: t("devis.services.mapping"), icon: Camera, color: "from-blue-700 to-cyan-700" },
-    { id: "media", label: t("devis.services.media"), icon: Camera, color: "from-cyan-600 to-blue-800" },
-  ], [t])
+    { id: "captation-video", label: "Captation vidéo", icon: Camera, color: "from-blue-600 to-cyan-600" },
+    { id: "streaming-live", label: "Streaming Live", icon: Monitor, color: "from-blue-500 to-cyan-500" },
+    { id: "podcast", label: "Podcast", icon: Mic, color: "from-orange-500 to-red-500" },
+    { id: "booking", label: "Booking DJ & Musiciens", icon: Music, color: "from-blue-700 to-cyan-700" },
+    { id: "vj-video-mapping", label: "VJ / Vidéo mapping", icon: Zap, color: "from-blue-500 to-cyan-500" },
+    { id: "label-de-musique", label: "Label de musique", icon: Sparkles, color: "from-purple-500 to-indigo-500" },
+  ], [])
 
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,7 +94,6 @@ export default function DevisForm() {
         setError(json.message || t("devis.error"))
         return
       }
-
       setIsSubmitted(true)
     } catch {
       setError(t("devis.error"))
@@ -104,7 +104,7 @@ export default function DevisForm() {
 
   if (isSubmitted) {
     return (
-      <section id="devis" className="py-20 bg-transparent">
+      <section id="devis" className="py-20 bg-slate-950">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -121,18 +121,16 @@ export default function DevisForm() {
                 >
                   <CheckCircle className="w-10 h-10 text-white" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-4">{t("devis.success.title")}</h3>
-                <p className="text-slate-600 mb-6">
+                <h3 className="text-2xl font-bold text-white mb-4">{t("devis.success.title")}</h3>
+                <p className="text-white/80 mb-6">
                   {t("devis.success.message")}
                 </p>
                 <Button
-                  asChild
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-2 rounded-full transition-all duration-300"
+                  onClick={() => setIsSubmitted(false)}
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10"
                 >
-                  <Link href="/">
-                    <Home className="w-4 h-4 mr-2" />
-                    {t("common.backToHome")}
-                  </Link>
+                  {t("devis.success.newRequest")}
                 </Button>
               </CardContent>
             </Card>
@@ -143,7 +141,7 @@ export default function DevisForm() {
   }
 
   return (
-    <section id="devis" className="py-20 bg-transparent">
+    <section id="devis" className="py-20 bg-slate-950">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -151,27 +149,29 @@ export default function DevisForm() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            {t("devis.title")}
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block">
-              {t("devis.highlight")}
-            </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <SplitTitle text={t("devis.title")} className="block" />
+            {t("devis.highlight") && (
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 block mt-2">
+                {t("devis.highlight")}
+              </span>
+            )}
           </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <p className="text-xl text-white/80 max-w-3xl mx-auto">
             {t("devis.description")}
           </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
-          <Card className="bg-white/60 backdrop-blur-xl border-black/5 shadow-xl">
+          <Card className="bg-white/5 backdrop-blur-md border-white/10">
             <CardHeader>
-              <CardTitle className="text-slate-900 text-2xl text-center">{t("devis.formTitle")}</CardTitle>
+              <CardTitle className="text-white text-2xl text-center">{t("devis.formTitle")}</CardTitle>
             </CardHeader>
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Event Type */}
                 <div>
-                  <Label className="text-slate-800 text-lg mb-4 block">{t("devis.eventType")}</Label>
+                  <Label className="text-white text-lg mb-4 block">{t("devis.eventType")}</Label>
                   <RadioGroup
                     value={formData.eventType}
                     onValueChange={(value: string) => handleValueChange("eventType", value)}
@@ -183,12 +183,12 @@ export default function DevisForm() {
                         <Label
                           htmlFor={type.id}
                           className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.eventType === type.id
-                            ? "border-blue-500 bg-blue-500/10"
-                            : "border-black/5 bg-black/5 hover:bg-black/10"
+                            ? "border-blue-500 bg-blue-500/20"
+                            : "border-white/20 bg-white/5 hover:bg-white/10"
                             }`}
                         >
                           <span className="text-2xl mr-3">{type.icon}</span>
-                          <span className="text-slate-700">{type.label}</span>
+                          <span className="text-white">{type.label}</span>
                         </Label>
                       </motion.div>
                     ))}
@@ -197,41 +197,38 @@ export default function DevisForm() {
 
                 {/* Services */}
                 <div>
-                  <Label className="text-slate-800 text-lg mb-4 block">
+                  <Label className="text-white text-lg mb-4 block">
                     {t("devis.servicesTitle")}
                   </Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {services.map((service) => {
                       const isSelected = Array.isArray(formData.services) && formData.services.includes(service.id)
                       return (
-                        <motion.div key={service.id} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-                          <label
-                            className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${isSelected
-                              ? "border-blue-500 bg-blue-500/5 shadow-sm"
-                              : "border-black/5 bg-black/5 hover:bg-black/10 hover:border-black/10"
+                        <motion.div key={service.id} whileHover={{ scale: 1.02 }} className="relative">
+                          <div
+                            onClick={(e) => {
+                              // Only toggle if the click wasn't on the checkbox itself to avoid double events
+                              if ((e.target as HTMLElement).closest('[role="checkbox"]')) return
+                              handleServiceToggle(service.id)
+                            }}
+                            className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected
+                              ? "border-blue-500 bg-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+                              : "border-white/20 bg-white/5 hover:bg-white/10"
                               }`}
                           >
                             <div
-                              className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mr-4 shadow-md`}
+                              className={`w-10 h-10 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center mr-3`}
                             >
-                              <service.icon className="w-6 h-6 text-white" />
+                              <service.icon className="w-5 h-5 text-white" />
                             </div>
-                            <div className="flex flex-col">
-                              <span className="text-slate-800 font-medium">{service.label}</span>
-                            </div>
-                            <div className="ml-auto">
-                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${isSelected ? "bg-blue-500 border-blue-500" : "border-black/10"
-                                }`}>
-                                {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
-                              </div>
-                              <input
-                                type="checkbox"
-                                className="sr-only"
+                            <span className="text-white">{service.label}</span>
+                            <div className="ml-auto" onClick={(e) => e.stopPropagation()}>
+                              <Checkbox
                                 checked={isSelected}
-                                onChange={() => handleServiceToggle(service.id)}
+                                onCheckedChange={() => handleServiceToggle(service.id)}
                               />
                             </div>
-                          </label>
+                          </div>
                         </motion.div>
                       )
                     })}
@@ -241,7 +238,7 @@ export default function DevisForm() {
                 {/* Event Details */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <Label htmlFor="eventDate" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="eventDate" className="text-white mb-2 block">
                       <Calendar className="w-4 h-4 inline mr-2" />
                       {t("devis.date")}
                     </Label>
@@ -250,11 +247,11 @@ export default function DevisForm() {
                       type="date"
                       value={formData.eventDate}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white [color-scheme:dark]"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="guestCount" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="guestCount" className="text-white mb-2 block">
                       <Users className="w-4 h-4 inline mr-2" />
                       {t("devis.guests")}
                     </Label>
@@ -263,11 +260,11 @@ export default function DevisForm() {
                       placeholder="ex: 150"
                       value={formData.guestCount}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="location" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="location" className="text-white mb-2 block">
                       <MapPin className="w-4 h-4 inline mr-2" />
                       {t("devis.location")}
                     </Label>
@@ -276,7 +273,7 @@ export default function DevisForm() {
                       placeholder="ex: Paris"
                       value={formData.location}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     />
                   </div>
                 </div>
@@ -285,7 +282,7 @@ export default function DevisForm() {
                 {/* Contact Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="name" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="name" className="text-white mb-2 block">
                       {t("devis.name")}
                     </Label>
                     <Input
@@ -293,12 +290,12 @@ export default function DevisForm() {
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder={t("footer.newsletterName")}
-                      className="bg-white/50 border-black/10 text-slate-900 placeholder:text-slate-400 focus:bg-white"
+                      placeholder="Prénom NOM"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="email" className="text-white mb-2 block">
                       {t("devis.email")}
                     </Label>
                     <Input
@@ -307,36 +304,50 @@ export default function DevisForm() {
                       required
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="phone" className="text-white mb-2 block">
                       {t("devis.phone")}
                     </Label>
                     <Input
                       id="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="company" className="text-slate-800 mb-2 block font-medium">
+                    <Label htmlFor="company" className="text-white mb-2 block">
                       {t("devis.company")}
                     </Label>
                     <Input
                       id="company"
                       value={formData.company}
                       onChange={handleInputChange}
-                      className="bg-white/50 border-black/10 text-slate-900 focus:bg-white"
+                      className="bg-white/10 border-white/20 text-white"
                     />
                   </div>
                 </div>
 
+                {/* Subject */}
+                <div>
+                  <Label htmlFor="subject" className="text-white mb-2 block">
+                    {t("devis.subject")}
+                  </Label>
+                  <Input
+                    id="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="ex: Demande d'information / Réservation"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+
                 {/* Description */}
                 <div>
-                  <Label htmlFor="description" className="text-slate-800 mb-2 block font-medium">
+                  <Label htmlFor="description" className="text-white mb-2 block">
                     {t("devis.projectDescription")}
                   </Label>
                   <Textarea
@@ -344,7 +355,7 @@ export default function DevisForm() {
                     placeholder={t("devis.placeholder")}
                     value={formData.description}
                     onChange={handleInputChange}
-                    className="bg-white/50 border-black/10 text-slate-900 placeholder:text-slate-400 min-h-[120px] focus:bg-white"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[120px]"
                   />
                 </div>
 
@@ -358,14 +369,14 @@ export default function DevisForm() {
                     className="mt-1 accent-blue-500 min-w-[16px]"
                     required
                   />
-                  <span className="text-sm text-slate-600 leading-relaxed">
+                  <span className="text-sm text-white/70 leading-relaxed">
                     {t("devis.consent")}
                   </span>
                 </label>
 
                 {/* Turnstile Captcha */}
                 {!captchaBypass && (
-                  <div className="flex justify-center py-6 border-t border-black/5 mt-8">
+                  <div className="flex justify-center py-6 border-t border-white/10 mt-8">
                     <Turnstile
                       onVerify={setCaptchaToken}
                       onExpire={() => setCaptchaToken(null)}
@@ -373,7 +384,7 @@ export default function DevisForm() {
                         console.error("Turnstile error encountered")
                         setCaptchaToken(null)
                       }}
-                      theme="light"
+                      theme="dark"
                     />
                   </div>
                 )}
@@ -396,7 +407,7 @@ export default function DevisForm() {
                     <Send className="w-5 h-5 mr-2" />
                     {loading ? t("devis.sending") : t("devis.submit")}
                   </Button>
-                  <p className="text-slate-500 text-sm mt-4">
+                  <p className="text-white/60 text-sm mt-4">
                     {t("devis.guarantee")}
                   </p>
                 </motion.div>

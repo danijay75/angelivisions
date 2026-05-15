@@ -7,6 +7,8 @@ import Link from "next/link"
 import { ArrowLeft, CheckCircle, Phone, Mail } from "lucide-react"
 
 import { Redis } from "@upstash/redis"
+import { ArtistsCatalogue } from "@/components/artists-catalogue"
+import { SplitTitle } from "@/components/ui/split-title"
 
 interface ServicePageProps {
   params: Promise<{
@@ -20,6 +22,8 @@ export const dynamic = "force-dynamic"
 
 
 const SERVICES_KEY = "av_services_v1"
+
+import { defaultServices } from "@/data/services"
 
 async function getServices(): Promise<ServiceItem[]> {
   try {
@@ -44,51 +48,7 @@ async function getServices(): Promise<ServiceItem[]> {
   }
 
   // Fallback to default services if API fails
-  return [
-    {
-      id: "production",
-      title: "Production Musicale",
-      description: "Compositions originales, jingles personnalisés, musiques d'ambiance pour vos événements",
-      features: [
-        "Jingles d'entreprise",
-        "Musiques d'ambiance",
-        "Compositions originales",
-        "Arrangements personnalisés",
-      ],
-      color: "from-blue-500 to-cyan-500",
-      image: "/music-production-setup.png",
-    },
-    {
-      id: "organization",
-      title: "Organisation d'Événements",
-      description: "Gestion complète de vos événements : logistique, venue, traiteur, décoration et animation",
-      features: ["Galas & réceptions", "Événements d'entreprise", "Soirées privées", "Conventions & séminaires"],
-      color: "from-cyan-500 to-teal-500",
-      image: "/event-organization.jpg",
-    },
-    {
-      id: "booking",
-      title: "Booking DJ & Musiciens",
-      description: "DJs professionnels, animation live audiovisuel, VJing et performances audiovisuelles personnalisées",
-      features: ["DJ sets professionnels", "VJ live performances", "Animation interactive", "Streaming en direct"],
-      color: "from-teal-500 to-emerald-500",
-      image: "/placeholder.svg?height=128&width=128",
-    },
-    {
-      id: "prestations-techniques-audiovisuelles",
-      title: "Prestataire technique audiovisuel",
-      description: "Sonorisation, éclairage scénique, vidéo mapping et conception technique d'événements",
-      features: [
-        "Sonorisation événementielle",
-        "Éclairage scénique",
-        "Murs de LED",
-        "VJ / Vidéo mapping",
-        "Régie technique",
-      ],
-      color: "from-emerald-500 to-blue-500",
-      image: "/placeholder.svg?height=128&width=128",
-    },
-  ]
+  return defaultServices
 }
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
@@ -125,42 +85,53 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="container mx-auto px-4 py-16">
-        {/* Back Button */}
-        <div className="mb-8">
-          <Link href={`/${resolvedParams.lang}/services`}>
-            <Button variant="ghost" className="text-white hover:text-white/80">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour aux services
-            </Button>
-          </Link>
+    <div className="min-h-screen bg-[#0A0A0A] selection:bg-amber-500/30">
+      {/* Hero Section (Netflix Cover Style) */}
+      <div className="relative h-[60vh] min-h-[500px] w-full flex items-end pb-16">
+        {/* Background Image & Overlays */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={service.image || "/corporate-event-stage.jpg"}
+            alt={service.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/50 to-transparent" />
         </div>
 
-        {/* Service Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            {service.image && (
-              <img
-                src={service.image || "/placeholder.svg"}
-                alt={service.title}
-                className="w-28 h-28 rounded-2xl object-cover shadow-lg"
-              />
+        {/* Hero Content */}
+        <div className="container relative z-10 mx-auto px-4">
+          <div className="mb-8">
+            <Link href={`/${resolvedParams.lang}/services`}>
+              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 backdrop-blur-sm -ml-4">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Retour aux services
+              </Button>
+            </Link>
+          </div>
+          <div className="max-w-4xl space-y-4 mx-auto text-center">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-2">
+              <SplitTitle text={service.title} />
+            </h1>
+            {service.id !== "label-de-musique" && (
+              <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light">
+                {service.description}
+              </p>
             )}
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{service.title}</h1>
-          <div
-            className="text-xl text-white max-w-3xl mx-auto rich-text-content"
-            dangerouslySetInnerHTML={{ __html: service.description }}
-          />
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16">
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white text-2xl">Ce que nous proposons</CardTitle>
+                <CardTitle className="text-2xl font-bold">
+                  <span className="title-gradient">Ce que nous proposons</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,68 +145,32 @@ export default async function ServicePage({ params }: ServicePageProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-800/50 border-slate-700">
-              <CardHeader>
-                <CardTitle className="text-white text-2xl">Détails du service</CardTitle>
+            <Card className="bg-[#121212]/80 border-white/5 backdrop-blur-sm">
+              <CardHeader className="border-b border-white/5">
+                <CardTitle className="text-2xl font-bold">
+                  <span className="title-gradient">Détails du service</span>
+                </CardTitle>
               </CardHeader>
-              <CardContent className="text-white space-y-4">
-                {service.id === "production" && (
-                  <>
-                    <p>Notre équipe de producteurs expérimentés vous accompagne dans la création de compositions musicales originales, adaptées à vos besoins spécifiques.</p>
-                    <p>Que ce soit pour des jingles d'entreprise, des musiques d'ambiance pour vos événements ou des arrangements personnalisés, nous mettons notre expertise au service de votre projet.</p>
-                    <p>Nous travaillons avec des équipements de pointe et des logiciels professionnels pour garantir une qualité sonore exceptionnelle.</p>
-                  </>
-                )}
-                {service.id === "organization" && (
-                  <>
-                    <p>Fort de notre expérience dans l'organisation d'événements, nous prenons en charge tous les aspects de votre projet, de la conception à la réalisation.</p>
-                    <p>Notre équipe s'occupe de la logistique, de la recherche de lieux, du traiteur, de la décoration et de l'animation pour créer des moments inoubliables.</p>
-                    <p>Nous adaptons nos services à tous types d'événements : galas, événements d'entreprise, soirées privées, conventions et séminaires.</p>
-                  </>
-                )}
-                {service.id === "booking" && (
-                  <>
-                    <p>Nos DJs professionnels et nos artistes VJ créent des performances audiovisuelles uniques pour vos événements.</p>
-                    <p>Nous proposons des sets personnalisés, des animations interactives et des performances live qui s'adaptent à l'ambiance de votre événement.</p>
-                    <p>Possibilité de streaming en direct pour étendre la portée de votre événement au-delà du lieu physique.</p>
-                  </>
-                )}
-                {service.id === "prestations-techniques-audiovisuelles" && (
-                  <>
-                    <p>Notre équipe technique expérimentée met à votre disposition un matériel de pointe pour la sonorisation, l'éclairage et la vidéo.</p>
-                    <p>Nous concevons des installations techniques sur-mesure adaptées à vos besoins et à la configuration de votre lieu.</p>
-                    <p>De la simple sonorisation aux installations complexes de vidéo mapping, nous maîtrisons toutes les technologies audiovisuelles.</p>
-                  </>
-                )}
-                {service.id === "led-walls" && (
-                  <>
-                    <p>Nos murs de LED haute définition transforment vos événements en expériences visuelles spectaculaires.</p>
-                    <p>Nous proposons des écrans de différentes tailles et résolutions, avec des contenus personnalisés adaptés à votre événement.</p>
-                    <p>Installation professionnelle et support technique complet pour garantir un rendu visuel parfait.</p>
-                  </>
-                )}
-                {service.id === "media" && (
-                  <>
-                    <p>Nos équipes de captation multicaméras immortalisent vos événements avec un rendu professionnel.</p>
-                    <p>Nous réalisons également des émissions TV et des podcasts, de la prise de vue à la post-production.</p>
-                    <p>Nos services incluent le montage, l'étalonnage et la livraison dans les formats de votre choix.</p>
-                  </>
-                )}
+              <CardContent className="text-white/80 space-y-4 font-light leading-relaxed text-lg pt-6">
+                <p>Notre équipe d'experts vous accompagne de A à Z dans la réalisation de vos projets.</p>
+                <p>Nous combinons créativité, innovation technologique et gestion rigoureuse pour garantir le succès de vos événements et de vos productions.</p>
+                <p>N'hésitez pas à nous contacter pour un devis sur mesure ou pour discuter de vos besoins spécifiques.</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6 lg:sticky lg:top-24 h-fit">
-            <Card className="bg-gradient-to-br from-slate-800/90 via-slate-900/95 to-slate-800/90 border-blue-500/30 shadow-2xl shadow-blue-500/5 overflow-hidden backdrop-blur-sm">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-white text-2xl">Vous avez un projet ?</CardTitle>
-                <div className="text-sm text-white">Contactez-nous pour discuter de votre projet</div>
+            <Card className="bg-gradient-to-br from-[#121212] via-[#0A0A0A] to-[#121212] border-amber-500/20 shadow-2xl shadow-amber-500/10 overflow-hidden backdrop-blur-md">
+              <CardHeader className="pb-4 border-b border-white/5">
+                <CardTitle className="text-white text-2xl font-light">Vous avez un projet ?</CardTitle>
+                <div className="text-sm text-amber-500/80">Discutons de vos ambitions</div>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 pt-6">
                 <Link href={`/${resolvedParams.lang}/devis`} className="block">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-lg py-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] font-bold">
-                    Parlons-en !
+                  <Button className="w-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all hover:scale-[1.02] font-semibold border-none">
+                    <span className="font-bold">Booking</span>
+                    <span className="ml-1 font-medium">de nos artistes</span>
                   </Button>
                 </Link>
                 <div className="space-y-4 pt-4 border-t border-white/10">
@@ -261,6 +196,13 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </div>
       </div>
+
+      {/* Intégration du Catalogue Artistes pour le Label de Musique */}
+      {service.id === "label-de-musique" && (
+        <div className="container mx-auto px-4 py-16 border-t border-white/5">
+          <ArtistsCatalogue lang={resolvedParams.lang as "fr" | "en" | "es"} />
+        </div>
+      )}
     </div>
   )
 }

@@ -39,8 +39,8 @@ export default async function ReclamationsPage({
     <main className="min-h-screen bg-slate-950 pt-32 pb-20">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Réclamations
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight leading-tight">
+            <span className="title-gradient">Réclamations</span>
           </h1>
           <p className="text-slate-300 text-lg max-w-2xl mx-auto">
             Nous mettons tout en œuvre pour vous offrir le meilleur service possible. 

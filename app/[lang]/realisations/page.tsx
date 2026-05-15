@@ -176,8 +176,8 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
               {copy.backToHome}
             </Button>
 
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
+              <span className="title-gradient">
                 {copy.title}
               </span>
             </h1>
