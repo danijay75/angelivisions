@@ -288,7 +288,7 @@ export default function ProjectsManager() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-white">Catégorie de services</Label>
+                                <Label className="text-white">Type d&apos;événement</Label>
                                 <Select
                                     value={formData.category || ""}
                                     onValueChange={v => updateFormData("category", v)}

@@ -148,12 +148,12 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
           className="border-white/30 text-white hover:bg-white/10 bg-transparent"
         >
           <Tag className="w-4 h-4 mr-2" />
-          Gérer les catégories ({categories.length})
+          Gérer les types d'événement ({categories.length})
         </Button>
         {isOpen && (
           <Button onClick={handleCreate} className="bg-green-600 hover:bg-green-700 text-white">
             <Plus className="w-4 h-4 mr-2" />
-            Nouvelle catégorie
+            Nouveau type
           </Button>
         )}
       </div>
@@ -171,13 +171,13 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
               <Card className="bg-white/5 backdrop-blur-md border-white/10">
                 <CardHeader>
                   <CardTitle className="text-white">
-                    {editingCategory ? "Modifier la catégorie" : "Nouvelle catégorie"}
+                    {editingCategory ? "Modifier le type d'événement" : "Nouveau type d'événement"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-white mb-2 block">Nom de la catégorie</Label>
+                      <Label className="text-white mb-2 block">Nom du type d'événement</Label>
                       <Input
                         value={formData.label}
                         onChange={(e) => updateFormData("label", e.target.value)}
@@ -260,7 +260,7 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
             {/* Liste des catégories */}
             <Card className="bg-white/5 backdrop-blur-md border-white/10">
               <CardHeader>
-                <CardTitle className="text-white">Catégories existantes</CardTitle>
+                <CardTitle className="text-white">Types d'événement existants</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -334,8 +334,8 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
                   {categories.length === 0 && (
                     <div className="text-center py-8">
                       <Tag className="w-12 h-12 text-white/40 mx-auto mb-4" />
-                      <p className="text-white/60">Aucune catégorie créée</p>
-                      <p className="text-white/40 text-sm">Cliquez sur "Nouvelle catégorie" pour commencer</p>
+                      <p className="text-white/60">Aucun type d'événement créé</p>
+                      <p className="text-white/40 text-sm">Cliquez sur "Nouveau type" pour commencer</p>
                     </div>
                   )}
                 </div>
@@ -349,10 +349,10 @@ export default function CategoryManager({ categories, onCategoriesChange, projec
                 <div className="text-sm">
                   <p className="text-blue-200 font-medium mb-2">Informations importantes :</p>
                   <ul className="text-blue-100 space-y-1">
-                    <li>• Les catégories avec des projets ne peuvent pas être supprimées</li>
-                    <li>• L'ID de la catégorie est utilisé dans l'URL et ne doit pas contenir d'espaces</li>
-                    <li>• La modification d'une catégorie affecte tous les projets associés</li>
-                    <li>• Les couleurs aident à identifier visuellement les catégories</li>
+                    <li>• Les types avec des projets ne peuvent pas être supprimés</li>
+                    <li>• L'ID du type est utilisé dans l'URL et ne doit pas contenir d'espaces</li>
+                    <li>• La modification d'un type affecte tous les projets associés</li>
+                    <li>• Les couleurs aident à identifier visuellement les types</li>
                   </ul>
                 </div>
               </div>
