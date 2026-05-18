@@ -79,7 +79,7 @@ const fr = {
     seeProject: "Voir le projet",
     photosCount: "photos",
     viewAllCta: "Voir tous nos Projets",
-    noCategory: "Sans catégorie",
+    noCategory: "Type non défini",
     backToList: "Retour aux Réalisations",
     clientLabel: "Client :",
     servicesLabel: "Prestations incluses",

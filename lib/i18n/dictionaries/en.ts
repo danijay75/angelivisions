@@ -79,7 +79,7 @@ const en = {
     seeProject: "View project",
     photosCount: "photos",
     viewAllCta: "See all projects",
-    noCategory: "Uncategorized",
+    noCategory: "Type undefined",
     backToList: "Back to Portfolio",
     clientLabel: "Client:",
     servicesLabel: "Included services",

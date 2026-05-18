@@ -79,7 +79,7 @@ const es = {
     seeProject: "Ver proyecto",
     photosCount: "fotos",
     viewAllCta: "Ver todos los proyectos",
-    noCategory: "Sin categoría",
+    noCategory: "Tipo no definido",
     backToList: "Volver al Portafolio",
     clientLabel: "Cliente:",
     servicesLabel: "Servicios incluidos",

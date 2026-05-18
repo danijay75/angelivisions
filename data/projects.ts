@@ -17,10 +17,12 @@ export type Project = {
 }
 
 export const categories = [
-  { id: "corporate", label: "Entreprise", color: "from-blue-500 to-cyan-500" },
-  { id: "production", label: "Production Musicale", color: "from-purple-500 to-pink-500" },
-  { id: "mapping", label: "Vidéo Mapping", color: "from-indigo-500 to-purple-500" },
-  { id: "media", label: "Captations et prises de vue", color: "from-green-500 to-emerald-500" },
+  { id: "evenement-sportif", label: "Evénement sportif", color: "from-blue-500 to-cyan-500" },
+  { id: "entreprise", label: "Entreprise", color: "from-purple-500 to-pink-500" },
+  { id: "spectacle", label: "Spectacle", color: "from-indigo-500 to-purple-500" },
+  { id: "evenementiel", label: "Evénementiel", color: "from-orange-500 to-red-500" },
+  { id: "festival-concert", label: "Festival / Concert", color: "from-green-500 to-emerald-500" },
+  { id: "conseil-municipal", label: "Conseil municipal / Investiture publique", color: "from-teal-500 to-blue-500" },
 ]
 
 export const projects: Project[] = [

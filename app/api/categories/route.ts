@@ -22,34 +22,48 @@ export interface Category {
   projectCount: number
 }
 
-// Catégories par défaut
+// Types d'événements par défaut
 const defaultCategories: Category[] = [
   {
-    id: "corporate",
-    label: "Entreprise",
-    description: "Événements d'entreprise",
+    id: "evenement-sportif",
+    label: "Evénement sportif",
+    description: "Événements sportifs et compétitions",
     color: "from-blue-500 to-cyan-500",
     projectCount: 0,
   },
   {
-    id: "production",
-    label: "Production Musicale",
-    description: "Création musicale",
+    id: "entreprise",
+    label: "Entreprise",
+    description: "Événements corporate et d'entreprise",
     color: "from-purple-500 to-pink-500",
     projectCount: 0,
   },
   {
-    id: "mapping",
-    label: "Vidéo Mapping",
-    description: "Spectacles visuels",
+    id: "spectacle",
+    label: "Spectacle",
+    description: "Spectacles et performances scéniques",
     color: "from-indigo-500 to-purple-500",
     projectCount: 0,
   },
   {
-    id: "media",
-    label: "Captations et prises de vue",
-    description: "Captations et podcasts",
+    id: "evenementiel",
+    label: "Evénementiel",
+    description: "Organisation événementielle générale",
+    color: "from-orange-500 to-red-500",
+    projectCount: 0,
+  },
+  {
+    id: "festival-concert",
+    label: "Festival / Concert",
+    description: "Festivals et concerts live",
     color: "from-green-500 to-emerald-500",
+    projectCount: 0,
+  },
+  {
+    id: "conseil-municipal",
+    label: "Conseil municipal / Investiture publique",
+    description: "Cérémonies officielles et conseils municipaux",
+    color: "from-teal-500 to-blue-500",
     projectCount: 0,
   },
 ]
