@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Calendar, Users, MapPin, Eye, ImageIcon, ChevronRight, Sparkles, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -154,10 +155,20 @@ export default function RealisationsSection() {
                     onClick={() => handleProjectClick(project.slug)}
                   >
                     <div className="glassy-card rounded-[2.5rem] overflow-hidden h-full flex flex-col transition-all duration-500 hover:scale-[1.03] cursor-pointer">
-                      <div className="relative aspect-[16/10] overflow-hidden bg-white/[0.02]">
-                        <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:scale-110 transition-transform duration-700">
-                           <ImageIcon className="w-12 h-12 text-white/10" />
-                        </div>
+                      <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+                        {project.image ? (
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            fill
+                            unoptimized={project.image.startsWith("http")}
+                            className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:scale-110 transition-transform duration-700">
+                             <ImageIcon className="w-12 h-12 text-white/10" />
+                          </div>
+                        )}
                         
                         <div className="absolute top-6 left-6 z-20">
                            <span className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] text-white uppercase tracking-widest font-medium">
@@ -165,7 +176,7 @@ export default function RealisationsSection() {
                            </span>
                         </div>
                         
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80 pointer-events-none" />
                       </div>
 
                       <div className="p-8 flex-1 flex flex-col justify-between">
