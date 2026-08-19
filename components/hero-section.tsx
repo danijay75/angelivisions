@@ -118,7 +118,7 @@ export default function HeroSection() {
                 <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap flex-shrink-0">
                   pour
                 </span>
-                <div className="relative h-[1.8em] overflow-x-visible overflow-y-clip min-w-[14ch] md:min-w-[16ch] flex items-center">
+                <div className="relative h-[1.8em] overflow-hidden min-w-[16ch] md:min-w-[20ch] pr-[0.5em] flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={wordIndex}
@@ -126,7 +126,7 @@ export default function HeroSection() {
                       animate={{ y: "0%", opacity: 1 }}
                       exit={{ y: "-100%", opacity: 0 }}
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap absolute left-0"
+                      className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap absolute"
                     >
                       {slidingWords[wordIndex]}
                     </motion.span>
