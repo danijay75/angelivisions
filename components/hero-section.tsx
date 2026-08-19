@@ -114,11 +114,11 @@ export default function HeroSection() {
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.2] tracking-tight drop-shadow-2xl flex flex-col items-center">
               <span className="text-white mb-2">{t("hero.titlePart1")}</span>
-              <div className="flex items-baseline justify-center gap-[0.25em] mt-1">
+              <div className="flex items-center justify-center gap-[0.25em] mt-1">
                 <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap flex-shrink-0">
                   pour
                 </span>
-                <div className="relative h-[1.3em] py-[0.35em] box-content overflow-hidden min-w-[14ch] md:min-w-[16ch] flex items-center">
+                <div className="relative h-[1.8em] overflow-x-visible overflow-y-clip min-w-[14ch] md:min-w-[16ch] flex items-center">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={wordIndex}
