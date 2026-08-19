@@ -7,6 +7,12 @@ import { Play, Phone } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { SplitTitle } from "@/components/ui/split-title"
 
+const slidingWords = [
+  "la Captation Vidéo",
+  "le Streaming Live",
+  "le Podcast Vidéo"
+]
+
 export default function HeroSection() {
   const { t, lang } = useI18n()
   const { scrollY } = useScroll()
@@ -14,6 +20,7 @@ export default function HeroSection() {
   
   const [images, setImages] = useState<string[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
+  const [wordIndex, setWordIndex] = useState(0)
 
   const y1 = useTransform(scrollY, [0, 500], [0, 200])
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
@@ -48,6 +55,13 @@ export default function HeroSection() {
     
     return () => clearInterval(interval)
   }, [images.length])
+
+  useEffect(() => {
+    const wordInterval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % slidingWords.length)
+    }, 3000)
+    return () => clearInterval(wordInterval)
+  }, [])
 
   if (!mounted) return null
 
@@ -92,19 +106,33 @@ export default function HeroSection() {
            style={{ y: y1, opacity }}
            className="max-w-5xl mx-auto w-full"
         >
-          {/* Logo is now REMOVED as per the requirements */}
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
             className="mb-16"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.1] tracking-tight drop-shadow-2xl">
-              <span className="text-white">{t("hero.titlePart1")}</span><br />
-              <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 block mt-2 drop-shadow-lg">
-                {t("hero.titlePart2")}
-              </span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.2] tracking-tight drop-shadow-2xl flex flex-col items-center">
+              <span className="text-white mb-2">{t("hero.titlePart1")}</span>
+              <div className="flex items-baseline justify-center gap-[0.25em] mt-1">
+                <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap flex-shrink-0">
+                  pour
+                </span>
+                <div className="relative h-[1.3em] py-[0.35em] box-content overflow-hidden min-w-[14ch] md:min-w-[16ch] flex items-center">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={wordIndex}
+                      initial={{ y: "100%", opacity: 0 }}
+                      animate={{ y: "0%", opacity: 1 }}
+                      exit={{ y: "-100%", opacity: 0 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap absolute left-0"
+                    >
+                      {slidingWords[wordIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+              </div>
             </h1>
           </motion.div>
 
