@@ -190,8 +190,11 @@ Traitement :
 1. Scripts réécrits : identifiants lus dans `.env.local` (`scripts/_env.js`), plus aucun secret dans le code.
 2. Historique git réécrit (`git filter-repo --replace-text`) puis force-push : le token n'apparaît plus dans aucun commit. Effet secondaire : `.git` passe de 1,6 Go à 41 Mo.
 3. Scripts de la release en service nettoyés sur le VPS.
-4. **Le token doit encore être révoqué dans la console Upstash.** GitHub conserve les objets orphelins : l'ancien fichier reste lisible via `raw.githubusercontent.com/danijay75/angelivisions/56a3e23/scripts/reset-redis-services.js`.
+4. **Token révoqué le 31/10/2026 à 21:51** via le MCP Upstash (`redis_reset_credentials`) :
+   nouveau token installé dans `shared/.env.local` (VPS) et `.env.local` (local), app redémarrée,
+   ancien token vérifié en 401, nouveau en lecture et écriture (200). GitHub peut encore servir
+   l'ancien commit orphelin, mais le token qu'il contient ne fonctionne plus.
 
-Rotation : console Upstash → base `engaged-quetzal-20185` → REST API → Rotate token, puis
+Rotation (pour mémoire) : MCP `redis_reset_credentials`, puis
 `bash /var/www/angelivisions/shared/rotate-kv-token.sh <nouveau_token>`
 (= `.agent/rotate-kv-token.sh` : sauvegarde l'env, redémarre l'app et vérifie Redis).
