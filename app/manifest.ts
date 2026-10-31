@@ -2,7 +2,7 @@ import { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: "Angeli Visions — Organisateur d'événements & Maison de disque",
+        name: "Angeli Visions — Organisateur d'événements",
         short_name: "Angeli Visions",
         description:
             "Production musicale, organisation événementielle, DJ booking et expériences immersives.",

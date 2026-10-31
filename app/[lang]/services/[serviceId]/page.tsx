@@ -54,7 +54,10 @@ async function getServices(): Promise<ServiceItem[]> {
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
   const resolvedParams = await params
   const services = await getServices()
-  const service = services.find((s) => s.id === resolvedParams.serviceId)
+  let service = services.find((s) => s.id === resolvedParams.serviceId)
+  if (!service) {
+    service = defaultServices.find((s) => s.id === resolvedParams.serviceId)
+  }
 
   if (!service) {
     return {
@@ -72,17 +75,23 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const resolvedParams = await params
-  if (!resolvedParams.lang || !["fr", "en"].includes(resolvedParams.lang)) {
+  if (!resolvedParams.lang || !["fr", "en", "es"].includes(resolvedParams.lang)) {
     notFound()
   }
 
   const services = await getServices()
-  const service = services.find((s) => s.id === resolvedParams.serviceId)
+  // Check Redis services first, then fallback to defaultServices (for label-de-musique etc.)
+  let service = services.find((s) => s.id === resolvedParams.serviceId)
+  if (!service) {
+    service = defaultServices.find((s) => s.id === resolvedParams.serviceId)
+  }
 
   if (!service) {
     notFound()
   }
 
+
+  const isSpectacles = service.id === "spectacles" || service.id === "label-de-musique"
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] selection:bg-amber-500/30">
@@ -102,18 +111,18 @@ export default async function ServicePage({ params }: ServicePageProps) {
         {/* Hero Content */}
         <div className="container relative z-10 mx-auto px-4">
           <div className="mb-8">
-            <Link href={`/${resolvedParams.lang}/services`}>
+            <a href={`/${resolvedParams.lang}/captation-video-streaming-live-podcast`}>
               <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 backdrop-blur-sm -ml-4">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour aux services
               </Button>
-            </Link>
+            </a>
           </div>
           <div className="max-w-4xl space-y-4 mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-2">
               <SplitTitle text={service.title} />
             </h1>
-            {service.id !== "label-de-musique" && (
+            {!isSpectacles && (
               <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light">
                 {service.description}
               </p>
@@ -148,13 +157,25 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <Card className="bg-[#121212]/80 border-white/5 backdrop-blur-sm">
               <CardHeader className="border-b border-white/5">
                 <CardTitle className="text-2xl font-bold">
-                  <span className="title-gradient">Détails du service</span>
+                  <span className="title-gradient">
+                    {isSpectacles ? "Angeli Visions | Production & Catalogue de Spectacles" : "Détails du service"}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-white/80 space-y-4 font-light leading-relaxed text-lg pt-6">
-                <p>Notre équipe d'experts vous accompagne de A à Z dans la réalisation de vos projets.</p>
-                <p>Nous combinons créativité, innovation technologique et gestion rigoureuse pour garantir le succès de vos événements et de vos productions.</p>
-                <p>N'hésitez pas à nous contacter pour un devis sur mesure ou pour discuter de vos besoins spécifiques.</p>
+                {isSpectacles ? (
+                  <>
+                    <p>Angeli Visions est un producteur et diffuseur de spectacles vivants d'exception. Notre catalogue réunit le meilleur du spectacle contemporain : comédies théâtrales, plateaux d'humour, stand-up, burlesque et spectacles musicaux.</p>
+                    <p>Nous prenons en charge la direction artistique, la production technique et la diffusion pour proposer aux organisateurs, salles et collectivités des expériences scéniques inoubliables.</p>
+                    <p>Découvrez nos spectacles disponibles ci-dessous et contactez notre équipe pour programmer nos talents sur vos événements.</p>
+                  </>
+                ) : (
+                  <>
+                    <p>Notre équipe d'experts vous accompagne de A à Z dans la réalisation de vos projets.</p>
+                    <p>Nous combinons créativité, innovation technologique et gestion rigoureuse pour garantir le succès de vos événements et de vos productions.</p>
+                    <p>N'hésitez pas à nous contacter pour un devis sur mesure ou pour discuter de vos besoins spécifiques.</p>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -163,14 +184,19 @@ export default async function ServicePage({ params }: ServicePageProps) {
           <div className="space-y-6 lg:sticky lg:top-24 h-fit">
             <Card className="bg-gradient-to-br from-[#121212] via-[#0A0A0A] to-[#121212] border-amber-500/20 shadow-2xl shadow-amber-500/10 overflow-hidden backdrop-blur-md">
               <CardHeader className="pb-4 border-b border-white/5">
-                <CardTitle className="text-white text-2xl font-light">Vous avez un projet ?</CardTitle>
-                <div className="text-sm text-amber-500/80">Discutons de vos ambitions</div>
+                <CardTitle className="text-white text-2xl font-light">
+                  {resolvedParams.lang === "en" ? "Do you have a project?" : resolvedParams.lang === "es" ? "¿Tiene un proyecto?" : "Vous avez un projet ?"}
+                </CardTitle>
+                <div className="text-sm text-amber-500/80">
+                  {resolvedParams.lang === "en" ? "Let's discuss your ambitions" : resolvedParams.lang === "es" ? "Hablemos de sus ambiciones" : "Discutons de vos ambitions"}
+                </div>
               </CardHeader>
               <CardContent className="space-y-6 pt-6">
                 <Link href={`/${resolvedParams.lang}/devis`} className="block">
                   <Button className="w-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white text-lg py-6 rounded-xl shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all hover:scale-[1.02] font-semibold border-none">
-                    <span className="font-bold">Booking</span>
-                    <span className="ml-1 font-medium">de nos artistes</span>
+                    <span className="font-bold">
+                      {resolvedParams.lang === "en" ? "Book a Show" : resolvedParams.lang === "es" ? "Reservar un Espectáculo" : "Réserver un spectacle"}
+                    </span>
                   </Button>
                 </Link>
                 <div className="space-y-4 pt-4 border-t border-white/10">
@@ -197,8 +223,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </div>
       </div>
 
-      {/* Intégration du Catalogue Artistes pour le Label de Musique */}
-      {service.id === "label-de-musique" && (
+      {/* Intégration du Catalogue Artistes et Spectacles */}
+      {isSpectacles && (
         <div className="container mx-auto px-4 py-16 border-t border-white/5">
           <ArtistsCatalogue lang={resolvedParams.lang as "fr" | "en" | "es"} />
         </div>

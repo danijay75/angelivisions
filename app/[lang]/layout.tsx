@@ -20,7 +20,7 @@ function buildOrganizationJsonLd() {
     url: BASE_URL,
     logo: `${BASE_URL}/images/angeli-visions-logo-white.png`,
     description:
-      "Organisateur d'événements et maison de disque spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
+      "Organisateur d'événements spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
@@ -50,7 +50,7 @@ export default async function LangLayout({
         }}
       />
       <Navigation />
-      <main className="pt-24">{children}</main>
+      <main className="pt-36">{children}</main>
       <Footer />
       <CookieConsent />
     </I18nProvider>

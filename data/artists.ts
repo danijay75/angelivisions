@@ -25,90 +25,82 @@ export const ARTISTS_STORAGE_KEY = "av_artists_v1"
 
 export const defaultArtists: Artist[] = [
     {
-        id: "dj-phoenix",
-        slug: "dj-phoenix",
-        name: "DJ Phoenix",
-        type: [{ fr: "DJ", en: "DJ", es: "DJ" }],
-        musicalGenre: [{ fr: "Electro-House", en: "Electro-House", es: "Electro-House" }],
+        id: "la-comedie-des-illusions",
+        slug: "la-comedie-des-illusions",
+        name: "La Comédie des Illusions",
+        type: [{ fr: "Comédie", en: "Comedy", es: "Comedia" }],
+        musicalGenre: [{ fr: "Théâtre & Humour", en: "Theater & Comedy", es: "Teatro y Humor" }],
         description: {
-            fr: "<p>DJ Phoenix enflamme les pistes depuis plus de 10 ans. Spécialisé dans la musique <strong>électronique</strong>, <strong>deep house</strong> et <strong>afrobeat</strong>, il transforme chaque événement en une expérience musicale inoubliable.</p><p>Passé par les plus grandes scènes parisiennes, il maîtrise aussi bien les soirées privées que les festivals de grande envergure.</p>",
-            en: "<p>DJ Phoenix has been igniting dance floors for over 10 years. Specialized in <strong>electronic</strong>, <strong>deep house</strong> and <strong>afrobeat</strong> music, he transforms every event into an unforgettable musical experience.</p><p>Having played on the biggest Parisian stages, he masters private parties as well as large-scale festivals.</p>",
-            es: "<p>DJ Phoenix lleva más de 10 años encendiendo las pistas de baile. Especializado en música <strong>electrónica</strong>, <strong>deep house</strong> y <strong>afrobeat</strong>, transforma cada evento en una experiencia musical inolvidable.</p><p>Habiendo pasado por los escenarios parisinos más importantes, domina tanto las fiestas privadas como los festivales a gran escala.</p>"
+            fr: "<p>Une comédie hilarante rythmé par des quiproquos, des répliques ciselées et une mise en scène dynamique. Un spectacle grand public idéal pour les théâtres, séminaires et festivals d'humour.</p>",
+            en: "<p>A hilarious comedy filled with misunderstandings and dynamic staging. Perfect for theaters, corporate events, and comedy festivals.</p>",
+            es: "<p>Una comedia hilarante llena de malentendidos y puesta en escena dinámica. Ideal para teatros, eventos corporativos y festivales de humor.</p>"
         },
         photos: [
-            "/placeholder.svg?height=600&width=800&text=DJ+Phoenix+1",
-            "/placeholder.svg?height=600&width=800&text=DJ+Phoenix+2",
-            "/placeholder.svg?height=600&width=800&text=DJ+Phoenix+3",
+            "/vr-theater-immersive.png"
         ],
         videos: ["https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
         socials: [
-            { platform: "Instagram", url: "https://instagram.com/djphoenix" },
-            { platform: "YouTube", url: "https://youtube.com/djphoenix" }
+            { platform: "Instagram", url: "https://instagram.com/angelivisions" }
         ],
         tags: [
-            { fr: "Deep House", en: "Deep House", es: "Deep House" },
-            { fr: "Afrobeat", en: "Afrobeat", es: "Afrobeat" },
-            { fr: "Électro", en: "Electro", es: "Electro" }
+            { fr: "Comédie", en: "Comedy", es: "Comedia" },
+            { fr: "Théâtre", en: "Theater", es: "Teatro" },
+            { fr: "Humour", en: "Humor", es: "Humor" }
         ],
         available: true,
         featured: true,
         order: 1,
     },
     {
-        id: "elena-strings",
-        slug: "elena-strings",
-        name: "Elena Strings",
-        type: [{ fr: "Musicien(ne)", en: "Musician", es: "Músico" }],
-        musicalGenre: [{ fr: "Pop", en: "Pop", es: "Pop" }, { fr: "Classique", en: "Classical", es: "Clásico" }],
+        id: "standup-burlesque-show",
+        slug: "standup-burlesque-show",
+        name: "Stand-up & Cabaret Burlesque",
+        type: [{ fr: "Humour / Stand-up / Burlesque", en: "Humor / Stand-up / Burlesque", es: "Humor / Stand-up / Burlesco" }],
+        musicalGenre: [{ fr: "Stand-up & Burlesque", en: "Stand-up & Burlesque", es: "Stand-up y Burlesco" }],
         description: {
-            fr: "<p>Violoniste classique de formation, Elena apporte une touche d'<strong>élégance</strong> et de <strong>raffinement</strong> à vos événements. Du classique au contemporain, elle adapte son répertoire à chaque occasion.</p><p>Accompagnée de son quatuor à cordes, elle sublime les cérémonies, les cocktails d'entreprise et les soirées privées.</p>",
-            en: "<p>A classically trained violinist, Elena brings a touch of <strong>elegance</strong> and <strong>refinement</strong> to your events. From classical to contemporary, she adapts her repertoire to every occasion.</p><p>Accompanied by her string quartet, she enhances ceremonies, corporate cocktails and private parties.</p>",
-            es: "<p>Violonista de formación clásica, Elena aporta un toque de <strong>elegancia</strong> y <strong>refinamiento</strong> a sus eventos. Del clásico al contemporáneo, adapta su repertorio a cada ocasión.</p><p>Acompañada por su cuarteto de cuerda, realza ceremonias, cócteles corporativos y fiestas privadas.</p>"
+            fr: "<p>Un plateau décapant associant les meilleurs humoristes de stand-up du moment et des performances burlesques envoûtantes. Entre rires incisifs, glamour et impertinence !</p>",
+            en: "<p>A sharp show merging top stand-up comedians with spellbinding burlesque performances. Incisive laughter, glamour, and audacity combined!</p>",
+            es: "<p>Un espectáculo picante que combina los mejores comediantes de stand-up con actuaciones burlescas cautivadoras. ¡Risas, glamour y audacia!</p>"
         },
         photos: [
-            "/placeholder.svg?height=600&width=800&text=Elena+Strings+1",
-            "/placeholder.svg?height=600&width=800&text=Elena+Strings+2",
+            "/corporate-event-stage.jpg"
         ],
         videos: [],
         socials: [
-            { platform: "Facebook", url: "https://facebook.com/elenastrings" }
+            { platform: "Instagram", url: "https://instagram.com/angelivisions" }
         ],
         tags: [
-            { fr: "Classique", en: "Classical", es: "Clásico" },
-            { fr: "Contemporain", en: "Contemporary", es: "Contemporáneo" },
-            { fr: "Cérémonie", en: "Ceremony", es: "Ceremonia" }
+            { fr: "Stand-up", en: "Stand-up", es: "Stand-up" },
+            { fr: "Burlesque", en: "Burlesque", es: "Burlesco" },
+            { fr: "Humour", en: "Humor", es: "Humor" }
         ],
         available: true,
         featured: true,
         order: 2,
     },
     {
-        id: "duo-nova",
-        slug: "duo-nova",
-        name: "Duo Nova",
-        type: [{ fr: "Groupe", en: "Band", es: "Grupo" }],
-        musicalGenre: [{ fr: "Electro-House", en: "Electro-House", es: "Electro-House" }],
+        id: "symphonie-musicale-live",
+        slug: "symphonie-musicale-live",
+        name: "Symphonie Électro - Spectacle Musical",
+        type: [{ fr: "Spectacle musical", en: "Musical Show", es: "Espectáculo musical" }],
+        musicalGenre: [{ fr: "Spectacle musical", en: "Musical Show", es: "Espectáculo musical" }],
         description: {
-            fr: "<p>Le Duo Nova fusionne <strong>DJ set</strong> et <strong>saxophone live</strong> pour créer une atmosphère unique. Leur énergie communicative garantit une ambiance de fête inoubliable.</p><p>Idéal pour les soirées corporate, les événements privés et les clubs, ils s'adaptent à tous les styles musicaux.</p>",
-            en: "<p>Duo Nova merges <strong>DJ set</strong> and <strong>live saxophone</strong> to create a unique atmosphere. Their communicative energy guarantees an unforgettable party mood.</p><p>Ideal for corporate parties, private events and clubs, they adapt to all musical styles.</p>",
-            es: "<p>Duo Nova fusiona <strong>DJ set</strong> y <strong>saxofón en vivo</strong> para crear una atmósfera única. Su energía comunicativa garantiza un ambiente de fiesta inolvidable.</p><p>Ideal para fiestas corporativas, eventos privados y clubes, se adaptan a todos los estilos musicales.</p>"
+            fr: "<p>Un spectacle musical grandiose associant des musiciens live, des voix puissantes et une scénographie visuelle immersive. Une expérience immersive inoubliable pour vos galas et festivals.</p>",
+            en: "<p>A grandiose musical show blending live musicians, powerful vocals, and immersive visual staging. An unforgettable experience for galas and festivals.</p>",
+            es: "<p>Un espectáculo musical grandioso que combina músicos en vivo, voces potentes y escenografía visual inmersiva. Una experiencia inolvidable.</p>"
         },
         photos: [
-            "/placeholder.svg?height=600&width=800&text=Duo+Nova+1",
-            "/placeholder.svg?height=600&width=800&text=Duo+Nova+2",
-            "/placeholder.svg?height=600&width=800&text=Duo+Nova+3",
-            "/placeholder.svg?height=600&width=800&text=Duo+Nova+4",
+            "/music-production-setup.png"
         ],
         videos: ["https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
         socials: [],
         tags: [
-            { fr: "Saxo Live", en: "Live Sax", es: "Saxo en vivo" },
-            { fr: "House", en: "House", es: "House" },
-            { fr: "Funk", en: "Funk", es: "Funk" },
-            { fr: "Club", en: "Club", es: "Club" }
+            { fr: "Spectacle musical", en: "Musical Show", es: "Espectáculo musical" },
+            { fr: "Live", en: "Live", es: "En vivo" },
+            { fr: "Concert", en: "Concert", es: "Concierto" }
         ],
         available: true,
-        featured: false,
+        featured: true,
         order: 3,
     },
 ]

@@ -21,7 +21,8 @@ import {
     FileText,
     Mic2,
     AlertTriangle,
-    Images
+    Images,
+    Video
 } from "lucide-react"
 
 export type AdminSection =
@@ -47,9 +48,9 @@ export function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarPr
 
     const menuItems = [
         { id: "hero-carousel", label: "Carrousel Accueil", icon: Images },
-        { id: "services", label: "Services", icon: Layers },
+        { id: "services", label: "Services Vidéo", icon: Video },
         { id: "projects", label: "Réalisations", icon: FolderKanban },
-        { id: "artists", label: "Artistes", icon: Mic2 },
+        { id: "artists", label: "Spectacles", icon: Mic2 },
         { id: "team", label: "Équipe", icon: UsersIcon },
         { id: "newsletter", label: "Newsletter", icon: Mail },
         { id: "devis", label: "Devis", icon: FileText },

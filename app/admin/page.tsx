@@ -52,7 +52,7 @@ export default function AdminPage() {
           <div>
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
               {section === "hero-carousel" && "Carrousel Accueil"}
-              {section === "services" && "Services"}
+              {section === "services" && "Services Vidéo"}
               {section === "projects" && "Projets & Réalisations"}
               {section === "team" && "Équipe"}
               {section === "newsletter" && "Newsletter"}

@@ -11,6 +11,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
+import Turnstile from "@/components/ui/turnstile"
 
 export default function Footer() {
   const [email, setEmail] = useState("")
@@ -18,6 +19,8 @@ export default function Footer() {
   const [newsletterLastName, setNewsletterLastName] = useState("")
   const [newsletterConsent, setNewsletterConsent] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const lang = useLang()
   const { t } = useI18n()
 
@@ -27,14 +30,20 @@ export default function Footer() {
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!captchaToken) {
+      alert("Veuillez compléter la vérification de sécurité.")
+      return
+    }
+    setIsLoading(true)
     try {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName: newsletterFirstName, lastName: newsletterLastName, consent: newsletterConsent, lang }),
+        body: JSON.stringify({ email, firstName: newsletterFirstName, lastName: newsletterLastName, consent: newsletterConsent, lang, captchaToken }),
       })
       if (res.ok) {
         setIsSubscribed(true)
+        setCaptchaToken(null)
         setTimeout(() => {
           setIsSubscribed(false)
           setEmail("")
@@ -49,14 +58,16 @@ export default function Footer() {
     } catch (error) {
       console.error("Newsletter error:", error)
       alert("Erreur de connexion")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const footerLinks = {
     services: [
-      { label: t("nav.prestation"), href: `/${lang}/services/prestation-technique-audiovisuelle` },
+      { label: t("nav.prestation"), href: `/${lang}/captation-video-streaming-live-podcast` },
       { label: t("nav.artistes"), href: `/${lang}/artists` },
-      { label: t("nav.label"), href: `/${lang}/services/label-musical` },
+      { label: lang === "en" ? "Shows Catalog" : lang === "es" ? "Catálogo de espectáculos" : "Catalogue de spectacles", href: `/${lang}/spectacles` },
     ],
   }
 
@@ -106,9 +117,13 @@ export default function Footer() {
                   className="h-16 w-auto object-contain opacity-90"
                 />
               </div>
-              <p className="text-slate-400 text-sm font-display leading-relaxed mb-8">
+              <p className="text-slate-400 text-sm font-display leading-relaxed mb-4">
                 {t("footer.description")}
               </p>
+              <div className="space-y-1 mb-8">
+                <p className="text-slate-500 text-[14px] font-display leading-relaxed">{t("footer.legalInfo2")}</p>
+                <p className="text-slate-500 text-[14px] font-display leading-relaxed">{t("footer.essInfo")}</p>
+              </div>
 
               {/* Social Links */}
               <div className="flex space-x-3">
@@ -129,11 +144,42 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* Contact Information */}
+          {/* Services quick links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.6 }}
+          >
+            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
+               {lang === "en" ? "We offer" : lang === "es" ? "Ofrecemos" : "Nous proposons"}
+            </h3>
+            <ul className="space-y-4">
+              {footerLinks.services.map((link) => {
+                const isRewritten = link.href.includes("captation-video-streaming-live-podcast") || link.href.includes("label-de-musique") || link.href.includes("spectacles")
+                return (
+                  <li key={link.label}>
+                    {isRewritten ? (
+                      <a href={link.href} className="text-sm text-slate-400 hover:text-amber-500 font-display transition-all duration-300 flex items-center group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500/0 group-hover:bg-amber-500 mr-0 group-hover:mr-3 transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link href={link.href} className="text-sm text-slate-400 hover:text-amber-500 font-display transition-all duration-300 flex items-center group">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500/0 group-hover:bg-amber-500 mr-0 group-hover:mr-3 transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          </motion.div>
+
+          {/* Contact Information */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
           >
             <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
                {t("footer.contacts")}
@@ -156,27 +202,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-          </motion.div>
-
-          {/* Services quick links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <h3 className="text-white font-display font-medium text-lg mb-8 uppercase tracking-widest text-[10px]">
-               {t("nav.services")}
-            </h3>
-            <ul className="space-y-4">
-              {footerLinks.services.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-slate-400 hover:text-amber-500 font-display transition-all duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500/0 group-hover:bg-amber-500 mr-0 group-hover:mr-3 transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </motion.div>
 
           {/* Newsletter */}
@@ -232,12 +257,17 @@ export default function Footer() {
                 </label>
               </div>
 
+              {/* Cloudflare Turnstile CAPTCHA */}
+              <div className="flex justify-center">
+                <Turnstile onVerify={setCaptchaToken} theme="dark" />
+              </div>
+
               <button
                 type="submit"
-                disabled={isSubscribed || !newsletterConsent}
+                disabled={isSubscribed || isLoading || !newsletterConsent || !captchaToken}
                 className="w-full sunset-gradient text-white font-display text-[10px] uppercase tracking-widest font-semibold py-4 rounded-2xl transition-all duration-500 hover:scale-[1.02] shadow-xl shadow-amber-500/10 active:scale-95 disabled:opacity-50"
               >
-                {isSubscribed ? t("footer.subscribed") : t("footer.subscribe")}
+                {isLoading ? "Envoi..." : isSubscribed ? t("footer.subscribed") : t("footer.subscribe")}
               </button>
             </form>
           </motion.div>

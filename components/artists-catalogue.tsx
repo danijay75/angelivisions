@@ -58,37 +58,37 @@ const LOCALE_COPY: Record<
     }
 > = {
     fr: {
-        title: "Booking de nos artistes",
-        subtitle: "Découvrez notre sélection exclusive d'artistes pour faire de votre événement une réussite inoubliable.",
-        filterAll: "Tous les Artistes",
-        seeArtist: "Voir le profil",
-        noArtists: "Aucun artiste trouvé pour cette recherche.",
-        loading: "Chargement des artistes...",
-        searchPlaceholder: "Rechercher un artiste...",
-        typesLabel: "Type d'artiste :",
-        genresLabel: "Genre musical :"
+        title: "Catalogue de spectacles",
+        subtitle: "Découvrez notre sélection de spectacles vivants : Comédie, Humour / Stand-up / Burlesque et Spectacle musical.",
+        filterAll: "Tous les Spectacles",
+        seeArtist: "Voir le spectacle",
+        noArtists: "Aucun spectacle trouvé pour cette recherche.",
+        loading: "Chargement du catalogue de spectacles...",
+        searchPlaceholder: "Rechercher un spectacle ou un artiste...",
+        typesLabel: "Catégorie :",
+        genresLabel: "Genre musical / artistique :"
     },
     en: {
-        title: "Our Booking Catalog",
-        subtitle: "Discover our exclusive selection of artists to make your event an unforgettable success.",
-        filterAll: "All Artists",
-        seeArtist: "View profile",
-        noArtists: "No artists found for this search.",
-        loading: "Loading artists...",
-        searchPlaceholder: "Search an artist...",
-        typesLabel: "Artist type :",
-        genresLabel: "Musical genre :"
+        title: "Shows Catalog",
+        subtitle: "Discover our live shows selection: Comedy, Stand-up / Burlesque, and Musical Shows.",
+        filterAll: "All Shows",
+        seeArtist: "View show",
+        noArtists: "No show found for this search.",
+        loading: "Loading shows catalog...",
+        searchPlaceholder: "Search a show or performer...",
+        typesLabel: "Category:",
+        genresLabel: "Musical / Artistic genre:"
     },
     es: {
-        title: "Nuestro Catálogo Booking",
-        subtitle: "Descubra nuestra selección exclusiva de artistas para que su evento sea un éxito inolvidable.",
-        filterAll: "Todos los Artistes",
-        seeArtist: "Ver perfil",
-        noArtists: "No se encontraron artistas para esta búsqueda.",
-        loading: "Cargando artistas...",
-        searchPlaceholder: "Buscar un artista...",
-        typesLabel: "Tipo de artista :",
-        genresLabel: "Género musical :"
+        title: "Catálogo de espectáculos",
+        subtitle: "Descubra nuestra selección de espectáculos en vivo: Comedia, Humor / Stand-up / Burlesco y Espectáculo musical.",
+        filterAll: "Todos los Espectáculos",
+        seeArtist: "Ver espectáculo",
+        noArtists: "No se encontraron espectáculos para esta búsqueda.",
+        loading: "Cargando catálogo de espectáculos...",
+        searchPlaceholder: "Buscar un espectáculo o artista...",
+        typesLabel: "Categoría:",
+        genresLabel: "Género musical / artístico:"
     },
 }
 

@@ -40,8 +40,8 @@ export default function ArtistsManager() {
 
     const canEdit = user?.role === "admin" || user?.role === "editor"
 
-    const ARTIST_TYPES = ["DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
-    const DEFAULT_MUSICAL_GENRES = ["Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
+    const ARTIST_TYPES = ["Comédie", "Humour / Stand-up / Burlesque", "Spectacle musical", "DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
+    const DEFAULT_MUSICAL_GENRES = ["Comédie", "Humour", "Stand-up", "Burlesque", "Spectacle musical", "Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
     const SOCIAL_PLATFORMS = ["Instagram", "Facebook", "X", "YouTube", "TikTok"]
     const MUSIC_PLATFORMS = ["Spotify", "Apple Music", "Deezer", "Tidal", "SoundCloud", "YouTube Music"]
 
@@ -54,8 +54,8 @@ export default function ArtistsManager() {
         const genres = new Set<string>()
 
         // Default presets as base
-        const defaultTypes = ["DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
-        const defaultGenres = ["Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
+        const defaultTypes = ["Comédie", "Humour / Stand-up / Burlesque", "Spectacle musical", "DJ", "Musicien(ne)", "Groupe", "Orchestre", "Reprises", "Performer"]
+        const defaultGenres = ["Comédie", "Humour", "Stand-up", "Burlesque", "Spectacle musical", "Hip-Hop", "Pop", "Electro-House", "Rock", "Latino", "Jazz", "Classique"]
 
         defaultTypes.forEach(t => types.add(t))
         defaultGenres.forEach(g => genres.add(g))

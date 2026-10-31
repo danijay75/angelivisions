@@ -164,3 +164,29 @@
     @apply text-slate-100 font-medium;
   }
 } 
+
+/* ── Rotating Gradient Button ─────────────────────────────────────────── */
+@property --r {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes rotateGradient {
+  to { --r: 360deg; }
+}
+
+.rotatingGradient {
+  background: conic-gradient(
+    from var(--r),
+    #FFD700,
+    #FFA500,
+    #FF6B00,
+    #cc5500,
+    #FF6B00,
+    #FFA500,
+    #FFD700
+  );
+  animation: rotateGradient 3s linear infinite;
+}
+

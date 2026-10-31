@@ -2,7 +2,7 @@ import subprocess
 
 try:
     result = subprocess.run(['npx', 'tsc', '--noEmit', '--pretty', 'false'], 
-                           cwd=r'c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque',
+                           cwd='.',
                            capture_output=True, text=True)
     print("STDOUT:")
     print(result.stdout)

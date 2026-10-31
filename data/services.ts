@@ -49,12 +49,12 @@ export const defaultServices: ServiceItem[] = [
     image: "/vr-theater-immersive.png",
   },
   {
-    id: "label-de-musique",
-    title: "Label de musique",
-    description: "Production phonographique, développement d'artistes et distribution numérique à l'échelle internationale.",
-    features: ["Direction artistique", "Distribution digitale", "Édition musicale", "Promotion"],
+    id: "spectacles",
+    title: "Catalogue de spectacles",
+    description: "Production et diffusion de spectacles vivants : Comédie, Humour / Stand-up / Burlesque, et Spectacle musical.",
+    features: ["Burlesque", "Comédie", "Humour / Stand-Up", "Spectacle musical"],
     color: "from-rose-500 to-orange-500",
-    image: "/abstract-soundscape.png",
+    image: "/vr-theater-immersive.png",
   },
 ]
 

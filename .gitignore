@@ -33,3 +33,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# archives de deploiement (artefacts, pas du code)
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+build_output*.txt
+tsc_errors*.txt

@@ -17,7 +17,7 @@ export async function generateMetadata({
 
   return {
     title: dictionary.legalPages?.mentionsLegales?.title || "Mentions Légales",
-    description: "Mentions légales de la société Angeli Visions - Organisateur d'événements et Maison de disque.",
+    description: "Mentions légales de la société Angeli Visions - Organisateur d'événements.",
     alternates: {
       canonical: `${BASE_URL}/${lang}/mentions-legales`,
     },

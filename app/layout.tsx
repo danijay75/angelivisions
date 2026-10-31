@@ -20,14 +20,14 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Angeli Visions — Organisateur d'événements & Maison de disque",
+    default: "Angeli Visions — Organisateur d'événements",
     template: "%s | Angeli Visions",
   },
   description:
-    "Angeli Visions est un organisateur d'événements et maison de disque spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
+    "Angeli Visions est un organisateur d'événements spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
   keywords: [
     "organisateur événements",
-    "maison de disque",
+
     "production musicale",
     "DJ",
     "événementiel",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Angeli Visions",
-    title: "Angeli Visions — Organisateur d'événements & Maison de disque",
+    title: "Angeli Visions — Organisateur d'événements",
     description:
       "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
     url: BASE_URL,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Angeli Visions — Organisateur d'événements & Maison de disque",
+    title: "Angeli Visions — Organisateur d'événements",
     description:
       "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
     images: ["/opengraph-image.png"],
@@ -109,7 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     height: 180,
                   },
                   description:
-                    "Angeli Visions est un organisateur d'événements et maison de disque spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
+                    "Angeli Visions est un organisateur d'événements spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
                   address: {
                     "@type": "PostalAddress",
                     addressCountry: "FR",

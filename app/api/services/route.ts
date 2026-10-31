@@ -52,8 +52,9 @@ export async function GET() {
       }
     }
 
-    // Ultimate safety filter to ensure 'sport' is NEVER returned
-    const filteredServices = services
+    // Ultimate safety filter to ensure non-video services are NEVER returned
+    const FORBIDDEN_SERVICES = ["sport", "booking", "label-de-musique", "spectacles"]
+    const filteredServices = services.filter((s) => !FORBIDDEN_SERVICES.includes(s.id))
 
     return NextResponse.json({ services: filteredServices })
   } catch (error) {
@@ -82,9 +83,44 @@ export async function POST(request: NextRequest) {
 
     console.log("Saving services to Redis:", services.length, "services")
 
+    // Preserve forbidden services (sport, booking, label-de-musique, spectacles) in Redis
+    const FORBIDDEN_SERVICES = ["sport", "booking", "label-de-musique", "spectacles"]
+    let existingServices: ServiceItem[] = []
     try {
-      await redis.set(SERVICES_KEY, JSON.stringify(services))
-      console.log("Successfully saved services to Redis")
+      const redisData = await redis.get(SERVICES_KEY)
+      if (redisData) {
+        if (typeof redisData === "string") {
+          existingServices = JSON.parse(redisData)
+        } else if (typeof redisData === "object" && Array.isArray(redisData)) {
+          existingServices = redisData
+        }
+      }
+    } catch (e) {
+      console.log("Failed to fetch existing services for merge, using defaults fallback", e)
+      existingServices = defaultServices
+    }
+
+    // Extract forbidden services from the existing database
+    const existingForbidden = existingServices.filter((s) => FORBIDDEN_SERVICES.includes(s.id))
+    
+    // Ensure all forbidden services from defaults are represented if not present in existing
+    const defaultForbidden = defaultServices.filter((s) => FORBIDDEN_SERVICES.includes(s.id))
+    const forbiddenToKeep = [...existingForbidden]
+    for (const defSrv of defaultForbidden) {
+      if (!forbiddenToKeep.some((s) => s.id === defSrv.id)) {
+        forbiddenToKeep.push(defSrv)
+      }
+    }
+
+    // Merge new incoming services (with forbidden filtered out just in case) and forbidden services to keep
+    const combinedServices = [
+      ...services.filter((s) => !FORBIDDEN_SERVICES.includes(s.id)),
+      ...forbiddenToKeep
+    ]
+
+    try {
+      await redis.set(SERVICES_KEY, JSON.stringify(combinedServices))
+      console.log("Successfully saved services to Redis, preserving forbidden services")
       return NextResponse.json({ success: true })
     } catch (redisError) {
       console.log("Redis save failed:", redisError)

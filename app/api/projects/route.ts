@@ -22,6 +22,7 @@ export interface Project {
   gallery: string[]
   description: string
   services: string[]
+  serviceId?: string
   client: string
   date: string
   guests: string

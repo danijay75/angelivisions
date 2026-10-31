@@ -3,7 +3,7 @@ const es = {
     accueil: "Inicio",
     prestation: "Grabación - Streaming - Podcast",
     artistes: "Reserva de DJ y Músicos",
-    label: "Sello Discográfico & Booking",
+    label: "Espectáculos",
     realisations: "Realizaciones",
     devis: "Presupuesto",
     contact: "Contacto",
@@ -17,8 +17,8 @@ const es = {
     description: "",
     cta: "Descubra nuestras realizaciones",
     callUs: "Llámenos",
-    highlight1Title: "Producción Musical",
-    highlight1Desc: "Composiciones originales y jingles personalizados",
+    highlight1Title: "Catálogo de espectáculos",
+    highlight1Desc: "Comedia, Humor, Stand-up, Burlesco y Espectáculo musical",
     highlight2Title: "Diseño y Organización de Eventos",
     highlight2Desc: "Organización completa de principio a fin",
     highlight3Title: "Animaciones Musicales",
@@ -27,9 +27,9 @@ const es = {
   services: {
     sectionTitle: "Ofrecemos",
     statement: "Excelencia en eventos, de la visión al escenario",
-    subtitle: "Descubra nuestra gama completa de servicios para sus eventos y proyectos musicales",
+    subtitle: "Descubra nuestra gama completa de servicios para sus eventos y espectáculos",
     description:
-      "Desde la creación musical hasta la organización completa, dominamos todos los aspectos de eventos y entretenimiento para crear experiencias únicas y memorables.",
+      "Desde la creación artística hasta la organización completa, dominamos todos los aspectos de eventos y espectáculos en vivo para crear experiencias únicas y memorables.",
     clientsTitle: "Nuestros Clientes",
     cta: "¡Hablemos!",
     clientTypes: {
@@ -63,10 +63,15 @@ const es = {
         description: "Experiencias visuales inmersivas, muros de LED gigantes y video mapping arquitectónico.",
         features: ["Mapping arquitectónico", "Actuación de VJ en vivo", "Gestión de muros LED", "Motion design"],
       },
+      "spectacles": {
+        title: "Catálogo de espectáculos",
+        description: "Producción y distribución de espectáculos en vivo: Comedia, Humor / Stand-up / Burlesco y Espectáculo musical.",
+        features: ["Comedia", "Humor / Stand-up / Burlesco", "Espectáculo musical"],
+      },
       "label-de-musique": {
-        title: "Sello Discográfico",
-        description: "Gestión de artistas, producción musical, distribución y sincronización para medios.",
-        features: ["Gestión de artistas", "Distribución musical", "Edición", "Producción de audio"],
+        title: "Catálogo de espectáculos",
+        description: "Producción y distribución de espectáculos en vivo: Comedia, Humor / Stand-up / Burlesco y Espectáculo musical.",
+        features: ["Comedia", "Humor / Stand-up / Burlesco", "Espectáculo musical"],
       },
     },
   },
@@ -159,7 +164,8 @@ const es = {
       podcast: "Podcast",
       booking: "Reserva de DJ y Músicos",
       "vj-video-mapping": "VJ / Video Mapping",
-      "label-de-musique": "Sello Discográfico",
+      spectacles: "Catálogo de espectáculos",
+      "label-de-musique": "Catálogo de espectáculos",
     },
     date: "Fecha del evento",
     guests: "Número de invitados",
@@ -200,7 +206,11 @@ const es = {
 
   cookies: {
     title: "Gestión de cookies",
-    description: "Utilizamos cookies para mejorar su experiencia en nuestro sitio web, analizar el tráfico y personalizar le contenido. Puede elegir aceptar todas las cookies o personalizar sus preferencias.",
+    subtitle: "Protección de Privacidad",
+    description: "Utilizamos cookies para mejorar su experiencia en nuestro sitio web.",
+    accept: "Aceptar",
+    decline: "Rechazar",
+    settings: "Ajustes",
     acceptAll: "Aceptar todo",
     rejectAll: "Rechazar todo",
     customize: "Personalizar",
@@ -227,7 +237,7 @@ const es = {
     },
   },
   footer: {
-    description: "Organizador de eventos culturales y productor musical",
+    description: "Organizador de eventos culturales y productor de espectáculos",
     legalInfo1: "Angeli Visions is a Société par Actions Simplifiées Unipersonnelle (SASU) inscrita en el RCS de Versailles con el n° 898018221.",
     legalInfo2: "Licencia de empresario de espectáculos n° PLATESV-D-2022-000968",
     essInfo: "La empresa es miembro de la Economía Social y Solidaria (ESS). Luchamos contra todas las formas de discriminación y violencia sexista.",
@@ -253,6 +263,13 @@ const es = {
     privacyPolicy: { title: "Política de Privacidad" },
     cookiePolicy: { title: "Política de Cookies" },
   },
+  legal: {
+    title: "Información Legal",
+    mentions: "Aviso Legal",
+    privacy: "Política de Privacidad",
+    cookies: "Política de Cookies",
+    rights: "Todos los derechos reservados",
+  },
 
   newsletter: {
     preferences: {
@@ -273,9 +290,14 @@ const es = {
     }
   },
   common: {
-    save: "Save",
-    cancel: "Cancel",
-    backToHome: "Back to Home",
+    loading: "Cargando...",
+    error: "Ocurrió un error",
+    back: "Volver",
+    send: "Enviar",
+    close: "Cerrar",
+    save: "Guardar",
+    cancel: "Cancelar",
+    backToHome: "Volver a Inicio",
     learnMore: "Saber más",
     expertise: "Nuestra Experiencia",
   },

@@ -3,7 +3,7 @@ const fr = {
     accueil: "Accueil",
     prestation: "Captation - Streaming - Podcast",
     artistes: "Booking DJ & Musiciens",
-    label: "Label de musique & Booking",
+    label: "Spectacles",
     realisations: "Réalisations",
     devis: "Devis",
     contact: "Contact",
@@ -17,8 +17,8 @@ const fr = {
     description: "",
     cta: "Découvrez nos projets",
     callUs: "Appelez-nous",
-    highlight1Title: "Label musical",
-    highlight1Desc: "Compositions originales & jingles personnalisés",
+    highlight1Title: "Catalogue de spectacles",
+    highlight1Desc: "Comédie, Humour, Stand-up, Burlesque & Spectacle musical",
     highlight2Title: "Conception et organisation d'événements",
     highlight2Desc: "Direction technique audiovisuelle",
     highlight3Title: "Animations musicales",
@@ -27,9 +27,9 @@ const fr = {
   services: {
     sectionTitle: "Nous proposons",
     statement: "L'excellence événementielle, de la vision à la scène",
-    subtitle: "Découvrez notre gamme complète de services pour vos événements et projets musicaux",
+    subtitle: "Découvrez notre gamme complète de services pour vos événements et spectacles",
     description:
-      "De la création musicale à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et de l'animation pour créer des expériences uniques et mémorables.",
+      "De la création artistique à l'organisation complète, nous maîtrisons tous les aspects de l'événementiel et des spectacles vivants pour créer des expériences uniques et mémorables.",
     clientsTitle: "Nos Clients",
     cta: "Parlons-en !",
     clientTypes: {
@@ -63,10 +63,15 @@ const fr = {
         description: "Création de décors visuels immersifs et d'animations projetées sur mesure pour sublimer l'architecture de vos événements.",
         features: ["Mapping 3D", "VJing en direct", "Scénographie", "Contenus sur mesure"],
       },
+      "spectacles": {
+        title: "Catalogue de spectacles",
+        description: "Production et diffusion de spectacles vivants : Comédie, Humour / Stand-up / Burlesque, et Spectacle musical.",
+        features: ["Comédie", "Humour / Stand-up / Burlesque", "Spectacle musical"],
+      },
       "label-de-musique": {
-        title: "Label de musique",
-        description: "Production phonographique, développement d'artistes et distribution numérique à l'échelle internationale.",
-        features: ["Direction artistique", "Distribution digitale", "Édition musicale", "Promotion"],
+        title: "Catalogue de spectacles",
+        description: "Production et diffusion de spectacles vivants : Comédie, Humour / Stand-up / Burlesque, et Spectacle musical.",
+        features: ["Comédie", "Humour / Stand-up / Burlesque", "Spectacle musical"],
       },
     },
   },
@@ -159,7 +164,8 @@ const fr = {
       "podcast": "Podcast",
       "booking": "Booking DJ & Musiciens",
       "vj-video-mapping": "VJ / Vidéo Mapping",
-      "label-de-musique": "Label de musique",
+      "spectacles": "Catalogue de spectacles",
+      "label-de-musique": "Catalogue de spectacles",
     },
     date: "Date de l'événement",
     guests: "Nombre d'invités",
@@ -204,6 +210,30 @@ const fr = {
     accept: "Accepter",
     decline: "Refuser",
     settings: "Paramètres",
+    acceptAll: "Tout accepter",
+    rejectAll: "Tout refuser",
+    customize: "Personnaliser",
+    preferencesTitle: "Préférences de cookies",
+    preferencesSubtitle: "Gérez vos préférences de cookies par catégorie",
+    save: "Enregistrer les préférences",
+    categories: {
+      necessary: {
+        title: "Cookies nécessaires",
+        description: "Ces cookies sont essentiels au fonctionnement du site et ne peuvent pas être désactivés.",
+      },
+      functional: {
+        title: "Cookies fonctionnels",
+        description: "Ces cookies permettent d'améliorer les fonctionnalités et la personnalisation du site.",
+      },
+      analytics: {
+        title: "Cookies analytiques",
+        description: "Ces cookies nous aident à comprendre comment les visiteurs interagissent avec le site.",
+      },
+      marketing: {
+        title: "Cookies marketing",
+        description: "Ces cookies sont utilisés pour nous fournir des publicités pertinentes.",
+      },
+    },
   },
   legal: {
     title: "Informations Légales",
@@ -213,7 +243,7 @@ const fr = {
     rights: "Tous droits réservés",
   },
   footer: {
-    description: "Organisateur d'événements culturels et producteur de musique",
+    description: "Organisateur d'événements culturels et producteur de spectacles",
     legalInfo1: "Angeli Visions est une Société par Actions Simplifiées Unipersonnelle (SASU) immatriculée au RCS de Versailles sous le n° 898018221.",
     legalInfo2: "Licence d'entrepreneur de spectacles n° PLATESV-D-2022-000968",
     essInfo: "L'entreprise est membre de l'Économie Sociale et Solidaire (ESS). Nous luttons contre toutes formes de discrimination et de violence sexiste.",
@@ -235,12 +265,41 @@ const fr = {
     rights: "Tous droits réservés.",
   },
 
+  legalPages: {
+    mentionsLegales: { title: "Mentions Légales" },
+    privacyPolicy: { title: "Politique de Confidentialité" },
+    cookiePolicy: { title: "Politique des Cookies" },
+  },
+
+  newsletter: {
+    preferences: {
+      title: "Gestion de vos préférences newsletter",
+      description: "Modifiez vos informations ou désinscrivez-vous à tout moment.",
+      form: {
+        email: "Adresse e-mail",
+        name: "Prénom et Nom",
+        save: "Enregistrer les modifications",
+        unsubscribe: "Se désinscrire de la newsletter",
+      },
+      messages: {
+        saveSuccess: "Vos préférences ont bien été enregistrées.",
+        unsubscribeSuccess: "Vous avez bien été désinscrit(e) de notre newsletter.",
+        error: "Impossible de récupérer vos préférences newsletter. Veuillez vérifier le lien de votre e-mail.",
+      },
+    },
+  },
+
   common: {
     loading: "Chargement...",
     error: "Une erreur est survenue",
     back: "Retour",
     send: "Envoyer",
     close: "Fermer",
+    save: "Enregistrer",
+    cancel: "Annuler",
+    backToHome: "Retour à l'accueil",
+    learnMore: "En savoir plus",
+    expertise: "Notre Expertise",
   }
 }
 

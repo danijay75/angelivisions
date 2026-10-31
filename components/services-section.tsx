@@ -12,6 +12,13 @@ import { useI18n } from "@/components/i18n/i18n-provider"
 import { Skeleton } from "@/components/ui/skeleton"
 import { SplitTitle } from "@/components/ui/split-title"
 
+const ServiceLink = ({ isLabel, href, children, className }: { isLabel: boolean, href: string, children: any, className?: string }) => {
+  if (isLabel) {
+    return <a href={href} className={className}>{children}</a>;
+  }
+  return <Link href={href} className={className}>{children}</Link>;
+};
+
 export default function ServicesSection() {
   const { t, lang } = useI18n()
   const [services, setServices] = useState<ServiceItem[]>(defaultServices)
@@ -111,7 +118,7 @@ export default function ServicesSection() {
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Link href={`/${lang}/services/${service.id}`} className="block h-full group">
+              <ServiceLink isLabel={service.id === "label-de-musique" || service.id === "spectacles"} href={service.id === "label-de-musique" || service.id === "spectacles" ? `/${lang}/spectacles` : `/${lang}/services/${service.id}`} className="block h-full group">
                 <Card className="h-full border-white/10 bg-black/50 hover:bg-black/70 backdrop-blur-3xl transition-all duration-500 hover:scale-[1.02] flex flex-col shadow-2xl hover:shadow-white/5 rounded-[2.5rem] overflow-hidden">
                   <CardHeader>
                     <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
@@ -150,7 +157,7 @@ export default function ServicesSection() {
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
+              </ServiceLink>
             </motion.div>
           ))}
         </div>

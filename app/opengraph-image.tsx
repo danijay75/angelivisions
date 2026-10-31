@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og"
 
 export const runtime = "edge"
-export const alt = "Angeli Visions — Organisateur d'événements & Maison de disque"
+export const alt = "Angeli Visions — Organisateur d'événements"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -79,7 +79,7 @@ export default function OgImage() {
                         display: "flex",
                     }}
                 >
-                    Organisateur d&apos;événements & Maison de disque
+                    Organisateur d&apos;événements
                 </div>
 
                 {/* Tags */}

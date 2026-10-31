@@ -48,11 +48,11 @@ const defaultServices = [
   },
   {
     id: "label-de-musique",
-    title: "Label de musique",
-    description: "Accompagnement d'artistes, production musicale, distribution et promotion.",
-    features: ["Production", "Distribution", "Promotion", "Management"],
-    color: "from-purple-500 to-indigo-500",
-    image: "/music-production-setup.png",
+    title: "Catalogue de spectacles",
+    description: "Notre sélection de spectacles immersifs, performances artistiques et concerts pour vos événements.",
+    features: ["Spectacles", "Artistes", "Performances", "Concerts"],
+    color: "from-rose-500 to-orange-500",
+    image: "/abstract-soundscape.png",
   },
 ];
 

@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Static routes for each language
     const staticRoutes = [
         '',
-        '/services',
+        '/captation-video-streaming-live-podcast',
         '/realisations',
         '/contacts',
         '/devis',
@@ -95,8 +95,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         // Services (Dynamic)
         services.forEach((service: any) => {
+            const isTopLevel = service.id === "label-de-musique" || service.id === "spectacles"
+            const urlPath = isTopLevel
+                ? `/spectacles`
+                : `/services/${service.id}`
             routes.push({
-                url: `${BASE_URL}/${lang}/services/${service.id}`,
+                url: `${BASE_URL}/${lang}${urlPath}`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.7,

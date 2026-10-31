@@ -23,6 +23,20 @@ const nextConfig = {
     },
     async rewrites() {
         return {
+            beforeFiles: [
+                {
+                    source: '/:lang/captation-video-streaming-live-podcast',
+                    destination: '/:lang/services',
+                },
+                {
+                    source: '/:lang/spectacles',
+                    destination: '/:lang/services/spectacles',
+                },
+                {
+                    source: '/:lang/label-de-musique',
+                    destination: '/:lang/services/spectacles',
+                },
+            ],
             fallback: [
                 {
                     source: '/uploads/:path*',

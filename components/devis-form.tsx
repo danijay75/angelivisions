@@ -53,7 +53,6 @@ export default function DevisForm() {
     { id: "podcast", label: "Podcast", icon: Mic, color: "from-orange-500 to-red-500" },
     { id: "booking", label: "Booking DJ & Musiciens", icon: Music, color: "from-blue-700 to-cyan-700" },
     { id: "vj-video-mapping", label: "VJ / Vidéo mapping", icon: Zap, color: "from-blue-500 to-cyan-500" },
-    { id: "label-de-musique", label: "Label de musique", icon: Sparkles, color: "from-purple-500 to-indigo-500" },
   ], [])
 
 

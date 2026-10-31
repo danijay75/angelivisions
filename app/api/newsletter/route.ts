@@ -8,6 +8,10 @@ import {
   updateGoogleContact,
   deleteGoogleContact,
 } from "@/lib/server/google-contacts"
+import { verifyCaptcha } from "@/lib/server/captcha"
+
+// Regex RFC 5322 simplifiée — bien plus robuste que includes("@")
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/
 
 // ---------- GET: list all newsletter subscribers (admin only) ----------
 export async function GET(req: NextRequest) {
@@ -41,9 +45,13 @@ export async function GET(req: NextRequest) {
 // ---------- POST: subscribe (public) ----------
 export async function POST(req: NextRequest) {
   try {
-    const { email, firstName, lastName, consent, lang = "fr" } = await req.json()
+    const { email, firstName, lastName, consent, lang = "fr", captchaToken } = await req.json()
 
-    if (!email || !email.includes("@")) {
+    if (!captchaToken || !(await verifyCaptcha(captchaToken))) {
+      return NextResponse.json({ error: "Validation captcha échouée" }, { status: 400 })
+    }
+
+    if (!email || !EMAIL_REGEX.test(email)) {
       return NextResponse.json({ error: "Email invalide" }, { status: 400 })
     }
 
@@ -58,46 +66,45 @@ export async function POST(req: NextRequest) {
     const normalizedEmail = email.toLowerCase().trim()
     const trimmedFirstName = firstName.trim()
     const trimmedLastName = lastName?.trim()
-    const fullName = `${trimmedFirstName}${trimmedLastName ? " " + trimmedLastName : ""}`
+    const fullName = `${trimmedFirstName}${trimmedLastName ? " " + trimmedLastName : ""}`;
 
-    // Create the contact in Google Contacts (single source of truth)
-    const resourceName = await createGoogleContact({
-      firstName: trimmedFirstName,
-      lastName: trimmedLastName,
-      email: normalizedEmail,
-      label: "Newsletter",
-      notes: `Abonné à la newsletter depuis la langue : ${lang}`,
-    })
+    // Exécution asynchrone en arrière-plan (non-bloquante pour la réponse utilisateur)
+    // Permet d'afficher immédiatement "Merci" à l'utilisateur sans attendre les 3-4s des APIs tierces
+    ;(async () => {
+      // 1. Création du contact dans Google Contacts
+      try {
+        const resourceName = await createGoogleContact({
+          firstName: trimmedFirstName,
+          lastName: trimmedLastName,
+          email: normalizedEmail,
+          label: "Newsletter",
+          notes: `Abonné à la newsletter depuis la langue : ${lang}`,
+        })
+        if (!resourceName) {
+          console.error("[Newsletter API] Erreur lors de la création du contact pour:", normalizedEmail)
+        }
+      } catch (err) {
+        console.error("[Newsletter API] Google Contact creation error:", err)
+      }
 
-    if (!resourceName) {
-      return NextResponse.json({ error: "Erreur lors de la création du contact" }, { status: 500 })
-    }
-
-    // Send Confirmation Email
-    try {
-      const preferencesUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/newsletter/preferences?email=${encodeURIComponent(normalizedEmail)}`
+      // 2. Envoi des e-mails (confirmation + notification admin) en parallèle
+      const preferencesUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"}/${lang}/newsletter/preferences?email=${encodeURIComponent(normalizedEmail)}`
       const emailContent = getNewsletterConfirmationEmail(fullName, preferencesUrl, lang)
-
-      await sendMail({
-        to: normalizedEmail,
-        subject: emailContent.subject,
-        html: emailContent.html,
-      })
-    } catch (mailError) {
-      console.error("[Newsletter API] Confirmation mail error:", mailError)
-    }
-
-    // Send Admin Notification
-    try {
       const adminContent = getAdminNotificationEmail(fullName, normalizedEmail)
-      await sendMail({
-        to: process.env.FROM_EMAIL || "contact@angelivisions.com",
-        subject: adminContent.subject,
-        html: adminContent.html,
-      })
-    } catch (mailError) {
-      console.error("[Newsletter API] Admin notification mail error:", mailError)
-    }
+
+      await Promise.allSettled([
+        sendMail({
+          to: normalizedEmail,
+          subject: emailContent.subject,
+          html: emailContent.html,
+        }).catch((mailError) => console.error("[Newsletter API] Confirmation mail error:", mailError)),
+        sendMail({
+          to: process.env.FROM_EMAIL || "contact@angelivisions.com",
+          subject: adminContent.subject,
+          html: adminContent.html,
+        }).catch((mailError) => console.error("[Newsletter API] Admin notification mail error:", mailError)),
+      ])
+    })()
 
     return NextResponse.json({ success: true })
   } catch (error) {

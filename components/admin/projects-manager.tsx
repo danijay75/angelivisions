@@ -38,10 +38,19 @@ interface Project {
     image: string
     gallery?: string[]
     services?: string[]
+    serviceId?: string
     category?: string
     linkedinUrl?: string
     videos?: string[]
 }
+
+const VIDEO_SERVICES = [
+    { id: "captation-video", label: "Captation vidéo" },
+    { id: "streaming-live", label: "Streaming Live" },
+    { id: "podcast", label: "Podcast" },
+    { id: "vj-video-mapping", label: "VJ / Vidéo Mapping" },
+    { id: "tous", label: "Tous les services" },
+]
 
 const slugify = (str: string) => {
     if (!str) return "";
@@ -300,6 +309,27 @@ export default function ProjectsManager() {
                                         {categories.map((cat) => (
                                             <SelectItem key={cat.id} value={cat.id} className="focus:bg-purple-600 focus:text-white">
                                                 {cat.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label className="text-white">Service vidéo associé</Label>
+                                <Select
+                                    value={formData.serviceId || ""}
+                                    onValueChange={v => updateFormData("serviceId", v)}
+                                >
+                                    <SelectTrigger className="bg-white/5 border-white/10 text-white focus:ring-purple-500">
+                                        <SelectValue placeholder="Associer à un service" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-900 border-white/10 text-white">
+                                        {VIDEO_SERVICES.map((s) => (
+                                            <SelectItem key={s.id} value={s.id} className="focus:bg-purple-600 focus:text-white">
+                                                {s.label}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

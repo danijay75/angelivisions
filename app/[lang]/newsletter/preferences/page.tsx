@@ -13,6 +13,7 @@ import { Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 function PreferencesContent() {
     const searchParams = useSearchParams()
     const token = searchParams.get("token")
+    const emailParam = searchParams.get("email")
     const router = useRouter()
     const { t } = useI18n()
 
@@ -21,11 +22,11 @@ function PreferencesContent() {
     const [error, setError] = useState<string | null>(null)
     const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-    const [subscriber, setSubscriber] = useState<{ name: string; email: string } | null>(null)
+    const [subscriber, setSubscriber] = useState<{ name: string; email: string; resourceName?: string } | null>(null)
     const [name, setName] = useState("")
 
     useEffect(() => {
-        if (!token) {
+        if (!token && !emailParam) {
             setError(t("newsletter.preferences.messages.error"))
             setIsLoading(false)
             return
@@ -33,13 +34,14 @@ function PreferencesContent() {
 
         const fetchSubscriber = async () => {
             try {
-                const res = await fetch(`/api/newsletter/preferences?token=${token}`)
+                const query = emailParam ? `email=${encodeURIComponent(emailParam)}` : `token=${encodeURIComponent(token!)}`
+                const res = await fetch(`/api/newsletter/preferences?${query}`)
                 if (!res.ok) {
                     throw new Error("Failed to fetch")
                 }
                 const data = await res.json()
                 setSubscriber(data)
-                setName(data.name)
+                setName(data.name || "")
             } catch (err) {
                 setError(t("newsletter.preferences.messages.error"))
             } finally {
@@ -48,7 +50,7 @@ function PreferencesContent() {
         }
 
         fetchSubscriber()
-    }, [token, t])
+    }, [token, emailParam, t])
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -60,7 +62,13 @@ function PreferencesContent() {
             const res = await fetch("/api/newsletter/preferences", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token, action: "update", name }),
+                body: JSON.stringify({
+                    token,
+                    email: subscriber?.email || emailParam,
+                    resourceName: subscriber?.resourceName,
+                    action: "update",
+                    name
+                }),
             })
 
             if (!res.ok) throw new Error()
@@ -83,13 +91,18 @@ function PreferencesContent() {
             const res = await fetch("/api/newsletter/preferences", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token, action: "unsubscribe" }),
+                body: JSON.stringify({
+                    token,
+                    email: subscriber?.email || emailParam,
+                    resourceName: subscriber?.resourceName,
+                    action: "unsubscribe"
+                }),
             })
 
             if (!res.ok) throw new Error()
 
             setSuccessMessage(t("newsletter.preferences.messages.unsubscribeSuccess"))
-            setSubscriber(null) // Clear form
+            setSubscriber(null)
         } catch (err) {
             setError(t("newsletter.preferences.messages.error"))
         } finally {

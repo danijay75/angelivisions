@@ -5,6 +5,8 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { RetroButton } from "@/components/ui/button-retro"
+import GradientButton from "@/components/ui/gradient-button"
 import { Menu, X, Globe, Mail } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useLang } from "@/hooks/use-lang"
@@ -32,13 +34,39 @@ export default function Navigation() {
 
   const items: MenuItem[] = useMemo(
     () => [
-      { href: `/${lang}/services`, label: t("nav.prestation") },
-      { href: `/${lang}/services/label-de-musique`, label: t("nav.label") },
+      { href: `/${lang}/captation-video-streaming-live-podcast`, label: t("nav.prestation") },
+      { href: `/${lang}/spectacles`, label: t("nav.label") },
       { href: `/${lang}/devis`, label: t("nav.devis") },
       { href: `/${lang}#contact`, label: t("nav.contact") },
     ],
     [lang, t],
   )
+
+  const getTwoLineLabel = (href: string, originalLabel: string, currentLang: string) => {
+    const isPrestation = href.includes("captation-video-streaming-live-podcast")
+    const isSpectacles = href.includes("spectacles") || href.includes("label-de-musique")
+    const isDevis = href.endsWith("/devis")
+    const isContact = href.includes("#contact")
+
+    if (currentLang === "en") {
+      if (isPrestation) return "Audiovisual<br />Production"
+      if (isSpectacles) return "Shows<br />Catalog"
+      if (isDevis) return "Free<br />Quote"
+      if (isContact) return "Contact<br />Us"
+    } else if (currentLang === "es") {
+      if (isPrestation) return "Grabación - Streaming<br />Podcast"
+      if (isSpectacles) return "Catálogo<br />Espectáculos"
+      if (isDevis) return "Presupuesto<br />Gratis"
+      if (isContact) return "Contactar<br />Nosotros"
+    } else {
+      // Default to French
+      if (isPrestation) return "Captation - Streaming<br />Podcast"
+      if (isSpectacles) return "Catalogue<br />Spectacles"
+      if (isDevis) return "Devis<br />Gratuit"
+      if (isContact) return "Nous<br />contacter"
+    }
+    return originalLabel
+  }
 
   // Scroll spy only on localized one-page home
   useEffect(() => {
@@ -96,17 +124,18 @@ export default function Navigation() {
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled 
           ? "bg-black/60 backdrop-blur-2xl border-b border-white/5 py-4" 
-          : "bg-transparent py-8"
+          : "bg-transparent py-4"
       }`}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto px-4 relative">
+        <div className="flex items-center justify-between h-auto min-h-[5rem]">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.02 }} className="flex items-center">
+          <motion.div whileHover={{ scale: 1.02 }} className="flex items-center z-10">
             <Link 
               href={`/${lang}`} 
               title={t("nav.accueil")} 
               aria-label={t("nav.accueil")}
+              className="block"
             >
               <Image
                 src="/images/angeli-visions-logo-white.png"
@@ -114,57 +143,64 @@ export default function Navigation() {
                 width={500}
                 height={150}
                 priority
-                className="h-16 md:h-20 w-auto object-contain transition-all duration-500 hover:opacity-100"
+                className="h-[150px] w-auto object-contain transition-all duration-500 hover:opacity-100"
               />
             </Link>
           </motion.div>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center">
+          {/* Desktop Menu - High-End AV Rack Control Panel */}
+          <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center bg-[#0d0f14]/90 backdrop-blur-xl border border-white/5 shadow-[0px_4px_16px_rgba(0,0,0,0.8),_inset_0px_1px_2px_rgba(255,255,255,0.05)] rounded-[8px] p-2.5 gap-3 overflow-hidden z-20">
+            {/* Subtle rack handles or metallic screws simulation at the edges */}
+            <div className="absolute left-[3px] top-[3px] w-[4px] h-[4px] rounded-full bg-neutral-600 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.3)] opacity-60" />
+            <div className="absolute right-[3px] top-[3px] w-[4px] h-[4px] rounded-full bg-neutral-600 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.3)] opacity-60" />
+            <div className="absolute left-[3px] bottom-[3px] w-[4px] h-[4px] rounded-full bg-neutral-600 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.3)] opacity-60" />
+            <div className="absolute right-[3px] bottom-[3px] w-[4px] h-[4px] rounded-full bg-neutral-600 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.3)] opacity-60" />
+
             {items.map((item, index) => {
               const active = isItemActive(item)
               const isDevis = item.href.endsWith("/devis")
+              const isContact = item.href.includes("#contact")
               
-              // Map labels to have line breaks where requested/needed to match image
-              let label = item.label;
-              if (label === t("nav.prestation")) {
-                label = label.replace(" - Podcast", "<br />Podcast");
-              } else if (label === t("nav.label")) {
-                label = label.replace(" & Booking", "<br />& Booking");
+              const label = getTwoLineLabel(item.href, item.label, lang)
+
+              const isRewritten = item.href.includes("captation-video-streaming-live-podcast") || item.href.includes("label-de-musique") || item.href.includes("spectacles")
+              const isPath = item.href.startsWith("/") && !isRewritten
+
+              // Choose the button design style
+              let variant: "default" | "darkGray" | "gray" | "lightGray" | "white" | "amber" | "orange" | "red" | "emerald" = "darkGray";
+              if (isDevis) {
+                variant = "amber"; // Devis is a glowing amber CTA button
+              } else if (isContact) {
+                variant = "gray"; // Contact is slightly different gray
+              } else if (active) {
+                variant = "darkGray";
               }
-
-              const isPath = item.href.startsWith("/")
-
-              // Define specific glow classes based on index
-              const glowClass = !isDevis ? `glow-item-${(index % 3) + 1}` : "";
-              
-              const baseClass = isDevis ? "nav-pill-devis" : "nav-pill-identic";
-              const itemClasses = isDevis ? "" : `${glowClass} text-white/90 hover:text-white`;
 
               return (
                 <div key={`${item.href}-${item.label}`} className="flex items-center">
-                  {index > 0 && (
-                    <div className="dot-separator" />
-                  )}
-                  
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                    {isPath ? (
-                      <Link
-                        href={item.href}
-                        className={`${baseClass} ${itemClasses}`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span dangerouslySetInnerHTML={{ __html: label }} />
-                      </Link>
-                    ) : (
-                      <a
-                        href={item.href}
-                        className={`${baseClass} ${itemClasses}`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span dangerouslySetInnerHTML={{ __html: label }} />
-                      </a>
-                    )}
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <RetroButton
+                      asChild
+                      variant={variant}
+                      size="nav"
+                      isActive={active}
+                    >
+                      {isPath ? (
+                        <Link
+                          href={item.href}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <span dangerouslySetInnerHTML={{ __html: label }} />
+                        </Link>
+                      ) : (
+                        <a
+                          href={item.href}
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <span dangerouslySetInnerHTML={{ __html: label }} />
+                        </a>
+                      )}
+                    </RetroButton>
                   </motion.div>
                 </div>
               )
@@ -173,12 +209,11 @@ export default function Navigation() {
 
           {/* Newsletter, Language Switcher & Mobile Menu */}
           <div className="flex items-center space-x-3">
-            <a
-              href="#newsletter"
-              className="hidden md:inline-flex items-center gap-1.5 text-xs font-medium border border-white/10 rounded-full px-4 py-2 text-white/60 hover:bg-white/5 transition-all duration-300"
-            >
-              <Mail className="w-3.5 h-3.5" />
-              {t("nav.newsletter")}
+            <a href="#newsletter" className="hidden md:block">
+              <GradientButton height="36px">
+                <Mail className="w-3.5 h-3.5 mr-1.5" />
+                {t("nav.newsletter")}
+              </GradientButton>
             </a>
 
             <div>
@@ -196,50 +231,68 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Stacked AV Console Panel */}
         {isMenuOpen && (
           <motion.div
             id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/80 backdrop-blur-3xl rounded-3xl mt-2 p-4 border border-white/10 shadow-2xl"
+            className="md:hidden bg-[#0d0f14]/95 backdrop-blur-3xl rounded-xl mt-2 p-3 border border-white/10 shadow-2xl flex flex-col gap-3 relative overflow-hidden"
           >
+            {/* Subtle rack handles or metallic screws simulation */}
+            <div className="absolute left-[3px] top-[3px] w-[3px] h-[3px] rounded-full bg-neutral-600 opacity-60" />
+            <div className="absolute right-[3px] top-[3px] w-[3px] h-[3px] rounded-full bg-neutral-600 opacity-60" />
+            <div className="absolute left-[3px] bottom-[3px] w-[3px] h-[3px] rounded-full bg-neutral-600 opacity-60" />
+            <div className="absolute right-[3px] bottom-[3px] w-[3px] h-[3px] rounded-full bg-neutral-600 opacity-60" />
+
             {items.map((item) => {
               const active = isItemActive(item)
-              const isPath = item.href.startsWith("/")
-              const mobileClass = `block py-2 transition-colors ${item.featured
-                ? `text-emerald-200 hover:text-emerald-100 border border-emerald-400/50 rounded-lg px-3 py-2 bg-emerald-500/5 hover:bg-emerald-500/10 ring-1 ring-inset ring-emerald-400/30 ${active ? "bg-emerald-500/15 ring-emerald-400/60 text-emerald-50" : ""
-                }`
-                : `text-slate-800 hover:text-slate-900 ${item.bold ? "font-bold" : ""} ${active ? "text-slate-900" : ""}`
-                }`
+              const isDevis = item.href.endsWith("/devis")
+              const isContact = item.href.includes("#contact")
+              
+              const label = getTwoLineLabel(item.href, item.label, lang)
 
-              return isPath ? (
-                <Link
-                  key={`${item.href}-${item.label}-mobile`}
-                  href={item.href}
-                  title={item.label}
-                  aria-label={item.label}
-                  aria-current={active ? "page" : undefined}
-                  className={mobileClass}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                  {item.label}
-                </Link>
-              ) : (
-                <a
-                  key={`${item.href}-${item.label}-mobile`}
-                  href={item.href}
-                  title={item.label}
-                  aria-label={item.label}
-                  aria-current={active ? "page" : undefined}
-                  className={mobileClass}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
-                  {item.label}
-                </a>
+              const isRewritten = item.href.includes("captation-video-streaming-live-podcast") || item.href.includes("label-de-musique") || item.href.includes("spectacles")
+              const isPath = item.href.startsWith("/") && !isRewritten
+
+              // Choose the button design style for mobile
+              let variant: "default" | "darkGray" | "gray" | "lightGray" | "white" | "amber" | "orange" | "red" | "emerald" = "darkGray";
+              if (isDevis) {
+                variant = "amber";
+              } else if (isContact) {
+                variant = "gray";
+              } else if (active) {
+                variant = "darkGray";
+              }
+
+              return (
+                <div key={`${item.href}-${item.label}-mobile`} className="w-full">
+                  <RetroButton
+                    asChild
+                    variant={variant}
+                    size="fullNav"
+                    isActive={active}
+                  >
+                    {isPath ? (
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
+                        <span dangerouslySetInnerHTML={{ __html: label }} />
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.icon && <span className="inline-flex mr-1.5 align-middle">{item.icon}</span>}
+                        <span dangerouslySetInnerHTML={{ __html: label }} />
+                      </a>
+                    )}
+                  </RetroButton>
+                </div>
               )
             })}
           </motion.div>

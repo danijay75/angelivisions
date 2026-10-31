@@ -94,7 +94,7 @@ function buildConfirmationEmail(name: string, number: string): string {
       </div>
       <div style="background: #0f0d2e; padding: 16px; border-radius: 0 0 12px 12px; text-align: center;">
         <p style="color: #94a3b8; font-size: 12px; margin: 0;">
-          angelivisions.com — Organisateur d'événements &amp; Maison de disque
+          angelivisions.com — Organisateur d'événements
         </p>
       </div>
     </div>
@@ -248,6 +248,19 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json(gate.body, { status: gate.status })
   }
 
-  // Désactivé : la gestion se fait depuis Google Sheets.
-  return NextResponse.json({ success: true })
+  try {
+    const { id } = await req.json()
+    if (!id) {
+      return NextResponse.json({ success: false, message: "ID requis" }, { status: 400 })
+    }
+
+    const existing = await redis.get<any[]>(DEVIS_KEY) || []
+    const updated = existing.filter((d) => d.id !== id)
+    await redis.set(DEVIS_KEY, updated)
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error("[Devis API DELETE] Error:", error)
+    return NextResponse.json({ success: false, message: "Erreur serveur" }, { status: 500 })
+  }
 }

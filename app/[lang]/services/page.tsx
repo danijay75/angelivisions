@@ -33,6 +33,29 @@ async function getServices(): Promise<ServiceItem[]> {
   return fallbackServices
 }
 
+async function getProjects(): Promise<any[]> {
+  try {
+    const redis = new Redis({
+      url: process.env.KV_REST_API_URL || "",
+      token: process.env.KV_REST_API_TOKEN || "",
+    })
+    
+    const projectsData = await redis.get("projects")
+    
+    if (projectsData) {
+      if (typeof projectsData === "string") {
+        return JSON.parse(projectsData)
+      } else if (typeof projectsData === "object" && Array.isArray(projectsData)) {
+        return projectsData
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch projects for services page.", error)
+  }
+  
+  return []
+}
+
 export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params
   
@@ -40,8 +63,11 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
     notFound()
   }
 
-  const rawServices = await getServices()
-  // Ultimate safety filter to replicate existing API behavior 
+  const [rawServices, projects] = await Promise.all([
+    getServices(),
+    getProjects()
+  ])
+  
   const servicesList = rawServices
   
   let pageConfig = {
@@ -68,5 +94,5 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
     console.error("Failed to fetch page config", err)
   }
 
-  return <ServicesClient servicesList={servicesList} lang={resolvedParams.lang} pageConfig={pageConfig} />
+  return <ServicesClient servicesList={servicesList} lang={resolvedParams.lang} projects={projects} pageConfig={pageConfig} />
 }
