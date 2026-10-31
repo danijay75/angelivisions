@@ -248,6 +248,8 @@ const en = {
     legalInfo2: "Show Entrepeneur License n° PLATESV-D-2022-000968",
     essInfo: "The company is a member of the Social and Solidarity Economy (ESS). We fight against all forms of discrimination and sexist violence.",
     kitLink: "Check out the certification here.",
+    aboutTeaser: "Discover our mission and our shared governance.",
+    aboutLink: "Our mission",
     contacts: "Contact",
     newsletterTitle: "Newsletter",
     newsletterFirstName: "First Name",

@@ -242,6 +242,8 @@ const es = {
     legalInfo2: "Licencia de empresario de espectáculos n° PLATESV-D-2022-000968",
     essInfo: "La empresa es miembro de la Economía Social y Solidaria (ESS). Luchamos contra todas las formas de discriminación y violencia sexista.",
     kitLink: "Consulte la certificación aquí.",
+    aboutTeaser: "Descubra nuestra misión y nuestra gobernanza solidaria.",
+    aboutLink: "Nuestra misión",
     contacts: "Contacto",
     newsletterTitle: "Boletín informativo",
     newsletterFirstName: "Nombre",

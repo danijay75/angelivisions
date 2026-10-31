@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { useLang } from "@/hooks/use-lang"
 import { Button } from "@/components/ui/button"
 import { LOCALES, type Locale } from "@/lib/i18n/locales"
+import { localizePath } from "@/lib/i18n/routes"
 
 const languageNames: Record<Locale, string> = {
     fr: "Français",
@@ -43,10 +44,7 @@ export default function LanguageSelector() {
             return
         }
 
-        const segments = pathname.split("/")
-        segments[1] = nextLang
-        const nextPath = segments.join("/") || `/${nextLang}`
-        router.push(nextPath)
+        router.push(localizePath(pathname, nextLang))
         setIsOpen(false)
     }
 

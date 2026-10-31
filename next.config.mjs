@@ -68,6 +68,21 @@ const nextConfig = {
                 permanent: true,
             },
             {
+                source: '/:lang/a-propos',
+                destination: '/:lang/notre-mission',
+                permanent: true,
+            },
+            {
+                source: '/:lang/about',
+                destination: '/:lang/our-mission',
+                permanent: true,
+            },
+            {
+                source: '/:lang/sobre-nosotros',
+                destination: '/:lang/nuestra-mision',
+                permanent: true,
+            },
+            {
                 source: '/contacts',
                 destination: '/#contact',
                 permanent: true,

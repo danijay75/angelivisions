@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { LOCALES } from '@/lib/i18n/locales'
+import { LOCALIZED_SLUGS } from '@/lib/i18n/routes'
 import { projects } from '@/data/projects'
 import { defaultServices as fallbackServices } from '@/data/services'
 import { Redis } from "@upstash/redis"
@@ -71,6 +72,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 changeFrequency: route === '' ? 'daily' : 'weekly',
                 priority: route === '' ? 1.0 : 0.8,
             })
+        })
+
+        // About page (localized slug)
+        routes.push({
+            url: `${BASE_URL}/${lang}/${LOCALIZED_SLUGS.about[lang]}`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
         })
 
         // Projects
