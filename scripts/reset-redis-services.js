@@ -1,9 +1,13 @@
-const { Redis } = require("@upstash/redis");
-
-const redis = new Redis({
-  url: "***UPSTASH-URL-SUPPRIMEE***",
-  token: "***TOKEN-REVOQUE***",
-});
+/**
+ * Réinitialise la clé Redis `av_services_v1` avec la liste de services par défaut.
+ *
+ *   node scripts/reset-redis-services.js            # simulation (affiche ce qui serait écrit)
+ *   node scripts/reset-redis-services.js --apply    # écrit réellement dans Redis
+ *
+ * ⚠️ Écrase le contenu courant de la clé : vérifier d'abord que c'est voulu
+ * (les services sont éditables depuis /admin).
+ */
+const { createRedis } = require("./_env");
 
 const defaultServices = [
   {
@@ -56,10 +60,26 @@ const defaultServices = [
   },
 ];
 
-async function resetServices() {
-  console.log("Resetting av_services_v1 in Redis...");
+async function main() {
+  const apply = process.argv.includes("--apply");
+  const redis = createRedis();
+
+  const current = await redis.get("av_services_v1");
+  const currentCount = Array.isArray(current) ? current.length : current ? 1 : 0;
+
+  console.log(`av_services_v1 : ${currentCount} entrée(s) actuellement en base.`);
+  console.log(`Réinitialisation demandée avec ${defaultServices.length} services par défaut.`);
+
+  if (!apply) {
+    console.log("\nSimulation : rien n'a été écrit. Relancer avec --apply pour appliquer.");
+    return;
+  }
+
   await redis.set("av_services_v1", defaultServices);
-  console.log("Successfully reset av_services_v1");
+  console.log("av_services_v1 réinitialisé.");
 }
 
-resetServices().catch(console.error);
+main().catch((err) => {
+  console.error(err.message || err);
+  process.exit(1);
+});

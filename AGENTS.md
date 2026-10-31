@@ -15,7 +15,7 @@ Contexte projet pour les agents (OpenCode). Voir aussi `docs/2026-10-31-etat-des
 npm install --legacy-peer-deps
 npm run dev      # http://localhost:3000
 npm run build
-npx tsc --noEmit # 2 erreurs connues dans scripts/fix-redis-encoding.ts
+npx tsc --noEmit # doit rester propre (0 erreur)
 ```
 
 ⚠️ Le projet a été déplacé de `P:` (lecteur amovible : `EISDIR ... readlink` dans webpack, build impossible, et erreurs d'E/S à la copie) vers `C:\Users\danij\Projets IA\angeli-visions-website` le 31/10/2026.

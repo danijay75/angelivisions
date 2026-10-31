@@ -1,53 +1,108 @@
-const { Redis } = require("@upstash/redis");
+/**
+ * Réparation des caractères de remplacement (U+FFFD « � ») dans les valeurs
+ * Redis, hérités d'un ancien bug d'encodage UTF-8.
+ *
+ *   node scripts/fix-redis-encoding.js            # simulation (aucune écriture)
+ *   node scripts/fix-redis-encoding.js --apply    # applique les corrections
+ *   node scripts/fix-redis-encoding.js --apply av_services_v1 autre:cle
+ */
+const { createRedis } = require("./_env");
 
-const redis = new Redis({
-  url: "***UPSTASH-URL-SUPPRIMEE***",
-  token: "***TOKEN-REVOQUE***",
-});
+const DEFAULT_KEYS = ["av_services_v1", "av_services_config_v1"];
 
-async function fixEncoding() {
-  const keys = ["av_services_v1", "av_services_config_v1"];
+// U+FFFD : le caractère « � » qui a remplacé les accents lors de l'incident.
+const DIAMOND = "\uFFFD";
 
-  for (const key of keys) {
-    console.log(`Checking key: ${key}`);
-    const data = await redis.get(key);
-    if (!data) {
-      console.log(`No data found for ${key}`);
+// Remplacements littéraux (pas de regex : on ne veut rien interpréter).
+const FIXES = [
+  ["vid" + DIAMOND + DIAMOND, "vidéo"],
+  ["vid" + DIAMOND, "vidéo"],
+  ["multicam" + DIAMOND + DIAMOND, "multicaméra"],
+  ["syst" + DIAMOND + DIAMOND, "système"],
+  ["sc" + DIAMOND + DIAMOND + "nique", "scénique"],
+  ["v" + DIAMOND + "nements", "événements"],
+  ["v" + DIAMOND + "nement", "événement"],
+  ["r" + DIAMOND + DIAMOND, "ré"],
+  ["d" + DIAMOND + DIAMOND, "dé"],
+  ["m" + DIAMOND + DIAMOND, "mé"],
+  ["v" + DIAMOND + DIAMOND, "vé"],
+  [DIAMOND, "é"],
+];
+
+function countDiamonds(value) {
+  if (typeof value === "string") return (value.match(/\uFFFD/g) || []).length;
+  if (Array.isArray(value)) return value.reduce((n, v) => n + countDiamonds(v), 0);
+  if (value && typeof value === "object") {
+    return Object.values(value).reduce((n, v) => n + countDiamonds(v), 0);
+  }
+  return 0;
+}
+
+function fixDeep(value) {
+  if (typeof value === "string") {
+    let out = value;
+    for (const [from, to] of FIXES) out = out.split(from).join(to);
+    return out;
+  }
+  if (Array.isArray(value)) return value.map(fixDeep);
+  if (value && typeof value === "object") {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) out[k] = fixDeep(v);
+    return out;
+  }
+  return value;
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  const apply = args.includes("--apply");
+  const keys = args.filter((a) => !a.startsWith("--"));
+  const targets = keys.length ? keys : DEFAULT_KEYS;
+
+  const redis = createRedis();
+  let total = 0;
+
+  for (const key of targets) {
+    const raw = await redis.get(key);
+    if (raw == null) {
+      console.log(`- ${key} : clé absente`);
       continue;
     }
 
-    let jsonStr = JSON.stringify(data);
-    
-    // Common corruptions observed in the browser subagent screenshots
-    const replacements = [
-      { from: /vid\uFFFD\uFFFD/g, to: "vidéo" },
-      { from: /vid\uFFFD/g, to: "vidéo" },
-      { from: /v\uFFFD\uFFFD/g, to: "vé" },
-      { from: /multicam\uFFFD\uFFFD/g, to: "multicaméra" },
-      { from: /syst\uFFFD\uFFFD/g, to: "système" },
-      { from: /sc\uFFFD\uFFFD/g, to: "scénique" },
-      { from: /r\uFFFD\uFFFD/g, to: "ré" },
-      { from: /d\uFFFD\uFFFD/g, to: "dé" },
-      { from: /m\uFFFD\uFFFD/g, to: "mé" },
-      { from: /v\uFFFDnements/g, to: "événements" },
-      { from: /v\uFFFDnement/g, to: "événement" },
-      { from: /\uFFFD/g, to: "é" }, // Single diamond question mark fallback
-    ];
+    const data = typeof raw === "string" ? safeParse(raw) : raw;
+    const count = countDiamonds(data);
+    total += count;
 
-    let fixedJsonStr = jsonStr;
-    for (const r of replacements) {
-      fixedJsonStr = fixedJsonStr.replace(r.from, r.to);
+    if (count === 0) {
+      console.log(`- ${key} : OK (aucun caractère corrompu)`);
+      continue;
     }
 
-    if (fixedJsonStr !== jsonStr) {
-      console.log(`Found issues in ${key}, fixing...`);
-      const fixedData = JSON.parse(fixedJsonStr);
-      await redis.set(key, fixedData);
-      console.log(`Successfully fixed ${key}`);
-    } else {
-      console.log(`No issues found in ${key}`);
-    }
+    console.log(`- ${key} : ${count} caractère(s) à réparer`);
+    if (!apply) continue;
+
+    await redis.set(key, fixDeep(data));
+    console.log(`  -> corrigé`);
+  }
+
+  if (total === 0) {
+    console.log("\nRien à faire.");
+  } else if (!apply) {
+    console.log(`\n${total} caractère(s) à corriger. Relancer avec --apply pour écrire.`);
+  } else {
+    console.log("\nCorrections appliquées.");
   }
 }
 
-fixEncoding().catch(console.error);
+function safeParse(str) {
+  try {
+    return JSON.parse(str);
+  } catch {
+    return str;
+  }
+}
+
+main().catch((err) => {
+  console.error(err.message || err);
+  process.exit(1);
+});
