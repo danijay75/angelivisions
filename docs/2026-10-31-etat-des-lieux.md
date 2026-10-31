@@ -177,3 +177,21 @@ Error: EISDIR: illegal operation on a directory, readlink '...app/api/admin/user
 
 `next build` échoue donc systématiquement depuis `P:`. Contournement utilisé : copie du projet dans `C:\Users\danij\AppData\Local\Temp\av-build` (node_modules réinstallé sur C:). Recommandation : déplacer le projet sur le disque système (C:) pour pouvoir builder en local.
 
+## 11. Incident sécurité — identifiants Upstash exposés (31/10/2026)
+
+`scripts/reset-redis-services.js` et `scripts/fix-redis-encoding.js` contenaient en clair
+l'URL et le **token REST de la base Upstash de production**, dans un dépôt **public**
+(`github.com/danijay75/angelivisions`). Ce token donne un accès lecture/écriture à toutes
+les données : artistes, projets, services, devis, réclamations, abonnés newsletter,
+utilisateurs admin.
+
+Traitement :
+
+1. Scripts réécrits : identifiants lus dans `.env.local` (`scripts/_env.js`), plus aucun secret dans le code.
+2. Historique git réécrit (`git filter-repo --replace-text`) puis force-push : le token n'apparaît plus dans aucun commit. Effet secondaire : `.git` passe de 1,6 Go à 41 Mo.
+3. Scripts de la release en service nettoyés sur le VPS.
+4. **Le token doit encore être révoqué dans la console Upstash.** GitHub conserve les objets orphelins : l'ancien fichier reste lisible via `raw.githubusercontent.com/danijay75/angelivisions/56a3e23/scripts/reset-redis-services.js`.
+
+Rotation : console Upstash → base `engaged-quetzal-20185` → REST API → Rotate token, puis
+`bash /var/www/angelivisions/shared/rotate-kv-token.sh <nouveau_token>`
+(= `.agent/rotate-kv-token.sh` : sauvegarde l'env, redémarre l'app et vérifie Redis).
