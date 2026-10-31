@@ -1,32 +1,62 @@
 ---
-description: Déploiement complet des fichiers locaux vers le VPS et redémarrage PM2
+description: Déploiement atomique des fichiers locaux vers le VPS (build sur place, bascule par lien symbolique, zéro coupure)
 ---
-# Ghost Buster Deployment Workflow
+# Déploiement Angeli Visions (atomique)
 
-Ce workflow automatise le transfert des fichiers, nettoie les processus zombies et assure un redémarrage stable via PM2.
+Structure sur le serveur :
 
-// turbo
-1. Ghost Hunting : Nettoyage du port 3000 et arrêt PM2 (Action à faire sur le VPS)
-ssh root@91.134.143.82 "fuser -k 3000/tcp ; pm2 stop angelivisions ; pm2 delete angelivisions"
+```
+/var/www/angelivisions/
+├── current -> releases/<release>        # ce que PM2 exécute
+├── releases/
+│   └── 20261031-204942/                 # sources + node_modules + .next
+└── shared/
+    ├── .env.local                       # secrets, jamais écrasés
+    ├── uploads/                         # images/vidéos uploadées via l'admin
+    ├── monitor.log
+    ├── ecosystem.config.js              # cwd = /var/www/angelivisions/current
+    └── deploy.sh                        # versionné dans .agent/server-deploy.sh
+```
 
-// turbo
-2. Synchronisation des fichiers essentiels
-# Dossiers sources
-scp -r "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\app" root@91.134.143.82:/var/www/angelivisions/
-scp -r "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\components" root@91.134.143.82:/var/www/angelivisions/
-scp -r "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\lib" root@91.134.143.82:/var/www/angelivisions/
-scp -r "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\public" root@91.134.143.82:/var/www/angelivisions/
-# Fichiers de config
-scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\package.json" root@91.134.143.82:/var/www/angelivisions/
-scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\next.config.mjs" root@91.134.143.82:/var/www/angelivisions/
-scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\ecosystem.config.js" root@91.134.143.82:/var/www/angelivisions/
-scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\tailwind.config.ts" root@91.134.143.82:/var/www/angelivisions/
-scp "c:\Users\danij\Downloads\angeli-visions-organisateur-d-evenements-maison-de-disque\tsconfig.json" root@91.134.143.82:/var/www/angelivisions/
+## Déployer
 
-// turbo
-3. Build et Relance Stable sur le VPS
-ssh root@91.134.143.82 "chown -R ubuntu:ubuntu /var/www/angelivisions ; cd /var/www/angelivisions ; rm -rf .next ; su ubuntu -c 'npm install --legacy-peer-deps ; npm run build ; pm2 start ecosystem.config.js'"
+```powershell
+.\.agent\deploy.ps1
+```
 
-// turbo
-4. Vérification finale
-ssh root@91.134.143.82 "pm2 status angelivisions ; netstat -tulpn | grep :3000"
+1. Archive des sources locales (sans `node_modules`, `.next`, `.git`, `.env.local`)
+2. `scp` vers `releases/<horodatage>`
+3. `npm install` + `npm run build` **dans la nouvelle release** — l'ancienne continue de servir
+4. Test à blanc sur le port 3001 (`/api/health` doit répondre 200, un slug inconnu 404)
+5. Bascule `current` + `pm2 reload` (l'ancien process répond jusqu'à ce que le nouveau soit prêt)
+6. Contrôle public `https://angelivisions.com/fr`, rollback automatique si ≠ 200
+7. Suppression des releases au-delà de 3
+
+## Revenir en arrière
+
+```powershell
+.\.agent\deploy.ps1 -Rollback
+```
+
+## Règles
+
+- **Ne jamais** éditer les fichiers dans `releases/` ou `current` : ce sont des copies du dépôt.
+- `.env.local`, `public/uploads` et `data/monitor.log` sont des liens vers `shared/` : ils survivent aux déploiements.
+- Les commandes PM2 doivent tourner en tant que `ubuntu` (`su - ubuntu -c "pm2 ..."`). En root, PM2 ne voit aucune application.
+- Logs du build : `/tmp/build-<release>.log`, `/tmp/smoke-<release>.log`.
+
+## SSH
+
+```powershell
+ssh angelivisions                     # root@91.134.143.82, clé ~/.ssh/id_rsa
+ssh angelivisions "su - ubuntu -c 'pm2 list'"
+```
+
+## Diagnostic rapide
+
+```powershell
+ssh angelivisions "curl -s https://angelivisions.com/api/health"
+ssh angelivisions "su - ubuntu -c 'pm2 logs angelivisions --lines 40 --nostream'"
+ssh angelivisions "ls -1 /var/www/angelivisions/releases; readlink /var/www/angelivisions/current"
+ssh angelivisions "tail -40 /var/www/angelivisions/shared/monitor.log"
+```

@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 export const dynamic = "force-dynamic"
 import { Redis } from "@upstash/redis"
 import { defaultArtists, type Artist } from "@/data/artists"
+import { getArtists } from "@/lib/server/artists"
 import { getSessionCookieFromRequest, verifySessionToken } from "@/lib/server/jwt"
 
 let redis: Redis | null = null
@@ -26,30 +27,8 @@ if (KV_URL && KV_TOKEN) {
 // GET /api/artists - Fetch all artists
 export async function GET() {
     try {
-        if (!redis) {
-            console.log("[AV] Redis not available, using default data")
-            return NextResponse.json({ artists: defaultArtists })
-        }
-
-        let artists: Artist[] = []
-        const data = await redis.get("artists")
-
-        if (data) {
-            let parsed = typeof data === "string" ? JSON.parse(data) : data
-            // Migration: handle old schema where type and musicalGenre were objects
-            artists = parsed.map((a: any) => ({
-                ...a,
-                type: Array.isArray(a.type) ? a.type : (a.type ? [a.type] : []),
-                musicalGenre: Array.isArray(a.musicalGenre) ? a.musicalGenre : (a.musicalGenre ? [a.musicalGenre] : []),
-                socials: a.socials || []
-            }))
-        } else {
-            // Initialize with default data if empty
-            artists = defaultArtists
-            await redis.set("artists", JSON.stringify(artists))
-        }
-
-        return NextResponse.json({ artists: artists.sort((a, b) => (a.order || 0) - (b.order || 0)) })
+        const artists = await getArtists()
+        return NextResponse.json({ artists })
     } catch (error) {
         console.error("[AV] Error in artists API:", error)
         return NextResponse.json({ artists: defaultArtists })

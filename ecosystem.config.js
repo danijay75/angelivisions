@@ -4,14 +4,16 @@ module.exports = {
             name: "angelivisions",
             script: "node_modules/.bin/next",
             args: "start",
-            cwd: "/var/www/angelivisions",
+            // On lance toujours la release pointée par le lien `current`.
+            // Le déploiement ne fait que changer ce lien, puis `pm2 reload`.
+            cwd: "/var/www/angelivisions/current",
             env: {
                 NODE_ENV: "production",
             },
-            instances: 1, // Only 1 instance
-            autorestart: true, // Auto restart if crash
+            instances: 1,
+            autorestart: true,
             watch: false,
-            max_memory_restart: "1G", // Restart if uses more than 1GB RAM
+            max_memory_restart: "1G",
         },
     ],
 };

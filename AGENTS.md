@@ -1,0 +1,66 @@
+# AGENTS.md — Angeli Visions
+
+Contexte projet pour les agents (OpenCode). Voir aussi `docs/2026-10-31-etat-des-lieux.md`.
+
+## Stack
+
+- Next.js 15.2.8 (App Router), React 19, TypeScript, Tailwind CSS
+- i18n par segment `app/[lang]` : `fr`, `en`, `es`
+- Formulaires / API : Resend, Google Contacts, Upstash Redis (KV), Turnstile
+- Admin : `app/admin/*` (JWT maison, voir `lib/server`)
+
+## Commandes locales
+
+```powershell
+npm install --legacy-peer-deps
+npm run dev      # http://localhost:3000
+npm run build
+npx tsc --noEmit # 2 erreurs connues dans scripts/fix-redis-encoding.ts
+```
+
+⚠️ Le projet a été déplacé de `P:` (lecteur amovible : `EISDIR ... readlink` dans webpack, build impossible, et erreurs d'E/S à la copie) vers `C:\Users\danij\Projets IA\angeli-visions-website` le 31/10/2026.
+
+## Production
+
+| Élément | Valeur |
+| --- | --- |
+| Domaine | https://angelivisions.com (www → redirige) |
+| VPS | OVH `91.134.143.82` (`vps-86158205`, Ubuntu) |
+| Racine | `/var/www/angelivisions` |
+| Release active | `/var/www/angelivisions/current` → `releases/<horodatage>` |
+| Données partagées | `/var/www/angelivisions/shared/` (`.env.local`, `uploads/`, `monitor.log`, `ecosystem.config.js`, `deploy.sh`) |
+| Process | PM2 `angelivisions`, **ubuntu**, `next start` port 3000, cwd `.../current` |
+| Reverse proxy | nginx → `127.0.0.1:3000`, TLS Let's Encrypt (certbot timer) |
+| Logs | `/home/ubuntu/.pm2/logs/angelivisions-*.log` (rotation `/etc/logrotate.d/pm2-angelivisions`) |
+
+## Déployer
+
+```powershell
+.\.agent\deploy.ps1            # build sur le VPS, bascule atomique, zéro coupure
+.\.agent\deploy.ps1 -Rollback  # retour à la release précédente
+```
+
+## SSH (repris de la config Antigravity)
+
+Alias défini dans `~/.ssh/config` :
+
+```powershell
+ssh angelivisions            # root@91.134.143.82 (clé ~/.ssh/id_rsa)
+scp fichier angelivisions:/tmp/
+```
+
+L'utilisateur `ubuntu` n'accepte **pas** la clé en SSH direct. Pour agir sur l'app :
+
+```powershell
+ssh angelivisions "su - ubuntu -c 'pm2 status'"
+```
+
+⚠️ `pm2` lancé en root ne voit **aucune** application : toujours passer par `su - ubuntu -c ...`.
+
+## Règles de déploiement
+
+1. Ne **jamais** écrire dans `releases/` ni dans `current` : ce sont des copies du dépôt, recréées à chaque déploiement. Les sources vivent en local / sur GitHub.
+2. `.env.local`, `public/uploads` et `data/monitor.log` sont des **liens symboliques** vers `shared/` : les secrets et les fichiers uploadés survivent aux déploiements.
+3. Passer **toujours** par `.agent/deploy.ps1` (ou `shared/deploy.sh`) : il builde dans une nouvelle release, teste sur `:3001`, puis bascule le lien. Ne jamais builder dans `current` en production.
+4. Le `.git` résiduel du serveur (`/var/www/angelivisions/.git`) est divergent (HEAD `a30aa6a`) : la source de vérité est le dépôt local + GitHub `danijay75/angelivisions`.
+5. Rollback : `.agent/deploy.ps1 -Rollback` (bascule sur la release précédente + `pm2 reload`, ~8 s).
