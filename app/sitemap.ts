@@ -1,11 +1,30 @@
 import { MetadataRoute } from 'next'
 import { LOCALES } from '@/lib/i18n/locales'
 import { LOCALIZED_SLUGS } from '@/lib/i18n/routes'
-import { projects } from '@/data/projects'
+import { projects as fallbackProjects } from '@/data/projects'
 import { defaultServices as fallbackServices } from '@/data/services'
 import { Redis } from "@upstash/redis"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://angelivisions.com'
+
+/**
+ * Les services et les projets sont édités depuis l'admin et stockés dans Redis :
+ * la base fait foi, les fichiers statiques ne servent que de secours si Redis
+ * est injoignable. Sans cela le sitemap annonce des pages supprimées (404).
+ */
+function readList(data: unknown): any[] | null {
+    if (!data) return null
+    if (typeof data === "string") {
+        try {
+            const parsed = JSON.parse(data)
+            return Array.isArray(parsed) ? parsed : null
+        } catch {
+            return null
+        }
+    }
+    if (typeof data === "object" && Array.isArray(data)) return data
+    return null
+}
 
 async function getServices() {
     try {
@@ -13,15 +32,26 @@ async function getServices() {
             url: process.env.KV_REST_API_URL || "",
             token: process.env.KV_REST_API_TOKEN || "",
         })
-        const servicesData = await redis.get("av_services_v1")
-        if (servicesData) {
-            if (typeof servicesData === "string") return JSON.parse(servicesData)
-            if (typeof servicesData === "object" && Array.isArray(servicesData)) return servicesData
-        }
+        const services = readList(await redis.get("av_services_v1"))
+        if (services) return services
     } catch (e) {
         console.error("Sitemap: Failed to fetch services from Redis")
     }
     return fallbackServices
+}
+
+async function getProjects() {
+    try {
+        const redis = new Redis({
+            url: process.env.KV_REST_API_URL || "",
+            token: process.env.KV_REST_API_TOKEN || "",
+        })
+        const projects = readList(await redis.get("projects"))
+        if (projects) return projects
+    } catch (e) {
+        console.error("Sitemap: Failed to fetch projects from Redis")
+    }
+    return fallbackProjects
 }
 
 async function getArtists() {
@@ -30,10 +60,8 @@ async function getArtists() {
             url: process.env.KV_REST_API_URL || "",
             token: process.env.KV_REST_API_TOKEN || "",
         })
-        const data = await redis.get("artists")
-        if (data) {
-            return typeof data === "string" ? JSON.parse(data) : data
-        }
+        const artists = readList(await redis.get("artists"))
+        if (artists) return artists
     } catch (e) {
         console.error("Sitemap: Failed to fetch artists from Redis")
     }
@@ -42,25 +70,28 @@ async function getArtists() {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const routes: MetadataRoute.Sitemap = []
-    
+
     // Fetch dynamic content
-    const [rawServices, artists] = await Promise.all([
+    const [rawServices, projectList, artists] = await Promise.all([
         getServices(),
+        getProjects(),
         getArtists()
     ])
-    const services = rawServices.filter((s: any) => s.id !== "sport")
+    // Ids retirés de l'offre : ils ne doivent jamais être annoncés.
+    const HIDDEN_SERVICE_IDS = ["sport", "booking"]
+    const services = rawServices.filter((s: any) => s && !HIDDEN_SERVICE_IDS.includes(s.id))
 
-    // Static routes for each language
+    // Pages statiques réellement servies en 200 (pas de redirection, pas de 404).
     const staticRoutes = [
         '',
         '/captation-video-streaming-live-podcast',
         '/realisations',
-        '/contacts',
         '/devis',
+        '/reclamations',
         '/mentions-legales',
         '/politique-confidentialite',
         '/politique-cookies',
-        '/newsletter',
+        '/newsletter/preferences',
     ]
 
     LOCALES.forEach((lang) => {
@@ -82,8 +113,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.8,
         })
 
-        // Projects
-        projects.forEach((project) => {
+        // Projects (source : Redis)
+        projectList.forEach((project: any) => {
+            if (!project?.slug) return
             routes.push({
                 url: `${BASE_URL}/${lang}/projet/${project.slug}`,
                 lastModified: new Date(),
@@ -94,6 +126,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
         // Artists (Dynamic)
         artists.forEach((artist: any) => {
+            if (!artist?.slug) return
             routes.push({
                 url: `${BASE_URL}/${lang}/${artist.slug}`,
                 lastModified: new Date(),
@@ -102,12 +135,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             })
         })
 
-        // Services (Dynamic)
+        // Services (Dynamic) — une seule URL par service, sans doublon.
+        const seenServicePaths = new Set<string>()
         services.forEach((service: any) => {
-            const isTopLevel = service.id === "label-de-musique" || service.id === "spectacles"
-            const urlPath = isTopLevel
-                ? `/spectacles`
-                : `/services/${service.id}`
+            if (!service?.id) return
+            // « spectacles » et son ancien alias « label-de-musique » partagent
+            // la même page publique : on ne l'annonce qu'une fois.
+            const isTopLevel = service.id === "spectacles" || service.id === "label-de-musique"
+            const urlPath = isTopLevel ? `/spectacles` : `/services/${service.id}`
+            if (seenServicePaths.has(urlPath)) return
+            seenServicePaths.add(urlPath)
             routes.push({
                 url: `${BASE_URL}/${lang}${urlPath}`,
                 lastModified: new Date(),
