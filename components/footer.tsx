@@ -67,7 +67,6 @@ export default function Footer() {
   const footerLinks = {
     services: [
       { label: t("nav.prestation"), href: `/${lang}/captation-video-streaming-live-podcast` },
-      { label: t("nav.artistes"), href: `/${lang}/artists` },
       { label: lang === "en" ? "Shows Catalog" : lang === "es" ? "Catálogo de espectáculos" : "Catalogue de spectacles", href: `/${lang}/spectacles` },
     ],
   }
