@@ -53,7 +53,7 @@ export async function GET() {
     }
 
     // Ultimate safety filter to ensure non-video services are NEVER returned
-    const FORBIDDEN_SERVICES = ["sport", "booking", "label-de-musique", "spectacles"]
+    const FORBIDDEN_SERVICES = ["sport", "label-de-musique", "spectacles"]
     const filteredServices = services.filter((s) => !FORBIDDEN_SERVICES.includes(s.id))
 
     return NextResponse.json({ services: filteredServices })
@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
 
     console.log("Saving services to Redis:", services.length, "services")
 
-    // Preserve forbidden services (sport, booking, label-de-musique, spectacles) in Redis
-    const FORBIDDEN_SERVICES = ["sport", "booking", "label-de-musique", "spectacles"]
+    // Preserve forbidden services (sport, label-de-musique, spectacles) in Redis
+    const FORBIDDEN_SERVICES = ["sport", "label-de-musique", "spectacles"]
     let existingServices: ServiceItem[] = []
     try {
       const redisData = await redis.get(SERVICES_KEY)

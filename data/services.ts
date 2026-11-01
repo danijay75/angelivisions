@@ -33,14 +33,6 @@ export const defaultServices: ServiceItem[] = [
     image: "/hip-hop-studio.png",
   },
   {
-    id: "booking",
-    title: "Booking DJ & Musiciens",
-    description: "Trouvez l'artiste parfait pour animer vos événements, soirées privées ou conventions.",
-    features: ["DJs internationaux", "Groupes live", "Artistes exclusifs", "Clé en main"],
-    color: "from-emerald-500 to-teal-500",
-    image: "/music-production-setup.png", 
-  },
-  {
     id: "vj-video-mapping",
     title: "VJ / Vidéo mapping",
     description: "Création de décors visuels immersifs et d'animations projetées sur mesure pour sublimer l'architecture de vos événements.",

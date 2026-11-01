@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "Angeli Visions — Organisateur d'événements",
         short_name: "Angeli Visions",
         description:
-            "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
+            "Production musicale, organisation événementielle et expériences immersives.",
         start_url: "/fr",
         display: "browser",
         background_color: "#020617",

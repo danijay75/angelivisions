@@ -8,17 +8,17 @@ const META: Record<Locale, { title: string; description: string }> = {
     fr: {
         title: "Nos Services",
         description:
-            "Production musicale, organisation d'événements, DJ booking, murs LED, mapping vidéo et captation média. Tous nos services événementiels.",
+            "Production musicale, organisation d'événements, murs LED, mapping vidéo et captation média. Tous nos services événementiels.",
     },
     en: {
         title: "Our Services",
         description:
-            "Music production, event organization, DJ booking, LED walls, video mapping and media capture. All our event services.",
+            "Music production, event organization, LED walls, video mapping and media capture. All our event services.",
     },
     es: {
         title: "Nuestros Servicios",
         description:
-            "Producción musical, organización de eventos, DJ booking, pantallas LED, video mapping y captura de medios. Todos nuestros servicios.",
+            "Producción musical, organización de eventos, pantallas LED, video mapping y captura de medios. Todos nuestros servicios.",
     },
 }
 

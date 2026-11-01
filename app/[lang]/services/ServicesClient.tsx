@@ -40,7 +40,7 @@ interface ServicesClientProps {
   }
 }
 
-// Services vidéo uniquement (exclure label-de-musique et booking)
+// Services vidéo uniquement (exclure label-de-musique)
 const VIDEO_SERVICE_IDS = ["captation-video", "streaming-live", "podcast", "vj-video-mapping"]
 
 function ProjectCard({ project, lang }: { project: Project; lang: string }) {

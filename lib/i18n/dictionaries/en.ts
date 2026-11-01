@@ -1,9 +1,7 @@
 const en = {
   nav: {
     accueil: "Home",
-    prestation: "Audiovisual technical production",
-    artistes: "DJ & Musicians Booking",
-    label: "Shows",
+    prestation: "Audiovisual technical production",    label: "Shows",
     realisations: "Portfolio",
     devis: "Quick Quote",
     contact: "Contact",
@@ -52,13 +50,7 @@ const en = {
         title: "Podcast Production",
         description: "Audio and video podcast recording in studio or on-location for your brand.",
         features: ["Video podcasts", "Audio recording", "Post-production", "Distribution"],
-      },
-      booking: {
-        title: "DJ & Musicians Booking",
-        description: "Professional DJs, live musicians, and artistic performers for your events.",
-        features: ["Professional DJ sets", "Live bands", "Artistic coordination", "Musical curation"],
-      },
-      "vj-video-mapping": {
+      },      "vj-video-mapping": {
         title: "VJ / Video Mapping",
         description: "Immersive visual experiences, giant LED walls, and architectural video mapping.",
         features: ["Architectural mapping", "VJ live performance", "LED wall management", "Motion design"],
@@ -161,9 +153,7 @@ const en = {
     services: {
       "captation-video": "Video Recording & Filming",
       "streaming-live": "Live Streaming",
-      podcast: "Podcast",
-      booking: "Booking DJ & Musicians",
-      "vj-video-mapping": "VJ / Video Mapping",
+      podcast: "Podcast",      "vj-video-mapping": "VJ / Video Mapping",
       spectacles: "Shows Catalog",
       "label-de-musique": "Shows Catalog",
     },

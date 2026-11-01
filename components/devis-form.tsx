@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Calendar, Users, MapPin, Music, Mic, Zap, Camera, Send, CheckCircle, Monitor, Sparkles } from "lucide-react"
+import { Calendar, Users, MapPin, Mic, Zap, Camera, Send, CheckCircle, Monitor, Sparkles } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import Turnstile from "@/components/ui/turnstile"
 import { captchaBypass } from "@/lib/public-config"
@@ -51,7 +51,6 @@ export default function DevisForm() {
     { id: "captation-video", label: "Captation vidéo", icon: Camera, color: "from-blue-600 to-cyan-600" },
     { id: "streaming-live", label: "Streaming Live", icon: Monitor, color: "from-blue-500 to-cyan-500" },
     { id: "podcast", label: "Podcast", icon: Mic, color: "from-orange-500 to-red-500" },
-    { id: "booking", label: "Booking DJ & Musiciens", icon: Music, color: "from-blue-700 to-cyan-700" },
     { id: "vj-video-mapping", label: "VJ / Vidéo mapping", icon: Zap, color: "from-blue-500 to-cyan-500" },
   ], [])
 

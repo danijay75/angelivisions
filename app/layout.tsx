@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "Angeli Visions",
     title: "Angeli Visions — Organisateur d'événements",
     description:
-      "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
+      "Production musicale, organisation événementielle et expériences immersives.",
     url: BASE_URL,
     locale: "fr_FR",
     alternateLocale: ["en_US", "es_ES"],
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Angeli Visions — Organisateur d'événements",
     description:
-      "Production musicale, organisation événementielle, DJ booking et expériences immersives.",
+      "Production musicale, organisation événementielle et expériences immersives.",
     images: ["/opengraph-image.png"],
   },
   robots: {

@@ -1,9 +1,7 @@
 const fr = {
   nav: {
     accueil: "Accueil",
-    prestation: "Captation - Streaming - Podcast",
-    artistes: "Booking DJ & Musiciens",
-    label: "Spectacles",
+    prestation: "Captation - Streaming - Podcast",    label: "Spectacles",
     realisations: "Réalisations",
     devis: "Devis",
     contact: "Contact",
@@ -52,13 +50,7 @@ const fr = {
         title: "Podcast",
         description: "Création, enregistrement et distribution de podcasts audio et vidéo avec des locaux insonorisés.",
         features: ["Studio professionnel", "Prise de son HD", "Montage experte", "Mixage"],
-      },
-      "booking": {
-        title: "Booking DJ & Musiciens",
-        description: "Trouvez l'artiste parfait pour animer vos événements, soirées privées ou conventions.",
-        features: ["DJs internationaux", "Groupes live", "Artistes exclusifs", "Clé en main"],
-      },
-      "vj-video-mapping": {
+      },      "vj-video-mapping": {
         title: "VJ / Vidéo mapping",
         description: "Création de décors visuels immersifs et d'animations projetées sur mesure pour sublimer l'architecture de vos événements.",
         features: ["Mapping 3D", "VJing en direct", "Scénographie", "Contenus sur mesure"],
@@ -161,9 +153,7 @@ const fr = {
     services: {
       "captation-video": "Captation vidéo",
       "streaming-live": "Streaming Live",
-      "podcast": "Podcast",
-      "booking": "Booking DJ & Musiciens",
-      "vj-video-mapping": "VJ / Vidéo Mapping",
+      "podcast": "Podcast",      "vj-video-mapping": "VJ / Vidéo Mapping",
       "spectacles": "Catalogue de spectacles",
       "label-de-musique": "Catalogue de spectacles",
     },

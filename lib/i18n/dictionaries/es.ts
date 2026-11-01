@@ -1,9 +1,7 @@
 const es = {
   nav: {
     accueil: "Inicio",
-    prestation: "Grabación - Streaming - Podcast",
-    artistes: "Reserva de DJ y Músicos",
-    label: "Espectáculos",
+    prestation: "Grabación - Streaming - Podcast",    label: "Espectáculos",
     realisations: "Realizaciones",
     devis: "Presupuesto",
     contact: "Contacto",
@@ -52,13 +50,7 @@ const es = {
         title: "Producción de Podcast",
         description: "Grabación de podcast de audio y video en estudio o en locación para su marca.",
         features: ["Podcasts de video", "Grabación de audio", "Postproducción", "Distribución"],
-      },
-      booking: {
-        title: "Reserva de DJ y Músicos",
-        description: "DJs profesionales, músicos en vivo y artistas para sus eventos.",
-        features: ["Sets de DJ profesionales", "Bandas en vivo", "Coordinación artística", "Curaduría musical"],
-      },
-      "vj-video-mapping": {
+      },      "vj-video-mapping": {
         title: "VJ / Video Mapping",
         description: "Experiencias visuales inmersivas, muros de LED gigantes y video mapping arquitectónico.",
         features: ["Mapping arquitectónico", "Actuación de VJ en vivo", "Gestión de muros LED", "Motion design"],
@@ -161,9 +153,7 @@ const es = {
     services: {
       "captation-video": "Grabación de Video",
       "streaming-live": "Streaming en Vivo",
-      podcast: "Podcast",
-      booking: "Reserva de DJ y Músicos",
-      "vj-video-mapping": "VJ / Video Mapping",
+      podcast: "Podcast",      "vj-video-mapping": "VJ / Video Mapping",
       spectacles: "Catálogo de espectáculos",
       "label-de-musique": "Catálogo de espectáculos",
     },
