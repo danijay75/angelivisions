@@ -49,6 +49,14 @@ if ($Rollback) {
 $ts = Get-Date -Format "yyyyMMdd-HHmmss"
 $tar = Join-Path $env:TEMP "av-$ts.tgz"
 
+Write-Host "== 0/4 Dates de modification du sitemap ==" -ForegroundColor Cyan
+# Recalcule data/sitemap-lastmod.json depuis l'historique git : chaque page
+# annonce sa vraie date de derniere modification, pas l'heure du build.
+$previous = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+& node (Join-Path $root "scripts\build-lastmod.mjs")
+$ErrorActionPreference = $previous
+
 Write-Host "== 1/4 Preparation de l'archive ($ts) ==" -ForegroundColor Cyan
 # On exclut tout ce qui est reconstruit ou inutile sur le serveur.
 $excludes = @(

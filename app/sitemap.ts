@@ -1,4 +1,6 @@
 import { MetadataRoute } from 'next'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { LOCALES } from '@/lib/i18n/locales'
 import { LOCALIZED_SLUGS } from '@/lib/i18n/routes'
 import { projects as fallbackProjects } from '@/data/projects'
@@ -6,6 +8,32 @@ import { defaultServices as fallbackServices } from '@/data/services'
 import { Redis } from "@upstash/redis"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://angelivisions.com'
+
+/**
+ * Dates réelles de dernière modification, calculées depuis git par
+ * scripts/build-lastmod.mjs et embarquées au déploiement.
+ * Google n'honore `lastmod` que s'il est crédible : mieux vaut l'omettre que
+ * dater toutes les pages à l'heure du build.
+ */
+type LastmodDates = {
+    static?: Record<string, string>
+    mission?: Record<string, string>
+}
+
+function readLastmodDates(): LastmodDates {
+    try {
+        return JSON.parse(readFileSync(join(process.cwd(), 'data', 'sitemap-lastmod.json'), 'utf8'))
+    } catch {
+        // Fichier absent (dev local) : on n'annonce simplement aucune date.
+        return {}
+    }
+}
+
+const LASTMOD = readLastmodDates()
+
+function lastModifiedFor(value?: string): Date | undefined {
+    return value ? new Date(value) : undefined
+}
 
 /**
  * Les services et les projets sont édités depuis l'admin et stockés dans Redis :
@@ -95,30 +123,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
 
     LOCALES.forEach((lang) => {
-        // Static pages
+        // Static pages — date du dernier commit touchant leur contenu
         staticRoutes.forEach((route) => {
             routes.push({
                 url: `${BASE_URL}/${lang}${route}`,
-                lastModified: new Date(),
+                lastModified: lastModifiedFor(LASTMOD.static?.[route]),
                 changeFrequency: route === '' ? 'daily' : 'weekly',
                 priority: route === '' ? 1.0 : 0.8,
             })
         })
 
-        // Mission page (localized slug)
+        // Mission page (localized slug, un fichier de contenu par langue)
         routes.push({
             url: `${BASE_URL}/${lang}/${LOCALIZED_SLUGS.mission[lang]}`,
-            lastModified: new Date(),
+            lastModified: lastModifiedFor(LASTMOD.mission?.[lang]),
             changeFrequency: 'monthly',
             priority: 0.8,
         })
 
-        // Projects (source : Redis)
+        // Projects : la fraîcheur vit dans Redis (éditée depuis l'admin),
+        // aucune date fiable à annoncer ici.
         projectList.forEach((project: any) => {
             if (!project?.slug) return
             routes.push({
                 url: `${BASE_URL}/${lang}/projet/${project.slug}`,
-                lastModified: new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.7,
             })
@@ -129,7 +157,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             if (!artist?.slug) return
             routes.push({
                 url: `${BASE_URL}/${lang}/${artist.slug}`,
-                lastModified: new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.6,
             })
@@ -147,7 +174,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             seenServicePaths.add(urlPath)
             routes.push({
                 url: `${BASE_URL}/${lang}${urlPath}`,
-                lastModified: new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.7,
             })

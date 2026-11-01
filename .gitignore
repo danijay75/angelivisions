@@ -44,3 +44,6 @@ tsc_errors*.txt
 
 # credentials de deploiement
 .agent/gsc-service-account.json
+
+# dates du sitemap, recalculees a chaque deploiement
+data/sitemap-lastmod.json
