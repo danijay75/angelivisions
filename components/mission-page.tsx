@@ -12,7 +12,7 @@ import {
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Locale } from "@/lib/i18n/locales"
-import { getAboutContent } from "@/data/about-content"
+import { getMissionContent } from "@/data/mission-content"
 
 const SYNTHESIS_ICONS = [Users, Music2, Globe2, Landmark]
 
@@ -42,8 +42,8 @@ function SectionHeading({
   )
 }
 
-export default function AboutPage({ lang }: { lang: Locale }) {
-  const content = getAboutContent(lang)
+export default function MissionPage({ lang }: { lang: Locale }) {
+  const content = getMissionContent(lang)
 
   return (
     <main className="min-h-screen bg-[#020617] relative overflow-hidden pb-24">

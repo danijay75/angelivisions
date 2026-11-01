@@ -6,12 +6,12 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Mail, Phone, Instagram, Facebook, ArrowUp, ArrowRight, Building2 } from "lucide-react"
+import { Mail, Phone, Instagram, Facebook, ArrowUp } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
-import { aboutPath } from "@/lib/i18n/routes"
+import { missionPath } from "@/lib/i18n/routes"
 import Turnstile from "@/components/ui/turnstile"
 
 export default function Footer() {
@@ -121,17 +121,9 @@ export default function Footer() {
               <p className="text-slate-400 text-sm font-display leading-relaxed mb-4">
                 {t("footer.description")}
               </p>
-              <div className="space-y-2 mb-8">
+              <div className="space-y-1 mb-8">
                 <p className="text-slate-500 text-[14px] font-display leading-relaxed">{t("footer.legalInfo2")}</p>
-                <p className="text-slate-500 text-[14px] font-display leading-relaxed">
-                  {t("footer.essInfo")}{" "}
-                  <Link
-                    href={aboutPath(lang)}
-                    className="text-amber-500/90 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4 transition-colors"
-                  >
-                    {t("footer.aboutTeaser")}
-                  </Link>
-                </p>
+                <p className="text-slate-500 text-[14px] font-display leading-relaxed">{t("footer.essInfo")}</p>
               </div>
 
               {/* Social Links */}
@@ -182,6 +174,20 @@ export default function Footer() {
                 )
               })}
             </ul>
+
+            {/* Mission */}
+            <div className="mt-10">
+              <h3 className="text-white font-display font-medium text-lg mb-4 uppercase tracking-widest text-[10px]">
+                {t("footer.missionLink")}
+              </h3>
+              <Link
+                href={missionPath(lang)}
+                className="text-sm text-slate-400 hover:text-amber-500 font-display leading-relaxed transition-colors duration-300 inline-flex items-start group"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500/0 group-hover:bg-amber-500 mr-0 group-hover:mr-3 mt-2 transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.6)] shrink-0" />
+                <span>{t("footer.missionTeaser")}</span>
+              </Link>
+            </div>
           </motion.div>
 
           {/* Contact Information */}
@@ -210,18 +216,6 @@ export default function Footer() {
                   contact@angelivisions.com
                 </a>
               </div>
-              <Link
-                href={aboutPath(lang)}
-                className="group flex items-center text-slate-300 hover:text-amber-500 transition-colors"
-              >
-                <div className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center mr-4 group-hover:bg-white/[0.08] transition-colors">
-                   <Building2 className="w-4 h-4 text-amber-500" />
-                </div>
-                <span className="text-sm font-display inline-flex items-center gap-1.5">
-                  {t("footer.aboutLink")}
-                  <ArrowRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                </span>
-              </Link>
             </div>
           </motion.div>
 

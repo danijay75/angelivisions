@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import { notFound, permanentRedirect } from "next/navigation"
-import AboutPage from "@/components/about-page"
+import MissionPage from "@/components/mission-page"
 import { isLocale } from "@/lib/i18n/locales"
 import { LOCALIZED_SLUGS } from "@/lib/i18n/routes"
-import { buildAboutMetadata } from "@/lib/i18n/about-metadata"
+import { buildMissionMetadata } from "@/lib/i18n/mission-metadata"
 
 const SLUG = "nuestra-mision"
 
@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params
   if (!isLocale(lang)) return {}
-  return buildAboutMetadata(lang)
+  return buildMissionMetadata(lang)
 }
 
 export default async function Page({
@@ -24,8 +24,8 @@ export default async function Page({
 }) {
   const { lang } = await params
   if (!isLocale(lang)) notFound()
-  if (LOCALIZED_SLUGS.about[lang] !== SLUG) {
-    permanentRedirect(`/${lang}/${LOCALIZED_SLUGS.about[lang]}`)
+  if (LOCALIZED_SLUGS.mission[lang] !== SLUG) {
+    permanentRedirect(`/${lang}/${LOCALIZED_SLUGS.mission[lang]}`)
   }
-  return <AboutPage lang={lang} />
+  return <MissionPage lang={lang} />
 }

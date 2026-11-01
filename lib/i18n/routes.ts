@@ -5,11 +5,11 @@ import type { Locale } from "./locales"
  * Ajouter ici toute nouvelle page concernée.
  */
 export const LOCALIZED_SLUGS: Record<string, Record<Locale, string>> = {
-  about: { fr: "notre-mission", en: "our-mission", es: "nuestra-mision" },
+  mission: { fr: "notre-mission", en: "our-mission", es: "nuestra-mision" },
 }
 
-export function aboutPath(lang: Locale): string {
-  return `/${lang}/${LOCALIZED_SLUGS.about[lang]}`
+export function missionPath(lang: Locale): string {
+  return `/${lang}/${LOCALIZED_SLUGS.mission[lang]}`
 }
 
 /**

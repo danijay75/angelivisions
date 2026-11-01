@@ -74,9 +74,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             })
         })
 
-        // About page (localized slug)
+        // Mission page (localized slug)
         routes.push({
-            url: `${BASE_URL}/${lang}/${LOCALIZED_SLUGS.about[lang]}`,
+            url: `${BASE_URL}/${lang}/${LOCALIZED_SLUGS.mission[lang]}`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
