@@ -182,9 +182,16 @@ async function runSearchConsole() {
         return
     }
 
+    // Search Console refuse un sitemap hors du périmètre de la propriété :
+    // une propriété « https://www.exemple.com/ » impose un sitemap en www,
+    // même si le site est canonique sur le domaine nu.
+    const sitemapUrl = property.startsWith("sc-domain:")
+        ? SITEMAP_URL
+        : `${property.replace(/\/+$/, "")}/sitemap.xml`
+
     const endpoint =
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(property)}` +
-        `/sitemaps/${encodeURIComponent(SITEMAP_URL)}`
+        `/sitemaps/${encodeURIComponent(sitemapUrl)}`
 
     const res = await fetch(endpoint, {
         method: "PUT",
@@ -192,7 +199,11 @@ async function runSearchConsole() {
     })
 
     if (res.ok) {
-        info(`Search Console : sitemap soumis pour ${property}`)
+        info(`Search Console : ${sitemapUrl} soumis pour ${property}`)
+        if (!sitemapUrl.startsWith(SITE)) {
+            warn(`le sitemap est publié sur ${new URL(SITE).host}, la propriété déclare ${property}`)
+            warn("une propriété « sc-domain: » ou « https://" + new URL(SITE).host + "/ » éviterait cet écart")
+        }
         return
     }
 
@@ -209,9 +220,52 @@ async function runSearchConsole() {
     warn(`Search Console a répondu ${res.status} : ${(await res.text()).slice(0, 300)}`)
 }
 
+/** État des sitemaps déclarés dans Search Console (diagnostic). */
+async function runStatus() {
+    const path = process.env.GSC_CREDENTIALS_PATH || join(ROOT, ".agent", "gsc-service-account.json")
+    if (!existsSync(path)) {
+        warn(`identifiants Search Console absents (${path})`)
+        return
+    }
+    const credentials = JSON.parse(readFileSync(path, "utf8"))
+    const token = await getGoogleAccessToken(credentials)
+    const properties = await fetchProperties(token)
+
+    if (properties.length === 0) {
+        warn("aucune propriété accessible")
+        return
+    }
+
+    for (const site of properties) {
+        info(`${site.siteUrl} — ${site.permissionLevel}`)
+        const res = await fetch(
+            `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site.siteUrl)}/sitemaps`,
+            { headers: { authorization: `Bearer ${token}` } },
+        )
+        if (!res.ok) {
+            warn(`  sitemaps illisibles (${res.status})`)
+            continue
+        }
+        const { sitemap = [] } = await res.json()
+        if (sitemap.length === 0) {
+            info("  aucun sitemap déclaré")
+            continue
+        }
+        for (const entry of sitemap) {
+            const stamp = entry.lastSubmitted?.slice(0, 10) || "jamais"
+            info(`  ${entry.path}`)
+            info(
+                `    soumis le ${stamp} · erreurs ${entry.errors ?? 0} · ` +
+                    `avertissements ${entry.warnings ?? 0} · URL ${entry.contents?.[0]?.submitted ?? "?"}`,
+            )
+        }
+    }
+}
+
 const steps = {
     indexnow: runIndexNow,
     gsc: runSearchConsole,
+    status: runStatus,
 }
 
 const selected = mode === "all" ? ["indexnow", "gsc"] : [mode]
