@@ -262,10 +262,57 @@ async function runStatus() {
     }
 }
 
+/**
+ * Retire les sitemaps déclarés sous un autre hôte que celui du site
+ * (typiquement le reliquat en www). Sans --apply, se contente de lister.
+ */
+async function runPrune() {
+    const apply = process.argv.includes("--apply")
+    const path = process.env.GSC_CREDENTIALS_PATH || join(ROOT, ".agent", "gsc-service-account.json")
+    if (!existsSync(path)) {
+        warn(`identifiants Search Console absents (${path})`)
+        return
+    }
+    const credentials = JSON.parse(readFileSync(path, "utf8"))
+    const token = await getGoogleAccessToken(credentials)
+    const properties = await fetchProperties(token)
+    const expectedHost = new URL(SITE).host
+
+    let found = 0
+    for (const site of properties) {
+        const list = await fetch(
+            `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site.siteUrl)}/sitemaps`,
+            { headers: { authorization: `Bearer ${token}` } },
+        )
+        if (!list.ok) continue
+        const { sitemap = [] } = await list.json()
+
+        for (const entry of sitemap) {
+            if (new URL(entry.path).host === expectedHost) continue
+            found += 1
+            if (!apply) {
+                info(`a supprimer : ${entry.path} (${site.siteUrl})`)
+                continue
+            }
+            const res = await fetch(
+                `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site.siteUrl)}` +
+                    `/sitemaps/${encodeURIComponent(entry.path)}`,
+                { method: "DELETE", headers: { authorization: `Bearer ${token}` } },
+            )
+            if (res.ok) info(`supprime : ${entry.path} (${site.siteUrl})`)
+            else warn(`echec sur ${entry.path} (${res.status})`)
+        }
+    }
+
+    if (found === 0) info(`aucun sitemap hors de ${expectedHost}`)
+    else if (!apply) warn(`${found} sitemap(s) hors de ${expectedHost} — relancer avec --apply pour supprimer`)
+}
+
 const steps = {
     indexnow: runIndexNow,
     gsc: runSearchConsole,
     status: runStatus,
+    prune: runPrune,
 }
 
 const selected = mode === "all" ? ["indexnow", "gsc"] : [mode]
