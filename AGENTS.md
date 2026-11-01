@@ -24,7 +24,7 @@ npx tsc --noEmit # doit rester propre (0 erreur)
 
 | Élément | Valeur |
 | --- | --- |
-| Domaine | https://angelivisions.com (www → redirige) |
+| Domaine | https://angelivisions.com (www → 301 vers le domaine nu, dans `/etc/nginx/sites-enabled/angelivisions`) |
 | VPS | OVH `91.134.143.82` (`vps-86158205`, Ubuntu) |
 | Racine | `/var/www/angelivisions` |
 | Release active | `/var/www/angelivisions/current` → `releases/<horodatage>` |
