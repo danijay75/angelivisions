@@ -119,6 +119,38 @@ async function getGoogleAccessToken(credentials) {
     return (await res.json()).access_token
 }
 
+/** Propriétés Search Console visibles par le compte de service. */
+async function fetchProperties(token) {
+    const res = await fetch("https://www.googleapis.com/webmasters/v3/sites", {
+        headers: { authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) throw new Error(`liste des propriétés indisponible (${res.status})`)
+    const { siteEntry = [] } = await res.json()
+    return siteEntry
+}
+
+/**
+ * Choisit la propriété qui correspond au site, que Search Console la déclare
+ * en propriété de domaine (`sc-domain:`) ou en préfixe d'URL (`https://…/`).
+ * GSC_PROPERTY permet de forcer un choix explicite.
+ */
+function pickProperty(properties, host) {
+    if (process.env.GSC_PROPERTY) return process.env.GSC_PROPERTY
+
+    const bare = host.replace(/^www\./, "")
+    const candidates = [
+        `sc-domain:${bare}`,
+        `https://${bare}/`,
+        `http://${bare}/`,
+        `https://www.${bare}/`,
+    ]
+    for (const candidate of candidates) {
+        const match = properties.find((p) => p.siteUrl === candidate)
+        if (match) return match.siteUrl
+    }
+    return null
+}
+
 /** Search Console : PUT sitemaps/submit, idempotent. */
 async function runSearchConsole() {
     const path = process.env.GSC_CREDENTIALS_PATH || join(ROOT, ".agent", "gsc-service-account.json")
@@ -129,9 +161,27 @@ async function runSearchConsole() {
     }
 
     const credentials = JSON.parse(readFileSync(path, "utf8"))
-    const property = process.env.GSC_PROPERTY || `sc-domain:${new URL(SITE).host.replace(/^www\./, "")}`
-
+    const host = new URL(SITE).host
     const token = await getGoogleAccessToken(credentials)
+    const properties = await fetchProperties(token)
+
+    if (properties.length === 0) {
+        warn("le compte de service ne voit aucune propriété Search Console")
+        warn(
+            `ajoute ${credentials.client_email} comme utilisateur dans Search Console ` +
+                `(Paramètres > Utilisateurs et autorisations)`,
+        )
+        return
+    }
+
+    const property = pickProperty(properties, host)
+    if (!property) {
+        warn(`aucune propriété Search Console ne correspond à ${host}`)
+        info("propriétés accessibles :")
+        for (const site of properties) info(`  ${site.siteUrl} (${site.permissionLevel})`)
+        return
+    }
+
     const endpoint =
         `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(property)}` +
         `/sitemaps/${encodeURIComponent(SITEMAP_URL)}`
@@ -140,12 +190,23 @@ async function runSearchConsole() {
         method: "PUT",
         headers: { authorization: `Bearer ${token}` },
     })
+
     if (res.ok) {
         info(`Search Console : sitemap soumis pour ${property}`)
-    } else {
-        const body = await res.text()
-        warn(`Search Console a répondu ${res.status} : ${body.slice(0, 300)}`)
+        return
     }
+
+    // 403 : le compte de service est authentifié mais n'a pas les droits requis.
+    if (res.status === 403) {
+        warn(`droits insuffisants sur ${property}`)
+        warn(
+            `passe ${credentials.client_email} en « Propriétaire » dans Search Console > ` +
+                `Paramètres > Utilisateurs et autorisations`,
+        )
+        return
+    }
+
+    warn(`Search Console a répondu ${res.status} : ${(await res.text()).slice(0, 300)}`)
 }
 
 const steps = {
