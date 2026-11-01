@@ -41,3 +41,6 @@ next-env.d.ts
 *.zip
 build_output*.txt
 tsc_errors*.txt
+
+# credentials de deploiement
+.agent/gsc-service-account.json

@@ -38,7 +38,13 @@ npx tsc --noEmit # doit rester propre (0 erreur)
 ```powershell
 .\.agent\deploy.ps1            # build sur le VPS, bascule atomique, zéro coupure
 .\.agent\deploy.ps1 -Rollback  # retour à la release précédente
+.\.agent\deploy.ps1 -SkipSeo   # déploie sans signaler le sitemap aux moteurs
 ```
+
+Après la bascule, `scripts/seo-ping.mjs` signale les URL du sitemap à IndexNow
+(Bing, Yandex, Seznam, Naver) via la clé `public/<clé>.txt`. La soumission à
+Google Search Console est optionnelle : copier un compte de service dans
+`.agent/gsc-service-account.json` (voir l'exemple à côté, fichier ignoré par git).
 
 ## SSH (repris de la config Antigravity)
 
