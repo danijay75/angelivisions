@@ -15,7 +15,6 @@ export const nuestraMision: MissionContent = {
   },
   facts: [
     { value: "ESS", label: "Economía Social y Solidaria" },
-    { value: "SASU", label: "con capital variable" },
     { value: "Hasta 49 %", label: "de los beneficios compartidos con los colaboradores" },
     { value: "Hasta 33 %", label: "de los beneficios dedicados al fondo cultural" },
   ],

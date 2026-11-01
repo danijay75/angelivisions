@@ -15,7 +15,6 @@ export const ourMission: MissionContent = {
   },
   facts: [
     { value: "SSE", label: "Social and Solidarity Economy" },
-    { value: "SASU", label: "with variable capital" },
     { value: "Up to 49%", label: "of profits shared with the team" },
     { value: "Up to 33%", label: "of profits dedicated to the cultural fund" },
   ],
