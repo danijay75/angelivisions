@@ -365,7 +365,7 @@ export default function MissionPage({ lang }: { lang: Locale }) {
                 {content.cta.text}
               </p>
               <Link
-                href={`/${lang}/contacts`}
+                href={`/${lang}#contact`}
                 className="relative z-10 inline-flex items-center gap-2 sunset-gradient text-white font-medium px-8 py-3.5 rounded-2xl transition-all duration-500 hover:scale-[1.03] shadow-xl shadow-amber-500/10"
               >
                 {content.cta.contact}
