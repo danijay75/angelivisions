@@ -214,9 +214,9 @@ const fr: LandingContent = {
           "Pingez n’importe quelle cible depuis la carte réseau de votre choix, sans ouvrir de terminal ni mémoriser de commande.",
       },
       {
-        title: "Léger et portable",
+        title: "Léger, portable et multilingue",
         description:
-          "Un seul exécutable de moins de 200 Ko, aucune installation, aucune télémétrie. Thème clair et sombre au choix.",
+          "Un seul exécutable de moins de 300 Ko, aucune installation, aucune télémétrie. Interface en français, anglais, allemand et espagnol, thème clair et sombre au choix.",
       },
     ],
     highlights: [
@@ -327,7 +327,7 @@ const fr: LandingContent = {
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
-    sizeWindows: "180 Ko",
+    sizeWindows: "257 Ko",
     sizeMac: "1,1 Mo",
     freeLabel: "gratuit",
   },
@@ -492,9 +492,9 @@ const en: LandingContent = {
           "Ping any target from the network adapter of your choice, without opening a terminal or memorising commands.",
       },
       {
-        title: "Lightweight and portable",
+        title: "Lightweight, portable and multilingual",
         description:
-          "A single executable under 200 KB, no installation, no telemetry. Light and dark themes included.",
+          "A single executable under 300 KB, no installation, no telemetry. Interface in French, English, German and Spanish, with light and dark themes.",
       },
     ],
     highlights: [
@@ -593,7 +593,7 @@ const en: LandingContent = {
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
-    sizeWindows: "180 KB",
+    sizeWindows: "257 KB",
     sizeMac: "1.1 MB",
     freeLabel: "free",
   },
@@ -762,9 +762,9 @@ const de: LandingContent = {
           "Pingen Sie ein beliebiges Ziel über den Netzwerkadapter Ihrer Wahl – ohne Terminal und ohne Befehle auswendig zu lernen.",
       },
       {
-        title: "Leicht und portabel",
+        title: "Leicht, portabel und mehrsprachig",
         description:
-          "Eine einzige ausführbare Datei unter 200 KB, keine Installation, keine Telemetrie. Helles und dunkles Design inklusive.",
+          "Eine einzige ausführbare Datei unter 300 KB, keine Installation, keine Telemetrie. Oberfläche auf Französisch, Englisch, Deutsch und Spanisch, helles und dunkles Design inklusive.",
       },
     ],
     highlights: [
@@ -875,7 +875,7 @@ const de: LandingContent = {
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
-    sizeWindows: "180 KB",
+    sizeWindows: "257 KB",
     sizeMac: "1,1 MB",
     freeLabel: "kostenlos",
   },
@@ -1044,9 +1044,9 @@ const es: LandingContent = {
           "Haz ping a cualquier destino desde el adaptador de red que elijas, sin abrir una terminal ni memorizar comandos.",
       },
       {
-        title: "Ligera y portátil",
+        title: "Ligera, portátil y multilingüe",
         description:
-          "Un único ejecutable de menos de 200 KB, sin instalación y sin telemetría. Tema claro y oscuro incluidos.",
+          "Un único ejecutable de menos de 300 KB, sin instalación y sin telemetría. Interfaz en francés, inglés, alemán y español, con tema claro y oscuro.",
       },
     ],
     highlights: [
@@ -1157,7 +1157,7 @@ const es: LandingContent = {
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
-    sizeWindows: "180 KB",
+    sizeWindows: "257 KB",
     sizeMac: "1,1 MB",
     freeLabel: "gratis",
   },
