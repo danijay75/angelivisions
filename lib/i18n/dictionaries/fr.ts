@@ -263,6 +263,81 @@ const fr = {
     cookiePolicy: { title: "Politique des Cookies" },
   },
 
+  legalForms: {
+    dpd: {
+      name: "Nom complet",
+      namePlaceholder: "Votre nom",
+      email: "Email professionnel",
+      emailPlaceholder: "votre@email.com",
+      requestType: "Type de demande RGPD",
+      requestTypePlaceholder: "Sélectionnez l'objet de votre demande",
+      requestTypes: {
+        access: "Droit d'accès aux données",
+        rectification: "Droit de rectification",
+        deletion: "Droit à l'effacement (Droit à l'oubli)",
+        portability: "Droit à la portabilité",
+        opposition: "Droit d'opposition",
+        other: "Autre question relative aux données",
+      },
+      message: "Votre message détaillé",
+      messagePlaceholder: "Veuillez préciser votre demande pour un traitement optimal...",
+      submit: "Envoyer ma demande sécurisée",
+      sending: "Envoi de la demande en cours...",
+      footnote: "Vos données sont traitées uniquement pour répondre à cette demande.",
+      success: "Votre demande a bien été envoyée. Nous reviendrons vers vous rapidement.",
+      successDesc: "Un email a été envoyé au délégué à la protection des données.",
+      timeout: "Le délai d'attente a été dépassé.",
+      timeoutDesc: "Le serveur met trop de temps à répondre. Veuillez réessayer.",
+      error: "Erreur lors de l'envoi de la demande.",
+      errorDesc: "Veuillez vérifier vos informations et réessayer.",
+      validation: {
+        name: "Le nom doit contenir au moins 2 caractères.",
+        email: "Veuillez entrer une adresse email valide.",
+        requestType: "Veuillez sélectionner un type de demande.",
+        message: "Le message doit contenir au moins 10 caractères.",
+      },
+    },
+    reclamations: {
+      firstName: "Prénom",
+      firstNamePlaceholder: "Votre prénom",
+      lastName: "Nom",
+      lastNamePlaceholder: "Votre nom",
+      email: "Email",
+      phone: "Téléphone (Optionnel)",
+      subject: "Sujet",
+      subjectPlaceholder: "Ex: Problème concernant mon événement ou billet...",
+      message: "Message détaillé",
+      messagePlaceholder: "Décrivez votre problème avec le plus de détails possibles...",
+      consent: "J'accepte la politique de confidentialité",
+      consentDesc:
+        "En cochant cette case, j'accepte que les informations saisies soient exploitées dans le cadre du traitement de ma réclamation selon",
+      privacyLink: "la politique de confidentialité",
+      submit: "Soumettre la réclamation",
+      sending: "Envoi en cours...",
+      newRequest: "Nouvelle demande",
+      captchaTitle: "Validation requise",
+      captchaDesc: "Veuillez valider le captcha avant d'envoyer votre réclamation.",
+      successTitle: "Réclamation envoyée",
+      successMessage:
+        "Nous avons bien reçu votre demande de réclamation portant le numéro",
+      successMessageEnd:
+        "Un accusé de réception vous a été envoyé par e-mail. Nous la traiterons dans les plus brefs délais.",
+      successDescription:
+        "Votre dossier porte la référence {number}. Un e-mail de confirmation vous a été envoyé.",
+      error: "Une erreur est survenue lors de l'envoi de votre réclamation.",
+      unexpectedError: "Une erreur inattendue est survenue.",
+      validation: {
+        firstName: "Le prénom doit au moins contenir 2 caractères",
+        lastName: "Le nom doit au moins contenir 2 caractères",
+        email: "L'adresse email est invalide",
+        subject: "Le sujet doit au moins contenir 5 caractères",
+        message:
+          "Le message de réclamation doit être détaillé (minimum 20 caractères)",
+        consent: "Vous devez accepter la politique de confidentialité.",
+      },
+    },
+  },
+
   newsletter: {
     preferences: {
       title: "Gestion de vos préférences newsletter",

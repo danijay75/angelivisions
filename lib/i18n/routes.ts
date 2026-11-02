@@ -6,10 +6,33 @@ import type { Locale } from "./locales"
  */
 export const LOCALIZED_SLUGS: Record<string, Record<Locale, string>> = {
   mission: { fr: "notre-mission", en: "our-mission", es: "nuestra-mision" },
+  legal: { fr: "mentions-legales", en: "legal-notice", es: "aviso-legal" },
+  privacy: {
+    fr: "politique-confidentialite",
+    en: "privacy-policy",
+    es: "politica-de-privacidad",
+  },
+  cookies: {
+    fr: "politique-cookies",
+    en: "cookie-policy",
+    es: "politica-de-cookies",
+  },
 }
 
 export function missionPath(lang: Locale): string {
   return `/${lang}/${LOCALIZED_SLUGS.mission[lang]}`
+}
+
+export function legalPath(lang: Locale): string {
+  return `/${lang}/${LOCALIZED_SLUGS.legal[lang]}`
+}
+
+export function privacyPath(lang: Locale): string {
+  return `/${lang}/${LOCALIZED_SLUGS.privacy[lang]}`
+}
+
+export function cookiesPath(lang: Locale): string {
+  return `/${lang}/${LOCALIZED_SLUGS.cookies[lang]}`
 }
 
 /**

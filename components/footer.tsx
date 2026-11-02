@@ -11,7 +11,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useLang } from "@/hooks/use-lang"
 import { useI18n } from "@/components/i18n/i18n-provider"
-import { missionPath } from "@/lib/i18n/routes"
+import { cookiesPath, legalPath, missionPath, privacyPath } from "@/lib/i18n/routes"
 import Turnstile from "@/components/ui/turnstile"
 
 export default function Footer() {
@@ -294,13 +294,13 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <Link href={`/${lang}/politique-confidentialite`} className="hover:text-amber-500 transition-colors">
+            <Link href={privacyPath(lang)} className="hover:text-amber-500 transition-colors">
               {t("footer.privacy")}
             </Link>
-            <Link href={`/${lang}/mentions-legales`} className="hover:text-amber-500 transition-colors">
+            <Link href={legalPath(lang)} className="hover:text-amber-500 transition-colors">
               {t("footer.legal")}
             </Link>
-            <Link href={`/${lang}/politique-cookies`} className="hover:text-amber-500 transition-colors">
+            <Link href={cookiesPath(lang)} className="hover:text-amber-500 transition-colors">
               {t("footer.cookies")}
             </Link>
             <button

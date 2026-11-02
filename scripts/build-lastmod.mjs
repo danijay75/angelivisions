@@ -37,11 +37,60 @@ const STATIC_ROUTES = {
     "/realisations": ["app/[lang]/realisations/page.tsx"],
     "/devis": ["app/[lang]/devis/page.tsx", "components/devis-form.tsx"],
     "/reclamations": ["app/[lang]/reclamations/page.tsx"],
-    "/mentions-legales": ["app/[lang]/mentions-legales/page.tsx"],
-    "/politique-confidentialite": ["app/[lang]/politique-confidentialite/page.tsx"],
+    // Pages légales : un slug par langue, un fichier de contenu par langue.
+    "/mentions-legales": [
+        "app/[lang]/mentions-legales/page.tsx",
+        "components/legal/legal-notice-page.tsx",
+        "components/reclamations-form.tsx",
+        "data/legal-content-fr.ts",
+    ],
+    "/legal-notice": [
+        "app/[lang]/legal-notice/page.tsx",
+        "components/legal/legal-notice-page.tsx",
+        "components/reclamations-form.tsx",
+        "data/legal-content-en.ts",
+    ],
+    "/aviso-legal": [
+        "app/[lang]/aviso-legal/page.tsx",
+        "components/legal/legal-notice-page.tsx",
+        "components/reclamations-form.tsx",
+        "data/legal-content-es.ts",
+    ],
+    "/politique-confidentialite": [
+        "app/[lang]/politique-confidentialite/page.tsx",
+        "components/legal/privacy-policy-page.tsx",
+        "components/dpd-contact-form.tsx",
+        "data/legal-content-fr.ts",
+    ],
+    "/privacy-policy": [
+        "app/[lang]/privacy-policy/page.tsx",
+        "components/legal/privacy-policy-page.tsx",
+        "components/dpd-contact-form.tsx",
+        "data/legal-content-en.ts",
+    ],
+    "/politica-de-privacidad": [
+        "app/[lang]/politica-de-privacidad/page.tsx",
+        "components/legal/privacy-policy-page.tsx",
+        "components/dpd-contact-form.tsx",
+        "data/legal-content-es.ts",
+    ],
     "/politique-cookies": [
         "app/[lang]/politique-cookies/page.tsx",
-        "app/[lang]/politique-cookies/verify-cookie-button.tsx",
+        "components/legal/cookie-policy-page.tsx",
+        "components/legal/verify-cookie-button.tsx",
+        "data/legal-content-fr.ts",
+    ],
+    "/cookie-policy": [
+        "app/[lang]/cookie-policy/page.tsx",
+        "components/legal/cookie-policy-page.tsx",
+        "components/legal/verify-cookie-button.tsx",
+        "data/legal-content-en.ts",
+    ],
+    "/politica-de-cookies": [
+        "app/[lang]/politica-de-cookies/page.tsx",
+        "components/legal/cookie-policy-page.tsx",
+        "components/legal/verify-cookie-button.tsx",
+        "data/legal-content-es.ts",
     ],
     "/newsletter/preferences": ["app/[lang]/newsletter/preferences/page.tsx"],
 }
