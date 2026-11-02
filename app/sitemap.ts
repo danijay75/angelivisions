@@ -6,6 +6,7 @@ import { LOCALIZED_SLUGS } from '@/lib/i18n/routes'
 import { projects as fallbackProjects } from '@/data/projects'
 import { defaultServices as fallbackServices } from '@/data/services'
 import { Redis } from "@upstash/redis"
+import { PAGE_LOCALES, localePath } from "@/app/easy-ip-switch/locales"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://angelivisions.com'
 
@@ -122,11 +123,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/newsletter/preferences',
     ]
 
-    // Landing page de l'application Easy IP-Switch (URL non localisée).
-    routes.push({
-        url: `${BASE_URL}/easy-ip-switch`,
-        changeFrequency: 'monthly',
-        priority: 0.9,
+    // Landing page de l'application Easy IP-Switch, dans ses quatre langues.
+    PAGE_LOCALES.forEach((locale) => {
+        routes.push({
+            url: `${BASE_URL}${localePath(locale)}`,
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        })
     })
 
     LOCALES.forEach((lang) => {

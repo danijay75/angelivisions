@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og"
+import { landingContent } from "./content"
+import { localePath } from "./locales"
 
 export const runtime = "edge"
 export const alt = "Easy IP-Switch — L'application Tout-en-un pour changer facilement d'adresse IP"
@@ -6,6 +8,8 @@ export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
 export default function OgImage() {
+  const content = landingContent.fr
+
   return new ImageResponse(
     (
       <div
@@ -95,7 +99,7 @@ export default function OgImage() {
               display: "flex",
             }}
           >
-            L’application Tout-en-un pour changer facilement et rapidement d’adresse IP
+            {content.hero.tagline}
           </div>
         </div>
 
@@ -124,7 +128,7 @@ export default function OgImage() {
               display: "flex",
             }}
           >
-            angelivisions.com/easy-ip-switch
+            angelivisions.com{localePath("fr")}
           </div>
         </div>
       </div>
