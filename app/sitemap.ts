@@ -122,6 +122,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/newsletter/preferences',
     ]
 
+    // Landing page de l'application Easy IP-Switch (URL non localisée).
+    routes.push({
+        url: `${BASE_URL}/easy-ip-switch`,
+        changeFrequency: 'monthly',
+        priority: 0.9,
+    })
+
     LOCALES.forEach((lang) => {
         // Static pages — date du dernier commit touchant leur contenu
         staticRoutes.forEach((route) => {
