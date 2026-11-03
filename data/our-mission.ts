@@ -4,14 +4,14 @@ export const ourMission: MissionContent = {
   meta: {
     title: "Our mission",
     description:
-      "Angeli Visions, a cultural company of the Social and Solidarity Economy: our purpose, our democratic governance and profit sharing with our team.",
+      "Angeli Visions, a cultural company of the Social and Solidarity Economy: our purpose, our democratic corporate governance and profit sharing with our team.",
   },
   hero: {
     eyebrow: "Angeli Visions",
     title: "Our mission",
     subtitle: "Social and economic justice for culture",
     lead:
-      "Angeli Visions produces live shows, concerts and audiovisual content. What sets us apart comes down to three commitments: democratic governance, profit sharing with our team, and a fund dedicated to promoting European culture.",
+      "Angeli Visions produces live shows, concerts and audiovisual content. What sets us apart comes down to three commitments: democratic corporate governance, profit sharing with our team, and a fund dedicated to promoting European culture.",
   },
   facts: [
     { value: "SSE", label: "Social and Solidarity Economy" },
@@ -45,12 +45,12 @@ export const ourMission: MissionContent = {
       "Music publishing and sound recording",
     ],
     note:
-      "The company may open branches in France and abroad. Its capital is variable, between €450 and €10,000,000: new shareholders can join without heavy formalities. Our registered office is in Chatou, in the Yvelines region.",
+      "The SASU company may open branches in France and abroad. New shareholders can join without heavy formalities. Our registered office is in Chatou, in the Yvelines region.",
   },
   governance: {
     number: "03",
     source: "Article 24 of the articles of association",
-    title: "Governance that shares power",
+    title: "Democratic corporate governance",
     paragraphs: [
       "In most companies, one share equals one vote. For us, each person's voice also depends on their actual role in the company: those who carry the project every day weigh more than capital alone.",
       "Each college has a coefficient that multiplies its weight in assembly votes. The principle is simple: the greater the responsibility, the greater the voice. Work and commitment are thus recognised at their true value, and capital alone cannot decide everything.",

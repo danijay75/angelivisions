@@ -4,14 +4,14 @@ export const nuestraMision: MissionContent = {
   meta: {
     title: "Nuestra misión",
     description:
-      "Angeli Visions, empresa cultural de la Economía Social y Solidaria: nuestro objeto, nuestra gobernanza democrática y el reparto de beneficios con nuestros colaboradores.",
+      "Angeli Visions, empresa cultural de la Economía Social y Solidaria: nuestro objeto, nuestra gobernanza empresarial democrática y el reparto de beneficios con nuestros colaboradores.",
   },
   hero: {
     eyebrow: "Angeli Visions",
     title: "Nuestra misión",
     subtitle: "Justicia social y económica para la cultura",
     lead:
-      "Angeli Visions produce espectáculos en vivo, conciertos y contenidos audiovisuales. Nuestra diferencia se resume en tres compromisos: una gobernanza democrática, el reparto de beneficios con los colaboradores y un fondo dedicado a la promoción de la cultura europea.",
+      "Angeli Visions produce espectáculos en vivo, conciertos y contenidos audiovisuales. Nuestra diferencia se resume en tres compromisos: una gobernanza empresarial democrática, el reparto de beneficios con los colaboradores y un fondo dedicado a la promoción de la cultura europea.",
   },
   facts: [
     { value: "ESS", label: "Economía Social y Solidaria" },
@@ -45,12 +45,12 @@ export const nuestraMision: MissionContent = {
       "Edición musical y grabación sonora",
     ],
     note:
-      "La sociedad puede abrir sucursales en Francia y en el extranjero. Su capital es variable, entre 450 € y 10 000 000 €: nuevos accionistas pueden incorporarse sin trámites pesados. Nuestra sede social está en Chatou, en los Yvelines.",
+      "La sociedad SASU puede abrir sucursales en Francia y en el extranjero. Nuevos accionistas pueden incorporarse sin trámites pesados. Nuestra sede social está en Chatou, en los Yvelines.",
   },
   governance: {
     number: "03",
     source: "Artículo 24 de los estatutos",
-    title: "Una gobernanza que comparte el poder",
+    title: "Una gobernanza empresarial democrática",
     paragraphs: [
       "En la mayoría de las sociedades, una acción vale un voto. En la nuestra, la voz de cada persona también depende de su lugar real en la empresa: quienes sostienen el proyecto a diario pesan más que el capital por sí solo.",
       "Cada colegio dispone de un coeficiente que multiplica su peso en las votaciones de la asamblea. El principio es sencillo: cuanto mayor es la responsabilidad, más cuenta la voz. Así se reconoce el trabajo y el compromiso en su justo valor, y el capital no puede decidirlo todo por sí solo.",

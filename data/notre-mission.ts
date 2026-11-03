@@ -4,7 +4,7 @@ export const notreMission: MissionContent = {
   meta: {
     title: "Notre mission",
     description:
-      "Angeli Visions, entreprise culturelle de l'Économie Sociale et Solidaire : notre objet, notre gouvernance démocratique et le partage des bénéfices avec nos collaborateurs.",
+      "Angeli Visions, entreprise culturelle de l'Économie Sociale et Solidaire : notre objet, notre gouvernance d'entreprise démocratique et le partage des bénéfices avec nos collaborateurs.",
   },
   hero: {
     eyebrow: "Angeli Visions",
