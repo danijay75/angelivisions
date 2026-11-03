@@ -11,7 +11,7 @@ export const notreMission: MissionContent = {
     title: "Notre mission",
     subtitle: "Une justice sociale et économique pour la culture",
     lead:
-      "Angeli Visions produit des spectacles vivants, des concerts et des contenus audiovisuels. Notre différence tient en trois engagements : une gouvernance démocratique, un partage des bénéfices avec les collaborateurs et un fonds dédié à la promotion de la culture européenne.",
+      "Angeli Visions produit des spectacles vivants, des concerts et des contenus audiovisuels. Notre différence tient en trois engagements : une gouvernance d'entreprise démocratique, un partage des bénéfices avec les collaborateurs et un fonds dédié à la promotion de la culture européenne.",
   },
   facts: [
     { value: "ESS", label: "Économie Sociale et Solidaire" },
@@ -46,12 +46,12 @@ export const notreMission: MissionContent = {
       "Édition musicale et enregistrement sonore",
     ],
     note:
-      "La société peut créer des succursales en France et à l'étranger. Son capital est variable, entre 450 € et 10 000 000 € : de nouveaux actionnaires peuvent la rejoindre sans alourdir les formalités. Le siège social est à Chatou, dans les Yvelines.",
+      "La société SASU peut créer des succursales en France et à l'étranger. De nouveaux actionnaires peuvent la rejoindre sans alourdir les formalités. Le siège social est à Chatou, dans les Yvelines.",
   },
   governance: {
     number: "03",
     source: "Article 24 des statuts",
-    title: "Une gouvernance qui partage le pouvoir",
+    title: "Une gouvernance d'entreprise démocratique",
     paragraphs: [
       "Dans la plupart des sociétés, une action vaut une voix. Chez nous, la voix de chacun dépend aussi de sa place réelle dans l'entreprise : celles et ceux qui portent le projet au quotidien pèsent davantage que le seul capital.",
       "Chaque collège dispose d'un coefficient qui multiplie son poids lors des votes en assemblée. Le principe est simple : plus la responsabilité est grande, plus la voix compte. Le travail et l'engagement sont ainsi reconnus à leur juste valeur, et le capital ne peut pas, à lui seul, décider de tout.",
