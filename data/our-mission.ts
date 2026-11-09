@@ -52,10 +52,10 @@ export const ourMission: MissionContent = {
     source: "Article 24 of the articles of association",
     title: "Democratic corporate governance",
     paragraphs: [
-      "In most companies, one share equals one vote. For us, each person's voice also depends on their actual role in the company: those who carry the project every day weigh more than capital alone.",
-      "Each college has a coefficient that multiplies its weight in assembly votes. The principle is simple: the greater the responsibility, the greater the voice. Work and commitment are thus recognised at their true value, and capital alone cannot decide everything.",
+      "In most companies, one share equals one vote. For us, each person's voice also depends on their actual role in the company: those who carry the project every day weigh in more than capital alone.",
+      "Each college has a factor that multiplies its weight in assembly votes. The principle is simple: the greater the responsibility, the greater the voice. Work and commitment are thus recognised at their true value, and capital alone cannot decide everything.",
     ],
-    columns: ["College", "Voting coefficient"],
+    columns: ["College", "Voting factor"],
     rows: [
       { role: "Shareholder and chair", coefficient: "× 10" },
       { role: "Manager and senior executive", coefficient: "× 5" },
@@ -64,7 +64,7 @@ export const ourMission: MissionContent = {
       { role: "Shareholder", coefficient: "× 1" },
     ],
     footnote:
-      "These coefficients apply to votes at the general meeting. The objective written into the articles is fair, democratic governance, where decisions are built with the people who keep the organisation alive.",
+      "These factors apply to votes at the general meeting. The objective written into the articles is fair, democratic governance, where decisions are built with the people who keep the organisation alive.",
   },
   sharing: {
     number: "04",
