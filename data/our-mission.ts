@@ -25,7 +25,7 @@ export const ourMission: MissionContent = {
     paragraphs: [
       "Our corporate purpose is the production and organisation of live shows and concerts, in France and abroad. Around this core business, we develop audiovisual production, artistic promotion and distribution.",
       "But our purpose does not stop at commercial activity. Angeli Visions identifies with the Social and Solidarity Economy (SSE) and pursues a social utility objective: promoting European cultural and musical diversity, as well as continental solidarity in all its forms. The company's sole interest is therefore not the sharing of profits.",
-      "This commitment has a cost, and we accept it. Social activities and economic justice commitments can have a significant impact on the income statement. We see them as investments in who we are, not as constraints to work around.",
+      "This commitment has a cost, and we accept it. Social activities and economic justice commitments can have a significant impact on the income statement. We see them as investments in who we are and the values we contribute to, not as constraints to work around.",
     ],
   },
   activities: {
@@ -64,7 +64,7 @@ export const ourMission: MissionContent = {
       { role: "Shareholder", coefficient: "× 1" },
     ],
     footnote:
-      "These factors apply to votes at the general meeting. The objective written into the articles is fair, democratic governance, where decisions are built with the people who keep the organisation alive.",
+      "These factors apply to votes at annual board meetings, ensuring that everyone who contributes to the organisation has a fair say in its decisions.",
   },
   sharing: {
     number: "04",
@@ -110,7 +110,7 @@ export const ourMission: MissionContent = {
       },
       {
         title: "For shareholders",
-        text: "A company that grows without denying its values, with clear rules.",
+        text: "A company that grows while maintaining its values, with clear structure.",
       },
     ],
   },
@@ -119,7 +119,7 @@ export const ourMission: MissionContent = {
     text: "A show, production or partnership project? Let's talk.",
     contact: "Contact us",
     quote:
-      "A cultural company can be demanding, profitable and useful. We refuse to choose between the three.",
+      "Profitability, employee wellbeing and cultural value are not competing priorities. They are the foundations of a sustainable cultural enterprise. We believe companies can, and should, deliver all three.",
   },
   legalNote:
     "This page summarises articles 2 and 24 to 26 of Angeli Visions' articles of association. It does not replace them: in the event of any discrepancy, the articles prevail.",
