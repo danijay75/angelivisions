@@ -109,14 +109,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const HIDDEN_SERVICE_IDS = ["sport", "booking"]
     const services = rawServices.filter((s: any) => s && !HIDDEN_SERVICE_IDS.includes(s.id))
 
-    // Pages statiques réellement servies en 200 (pas de redirection, pas de 404).
+    // Pages statiques réellement servies en 200 et auto-canoniques.
+    // Les pages utilitaires (newsletter/preferences, reclamations) sont en
+    // noindex : elles ne doivent pas figurer ici.
     const staticRoutes = [
         '',
-        '/captation-video-streaming-live-podcast',
+        '/services',
         '/realisations',
         '/devis',
-        '/reclamations',
-        '/newsletter/preferences',
+        '/contacts',
     ]
 
     // Landing page de l'application Easy IP-Switch (URL non localisée).

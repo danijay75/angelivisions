@@ -66,7 +66,7 @@ export default function Footer() {
 
   const footerLinks = {
     services: [
-      { label: t("nav.prestation"), href: `/${lang}/captation-video-streaming-live-podcast` },
+      { label: t("nav.prestation"), href: `/${lang}/services` },
       { label: lang === "en" ? "Shows Catalog" : lang === "es" ? "Catálogo de espectáculos" : "Catalogue de spectacles", href: `/${lang}/spectacles` },
     ],
   }
@@ -155,7 +155,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-4">
               {footerLinks.services.map((link) => {
-                const isRewritten = link.href.includes("captation-video-streaming-live-podcast") || link.href.includes("label-de-musique") || link.href.includes("spectacles")
+                const isRewritten = link.href.includes("label-de-musique") || link.href.includes("spectacles")
                 return (
                   <li key={link.label}>
                     {isRewritten ? (

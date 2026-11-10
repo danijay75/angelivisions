@@ -7,27 +7,33 @@ import { Play, Phone } from "lucide-react"
 import { useI18n } from "@/components/i18n/i18n-provider"
 import { SplitTitle } from "@/components/ui/split-title"
 
-const slidingWords = [
-  "la Captation Vidéo",
-  "le Streaming Live",
-  "le Podcast Vidéo"
-]
+const slidingWords: Record<string, string[]> = {
+  fr: ["la Captation Vidéo", "le Streaming Live", "le Podcast Vidéo"],
+  en: ["Video Recording", "Live Streaming", "Video Podcast"],
+  es: ["Grabación de Video", "Streaming en Vivo", "Podcast de Video"],
+}
+
+// Le mot de liaison était codé en dur en français : les H1 anglais et
+// espagnols affichaient « Your technical partner pour … ».
+const connectors: Record<string, string> = {
+  fr: "pour",
+  en: "for",
+  es: "para",
+}
 
 export default function HeroSection() {
   const { t, lang } = useI18n()
   const { scrollY } = useScroll()
-  const [mounted, setMounted] = useState(false)
-  
+
   const [images, setImages] = useState<string[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [wordIndex, setWordIndex] = useState(0)
+  const words = slidingWords[lang] ?? slidingWords.fr
 
   const y1 = useTransform(scrollY, [0, 500], [0, 200])
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
 
   useEffect(() => {
-    setMounted(true)
-    
     // Fetch carousel images from API
     const fetchImages = async () => {
       try {
@@ -58,12 +64,10 @@ export default function HeroSection() {
 
   useEffect(() => {
     const wordInterval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % slidingWords.length)
+      setWordIndex((prev) => (prev + 1) % words.length)
     }, 3000)
     return () => clearInterval(wordInterval)
-  }, [])
-
-  if (!mounted) return null
+  }, [words.length])
 
   return (
     <section
@@ -116,7 +120,7 @@ export default function HeroSection() {
               <span className="text-white mb-2">{t("hero.titlePart1")}</span>
               <div className="flex items-center justify-center gap-[0.25em] mt-1">
                 <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap flex-shrink-0">
-                  pour
+                  {connectors[lang] ?? connectors.fr}
                 </span>
                 <div className="relative h-[1.8em] overflow-hidden min-w-[16ch] md:min-w-[20ch] pr-[0.5em] flex items-center">
                   <AnimatePresence mode="wait">
@@ -128,7 +132,7 @@ export default function HeroSection() {
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                       className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap absolute"
                     >
-                      {slidingWords[wordIndex]}
+                      {words[wordIndex]}
                     </motion.span>
                   </AnimatePresence>
                 </div>

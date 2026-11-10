@@ -5,29 +5,10 @@ import { LOCALES, type Locale } from "@/lib/i18n/locales"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
 import CookieConsent from "@/components/cookie-consent"
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
+import { HtmlLang } from "@/components/html-lang"
 
 export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }))
-}
-
-function buildOrganizationJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Angeli Visions",
-    url: BASE_URL,
-    logo: `${BASE_URL}/images/angeli-visions-logo-white.png`,
-    description:
-      "Organisateur d'événements spécialisé dans la production musicale, l'organisation événementielle et les expériences immersives.",
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "customer service",
-      availableLanguage: ["French", "English", "Spanish"],
-    },
-    sameAs: [],
-  }
 }
 
 // Server layout: fetch dictionary on the server and pass it to a Client Provider.
@@ -43,12 +24,7 @@ export default async function LangLayout({
 
   return (
     <I18nProvider lang={resolvedParams.lang} dictionary={dict}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildOrganizationJsonLd()),
-        }}
-      />
+      <HtmlLang lang={resolvedParams.lang} />
       <Navigation />
       <main className="pt-36">{children}</main>
       <Footer />

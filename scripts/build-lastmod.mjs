@@ -28,15 +28,15 @@ const OUTPUT = join(ROOT, "data", "sitemap-lastmod.json")
  * tout le site et dateraient artificiellement chaque page à chaque retouche.
  */
 const STATIC_ROUTES = {
-    "": ["app/[lang]/page.tsx"],
-    "/captation-video-streaming-live-podcast": [
+    "": ["app/[lang]/page.tsx", "components/hero-section.tsx"],
+    "/services": [
         "app/[lang]/services/page.tsx",
         "app/[lang]/services/ServicesClient.tsx",
         "data/services.ts",
     ],
     "/realisations": ["app/[lang]/realisations/page.tsx"],
     "/devis": ["app/[lang]/devis/page.tsx", "components/devis-form.tsx"],
-    "/reclamations": ["app/[lang]/reclamations/page.tsx"],
+    "/contacts": ["app/[lang]/contacts/page.tsx", "components/contact-section.tsx"],
     // Pages légales : un slug par langue, un fichier de contenu par langue.
     "/mentions-legales": [
         "app/[lang]/mentions-legales/page.tsx",
@@ -92,7 +92,6 @@ const STATIC_ROUTES = {
         "components/legal/verify-cookie-button.tsx",
         "data/legal-content-es.ts",
     ],
-    "/newsletter/preferences": ["app/[lang]/newsletter/preferences/page.tsx"],
 }
 
 /** La page mission a un contenu par langue, dans son propre fichier. */

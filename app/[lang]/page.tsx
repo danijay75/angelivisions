@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { LOCALES, type Locale } from "@/lib/i18n/locales"
+import { notFound } from "next/navigation"
+import { LOCALES, isLocale } from "@/lib/i18n/locales"
 import HeroSection from "@/components/hero-section"
 import ServicesSection from "@/components/services-section"
 import RealisationsSection from "@/components/realisations-section"
@@ -12,36 +13,47 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }): Promise<Metadata> {
   const { lang } = await params
-  const locale = LOCALES.includes(lang) ? lang : "fr"
-  const dict = await getDictionary(locale)
-  
+  if (!isLocale(lang)) return {}
+
+  const dict = await getDictionary(lang)
+
   const title = dict.hero.titlePart1 + " " + dict.hero.titlePart2
-  const description = dict.hero.description || (locale === 'fr' ? "Production audiovisuelle, murs LED et mapping vidéo pour des événements d'exception." : "Audiovisual production, LED walls and video mapping for exceptional events.")
+  const description = dict.hero.description || (lang === 'fr' ? "Production audiovisuelle, murs LED et mapping vidéo pour des événements d'exception." : "Audiovisual production, LED walls and video mapping for exceptional events.")
 
   const alternates: Record<string, string> = {}
   LOCALES.forEach((l) => {
     alternates[l] = `${BASE_URL}/${l}`
   })
+  alternates["x-default"] = `${BASE_URL}/fr`
 
   return {
     title,
     description,
     alternates: {
-      canonical: `${BASE_URL}/${locale}`,
+      canonical: `${BASE_URL}/${lang}`,
       languages: alternates,
     },
     openGraph: {
       title,
       description,
-      url: `${BASE_URL}/${locale}`,
+      url: `${BASE_URL}/${lang}`,
     },
   }
 }
 
-export default function LocalizedHomePage() {
+export default async function LocalizedHomePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}) {
+  const { lang } = await params
+  // Sans ce garde-fou, toute URL à un seul segment (/services/, /actualites/…)
+  // affichait la page d'accueil en HTTP 200 (soft 404).
+  if (!isLocale(lang)) notFound()
+
   return (
     <div className="min-h-screen bg-transparent">
       <section id="accueil">

@@ -34,7 +34,7 @@ export default function Navigation() {
 
   const items: MenuItem[] = useMemo(
     () => [
-      { href: `/${lang}/captation-video-streaming-live-podcast`, label: t("nav.prestation") },
+      { href: `/${lang}/services`, label: t("nav.prestation") },
       { href: `/${lang}/spectacles`, label: t("nav.label") },
       { href: `/${lang}/devis`, label: t("nav.devis") },
       { href: `/${lang}#contact`, label: t("nav.contact") },
@@ -43,7 +43,7 @@ export default function Navigation() {
   )
 
   const getTwoLineLabel = (href: string, originalLabel: string, currentLang: string) => {
-    const isPrestation = href.includes("captation-video-streaming-live-podcast")
+    const isPrestation = href.includes("/services")
     const isSpectacles = href.includes("spectacles") || href.includes("label-de-musique")
     const isDevis = href.endsWith("/devis")
     const isContact = href.includes("#contact")
@@ -163,7 +163,7 @@ export default function Navigation() {
               
               const label = getTwoLineLabel(item.href, item.label, lang)
 
-              const isRewritten = item.href.includes("captation-video-streaming-live-podcast") || item.href.includes("label-de-musique") || item.href.includes("spectacles")
+              const isRewritten = item.href.includes("label-de-musique") || item.href.includes("spectacles")
               const isPath = item.href.startsWith("/") && !isRewritten
 
               // Choose the button design style
@@ -253,7 +253,7 @@ export default function Navigation() {
               
               const label = getTwoLineLabel(item.href, item.label, lang)
 
-              const isRewritten = item.href.includes("captation-video-streaming-live-podcast") || item.href.includes("label-de-musique") || item.href.includes("spectacles")
+              const isRewritten = item.href.includes("label-de-musique") || item.href.includes("spectacles")
               const isPath = item.href.startsWith("/") && !isRewritten
 
               // Choose the button design style for mobile

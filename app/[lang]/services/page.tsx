@@ -1,7 +1,54 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Redis } from "@upstash/redis"
 import ServicesClient from "./ServicesClient"
 import { defaultServices, type ServiceItem } from "@/data/services"
+import { LOCALES, isLocale } from "@/lib/i18n/locales"
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
+
+const META: Record<"fr" | "en" | "es", { title: string; description: string }> = {
+  fr: {
+    title: "Nos Services",
+    description:
+      "Production musicale, organisation d'événements, murs LED, mapping vidéo et captation média. Tous nos services événementiels.",
+  },
+  en: {
+    title: "Our Services",
+    description:
+      "Music production, event organization, LED walls, video mapping and media capture. All our event services.",
+  },
+  es: {
+    title: "Nuestros Servicios",
+    description:
+      "Producción musical, organización de eventos, pantallas LED, video mapping y captura de medios. Todos nuestros servicios.",
+  },
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  if (!isLocale(lang)) return {}
+
+  const meta = META[lang]
+  const languages: Record<string, string> = {}
+  LOCALES.forEach((l) => {
+    languages[l] = `${BASE_URL}/${l}/services`
+  })
+  languages["x-default"] = `${BASE_URL}/fr/services`
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: `${BASE_URL}/${lang}/services`,
+      languages,
+    },
+  }
+}
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0

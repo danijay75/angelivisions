@@ -147,14 +147,14 @@ export default function DevisForm() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
             <SplitTitle text={t("devis.title")} className="block" />
             {t("devis.highlight") && (
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 block mt-2">
                 {t("devis.highlight")}
               </span>
             )}
-          </h2>
+          </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
             {t("devis.description")}
           </p>

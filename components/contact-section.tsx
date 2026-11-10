@@ -8,9 +8,10 @@ import { useI18n } from "@/components/i18n/i18n-provider"
 import { useLang } from "@/hooks/use-lang"
 import { SplitTitle } from "@/components/ui/split-title"
 
-export default function ContactSection() {
+export default function ContactSection({ titleAs = "h2" }: { titleAs?: "h1" | "h2" }) {
   const { t } = useI18n()
   const lang = useLang()
+  const HeadingTag = titleAs
   const hours = {
     title: t("contact.hoursTitle"),
     content: t("contact.hoursContent"),
@@ -29,9 +30,9 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+          <HeadingTag className="text-5xl md:text-6xl font-bold mb-6 tracking-tight">
             <SplitTitle text={t("contact.title")} />
-          </h2>
+          </HeadingTag>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
             {t("contact.description")}
           </p>

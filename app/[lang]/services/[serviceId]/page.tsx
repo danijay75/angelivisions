@@ -9,6 +9,9 @@ import { ArrowLeft, CheckCircle, Phone, Mail } from "lucide-react"
 import { Redis } from "@upstash/redis"
 import { ArtistsCatalogue } from "@/components/artists-catalogue"
 import { SplitTitle } from "@/components/ui/split-title"
+import { LOCALES, isLocale } from "@/lib/i18n/locales"
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 
 interface ServicePageProps {
   params: Promise<{
@@ -61,13 +64,29 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 
   if (!service) {
     return {
-      title: "Service non trouvé - Angeli Visions",
+      title: "Service non trouvé",
+      robots: { index: false, follow: false },
     }
   }
 
+  const lang = isLocale(resolvedParams.lang) ? resolvedParams.lang : "fr"
+  const isSpectacles = service.id === "spectacles" || service.id === "label-de-musique"
+  const pathFor = (l: string) =>
+    isSpectacles ? `/${l}/spectacles` : `/${l}/services/${service!.id}`
+
+  const languages: Record<string, string> = {}
+  LOCALES.forEach((l) => {
+    languages[l] = `${BASE_URL}${pathFor(l)}`
+  })
+  languages["x-default"] = `${BASE_URL}${pathFor("fr")}`
+
   return {
-    title: `${service.title} - Angeli Visions`,
+    title: service.title,
     description: service.description,
+    alternates: {
+      canonical: `${BASE_URL}${pathFor(lang)}`,
+      languages,
+    },
   }
 }
 
@@ -111,7 +130,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         {/* Hero Content */}
         <div className="container relative z-10 mx-auto px-4">
           <div className="mb-8">
-            <a href={`/${resolvedParams.lang}/captation-video-streaming-live-podcast`}>
+            <a href={`/${resolvedParams.lang}/services`}>
               <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 backdrop-blur-sm -ml-4">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour aux services

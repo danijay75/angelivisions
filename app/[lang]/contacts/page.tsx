@@ -32,6 +32,7 @@ export async function generateMetadata({
   LOCALES.forEach((l) => {
     alternates[l] = `${BASE_URL}/${l}/contacts`
   })
+  alternates["x-default"] = `${BASE_URL}/fr/contacts`
 
   return {
     title: meta.title,
@@ -51,14 +52,15 @@ export default async function ContactsPage({
   const { lang } = await params
   
   return (
-    <main className="min-h-screen bg-[#020617] relative overflow-hidden">
+    // Le layout [lang] fournit déjà <main> : éviter un <main> imbriqué.
+    <div className="min-h-screen bg-[#020617] relative overflow-hidden">
       {/* Background Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orb orb-orange animate-orb opacity-30" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orb orb-blue animate-orb opacity-20" />
       
       <div className="pt-28 relative z-10">
-        <ContactSection />
+        <ContactSection titleAs="h1" />
       </div>
-    </main>
+    </div>
   )
 }

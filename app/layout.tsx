@@ -74,14 +74,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: BASE_URL,
-    languages: {
-      fr: `${BASE_URL}/fr`,
-      en: `${BASE_URL}/en`,
-      es: `${BASE_URL}/es`,
-    },
-  },
+  // Pas de canonical global : chaque page déclare le sien.
+  // Un canonical d'accueil hérité faisait pointer les pages artistes et
+  // les pages utilitaires vers la page d'accueil.
 }
 
 import { Toaster } from "sonner"

@@ -35,6 +35,7 @@ export async function generateMetadata({
   LOCALES.forEach((l) => {
     alternates[l] = `${BASE_URL}/${l}/devis`
   })
+  alternates["x-default"] = `${BASE_URL}/fr/devis`
 
   return {
     title: meta.title,

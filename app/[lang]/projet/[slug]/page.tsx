@@ -9,6 +9,8 @@ export const dynamic = "force-dynamic"
 const LOCALES = ["fr", "en", "es"] as const
 type Locale = (typeof LOCALES)[number]
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
+
 let redis: Redis | null = null
 try {
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
@@ -47,7 +49,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const resolvedParams = await params
   const project = await getProject(resolvedParams.slug)
-  const title = project ? `${project.title} – Angeli Visions` : "Projet introuvable – Angeli Visions"
+  // Le template racine ajoute déjà « | Angeli Visions » : ne pas le répéter.
+  const title = project ? project.title.trim() : "Projet introuvable"
   // Nettoyage des balises HTML pour la balise meta description
   const cleanDescription = project?.description
     ? project.description.replace(/<[^>]*>?/gm, '')
@@ -56,9 +59,16 @@ export async function generateMetadata({
   const image = project?.image ?? "/placeholder.svg?height=630&width=1200"
   const url = `/${resolvedParams.lang}/projet/${resolvedParams.slug}`
 
+  const languages: Record<string, string> = {}
+  LOCALES.forEach((l) => {
+    languages[l] = `${BASE_URL}/${l}/projet/${resolvedParams.slug}`
+  })
+  languages["x-default"] = `${BASE_URL}/fr/projet/${resolvedParams.slug}`
+
   return {
     title,
     description: cleanDescription,
+    robots: project ? undefined : { index: false, follow: false },
     openGraph: {
       title,
       description: cleanDescription,
@@ -66,7 +76,7 @@ export async function generateMetadata({
       url,
       type: "article",
     },
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages },
   }
 }
 

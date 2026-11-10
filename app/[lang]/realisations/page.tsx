@@ -146,16 +146,6 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
   const getCategoryColor = (categoryId: string) =>
     allCategories.find((cat) => cat.id === categoryId)?.color || "from-gray-500 to-gray-600"
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-white text-lg">{copy.loading}</div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Header */}
@@ -216,7 +206,13 @@ export default function RealisationsPage({ params }: { params: Promise<{ lang: s
 
       {/* Projects Grid */}
       <div className="container mx-auto px-4 pb-20">
-        {filteredProjects.length === 0 ? (
+        {loading ? (
+          // Le H1 ci-dessus est rendu côté serveur : on ne bloque plus la page
+          // entière sur le chargement client des projets.
+          <div className="text-center py-20">
+            <p className="text-slate-300 text-lg">{copy.loading}</p>
+          </div>
+        ) : filteredProjects.length === 0 ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
             <p className="text-slate-300 text-lg">{copy.noProjects}</p>
           </motion.div>

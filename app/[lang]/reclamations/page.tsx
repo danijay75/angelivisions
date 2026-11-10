@@ -13,14 +13,17 @@ export async function generateMetadata({
   const { lang } = await params
   
   return {
-    title: "Formulaire de Réclamations | Angeli Visions",
+    title: "Formulaire de Réclamations",
     description: "Soumettez une réclamation concernant nos services événementiels ou musicaux.",
+    // Page utilitaire : aucune valeur de recherche, on évite le contenu fin.
+    robots: { index: false, follow: true },
     alternates: {
       canonical: `${BASE_URL}/${lang}/reclamations`,
       languages: {
         fr: `${BASE_URL}/fr/reclamations`,
         en: `${BASE_URL}/en/reclamations`,
         es: `${BASE_URL}/es/reclamations`,
+        "x-default": `${BASE_URL}/fr/reclamations`,
       },
     },
   }

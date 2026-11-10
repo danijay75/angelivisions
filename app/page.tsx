@@ -1,6 +1,7 @@
-import { redirect } from "next/navigation"
+import { permanentRedirect } from "next/navigation"
 
-// Server redirect to the default locale, avoiding any client-side Promises on initial render.
+// Redirection permanente (308) vers la locale par défaut.
+// Un 307 laissait Google choisir `/` comme URL canonique de `/fr`.
 export default function Page() {
-  redirect("/fr")
+  permanentRedirect("/fr")
 }
