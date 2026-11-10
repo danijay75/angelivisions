@@ -3,7 +3,8 @@ import { landingContent } from "./content"
 import { OG_LOCALES, PAGE_LOCALES, localePath, type PageLocale } from "./locales"
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
-export const APP_VERSION = "1.1.2"
+export const APP_VERSION = "1.1.3"
+export const MAC_APP_VERSION = "1.1.2"
 
 function absolutePath(locale: PageLocale): string {
   return `${BASE_URL}${localePath(locale)}`
@@ -17,8 +18,8 @@ languageAlternates["x-default"] = absolutePath("fr")
 
 const downloadUrls = [
   `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${APP_VERSION}-windows.exe`,
-  `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${APP_VERSION}-macos-intel.dmg`,
-  `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${APP_VERSION}-macos-apple-silicon.dmg`,
+  `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${MAC_APP_VERSION}-macos-intel.dmg`,
+  `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${MAC_APP_VERSION}-macos-apple-silicon.dmg`,
 ]
 
 export function buildMetadata(locale: PageLocale): Metadata {

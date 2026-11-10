@@ -148,7 +148,7 @@ const fr: LandingContent = {
     language: "Changer de langue",
   },
   hero: {
-    badge: "Nouveau · Version 1.1.2",
+    badge: "Nouveau · Version 1.1.3",
     free: "Gratuit et sans inscription",
     kicker: "Easy IP-Switch",
     tagline: "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP",
@@ -272,7 +272,7 @@ const fr: LandingContent = {
     eyebrow: "Téléchargements",
     title: { pre: "Choisissez ", accent: "votre version" },
     description:
-      "Version 1.1.2 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même contenu, sur tous vos appareils.",
+      "Version 1.1.3 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même contenu, sur tous vos appareils.",
     recommended: "Recommandé pour votre appareil",
     windows: {
       title: "Windows",
@@ -327,7 +327,7 @@ const fr: LandingContent = {
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
-    sizeWindows: "257 Ko",
+    sizeWindows: "276 Ko",
     sizeMac: "1,2 Mo",
     freeLabel: "gratuit",
   },
@@ -387,7 +387,7 @@ const fr: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Un outil Angeli Visions · v1.1.2",
+    tagline: "Un outil Angeli Visions · v1.1.3",
     description:
       "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP, sous Windows 8, 10, 11 et macOS.",
     appColumn: "Application",
@@ -430,7 +430,7 @@ const en: LandingContent = {
     language: "Change language",
   },
   hero: {
-    badge: "New · Version 1.1.2",
+    badge: "New · Version 1.1.3",
     free: "Free, no sign-up",
     kicker: "Easy IP-Switch",
     tagline: "The all-in-one app to change your IP address quickly and easily",
@@ -546,7 +546,7 @@ const en: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Choose ", accent: "your version" },
     description:
-      "Version 1.1.2 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same app, on all your devices.",
+      "Version 1.1.3 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same app, on all your devices.",
     recommended: "Recommended for your device",
     windows: {
       title: "Windows",
@@ -593,7 +593,7 @@ const en: LandingContent = {
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
-    sizeWindows: "257 KB",
+    sizeWindows: "276 KB",
     sizeMac: "1.2 MB",
     freeLabel: "free",
   },
@@ -653,7 +653,7 @@ const en: LandingContent = {
     ],
   },
   footer: {
-    tagline: "An Angeli Visions tool · v1.1.2",
+    tagline: "An Angeli Visions tool · v1.1.3",
     description:
       "The all-in-one app to change your IP address quickly and easily, on Windows 8, 10, 11 and macOS.",
     appColumn: "Application",
@@ -696,7 +696,7 @@ const de: LandingContent = {
     language: "Sprache ändern",
   },
   hero: {
-    badge: "Neu · Version 1.1.2",
+    badge: "Neu · Version 1.1.3",
     free: "Kostenlos, ohne Anmeldung",
     kicker: "Easy IP-Switch",
     tagline: "Die All-in-One-App, um Ihre IP-Adresse schnell und einfach zu ändern",
@@ -820,7 +820,7 @@ const de: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Wählen Sie ", accent: "Ihre Version" },
     description:
-      "Version 1.1.2 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dieselbe App auf allen Ihren Geräten.",
+      "Version 1.1.3 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dieselbe App auf allen Ihren Geräten.",
     recommended: "Für Ihr Gerät empfohlen",
     windows: {
       title: "Windows",
@@ -875,7 +875,7 @@ const de: LandingContent = {
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
-    sizeWindows: "257 KB",
+    sizeWindows: "276 KB",
     sizeMac: "1,2 MB",
     freeLabel: "kostenlos",
   },
@@ -935,7 +935,7 @@ const de: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Ein Tool von Angeli Visions · v1.1.2",
+    tagline: "Ein Tool von Angeli Visions · v1.1.3",
     description:
       "Die All-in-One-App für schnelle und einfache IP-Adresswechsel unter Windows 8, 10, 11 und macOS.",
     appColumn: "App",
@@ -978,7 +978,7 @@ const es: LandingContent = {
     language: "Cambiar idioma",
   },
   hero: {
-    badge: "Nuevo · Versión 1.1.2",
+    badge: "Nuevo · Versión 1.1.3",
     free: "Gratis, sin registro",
     kicker: "Easy IP-Switch",
     tagline: "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP",
@@ -1102,7 +1102,7 @@ const es: LandingContent = {
     eyebrow: "Descargas",
     title: { pre: "Elige ", accent: "tu versión" },
     description:
-      "Versión 1.1.2 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma app en todos tus dispositivos.",
+      "Versión 1.1.3 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma app en todos tus dispositivos.",
     recommended: "Recomendado para tu dispositivo",
     windows: {
       title: "Windows",
@@ -1157,7 +1157,7 @@ const es: LandingContent = {
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
-    sizeWindows: "257 KB",
+    sizeWindows: "276 KB",
     sizeMac: "1,2 MB",
     freeLabel: "gratis",
   },
@@ -1217,7 +1217,7 @@ const es: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Una herramienta de Angeli Visions · v1.1.2",
+    tagline: "Una herramienta de Angeli Visions · v1.1.3",
     description:
       "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP, en Windows 8, 10, 11 y macOS.",
     appColumn: "Aplicación",

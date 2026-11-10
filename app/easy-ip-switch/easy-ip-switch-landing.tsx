@@ -39,7 +39,8 @@ import {
 
 const BASE_URL = "https://angelivisions.com"
 const DONATION_URL = "https://www.paypal.com/donate/?hosted_button_id=WZBCQXPEHHDDC"
-const VERSION = "1.1.2"
+const VERSION = "1.1.3"
+const MAC_VERSION = "1.1.2"
 
 type DetectedOs = "windows" | "mac" | "other" | null
 
@@ -597,6 +598,7 @@ type DownloadItem = {
   icon: LucideIcon
   compatibility: string
   file: string
+  version: string
   size: string
   format: string
   bullets: string[]
@@ -619,6 +621,7 @@ function Downloads({
       ...downloadsContent.windows,
       icon: Monitor,
       file: `/downloads/easy-ip-switch/easy-ip-switch-${VERSION}-windows.exe`,
+      version: VERSION,
       size: downloadsContent.sizeWindows,
       format: ".exe",
       recommended: detectedOs === "windows",
@@ -627,7 +630,8 @@ function Downloads({
       id: "mac-intel",
       ...downloadsContent.macIntel,
       icon: Apple,
-      file: `/downloads/easy-ip-switch/easy-ip-switch-${VERSION}-macos-intel.dmg`,
+      file: `/downloads/easy-ip-switch/easy-ip-switch-${MAC_VERSION}-macos-intel.dmg`,
+      version: MAC_VERSION,
       size: downloadsContent.sizeMac,
       format: ".dmg",
       recommended: false,
@@ -636,7 +640,8 @@ function Downloads({
       id: "mac-arm",
       ...downloadsContent.macArm,
       icon: Apple,
-      file: `/downloads/easy-ip-switch/easy-ip-switch-${VERSION}-macos-apple-silicon.dmg`,
+      file: `/downloads/easy-ip-switch/easy-ip-switch-${MAC_VERSION}-macos-apple-silicon.dmg`,
+      version: MAC_VERSION,
       size: downloadsContent.sizeMac,
       format: ".dmg",
       recommended: false,
@@ -724,7 +729,7 @@ function Downloads({
                     {item.cta}
                   </a>
                   <p className="mt-2.5 text-center text-[10.5px] text-slate-500">
-                    {item.size} · version {VERSION} · {downloadsContent.freeLabel}
+                    {item.size} · version {item.version} · {downloadsContent.freeLabel}
                   </p>
                 </article>
               </Reveal>
