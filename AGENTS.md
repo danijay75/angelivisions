@@ -56,7 +56,7 @@ Puis vérifier <https://angelivisions.com/easy-ip-switch> et
 <https://angelivisions.com/easy-ip-switch/en> : version 1.1.3, DMG Intel et
 Apple Silicon téléchargeables, mention « Conditions et RGPD ».
 
-⚠️ Ne pas déployer depuis une copie locale antérieure à `b6cd7ae` : elle
+⚠️ Ne pas déployer depuis une copie locale antérieure à `9ca3e3e` : elle
 écraserait le refactoring multilingue et les fichiers 1.1.3.
 
 ## Déployer
