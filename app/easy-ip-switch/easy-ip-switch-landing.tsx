@@ -40,7 +40,7 @@ import {
 const BASE_URL = "https://angelivisions.com"
 const DONATION_URL = "https://www.paypal.com/donate/?hosted_button_id=WZBCQXPEHHDDC"
 const VERSION = "1.1.3"
-const MAC_VERSION = "1.1.2"
+const MAC_VERSION = "1.1.3"
 
 type DetectedOs = "windows" | "mac" | "other" | null
 

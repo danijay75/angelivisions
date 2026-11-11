@@ -4,7 +4,7 @@ import { OG_LOCALES, PAGE_LOCALES, localePath, type PageLocale } from "./locales
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://angelivisions.com"
 export const APP_VERSION = "1.1.3"
-export const MAC_APP_VERSION = "1.1.2"
+export const MAC_APP_VERSION = "1.1.3"
 
 function absolutePath(locale: PageLocale): string {
   return `${BASE_URL}${localePath(locale)}`

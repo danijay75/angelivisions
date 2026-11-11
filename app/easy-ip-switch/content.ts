@@ -221,6 +221,11 @@ const fr: LandingContent = {
     ],
     highlights: [
       {
+        title: "Conditions et RGPD en un clic",
+        description:
+          "Les conditions d’utilisation et la notice RGPD s’acceptent en un clic au premier lancement, puis restent mémorisées.",
+      },
+      {
         title: "Détection des droits",
         description: "L’application indique si elle dispose bien des droits administrateur.",
       },
@@ -324,6 +329,7 @@ const fr: LandingContent = {
         "Téléchargez le .dmg correspondant à votre puce.",
         "Ouvrez le DMG, puis glissez Easy IP-Switch dans le dossier Applications.",
         "Au premier lancement, si macOS bloque l’application : clic droit sur l’icône → « Ouvrir ».",
+        "Au premier lancement, acceptez les conditions d’utilisation et la notice RGPD.",
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
@@ -499,6 +505,11 @@ const en: LandingContent = {
     ],
     highlights: [
       {
+        title: "Terms and GDPR in one click",
+        description:
+          "The terms of use and GDPR notice are accepted in one click at first launch, then remembered.",
+      },
+      {
         title: "Permission detection",
         description: "The app shows whether it really has administrator rights.",
       },
@@ -590,6 +601,7 @@ const en: LandingContent = {
         "Download the .dmg that matches your chip.",
         "Open the DMG, then drag Easy IP-Switch into the Applications folder.",
         "On first launch, if macOS blocks the app: right-click the icon → “Open”.",
+        "At first launch, accept the terms of use and the GDPR notice.",
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
@@ -769,6 +781,11 @@ const de: LandingContent = {
     ],
     highlights: [
       {
+        title: "Bedingungen und DSGVO mit einem Klick",
+        description:
+          "Die Nutzungsbedingungen und der DSGVO-Hinweis werden beim ersten Start mit einem Klick akzeptiert und anschließend gespeichert.",
+      },
+      {
         title: "Rechte-Erkennung",
         description: "Die App zeigt an, ob sie tatsächlich über Administratorrechte verfügt.",
       },
@@ -872,6 +889,7 @@ const de: LandingContent = {
         "Laden Sie die zu Ihrem Chip passende .dmg-Datei herunter.",
         "Öffnen Sie das DMG und ziehen Sie Easy IP-Switch in den Ordner „Programme“.",
         "Beim ersten Start, falls macOS die App blockiert: Rechtsklick auf das Symbol → „Öffnen“.",
+        "Akzeptieren Sie beim ersten Start die Nutzungsbedingungen und den DSGVO-Hinweis.",
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
@@ -1051,6 +1069,11 @@ const es: LandingContent = {
     ],
     highlights: [
       {
+        title: "Condiciones y RGPD en un clic",
+        description:
+          "Las condiciones de uso y el aviso de RGPD se aceptan con un clic en el primer inicio y luego se recuerdan.",
+      },
+      {
         title: "Detección de permisos",
         description: "La aplicación indica si dispone realmente de permisos de administrador.",
       },
@@ -1154,6 +1177,7 @@ const es: LandingContent = {
         "Descarga el .dmg correspondiente a tu chip.",
         "Abre el DMG y arrastra Easy IP-Switch a la carpeta Aplicaciones.",
         "En el primer inicio, si macOS bloquea la aplicación: clic derecho en el icono → «Abrir».",
+        "En el primer inicio, acepta las condiciones de uso y el aviso de RGPD.",
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
