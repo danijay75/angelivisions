@@ -10,6 +10,8 @@ type DownloadCopy = {
   compatibility: string
   bullets: string[]
   cta: string
+  zipCta?: string
+  zipHint?: string
 }
 
 export type LandingContent = {
@@ -300,6 +302,8 @@ const fr: LandingContent = {
         "Droits administrateur requis",
       ],
       cta: "Télécharger pour Windows",
+      zipCta: "Télécharger le ZIP + README",
+      zipHint: "Recommandé si le navigateur ou Windows bloque l’exécutable.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -598,6 +602,8 @@ const en: LandingContent = {
         "Administrator rights required",
       ],
       cta: "Download for Windows",
+      zipCta: "Download ZIP + README",
+      zipHint: "Recommended if your browser or Windows blocks the executable.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -896,6 +902,8 @@ const de: LandingContent = {
         "Administratorrechte erforderlich",
       ],
       cta: "Für Windows herunterladen",
+      zipCta: "ZIP + README herunterladen",
+      zipHint: "Empfohlen, wenn Browser oder Windows die ausführbare Datei blockieren.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -1202,6 +1210,8 @@ const es: LandingContent = {
         "Se requieren permisos de administrador",
       ],
       cta: "Descargar para Windows",
+      zipCta: "Descargar ZIP + README",
+      zipHint: "Recomendado si el navegador o Windows bloquea el ejecutable.",
     },
     macIntel: {
       title: "macOS Intel",

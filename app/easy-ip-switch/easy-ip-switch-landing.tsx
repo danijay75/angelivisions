@@ -608,6 +608,8 @@ type DownloadItem = {
   format: string
   bullets: string[]
   cta: string
+  zipCta?: string
+  zipHint?: string
   recommended: boolean
 }
 
@@ -737,6 +739,24 @@ function Downloads({
                   <p className="mt-2.5 text-center text-[10.5px] text-slate-500">
                     {item.size} · version {item.version} · {downloadsContent.freeLabel}
                   </p>
+                  {item.zipCta ? (
+                    <>
+                      <a
+                        href={WINDOWS_ZIP_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-4 py-3 text-[13px] font-semibold text-white transition duration-300 hover:border-amber-300/40 hover:bg-amber-400/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+                      >
+                        <Download className="h-4 w-4" />
+                        {item.zipCta}
+                      </a>
+                      {item.zipHint ? (
+                        <p className="mt-2 text-center text-[10.5px] leading-relaxed text-slate-500">
+                          {item.zipHint}
+                        </p>
+                      ) : null}
+                    </>
+                  ) : null}
                 </article>
               </Reveal>
             )
