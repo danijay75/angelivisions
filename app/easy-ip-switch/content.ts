@@ -10,8 +10,6 @@ type DownloadCopy = {
   compatibility: string
   bullets: string[]
   cta: string
-  zipCta?: string
-  zipHint?: string
 }
 
 export type LandingContent = {
@@ -302,8 +300,6 @@ const fr: LandingContent = {
         "Droits administrateur requis",
       ],
       cta: "Télécharger pour Windows",
-      zipCta: "Télécharger le ZIP + README",
-      zipHint: "Recommandé si le navigateur ou Windows bloque l’exécutable.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -332,7 +328,7 @@ const fr: LandingContent = {
     installWin: {
       title: "Installer sur Windows",
       steps: [
-        "Téléchargez le fichier .exe.",
+        "Téléchargez le ZIP, puis extrayez l’exécutable.",
         "Si SmartScreen s’affiche : « Informations complémentaires », puis « Exécuter quand même ».",
         "Acceptez la demande d’élévation : elle est nécessaire pour modifier une carte réseau.",
         "Aucune installation : le fichier peut rester sur le Bureau, dans un dossier ou sur une clé USB.",
@@ -348,7 +344,7 @@ const fr: LandingContent = {
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
-    sizeWindows: "276 Ko",
+    sizeWindows: "118 Ko",
     sizeMac: "1,2 Mo",
     freeLabel: "gratuit",
     windowsWarning: {
@@ -602,8 +598,6 @@ const en: LandingContent = {
         "Administrator rights required",
       ],
       cta: "Download for Windows",
-      zipCta: "Download ZIP + README",
-      zipHint: "Recommended if your browser or Windows blocks the executable.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -624,7 +618,7 @@ const en: LandingContent = {
     installWin: {
       title: "Install on Windows",
       steps: [
-        "Download the .exe file.",
+        "Download the ZIP, then extract the executable.",
         "If SmartScreen appears: “More info”, then “Run anyway”.",
         "Accept the elevation prompt: it is required to change a network adapter.",
         "No installation: the file can stay on your Desktop, in a folder or on a USB stick.",
@@ -640,7 +634,7 @@ const en: LandingContent = {
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
-    sizeWindows: "276 KB",
+    sizeWindows: "118 KB",
     sizeMac: "1.2 MB",
     freeLabel: "free",
     windowsWarning: {
@@ -902,8 +896,6 @@ const de: LandingContent = {
         "Administratorrechte erforderlich",
       ],
       cta: "Für Windows herunterladen",
-      zipCta: "ZIP + README herunterladen",
-      zipHint: "Empfohlen, wenn Browser oder Windows die ausführbare Datei blockieren.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -932,7 +924,7 @@ const de: LandingContent = {
     installWin: {
       title: "Unter Windows installieren",
       steps: [
-        "Laden Sie die .exe-Datei herunter.",
+        "Laden Sie das ZIP herunter und entpacken Sie die ausführbare Datei.",
         "Wenn SmartScreen erscheint: „Weitere Informationen“, dann „Trotzdem ausführen“.",
         "Bestätigen Sie die Administratorabfrage: Sie ist nötig, um einen Netzwerkadapter zu ändern.",
         "Keine Installation: Die Datei kann auf dem Desktop, in einem Ordner oder auf einem USB-Stick bleiben.",
@@ -948,7 +940,7 @@ const de: LandingContent = {
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
-    sizeWindows: "276 KB",
+    sizeWindows: "118 KB",
     sizeMac: "1,2 MB",
     freeLabel: "kostenlos",
     windowsWarning: {
@@ -1210,8 +1202,6 @@ const es: LandingContent = {
         "Se requieren permisos de administrador",
       ],
       cta: "Descargar para Windows",
-      zipCta: "Descargar ZIP + README",
-      zipHint: "Recomendado si el navegador o Windows bloquea el ejecutable.",
     },
     macIntel: {
       title: "macOS Intel",
@@ -1240,7 +1230,7 @@ const es: LandingContent = {
     installWin: {
       title: "Instalar en Windows",
       steps: [
-        "Descarga el archivo .exe.",
+        "Descarga el ZIP y extrae el ejecutable.",
         "Si aparece SmartScreen: «Más información» y luego «Ejecutar de todos modos».",
         "Acepta la solicitud de elevación: es necesaria para modificar un adaptador de red.",
         "Sin instalación: el archivo puede quedarse en el escritorio, en una carpeta o en un USB.",
@@ -1256,7 +1246,7 @@ const es: LandingContent = {
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
-    sizeWindows: "276 KB",
+    sizeWindows: "118 KB",
     sizeMac: "1,2 MB",
     freeLabel: "gratis",
     windowsWarning: {
