@@ -29,6 +29,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import type { LandingContent } from "./content"
+import release from "./release.json"
 import {
   LOCALE_LABELS,
   LOCALE_NAMES,
@@ -39,8 +40,12 @@ import {
 
 const BASE_URL = "https://angelivisions.com"
 const DONATION_URL = "https://www.paypal.com/donate/?hosted_button_id=WZBCQXPEHHDDC"
-const VERSION = "1.1.3"
-const MAC_VERSION = "1.1.3"
+const VERSION = release.windowsVersion
+const MAC_VERSION = release.macVersion
+const WINDOWS_SHA256 = release.windowsSha256
+const WINDOWS_ZIP_URL = `https://github.com/danijay75/easy-ip-switch/releases/download/v${VERSION}/easy-ip-switch-${VERSION}-windows.zip`
+const WINDOWS_CHECKSUMS_URL = "/downloads/easy-ip-switch/SHA256SUMS.txt"
+const GITHUB_RELEASE_URL = `https://github.com/danijay75/easy-ip-switch/releases/tag/v${VERSION}`
 
 type DetectedOs = "windows" | "mac" | "other" | null
 
@@ -614,6 +619,7 @@ function Downloads({
   detectedOs: DetectedOs
 }) {
   const downloadsContent = content.downloads
+  const warning = downloadsContent.windowsWarning
 
   const downloads: DownloadItem[] = [
     {
@@ -736,6 +742,74 @@ function Downloads({
             )
           })}
         </div>
+
+        <Reveal delay={0.08}>
+          <div className="mt-6 overflow-hidden rounded-3xl border border-amber-400/20 bg-gradient-to-br from-amber-500/[0.1] via-white/[0.03] to-transparent p-6 md:p-7">
+            <div className="max-w-4xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/10 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-200">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {warning.eyebrow}
+              </span>
+              <h3 className="mt-4 font-display text-xl font-semibold text-white sm:text-2xl">
+                {warning.title}
+              </h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-slate-300">
+                {warning.description}
+              </p>
+
+              <ol className="mt-4 space-y-2.5 text-[13px] leading-relaxed text-slate-300">
+                {warning.steps.map((step, index) => (
+                  <li key={step} className="flex gap-2.5">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-[10px] font-bold text-amber-200">
+                      {index + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-4 rounded-xl border border-white/10 bg-black/30 p-3.5">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  {warning.hashLabel}
+                </p>
+                <code className="mt-1.5 block break-all font-mono text-[11px] leading-relaxed text-slate-300">
+                  {WINDOWS_SHA256}
+                </code>
+              </div>
+
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <a
+                  href={WINDOWS_ZIP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-300 to-amber-500 px-4 py-2.5 text-[12px] font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:from-amber-200 hover:to-amber-400"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  {warning.zipCta}
+                </a>
+                <a
+                  href={WINDOWS_CHECKSUMS_URL}
+                  download
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-4 py-2.5 text-[12px] font-semibold text-white transition hover:border-amber-300/40 hover:bg-amber-400/10"
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  {warning.checksumsCta}
+                </a>
+                <a
+                  href={GITHUB_RELEASE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-4 py-2.5 text-[12px] font-semibold text-white transition hover:border-amber-300/40 hover:bg-amber-400/10"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  {warning.githubCta}
+                </a>
+              </div>
+
+              <p className="mt-3 text-[11px] leading-relaxed text-slate-500">{warning.note}</p>
+            </div>
+          </div>
+        </Reveal>
 
         {detectedOs === "mac" ? (
           <Reveal delay={0.1}>

@@ -86,6 +86,17 @@ export type LandingContent = {
     sizeWindows: string
     sizeMac: string
     freeLabel: string
+    windowsWarning: {
+      eyebrow: string
+      title: string
+      description: string
+      steps: string[]
+      hashLabel: string
+      zipCta: string
+      checksumsCta: string
+      githubCta: string
+      note: string
+    }
   }
   donation: {
     eyebrow: string
@@ -336,6 +347,24 @@ const fr: LandingContent = {
     sizeWindows: "276 Ko",
     sizeMac: "1,2 Mo",
     freeLabel: "gratuit",
+    windowsWarning: {
+      eyebrow: "Windows · SmartScreen",
+      title: "Windows affiche un avertissement ?",
+      description:
+        "L’exécutable Windows n’est pas encore signé avec un certificat commercial. Windows peut donc afficher « Windows a protégé votre PC » ou « Éditeur inconnu ». Ce n’est pas un virus : le fichier est compilé par Angeli Visions et contrôlé avant publication. La signature de code sera mise en place dès que le certificat sera disponible.",
+      steps: [
+        "Téléchargez le fichier depuis cette page ou depuis GitHub Releases.",
+        "Vérifiez l’empreinte SHA-256 ci-dessous (la commande PowerShell est dans le README).",
+        "Si SmartScreen apparaît : cliquez sur « Informations complémentaires », puis « Exécuter quand même ».",
+        "Acceptez la demande d’élévation (UAC) : elle est nécessaire pour modifier une carte réseau.",
+      ],
+      hashLabel: "Empreinte SHA-256 de l’exécutable",
+      zipCta: "Télécharger le ZIP + README",
+      checksumsCta: "Voir les empreintes",
+      githubCta: "GitHub Releases",
+      note:
+        "Ne lancez jamais une copie provenant d’un autre site sans vérifier son empreinte. Le ZIP contient l’exécutable, le README, la licence et les empreintes.",
+    },
   },
   donation: {
     eyebrow: "Soutenir le projet",
@@ -373,7 +402,7 @@ const fr: LandingContent = {
       {
         question: "Windows affiche un avertissement SmartScreen, est-ce normal ?",
         answer:
-          "Oui. L'exécutable n'est pas signé par un certificat commercial, Windows peut donc afficher « Windows a protégé votre ordinateur ». Cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ».",
+          "Oui. L'exécutable n'est pas encore signé avec un certificat commercial, Windows peut donc afficher « Windows a protégé votre ordinateur ». Vérifiez l'empreinte SHA-256 dans la section Téléchargements, puis cliquez sur « Informations complémentaires » et « Exécuter quand même ». La signature de code sera mise en place dès que le certificat sera disponible.",
       },
       {
         question: "L'application collecte-t-elle des données ?",
@@ -608,6 +637,24 @@ const en: LandingContent = {
     sizeWindows: "276 KB",
     sizeMac: "1.2 MB",
     freeLabel: "free",
+    windowsWarning: {
+      eyebrow: "Windows · SmartScreen",
+      title: "Windows shows a warning?",
+      description:
+        "The Windows executable is not yet signed with a commercial certificate. Windows may therefore show “Windows protected your PC” or “Unknown publisher”. It is not a virus: the file is built by Angeli Visions and checked before release. Code signing will be enabled as soon as the certificate is available.",
+      steps: [
+        "Download the file from this page or from GitHub Releases.",
+        "Verify the SHA-256 hash below (the PowerShell command is in the README).",
+        "If SmartScreen appears: click “More info”, then “Run anyway”.",
+        "Accept the elevation prompt (UAC): it is required to change a network adapter.",
+      ],
+      hashLabel: "SHA-256 hash of the executable",
+      zipCta: "Download ZIP + README",
+      checksumsCta: "View checksums",
+      githubCta: "GitHub Releases",
+      note:
+        "Never run a copy from another site without verifying its hash. The ZIP contains the executable, README, license and checksums.",
+    },
   },
   donation: {
     eyebrow: "Support the project",
@@ -645,7 +692,7 @@ const en: LandingContent = {
       {
         question: "Windows shows a SmartScreen warning — is that normal?",
         answer:
-          "Yes. The executable is not signed with a commercial certificate, so Windows may display “Windows protected your PC”. Click “More info”, then “Run anyway”.",
+          "Yes. The executable is not yet signed with a commercial certificate, so Windows may display “Windows protected your PC”. Verify the SHA-256 hash in the Downloads section, then click “More info” and “Run anyway”. Code signing will be enabled as soon as the certificate is available.",
       },
       {
         question: "Does the app collect any data?",
@@ -896,6 +943,24 @@ const de: LandingContent = {
     sizeWindows: "276 KB",
     sizeMac: "1,2 MB",
     freeLabel: "kostenlos",
+    windowsWarning: {
+      eyebrow: "Windows · SmartScreen",
+      title: "Windows zeigt eine Warnung?",
+      description:
+        "Die Windows-Datei ist noch nicht mit einem kommerziellen Zertifikat signiert. Windows kann daher „Windows hat Ihren PC geschützt“ oder „Unbekannter Herausgeber“ anzeigen. Es ist kein Virus: Die Datei wird von Angeli Visions erstellt und vor der Veröffentlichung geprüft. Die Codesignatur wird aktiviert, sobald das Zertifikat verfügbar ist.",
+      steps: [
+        "Laden Sie die Datei von dieser Seite oder von GitHub Releases herunter.",
+        "Prüfen Sie den SHA-256-Hash unten (der PowerShell-Befehl steht in der README).",
+        "Wenn SmartScreen erscheint: „Weitere Informationen“ und dann „Trotzdem ausführen“ anklicken.",
+        "Bestätigen Sie die Administratorabfrage (UAC): Sie ist nötig, um einen Netzwerkadapter zu ändern.",
+      ],
+      hashLabel: "SHA-256-Hash der ausführbaren Datei",
+      zipCta: "ZIP + README herunterladen",
+      checksumsCta: "Prüfsummen anzeigen",
+      githubCta: "GitHub Releases",
+      note:
+        "Führen Sie niemals eine Kopie von einer anderen Website aus, ohne den Hash zu prüfen. Das ZIP enthält die ausführbare Datei, README, Lizenz und Prüfsummen.",
+    },
   },
   donation: {
     eyebrow: "Projekt unterstützen",
@@ -933,7 +998,7 @@ const de: LandingContent = {
       {
         question: "Windows zeigt eine SmartScreen-Warnung – ist das normal?",
         answer:
-          "Ja. Die ausführbare Datei ist nicht mit einem kommerziellen Zertifikat signiert, daher kann Windows „Windows hat Ihren PC geschützt“ anzeigen. Klicken Sie auf „Weitere Informationen“ und dann auf „Trotzdem ausführen“.",
+          "Ja. Die ausführbare Datei ist noch nicht mit einem kommerziellen Zertifikat signiert, daher kann Windows „Windows hat Ihren PC geschützt“ anzeigen. Prüfen Sie den SHA-256-Hash im Bereich Downloads und klicken Sie dann auf „Weitere Informationen“ und „Trotzdem ausführen“. Die Codesignatur wird aktiviert, sobald das Zertifikat verfügbar ist.",
       },
       {
         question: "Sammelt die App Daten?",
@@ -1184,6 +1249,24 @@ const es: LandingContent = {
     sizeWindows: "276 KB",
     sizeMac: "1,2 MB",
     freeLabel: "gratis",
+    windowsWarning: {
+      eyebrow: "Windows · SmartScreen",
+      title: "¿Windows muestra un aviso?",
+      description:
+        "El ejecutable de Windows aún no está firmado con un certificado comercial. Por eso Windows puede mostrar «Windows protegió tu PC» o «Editor desconocido». No es un virus: el archivo lo compila Angeli Visions y se revisa antes de publicarse. La firma de código se activará en cuanto el certificado esté disponible.",
+      steps: [
+        "Descarga el archivo desde esta página o desde GitHub Releases.",
+        "Verifica la huella SHA-256 de abajo (el comando de PowerShell está en el README).",
+        "Si aparece SmartScreen: haz clic en «Más información» y luego en «Ejecutar de todos modos».",
+        "Acepta la solicitud de elevación (UAC): es necesaria para modificar un adaptador de red.",
+      ],
+      hashLabel: "Huella SHA-256 del ejecutable",
+      zipCta: "Descargar ZIP + README",
+      checksumsCta: "Ver huellas",
+      githubCta: "GitHub Releases",
+      note:
+        "No ejecutes nunca una copia de otro sitio sin verificar su huella. El ZIP contiene el ejecutable, el README, la licencia y las huellas.",
+    },
   },
   donation: {
     eyebrow: "Apoyar el proyecto",
@@ -1221,7 +1304,7 @@ const es: LandingContent = {
       {
         question: "Windows muestra un aviso de SmartScreen, ¿es normal?",
         answer:
-          "Sí. El ejecutable no está firmado con un certificado comercial, así que Windows puede mostrar «Windows protegió tu PC». Haz clic en «Más información» y luego en «Ejecutar de todos modos».",
+          "Sí. El ejecutable aún no está firmado con un certificado comercial, así que Windows puede mostrar «Windows protegió tu PC». Verifica la huella SHA-256 en la sección Descargas y luego haz clic en «Más información» y «Ejecutar de todos modos». La firma de código se activará en cuanto el certificado esté disponible.",
       },
       {
         question: "¿La aplicación recopila datos?",
