@@ -351,7 +351,7 @@ const fr: LandingContent = {
       eyebrow: "Windows · SmartScreen",
       title: "Windows affiche un avertissement ?",
       description:
-        "L’exécutable Windows n’est pas encore signé avec un certificat commercial. Windows peut donc afficher « Windows a protégé votre PC » ou « Éditeur inconnu ». Ce n’est pas un virus : le fichier est compilé par Angeli Visions et contrôlé avant publication. La signature de code sera mise en place dès que le certificat sera disponible.",
+        "L’exécutable Windows n’est pas encore signé avec un certificat commercial. Windows peut donc afficher « Windows a protégé votre PC » ou « Éditeur inconnu ». Ce n’est pas un virus : le fichier est compilé par Angeli Visions et contrôlé avant publication. Une signature de code commerciale est à l’étude.",
       steps: [
         "Téléchargez le fichier depuis cette page ou depuis GitHub Releases.",
         "Vérifiez l’empreinte SHA-256 ci-dessous (la commande PowerShell est dans le README).",
@@ -402,7 +402,7 @@ const fr: LandingContent = {
       {
         question: "Windows affiche un avertissement SmartScreen, est-ce normal ?",
         answer:
-          "Oui. L'exécutable n'est pas encore signé avec un certificat commercial, Windows peut donc afficher « Windows a protégé votre ordinateur ». Vérifiez l'empreinte SHA-256 dans la section Téléchargements, puis cliquez sur « Informations complémentaires » et « Exécuter quand même ». La signature de code sera mise en place dès que le certificat sera disponible.",
+          "Oui. L'exécutable n'est pas encore signé avec un certificat commercial, Windows peut donc afficher « Windows a protégé votre ordinateur ». Vérifiez l'empreinte SHA-256 dans la section Téléchargements, puis cliquez sur « Informations complémentaires » et « Exécuter quand même ». Une signature de code commerciale est à l’étude.",
       },
       {
         question: "L'application collecte-t-elle des données ?",
@@ -641,7 +641,7 @@ const en: LandingContent = {
       eyebrow: "Windows · SmartScreen",
       title: "Windows shows a warning?",
       description:
-        "The Windows executable is not yet signed with a commercial certificate. Windows may therefore show “Windows protected your PC” or “Unknown publisher”. It is not a virus: the file is built by Angeli Visions and checked before release. Code signing will be enabled as soon as the certificate is available.",
+        "The Windows executable is not yet signed with a commercial certificate. Windows may therefore show “Windows protected your PC” or “Unknown publisher”. It is not a virus: the file is built by Angeli Visions and checked before release. Commercial code signing is under consideration.",
       steps: [
         "Download the file from this page or from GitHub Releases.",
         "Verify the SHA-256 hash below (the PowerShell command is in the README).",
@@ -692,7 +692,7 @@ const en: LandingContent = {
       {
         question: "Windows shows a SmartScreen warning — is that normal?",
         answer:
-          "Yes. The executable is not yet signed with a commercial certificate, so Windows may display “Windows protected your PC”. Verify the SHA-256 hash in the Downloads section, then click “More info” and “Run anyway”. Code signing will be enabled as soon as the certificate is available.",
+          "Yes. The executable is not yet signed with a commercial certificate, so Windows may display “Windows protected your PC”. Verify the SHA-256 hash in the Downloads section, then click “More info” and “Run anyway”. Commercial code signing is under consideration.",
       },
       {
         question: "Does the app collect any data?",
@@ -947,7 +947,7 @@ const de: LandingContent = {
       eyebrow: "Windows · SmartScreen",
       title: "Windows zeigt eine Warnung?",
       description:
-        "Die Windows-Datei ist noch nicht mit einem kommerziellen Zertifikat signiert. Windows kann daher „Windows hat Ihren PC geschützt“ oder „Unbekannter Herausgeber“ anzeigen. Es ist kein Virus: Die Datei wird von Angeli Visions erstellt und vor der Veröffentlichung geprüft. Die Codesignatur wird aktiviert, sobald das Zertifikat verfügbar ist.",
+        "Die Windows-Datei ist noch nicht mit einem kommerziellen Zertifikat signiert. Windows kann daher „Windows hat Ihren PC geschützt“ oder „Unbekannter Herausgeber“ anzeigen. Es ist kein Virus: Die Datei wird von Angeli Visions erstellt und vor der Veröffentlichung geprüft. Eine kommerzielle Codesignatur wird geprüft.",
       steps: [
         "Laden Sie die Datei von dieser Seite oder von GitHub Releases herunter.",
         "Prüfen Sie den SHA-256-Hash unten (der PowerShell-Befehl steht in der README).",
@@ -998,7 +998,7 @@ const de: LandingContent = {
       {
         question: "Windows zeigt eine SmartScreen-Warnung – ist das normal?",
         answer:
-          "Ja. Die ausführbare Datei ist noch nicht mit einem kommerziellen Zertifikat signiert, daher kann Windows „Windows hat Ihren PC geschützt“ anzeigen. Prüfen Sie den SHA-256-Hash im Bereich Downloads und klicken Sie dann auf „Weitere Informationen“ und „Trotzdem ausführen“. Die Codesignatur wird aktiviert, sobald das Zertifikat verfügbar ist.",
+          "Ja. Die ausführbare Datei ist noch nicht mit einem kommerziellen Zertifikat signiert, daher kann Windows „Windows hat Ihren PC geschützt“ anzeigen. Prüfen Sie den SHA-256-Hash im Bereich Downloads und klicken Sie dann auf „Weitere Informationen“ und „Trotzdem ausführen“. Eine kommerzielle Codesignatur wird geprüft.",
       },
       {
         question: "Sammelt die App Daten?",
@@ -1253,7 +1253,7 @@ const es: LandingContent = {
       eyebrow: "Windows · SmartScreen",
       title: "¿Windows muestra un aviso?",
       description:
-        "El ejecutable de Windows aún no está firmado con un certificado comercial. Por eso Windows puede mostrar «Windows protegió tu PC» o «Editor desconocido». No es un virus: el archivo lo compila Angeli Visions y se revisa antes de publicarse. La firma de código se activará en cuanto el certificado esté disponible.",
+        "El ejecutable de Windows aún no está firmado con un certificado comercial. Por eso Windows puede mostrar «Windows protegió tu PC» o «Editor desconocido». No es un virus: el archivo lo compila Angeli Visions y se revisa antes de publicarse. La firma de código comercial está en estudio.",
       steps: [
         "Descarga el archivo desde esta página o desde GitHub Releases.",
         "Verifica la huella SHA-256 de abajo (el comando de PowerShell está en el README).",
@@ -1304,7 +1304,7 @@ const es: LandingContent = {
       {
         question: "Windows muestra un aviso de SmartScreen, ¿es normal?",
         answer:
-          "Sí. El ejecutable aún no está firmado con un certificado comercial, así que Windows puede mostrar «Windows protegió tu PC». Verifica la huella SHA-256 en la sección Descargas y luego haz clic en «Más información» y «Ejecutar de todos modos». La firma de código se activará en cuanto el certificado esté disponible.",
+          "Sí. El ejecutable aún no está firmado con un certificado comercial, así que Windows puede mostrar «Windows protegió tu PC». Verifica la huella SHA-256 en la sección Descargas y luego haz clic en «Más información» y «Ejecutar de todos modos». La firma de código comercial está en estudio.",
       },
       {
         question: "¿La aplicación recopila datos?",
