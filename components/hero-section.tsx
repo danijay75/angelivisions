@@ -118,24 +118,19 @@ export default function HeroSection() {
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium leading-[1.2] tracking-tight drop-shadow-2xl flex flex-col items-center">
               <span className="text-white mb-2">{t("hero.titlePart1")}</span>
-              <div className="flex items-center justify-center gap-[0.25em] mt-1">
-                <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap flex-shrink-0">
-                  {connectors[lang] ?? connectors.fr}
-                </span>
-                <div className="relative h-[1.8em] overflow-hidden min-w-[16ch] md:min-w-[20ch] pr-[0.5em] flex items-center">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={wordIndex}
-                      initial={{ y: "100%", opacity: 0 }}
-                      animate={{ y: "0%", opacity: 1 }}
-                      exit={{ y: "-100%", opacity: 0 }}
-                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                      className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap absolute"
-                    >
-                      {words[wordIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
+              <div className="relative h-[1.8em] overflow-hidden w-full flex items-center justify-center mt-1 px-4">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={`${lang}-${wordIndex}`}
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 whitespace-nowrap inline-block pr-[0.25em] pb-[0.15em]"
+                  >
+                    {connectors[lang] ?? connectors.fr} {words[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
               </div>
             </h1>
           </motion.div>

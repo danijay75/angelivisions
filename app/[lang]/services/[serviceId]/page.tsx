@@ -184,8 +184,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <CardContent className="text-white/80 space-y-4 font-light leading-relaxed text-lg pt-6">
                 {isSpectacles ? (
                   <>
-                    <p>Angeli Visions est un producteur et diffuseur de spectacles vivants d'exception. Notre catalogue réunit le meilleur du spectacle contemporain : comédies théâtrales, plateaux d'humour, stand-up, burlesque et spectacles musicaux.</p>
-                    <p>Nous prenons en charge la direction artistique, la production technique et la diffusion pour proposer aux organisateurs, salles et collectivités des expériences scéniques inoubliables.</p>
+                    <p>Angeli Visions est un producteur et diffuseur de spectacles vivants exigent. Notre catalogue réunit le meilleur du spectacle contemporain : comédies, plateaux d'humour, stand-up, burlesque et spectacles musicaux.</p>
+                    <p>Nous pouvons prendre en charge la direction artistique, la production technique et la diffusion pour proposer aux organisateurs, salles et collectivités des expériences scéniques inoubliables.</p>
                     <p>Découvrez nos spectacles disponibles ci-dessous et contactez notre équipe pour programmer nos talents sur vos événements.</p>
                   </>
                 ) : (
