@@ -87,7 +87,8 @@ Remove-Item $tar -Force -ErrorAction SilentlyContinue
 
 if ($SkipSeo) {
     Write-Host "== 4/4 Signalement SEO ignore (-SkipSeo) ==" -ForegroundColor DarkGray
-    Write-Host "Deploiement termine." -ForegroundColor Green
+    & (Join-Path $root "scripts\sync-cloud.ps1")
+Write-Host "Deploiement termine." -ForegroundColor Green
     exit 0
 }
 
@@ -99,5 +100,6 @@ $ErrorActionPreference = "Continue"
 & node (Join-Path $root "scripts\seo-ping.mjs")
 $ErrorActionPreference = $previous
 
+& (Join-Path $root "scripts\sync-cloud.ps1")
 Write-Host "Deploiement termine." -ForegroundColor Green
 exit 0
