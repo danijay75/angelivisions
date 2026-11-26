@@ -159,7 +159,7 @@ const fr: LandingContent = {
     language: "Changer de langue",
   },
   hero: {
-    badge: "Nouveau · Version 1.2.1",
+    badge: "Nouveau · Version 1.2.2",
     free: "Gratuit et sans inscription",
     kicker: "AV IP-Switch",
     tagline: "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP",
@@ -227,7 +227,7 @@ const fr: LandingContent = {
       {
         title: "Léger, portable et multilingue",
         description:
-          "Un seul exécutable léger (~310 Ko), aucune installation, aucune télémétrie. Interface en français, anglais, allemand et espagnol, thème clair et sombre au choix.",
+          "Un seul exécutable léger (~327 Ko), aucune installation, aucune télémétrie. Interface en français, anglais, allemand et espagnol, thème clair et sombre au choix.",
       },
     ],
     highlights: [
@@ -243,6 +243,10 @@ const fr: LandingContent = {
       {
         title: "Connexions réseau",
         description: "Ouvre le panneau Windows et crée un raccourci sur le Bureau.",
+      },
+      {
+        title: "Créer un raccourci",
+        description: "Copie AV IP-Switch dans Documents et crée son raccourci sur le Bureau.",
       },
       {
         title: "Adresse fixe mémorisée",
@@ -288,7 +292,7 @@ const fr: LandingContent = {
     eyebrow: "Téléchargements",
     title: { pre: "Choisissez ", accent: "votre version" },
     description:
-      "Windows 1.2.1 · macOS 1.1.3 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même outil, sur tous vos appareils.",
+      "Windows 1.2.2 · macOS 1.1.3 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même outil, sur tous vos appareils.",
     recommended: "Recommandé pour votre appareil",
     windows: {
       title: "Windows",
@@ -344,7 +348,7 @@ const fr: LandingContent = {
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
-    sizeWindows: "131 Ko",
+    sizeWindows: "135 Ko",
     sizeMac: "1,2 Mo",
     freeLabel: "gratuit",
     windowsWarning: {
@@ -422,7 +426,7 @@ const fr: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Un outil Angeli Visions · v1.2.1",
+    tagline: "Un outil Angeli Visions · v1.2.2",
     description:
       "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP, sous Windows 8, 10, 11 et macOS.",
     appColumn: "Application",
@@ -465,7 +469,7 @@ const en: LandingContent = {
     language: "Change language",
   },
   hero: {
-    badge: "New · Version 1.2.1",
+    badge: "New · Version 1.2.2",
     free: "Free, no sign-up",
     kicker: "AV IP-Switch",
     tagline: "The all-in-one app to change your IP address quickly and easily",
@@ -529,7 +533,7 @@ const en: LandingContent = {
       {
         title: "Lightweight, portable and multilingual",
         description:
-          "A single executable lightweight (~310 KB), no installation, no telemetry. Interface in French, English, German and Spanish, with light and dark themes.",
+          "A single executable lightweight (~327 KB), no installation, no telemetry. Interface in French, English, German and Spanish, with light and dark themes.",
       },
     ],
     highlights: [
@@ -545,6 +549,10 @@ const en: LandingContent = {
       {
         title: "Network connections",
         description: "Opens the Windows panel and creates a desktop shortcut.",
+      },
+      {
+        title: "Create shortcut",
+        description: "Copies AV IP-Switch to Documents and creates its Desktop shortcut.",
       },
       {
         title: "Remembered static IP",
@@ -586,7 +594,7 @@ const en: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Choose ", accent: "your version" },
     description:
-      "Windows 1.2.1 · macOS 1.1.3 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same tool, on all your devices.",
+      "Windows 1.2.2 · macOS 1.1.3 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same tool, on all your devices.",
     recommended: "Recommended for your device",
     windows: {
       title: "Windows",
@@ -634,7 +642,7 @@ const en: LandingContent = {
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
-    sizeWindows: "131 KB",
+    sizeWindows: "135 KB",
     sizeMac: "1.2 MB",
     freeLabel: "free",
     windowsWarning: {
@@ -712,7 +720,7 @@ const en: LandingContent = {
     ],
   },
   footer: {
-    tagline: "An Angeli Visions tool · v1.2.1",
+    tagline: "An Angeli Visions tool · v1.2.2",
     description:
       "The all-in-one app to change your IP address quickly and easily, on Windows 8, 10, 11 and macOS.",
     appColumn: "Application",
@@ -755,7 +763,7 @@ const de: LandingContent = {
     language: "Sprache ändern",
   },
   hero: {
-    badge: "Neu · Version 1.2.1",
+    badge: "Neu · Version 1.2.2",
     free: "Kostenlos, ohne Anmeldung",
     kicker: "AV IP-Switch",
     tagline: "Die All-in-One-App, um Ihre IP-Adresse schnell und einfach zu ändern",
@@ -823,7 +831,7 @@ const de: LandingContent = {
       {
         title: "Leicht, portabel und mehrsprachig",
         description:
-          "Eine einzige ausführbare Datei schlanke Datei (~310 KB), keine Installation, keine Telemetrie. Oberfläche auf Französisch, Englisch, Deutsch und Spanisch, helles und dunkles Design inklusive.",
+          "Eine einzige ausführbare Datei schlanke Datei (~327 KB), keine Installation, keine Telemetrie. Oberfläche auf Französisch, Englisch, Deutsch und Spanisch, helles und dunkles Design inklusive.",
       },
     ],
     highlights: [
@@ -839,6 +847,10 @@ const de: LandingContent = {
       {
         title: "Netzwerkverbindungen",
         description: "Öffnet das Windows-Fenster und legt eine Desktop-Verknüpfung an.",
+      },
+      {
+        title: "Verknüpfung erstellen",
+        description: "Kopiert AV IP-Switch in Dokumente und legt eine Desktop-Verknüpfung an.",
       },
       {
         title: "Gespeicherte feste IP",
@@ -884,7 +896,7 @@ const de: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Wählen Sie ", accent: "Ihre Version" },
     description:
-      "Windows 1.2.1 · macOS 1.1.3 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dasselbe Tool auf allen Ihren Geräten.",
+      "Windows 1.2.2 · macOS 1.1.3 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dasselbe Tool auf allen Ihren Geräten.",
     recommended: "Für Ihr Gerät empfohlen",
     windows: {
       title: "Windows",
@@ -940,7 +952,7 @@ const de: LandingContent = {
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
-    sizeWindows: "131 KB",
+    sizeWindows: "135 KB",
     sizeMac: "1,2 MB",
     freeLabel: "kostenlos",
     windowsWarning: {
@@ -1018,7 +1030,7 @@ const de: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Ein Tool von Angeli Visions · v1.2.1",
+    tagline: "Ein Tool von Angeli Visions · v1.2.2",
     description:
       "Die All-in-One-App für schnelle und einfache IP-Adresswechsel unter Windows 8, 10, 11 und macOS.",
     appColumn: "App",
@@ -1061,7 +1073,7 @@ const es: LandingContent = {
     language: "Cambiar idioma",
   },
   hero: {
-    badge: "Nuevo · Versión 1.2.1",
+    badge: "Nuevo · Versión 1.2.2",
     free: "Gratis, sin registro",
     kicker: "AV IP-Switch",
     tagline: "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP",
@@ -1129,7 +1141,7 @@ const es: LandingContent = {
       {
         title: "Ligera, portátil y multilingüe",
         description:
-          "Un único ejecutable ligero (~310 KB), sin instalación y sin telemetría. Interfaz en francés, inglés, alemán y español, con tema claro y oscuro.",
+          "Un único ejecutable ligero (~327 KB), sin instalación y sin telemetría. Interfaz en francés, inglés, alemán y español, con tema claro y oscuro.",
       },
     ],
     highlights: [
@@ -1145,6 +1157,10 @@ const es: LandingContent = {
       {
         title: "Conexiones de red",
         description: "Abre el panel de Windows y crea un acceso directo en el escritorio.",
+      },
+      {
+        title: "Crear acceso directo",
+        description: "Copia AV IP-Switch en Documentos y crea su acceso directo en el escritorio.",
       },
       {
         title: "Dirección fija recordada",
@@ -1190,7 +1206,7 @@ const es: LandingContent = {
     eyebrow: "Descargas",
     title: { pre: "Elige ", accent: "tu versión" },
     description:
-      "Windows 1.2.1 · macOS 1.1.3 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma herramienta en todos tus dispositivos.",
+      "Windows 1.2.2 · macOS 1.1.3 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma herramienta en todos tus dispositivos.",
     recommended: "Recomendado para tu dispositivo",
     windows: {
       title: "Windows",
@@ -1246,7 +1262,7 @@ const es: LandingContent = {
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
-    sizeWindows: "131 KB",
+    sizeWindows: "135 KB",
     sizeMac: "1,2 MB",
     freeLabel: "gratis",
     windowsWarning: {
@@ -1324,7 +1340,7 @@ const es: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Una herramienta de Angeli Visions · v1.2.1",
+    tagline: "Una herramienta de Angeli Visions · v1.2.2",
     description:
       "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP, en Windows 8, 10, 11 y macOS.",
     appColumn: "Aplicación",
