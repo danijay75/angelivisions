@@ -30,8 +30,19 @@ const nextConfig = {
                     source: '/:lang/spectacles',
                     destination: '/:lang/services/spectacles',
                 },
-            ],
-            fallback: [
+                {
+                    source: '/:locale(fr|en|de|es)/av-ip-switch',
+                    destination: '/av-ip-switch-page/:locale',
+                },
+                {
+                    source: '/:locale(fr|en|de|es)/av-ip-switch/opengraph-image',
+                    destination: '/av-ip-switch-page/:locale/opengraph-image',
+                },
+                // Les fichiers uploadés via l'admin sont servis dynamiquement
+                // par la route API (lecture depuis shared/uploads sur le VPS).
+                // Doit être en beforeFiles : en fallback, Next.js tente de
+                // servir depuis public/ via le manifeste de build et retourne
+                // 404 pour les fichiers uploadés après le dernier déploiement.
                 {
                     source: '/uploads/:path*',
                     destination: '/api/uploads/:path*',
@@ -41,6 +52,27 @@ const nextConfig = {
     },
     async redirects() {
         return [
+            // Redirections Easy IP-Switch -> AV IP-Switch localisé.
+            {
+                source: '/easy-ip-switch',
+                destination: '/fr/av-ip-switch',
+                permanent: true,
+            },
+            {
+                source: '/easy-ip-switch/:locale(fr|en|de|es)',
+                destination: '/:locale/av-ip-switch',
+                permanent: true,
+            },
+            {
+                source: '/av-ip-switch',
+                destination: '/fr/av-ip-switch',
+                permanent: true,
+            },
+            {
+                source: '/av-ip-switch/:locale(fr|en|de|es)',
+                destination: '/:locale/av-ip-switch',
+                permanent: true,
+            },
             // Anciennes URL WordPress / erreurs historiques.
             {
                 source: '/author/:path*',

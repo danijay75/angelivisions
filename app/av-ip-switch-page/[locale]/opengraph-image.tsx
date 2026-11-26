@@ -1,14 +1,22 @@
 import { ImageResponse } from "next/og"
-import { landingContent } from "./content"
-import { localePath } from "./locales"
+import { landingContent } from "../content"
+import { PAGE_LOCALES, localePath, type PageLocale } from "../locales"
 
 export const runtime = "edge"
-export const alt = "Easy IP-Switch — L'application Tout-en-un pour changer facilement d'adresse IP"
+export const alt = "AV IP-Switch"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function OgImage() {
-  const content = landingContent.fr
+export default async function OgImage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const pageLocale = (PAGE_LOCALES as readonly string[]).includes(locale)
+    ? (locale as PageLocale)
+    : "en"
+  const content = landingContent[pageLocale]
 
   return new ImageResponse(
     (
@@ -72,7 +80,7 @@ export default function OgImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 26, fontWeight: 700, color: "white", display: "flex" }}>
-              Easy IP-Switch
+              AV IP-Switch
             </div>
             <div
               style={{
@@ -83,19 +91,19 @@ export default function OgImage() {
                 display: "flex",
               }}
             >
-              PAR ANGELI VISIONS
+              ANGELI VISIONS
             </div>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", maxWidth: 940 }}>
+        <div style={{ display: "flex", flexDirection: "column", maxWidth: 980 }}>
           <div
             style={{
-              fontSize: 58,
+              fontSize: 52,
               fontWeight: 800,
               color: "white",
-              lineHeight: 1.12,
-              letterSpacing: -2,
+              lineHeight: 1.14,
+              letterSpacing: -1.5,
               display: "flex",
             }}
           >
@@ -128,7 +136,7 @@ export default function OgImage() {
               display: "flex",
             }}
           >
-            angelivisions.com{localePath("fr")}
+            angelivisions.com{localePath(pageLocale)}
           </div>
         </div>
       </div>

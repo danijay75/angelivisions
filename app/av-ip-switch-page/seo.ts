@@ -18,7 +18,7 @@ const languageAlternates: Record<string, string> = Object.fromEntries(
 languageAlternates["x-default"] = absolutePath("fr")
 
 const downloadUrls = [
-  `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${APP_VERSION}-windows.exe`,
+  `${BASE_URL}/downloads/av-ip-switch/av-ip-switch-${APP_VERSION}-windows.exe`,
   `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${MAC_APP_VERSION}-macos-intel.dmg`,
   `${BASE_URL}/downloads/easy-ip-switch/easy-ip-switch-${MAC_APP_VERSION}-macos-apple-silicon.dmg`,
 ]
@@ -26,6 +26,7 @@ const downloadUrls = [
 export function buildMetadata(locale: PageLocale): Metadata {
   const content = landingContent[locale]
   const url = absolutePath(locale)
+  const ogImageUrl = `${url}/opengraph-image`
 
   return {
     title: content.meta.title,
@@ -45,11 +46,20 @@ export function buildMetadata(locale: PageLocale): Metadata {
       alternateLocale: PAGE_LOCALES.filter((item) => item !== locale).map(
         (item) => OG_LOCALES[item],
       ),
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: content.meta.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: content.meta.title,
       description: content.meta.description,
+      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -74,7 +84,7 @@ export function buildJsonLd(locale: PageLocale) {
       {
         "@type": "SoftwareApplication",
         "@id": `${url}#app`,
-        name: "Easy IP-Switch",
+        name: "AV IP-Switch",
         applicationCategory: "UtilitiesApplication",
         applicationSubCategory: "Network configuration",
         operatingSystem: "Windows 8, Windows 10, Windows 11, macOS 12+",
@@ -121,7 +131,7 @@ export function buildJsonLd(locale: PageLocale) {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Easy IP-Switch",
+            name: "AV IP-Switch",
             item: url,
           },
         ],

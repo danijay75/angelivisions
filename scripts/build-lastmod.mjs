@@ -37,6 +37,11 @@ const STATIC_ROUTES = {
     "/realisations": ["app/[lang]/realisations/page.tsx"],
     "/devis": ["app/[lang]/devis/page.tsx", "components/devis-form.tsx"],
     "/contacts": ["app/[lang]/contacts/page.tsx", "components/contact-section.tsx"],
+    "/av-ip-switch": [
+        "app/av-ip-switch-page/content.ts",
+        "app/av-ip-switch-page/av-ip-switch-landing.tsx",
+        "app/av-ip-switch-page/release.json",
+    ],
     // Pages légales : un slug par langue, un fichier de contenu par langue.
     "/mentions-legales": [
         "app/[lang]/mentions-legales/page.tsx",

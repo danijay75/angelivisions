@@ -1,9 +1,9 @@
 export const PAGE_LOCALES = ["fr", "en", "de", "es"] as const
 
 export type PageLocale = (typeof PAGE_LOCALES)[number]
-export type LocalizedLocale = Exclude<PageLocale, "fr">
+export type LocalizedLocale = PageLocale
 
-export const LOCALIZED_LOCALES: LocalizedLocale[] = ["en", "de", "es"]
+export const LOCALIZED_LOCALES: LocalizedLocale[] = ["fr", "en", "de", "es"]
 
 export const LOCALE_NAMES: Record<PageLocale, string> = {
   fr: "Français",
@@ -28,7 +28,7 @@ export const OG_LOCALES: Record<PageLocale, string> = {
 
 /** URL publique de la landing page pour une langue donnée. */
 export function localePath(locale: PageLocale): string {
-  return locale === "fr" ? "/easy-ip-switch" : `/easy-ip-switch/${locale}`
+  return `/${locale}/av-ip-switch`
 }
 
 export function isPageLocale(value: string): value is PageLocale {

@@ -120,11 +120,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/contacts',
     ]
 
-    // Landing page de l'application Easy IP-Switch (URL non localisée).
-    routes.push({
-        url: `${BASE_URL}/easy-ip-switch`,
-        changeFrequency: 'monthly',
-        priority: 0.9,
+    // Landing pages localisées de l'application AV IP-Switch.
+    ;(["fr", "en", "de", "es"] as const).forEach((locale) => {
+        routes.push({
+            url: `${BASE_URL}/${locale}/av-ip-switch`,
+            lastModified: lastModifiedFor(LASTMOD.static?.['/av-ip-switch']),
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        })
     })
 
     LOCALES.forEach((lang) => {

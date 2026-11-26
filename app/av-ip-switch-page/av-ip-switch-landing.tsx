@@ -43,9 +43,9 @@ const DONATION_URL = "https://www.paypal.com/donate/?hosted_button_id=WZBCQXPEHH
 const VERSION = release.windowsVersion
 const MAC_VERSION = release.macVersion
 const WINDOWS_SHA256 = release.windowsSha256
-const WINDOWS_ZIP_URL = `https://github.com/danijay75/easy-ip-switch/releases/download/v${VERSION}/easy-ip-switch-${VERSION}-windows.zip`
-const WINDOWS_CHECKSUMS_URL = "/downloads/easy-ip-switch/SHA256SUMS.txt"
-const GITHUB_RELEASE_URL = `https://github.com/danijay75/easy-ip-switch/releases/tag/v${VERSION}`
+const WINDOWS_ZIP_URL = `https://github.com/danijay75/av-ip-switch/releases/download/v${VERSION}/av-ip-switch-${VERSION}-windows.zip`
+const WINDOWS_CHECKSUMS_URL = "/downloads/av-ip-switch/SHA256SUMS.txt"
+const GITHUB_RELEASE_URL = `https://github.com/danijay75/av-ip-switch/releases/tag/v${VERSION}`
 
 type DetectedOs = "windows" | "mac" | "other" | null
 
@@ -101,7 +101,7 @@ function SectionHeading({
 function FlagIcon({ locale }: { locale: PageLocale }) {
   return (
     <Image
-      src={`/images/easy-ip-switch/flags/${locale}.png`}
+      src={`/images/av-ip-switch/flags/${locale}.png`}
       alt=""
       width={40}
       height={27}
@@ -181,8 +181,8 @@ function Header({ locale, content }: { locale: PageLocale; content: LandingConte
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8">
         <a href="#accueil" className="group flex shrink-0 items-center gap-2.5 md:gap-3">
           <Image
-            src="/images/easy-ip-switch/icon.png"
-            alt="Easy IP-Switch"
+            src="/images/av-ip-switch/icon.png"
+            alt="AV IP-Switch"
             width={44}
             height={44}
             priority
@@ -190,7 +190,7 @@ function Header({ locale, content }: { locale: PageLocale; content: LandingConte
           />
           <span className="flex flex-col leading-none">
             <span className="whitespace-nowrap font-display text-[15px] font-semibold tracking-tight text-white md:text-[17px]">
-              Easy IP-Switch
+              AV IP-Switch
             </span>
             <span className="mt-1 whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.18em] text-blue-300/80 md:text-[10px]">
               v{VERSION}
@@ -918,7 +918,7 @@ function Donation({ content }: { content: LandingContent }) {
                 >
                   <div className="mx-auto w-fit rounded-2xl bg-white p-3 shadow-xl shadow-black/30">
                     <Image
-                      src="/images/easy-ip-switch/donation-qr.png"
+                      src="/images/av-ip-switch/donation-qr.png"
                       alt={donation.qrAlt}
                       width={480}
                       height={480}
@@ -988,14 +988,14 @@ function Footer({ locale, content }: { locale: PageLocale; content: LandingConte
           <div className="max-w-sm">
             <div className="flex items-center gap-3">
               <Image
-                src="/images/easy-ip-switch/icon.png"
-                alt="Easy IP-Switch"
+                src="/images/av-ip-switch/icon.png"
+                alt="AV IP-Switch"
                 width={40}
                 height={40}
                 className="h-9 w-9 rounded-lg object-cover ring-1 ring-white/15"
               />
               <div>
-                <p className="font-display text-sm font-semibold text-white">Easy IP-Switch</p>
+                <p className="font-display text-sm font-semibold text-white">AV IP-Switch</p>
                 <p className="mt-0.5 text-[11px] text-slate-500">{footer.tagline}</p>
               </div>
             </div>
@@ -1112,7 +1112,7 @@ function Footer({ locale, content }: { locale: PageLocale; content: LandingConte
   )
 }
 
-export default function EasyIpSwitchLanding({
+export default function AvIpSwitchLanding({
   locale,
   content,
 }: {

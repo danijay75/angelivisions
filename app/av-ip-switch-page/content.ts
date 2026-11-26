@@ -134,14 +134,14 @@ export type LandingContent = {
 const fr: LandingContent = {
   lang: "fr",
   meta: {
-    title: "Easy IP-Switch — Changer d'adresse IP facilement",
+    title: "AV IP-Switch — Changer d'adresse IP facilement",
     description:
       "L'application Tout-en-un pour changer facilement et rapidement d'adresse IP. Gratuite, portable et disponible pour Windows 8, 10, 11 et macOS (Intel et Apple Silicon).",
     keywords: [
       "changer adresse IP",
       "adresse IP fixe",
       "DHCP",
-      "Easy IP-Switch",
+      "AV IP-Switch",
       "utilitaire réseau",
       "Windows",
       "macOS",
@@ -159,9 +159,9 @@ const fr: LandingContent = {
     language: "Changer de langue",
   },
   hero: {
-    badge: "Nouveau · Version 1.1.3",
+    badge: "Nouveau · Version 1.2.1",
     free: "Gratuit et sans inscription",
-    kicker: "Easy IP-Switch",
+    kicker: "AV IP-Switch",
     tagline: "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP",
     title: {
       pre: "L’application ",
@@ -169,15 +169,15 @@ const fr: LandingContent = {
       post: " pour changer facilement et rapidement d’adresse IP",
     },
     description:
-      "Easy IP-Switch réunit le changement d’adresse, la validation des champs et le test de connexion dans une interface unique. Fini les clics dans les menus réseau de Windows ou de macOS : tout se fait en quelques secondes.",
+      "AV IP-Switch réunit le changement d’adresse, la validation des champs et le test de connexion dans une interface unique. Fini les clics dans les menus réseau de Windows ou de macOS : tout se fait en quelques secondes.",
     ctaDownload: "Télécharger gratuitement",
     ctaFeatures: "Découvrir les fonctionnalités",
     meta: ["Windows 8, 10 et 11", "macOS Intel et Apple Silicon", "Aucune installation requise"],
   },
   mock: {
     aria:
-      "Aperçu de l'interface d'Easy IP-Switch : une carte Ethernet avec le choix DHCP ou adresse fixe, les champs adresse IP, masque et passerelle, le bouton de test et le bouton Changer.",
-    title: "Easy IP-Switch",
+      "Aperçu de l'interface d'AV IP-Switch : une carte Ethernet avec le choix DHCP ou adresse fixe, les champs adresse IP, masque et passerelle, le bouton de test et le bouton Changer.",
+    title: "AV IP-Switch",
     admin: "Administrateur",
     tabs: { adapters: "Cartes réseau", ping: "Test de ping" },
     connected: "Connecté",
@@ -227,7 +227,7 @@ const fr: LandingContent = {
       {
         title: "Léger, portable et multilingue",
         description:
-          "Un seul exécutable de moins de 300 Ko, aucune installation, aucune télémétrie. Interface en français, anglais, allemand et espagnol, thème clair et sombre au choix.",
+          "Un seul exécutable léger (~310 Ko), aucune installation, aucune télémétrie. Interface en français, anglais, allemand et espagnol, thème clair et sombre au choix.",
       },
     ],
     highlights: [
@@ -288,7 +288,7 @@ const fr: LandingContent = {
     eyebrow: "Téléchargements",
     title: { pre: "Choisissez ", accent: "votre version" },
     description:
-      "Version 1.1.3 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même contenu, sur tous vos appareils.",
+      "Windows 1.2.1 · macOS 1.1.3 · Gratuit · Windows 8, 10 et 11 · macOS 12 ou plus récent. Le même outil, sur tous vos appareils.",
     recommended: "Recommandé pour votre appareil",
     windows: {
       title: "Windows",
@@ -338,13 +338,13 @@ const fr: LandingContent = {
       title: "Installer sur macOS",
       steps: [
         "Téléchargez le .dmg correspondant à votre puce.",
-        "Ouvrez le DMG, puis glissez Easy IP-Switch dans le dossier Applications.",
+        "Ouvrez le DMG, puis glissez AV IP-Switch dans le dossier Applications.",
         "Au premier lancement, si macOS bloque l’application : clic droit sur l’icône → « Ouvrir ».",
         "Au premier lancement, acceptez les conditions d’utilisation et la notice RGPD.",
         "macOS 15 et plus récent : autorisez l’accès au réseau local pour le test de ping.",
       ],
     },
-    sizeWindows: "118 Ko",
+    sizeWindows: "131 Ko",
     sizeMac: "1,2 Mo",
     freeLabel: "gratuit",
     windowsWarning: {
@@ -369,7 +369,7 @@ const fr: LandingContent = {
   donation: {
     eyebrow: "Soutenir le projet",
     titlePre: "Soutenir ",
-    titleAccent: "Easy IP-Switch",
+    titleAccent: "AV IP-Switch",
     description:
       "L’application est développée bénévolement et distribuée gratuitement, sans publicité ni version payante. Un don aide à couvrir les frais de développement, de signature et d’hébergement — et à financer les prochaines versions.",
     cta: "Faire un don via PayPal",
@@ -377,7 +377,7 @@ const fr: LandingContent = {
     note: "Paiement sécurisé par PayPal · Carte bancaire acceptée · Don ponctuel ou récurrent",
     qrTitle: "Scannez avec votre téléphone",
     qrHint: "ou cliquez pour ouvrir la page PayPal",
-    qrAlt: "QR code pour faire un don PayPal à Easy IP-Switch",
+    qrAlt: "QR code pour faire un don PayPal à AV IP-Switch",
   },
   faq: {
     eyebrow: "FAQ",
@@ -387,7 +387,7 @@ const fr: LandingContent = {
       {
         question: "L'application est-elle vraiment gratuite ?",
         answer:
-          "Oui. Easy IP-Switch est gratuite, sans publicité, sans compte et sans version payante. Un don via PayPal reste possible pour soutenir le développement, mais il est entièrement facultatif.",
+          "Oui. AV IP-Switch est gratuite, sans publicité, sans compte et sans version payante. Un don via PayPal reste possible pour soutenir le développement, mais il est entièrement facultatif.",
       },
       {
         question: "Faut-il être administrateur pour changer d'adresse IP ?",
@@ -422,7 +422,7 @@ const fr: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Un outil Angeli Visions · v1.1.3",
+    tagline: "Un outil Angeli Visions · v1.2.1",
     description:
       "L’application Tout-en-un pour changer facilement et rapidement d’adresse IP, sous Windows 8, 10, 11 et macOS.",
     appColumn: "Application",
@@ -433,21 +433,21 @@ const fr: LandingContent = {
     privacy: "Confidentialité",
     donate: "Faire un don",
     rights: "Tous droits réservés.",
-    disclaimer: "Easy IP-Switch est distribué gratuitement, sans garantie d’aucune sorte.",
+    disclaimer: "AV IP-Switch est distribué gratuitement, sans garantie d’aucune sorte.",
   },
 }
 
 const en: LandingContent = {
   lang: "en",
   meta: {
-    title: "Easy IP-Switch — Change your IP address easily",
+    title: "AV IP-Switch — Change your IP address easily",
     description:
       "The all-in-one app to change your IP address quickly and easily. Free, portable and available for Windows 8, 10, 11 and macOS (Intel and Apple Silicon).",
     keywords: [
       "change IP address",
       "static IP",
       "DHCP",
-      "Easy IP-Switch",
+      "AV IP-Switch",
       "network utility",
       "Windows",
       "macOS",
@@ -465,21 +465,21 @@ const en: LandingContent = {
     language: "Change language",
   },
   hero: {
-    badge: "New · Version 1.1.3",
+    badge: "New · Version 1.2.1",
     free: "Free, no sign-up",
-    kicker: "Easy IP-Switch",
+    kicker: "AV IP-Switch",
     tagline: "The all-in-one app to change your IP address quickly and easily",
     title: { pre: "The ", accent: "all-in-one", post: " app to change your IP address quickly and easily" },
     description:
-      "Easy IP-Switch brings address changes, field validation and connection testing together in one interface. No more digging through the network menus in Windows or macOS: everything takes a few seconds.",
+      "AV IP-Switch brings address changes, field validation and connection testing together in one interface. No more digging through the network menus in Windows or macOS: everything takes a few seconds.",
     ctaDownload: "Download for free",
     ctaFeatures: "Explore the features",
     meta: ["Windows 8, 10 and 11", "macOS Intel and Apple Silicon", "No installation required"],
   },
   mock: {
     aria:
-      "Preview of the Easy IP-Switch interface: an Ethernet adapter with DHCP or static address, the IP address, mask and gateway fields, and the test and apply buttons.",
-    title: "Easy IP-Switch",
+      "Preview of the AV IP-Switch interface: an Ethernet adapter with DHCP or static address, the IP address, mask and gateway fields, and the test and apply buttons.",
+    title: "AV IP-Switch",
     admin: "Administrator",
     tabs: { adapters: "Network adapters", ping: "Ping test" },
     connected: "Connected",
@@ -529,7 +529,7 @@ const en: LandingContent = {
       {
         title: "Lightweight, portable and multilingual",
         description:
-          "A single executable under 300 KB, no installation, no telemetry. Interface in French, English, German and Spanish, with light and dark themes.",
+          "A single executable lightweight (~310 KB), no installation, no telemetry. Interface in French, English, German and Spanish, with light and dark themes.",
       },
     ],
     highlights: [
@@ -586,7 +586,7 @@ const en: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Choose ", accent: "your version" },
     description:
-      "Version 1.1.3 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same app, on all your devices.",
+      "Windows 1.2.1 · macOS 1.1.3 · Free · Windows 8, 10 and 11 · macOS 12 or later. The same tool, on all your devices.",
     recommended: "Recommended for your device",
     windows: {
       title: "Windows",
@@ -628,13 +628,13 @@ const en: LandingContent = {
       title: "Install on macOS",
       steps: [
         "Download the .dmg that matches your chip.",
-        "Open the DMG, then drag Easy IP-Switch into the Applications folder.",
+        "Open the DMG, then drag AV IP-Switch into the Applications folder.",
         "On first launch, if macOS blocks the app: right-click the icon → “Open”.",
         "At first launch, accept the terms of use and the GDPR notice.",
         "macOS 15 or later: allow local network access for the ping test.",
       ],
     },
-    sizeWindows: "118 KB",
+    sizeWindows: "131 KB",
     sizeMac: "1.2 MB",
     freeLabel: "free",
     windowsWarning: {
@@ -659,7 +659,7 @@ const en: LandingContent = {
   donation: {
     eyebrow: "Support the project",
     titlePre: "Support ",
-    titleAccent: "Easy IP-Switch",
+    titleAccent: "AV IP-Switch",
     description:
       "This app is developed on a volunteer basis and distributed for free, with no ads and no paid version. A donation helps cover development, signing and hosting costs — and funds future versions.",
     cta: "Donate via PayPal",
@@ -667,7 +667,7 @@ const en: LandingContent = {
     note: "Secure payment via PayPal · Credit cards accepted · One-time or recurring donation",
     qrTitle: "Scan with your phone",
     qrHint: "or click to open the PayPal page",
-    qrAlt: "QR code to donate to Easy IP-Switch via PayPal",
+    qrAlt: "QR code to donate to AV IP-Switch via PayPal",
   },
   faq: {
     eyebrow: "FAQ",
@@ -677,7 +677,7 @@ const en: LandingContent = {
       {
         question: "Is the app really free?",
         answer:
-          "Yes. Easy IP-Switch is free, with no ads, no account and no paid version. A donation via PayPal is possible to support development, but it is entirely optional.",
+          "Yes. AV IP-Switch is free, with no ads, no account and no paid version. A donation via PayPal is possible to support development, but it is entirely optional.",
       },
       {
         question: "Do I need administrator rights to change an IP address?",
@@ -712,7 +712,7 @@ const en: LandingContent = {
     ],
   },
   footer: {
-    tagline: "An Angeli Visions tool · v1.1.3",
+    tagline: "An Angeli Visions tool · v1.2.1",
     description:
       "The all-in-one app to change your IP address quickly and easily, on Windows 8, 10, 11 and macOS.",
     appColumn: "Application",
@@ -723,21 +723,21 @@ const en: LandingContent = {
     privacy: "Privacy",
     donate: "Donate",
     rights: "All rights reserved.",
-    disclaimer: "Easy IP-Switch is distributed free of charge, without warranty of any kind.",
+    disclaimer: "AV IP-Switch is distributed free of charge, without warranty of any kind.",
   },
 }
 
 const de: LandingContent = {
   lang: "de",
   meta: {
-    title: "Easy IP-Switch — IP-Adresse einfach ändern",
+    title: "AV IP-Switch — IP-Adresse einfach ändern",
     description:
       "Die All-in-One-App, um Ihre IP-Adresse schnell und einfach zu ändern. Kostenlos, portabel und verfügbar für Windows 8, 10, 11 und macOS (Intel und Apple Silicon).",
     keywords: [
       "IP-Adresse ändern",
       "feste IP",
       "DHCP",
-      "Easy IP-Switch",
+      "AV IP-Switch",
       "Netzwerk-Tool",
       "Windows",
       "macOS",
@@ -755,9 +755,9 @@ const de: LandingContent = {
     language: "Sprache ändern",
   },
   hero: {
-    badge: "Neu · Version 1.1.3",
+    badge: "Neu · Version 1.2.1",
     free: "Kostenlos, ohne Anmeldung",
-    kicker: "Easy IP-Switch",
+    kicker: "AV IP-Switch",
     tagline: "Die All-in-One-App, um Ihre IP-Adresse schnell und einfach zu ändern",
     title: {
       pre: "Die ",
@@ -765,15 +765,15 @@ const de: LandingContent = {
       post: ", um Ihre IP-Adresse schnell und einfach zu ändern",
     },
     description:
-      "Easy IP-Switch vereint Adresswechsel, Feldprüfung und Verbindungstest in einer Oberfläche. Schluss mit dem Klicken durch die Netzwerkmenüs von Windows oder macOS: alles dauert nur wenige Sekunden.",
+      "AV IP-Switch vereint Adresswechsel, Feldprüfung und Verbindungstest in einer Oberfläche. Schluss mit dem Klicken durch die Netzwerkmenüs von Windows oder macOS: alles dauert nur wenige Sekunden.",
     ctaDownload: "Kostenlos herunterladen",
     ctaFeatures: "Funktionen entdecken",
     meta: ["Windows 8, 10 und 11", "macOS Intel und Apple Silicon", "Keine Installation nötig"],
   },
   mock: {
     aria:
-      "Vorschau der Easy-IP-Switch-Oberfläche: ein Ethernet-Adapter mit DHCP oder fester Adresse, den Feldern IP-Adresse, Subnetzmaske und Gateway sowie den Schaltflächen Testen und Ändern.",
-    title: "Easy IP-Switch",
+      "Vorschau der AV-IP-Switch-Oberfläche: ein Ethernet-Adapter mit DHCP oder fester Adresse, den Feldern IP-Adresse, Subnetzmaske und Gateway sowie den Schaltflächen Testen und Ändern.",
+    title: "AV IP-Switch",
     admin: "Administrator",
     tabs: { adapters: "Netzwerkadapter", ping: "Ping-Test" },
     connected: "Verbunden",
@@ -823,7 +823,7 @@ const de: LandingContent = {
       {
         title: "Leicht, portabel und mehrsprachig",
         description:
-          "Eine einzige ausführbare Datei unter 300 KB, keine Installation, keine Telemetrie. Oberfläche auf Französisch, Englisch, Deutsch und Spanisch, helles und dunkles Design inklusive.",
+          "Eine einzige ausführbare Datei schlanke Datei (~310 KB), keine Installation, keine Telemetrie. Oberfläche auf Französisch, Englisch, Deutsch und Spanisch, helles und dunkles Design inklusive.",
       },
     ],
     highlights: [
@@ -884,7 +884,7 @@ const de: LandingContent = {
     eyebrow: "Downloads",
     title: { pre: "Wählen Sie ", accent: "Ihre Version" },
     description:
-      "Version 1.1.3 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dieselbe App auf allen Ihren Geräten.",
+      "Windows 1.2.1 · macOS 1.1.3 · Kostenlos · Windows 8, 10 und 11 · macOS 12 oder neuer. Dasselbe Tool auf allen Ihren Geräten.",
     recommended: "Für Ihr Gerät empfohlen",
     windows: {
       title: "Windows",
@@ -934,13 +934,13 @@ const de: LandingContent = {
       title: "Unter macOS installieren",
       steps: [
         "Laden Sie die zu Ihrem Chip passende .dmg-Datei herunter.",
-        "Öffnen Sie das DMG und ziehen Sie Easy IP-Switch in den Ordner „Programme“.",
+        "Öffnen Sie das DMG und ziehen Sie AV IP-Switch in den Ordner „Programme“.",
         "Beim ersten Start, falls macOS die App blockiert: Rechtsklick auf das Symbol → „Öffnen“.",
         "Akzeptieren Sie beim ersten Start die Nutzungsbedingungen und den DSGVO-Hinweis.",
         "macOS 15 oder neuer: Erlauben Sie den Zugriff auf das lokale Netzwerk für den Ping-Test.",
       ],
     },
-    sizeWindows: "118 KB",
+    sizeWindows: "131 KB",
     sizeMac: "1,2 MB",
     freeLabel: "kostenlos",
     windowsWarning: {
@@ -965,7 +965,7 @@ const de: LandingContent = {
   donation: {
     eyebrow: "Projekt unterstützen",
     titlePre: "Unterstützen Sie ",
-    titleAccent: "Easy IP-Switch",
+    titleAccent: "AV IP-Switch",
     description:
       "Die App wird ehrenamtlich entwickelt und kostenlos verteilt – ohne Werbung und ohne Bezahlversion. Eine Spende hilft, Entwicklungs-, Signatur- und Hostingkosten zu decken – und künftige Versionen zu finanzieren.",
     cta: "Über PayPal spenden",
@@ -973,7 +973,7 @@ const de: LandingContent = {
     note: "Sichere Zahlung über PayPal · Kreditkarte möglich · Einmalige oder wiederkehrende Spende",
     qrTitle: "Mit dem Smartphone scannen",
     qrHint: "oder klicken, um die PayPal-Seite zu öffnen",
-    qrAlt: "QR-Code für eine PayPal-Spende an Easy IP-Switch",
+    qrAlt: "QR-Code für eine PayPal-Spende an AV IP-Switch",
   },
   faq: {
     eyebrow: "FAQ",
@@ -983,7 +983,7 @@ const de: LandingContent = {
       {
         question: "Ist die App wirklich kostenlos?",
         answer:
-          "Ja. Easy IP-Switch ist kostenlos, ohne Werbung, ohne Konto und ohne Bezahlversion. Eine Spende über PayPal zur Unterstützung der Entwicklung ist möglich, aber völlig freiwillig.",
+          "Ja. AV IP-Switch ist kostenlos, ohne Werbung, ohne Konto und ohne Bezahlversion. Eine Spende über PayPal zur Unterstützung der Entwicklung ist möglich, aber völlig freiwillig.",
       },
       {
         question: "Brauche ich Administratorrechte, um die IP-Adresse zu ändern?",
@@ -1018,7 +1018,7 @@ const de: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Ein Tool von Angeli Visions · v1.1.3",
+    tagline: "Ein Tool von Angeli Visions · v1.2.1",
     description:
       "Die All-in-One-App für schnelle und einfache IP-Adresswechsel unter Windows 8, 10, 11 und macOS.",
     appColumn: "App",
@@ -1029,21 +1029,21 @@ const de: LandingContent = {
     privacy: "Datenschutz",
     donate: "Spenden",
     rights: "Alle Rechte vorbehalten.",
-    disclaimer: "Easy IP-Switch wird kostenlos und ohne jegliche Gewährleistung verteilt.",
+    disclaimer: "AV IP-Switch wird kostenlos und ohne jegliche Gewährleistung verteilt.",
   },
 }
 
 const es: LandingContent = {
   lang: "es",
   meta: {
-    title: "Easy IP-Switch — Cambiar de dirección IP fácilmente",
+    title: "AV IP-Switch — Cambiar de dirección IP fácilmente",
     description:
       "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP. Gratis, portátil y disponible para Windows 8, 10, 11 y macOS (Intel y Apple Silicon).",
     keywords: [
       "cambiar dirección IP",
       "IP fija",
       "DHCP",
-      "Easy IP-Switch",
+      "AV IP-Switch",
       "utilidad de red",
       "Windows",
       "macOS",
@@ -1061,9 +1061,9 @@ const es: LandingContent = {
     language: "Cambiar idioma",
   },
   hero: {
-    badge: "Nuevo · Versión 1.1.3",
+    badge: "Nuevo · Versión 1.2.1",
     free: "Gratis, sin registro",
-    kicker: "Easy IP-Switch",
+    kicker: "AV IP-Switch",
     tagline: "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP",
     title: {
       pre: "La aplicación ",
@@ -1071,15 +1071,15 @@ const es: LandingContent = {
       post: " para cambiar fácil y rápidamente de dirección IP",
     },
     description:
-      "Easy IP-Switch reúne el cambio de dirección, la validación de los campos y la prueba de conexión en una sola interfaz. Se acabó buscar en los menús de red de Windows o macOS: todo se hace en unos segundos.",
+      "AV IP-Switch reúne el cambio de dirección, la validación de los campos y la prueba de conexión en una sola interfaz. Se acabó buscar en los menús de red de Windows o macOS: todo se hace en unos segundos.",
     ctaDownload: "Descargar gratis",
     ctaFeatures: "Descubrir las funciones",
     meta: ["Windows 8, 10 y 11", "macOS Intel y Apple Silicon", "Sin instalación"],
   },
   mock: {
     aria:
-      "Vista previa de la interfaz de Easy IP-Switch: un adaptador Ethernet con DHCP o dirección fija, los campos de dirección IP, máscara y puerta de enlace, y los botones Probar y Cambiar.",
-    title: "Easy IP-Switch",
+      "Vista previa de la interfaz de AV IP-Switch: un adaptador Ethernet con DHCP o dirección fija, los campos de dirección IP, máscara y puerta de enlace, y los botones Probar y Cambiar.",
+    title: "AV IP-Switch",
     admin: "Administrador",
     tabs: { adapters: "Adaptadores de red", ping: "Prueba de ping" },
     connected: "Conectado",
@@ -1129,7 +1129,7 @@ const es: LandingContent = {
       {
         title: "Ligera, portátil y multilingüe",
         description:
-          "Un único ejecutable de menos de 300 KB, sin instalación y sin telemetría. Interfaz en francés, inglés, alemán y español, con tema claro y oscuro.",
+          "Un único ejecutable ligero (~310 KB), sin instalación y sin telemetría. Interfaz en francés, inglés, alemán y español, con tema claro y oscuro.",
       },
     ],
     highlights: [
@@ -1190,7 +1190,7 @@ const es: LandingContent = {
     eyebrow: "Descargas",
     title: { pre: "Elige ", accent: "tu versión" },
     description:
-      "Versión 1.1.3 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma app en todos tus dispositivos.",
+      "Windows 1.2.1 · macOS 1.1.3 · Gratis · Windows 8, 10 y 11 · macOS 12 o posterior. La misma herramienta en todos tus dispositivos.",
     recommended: "Recomendado para tu dispositivo",
     windows: {
       title: "Windows",
@@ -1240,13 +1240,13 @@ const es: LandingContent = {
       title: "Instalar en macOS",
       steps: [
         "Descarga el .dmg correspondiente a tu chip.",
-        "Abre el DMG y arrastra Easy IP-Switch a la carpeta Aplicaciones.",
+        "Abre el DMG y arrastra AV IP-Switch a la carpeta Aplicaciones.",
         "En el primer inicio, si macOS bloquea la aplicación: clic derecho en el icono → «Abrir».",
         "En el primer inicio, acepta las condiciones de uso y el aviso de RGPD.",
         "macOS 15 o posterior: permite el acceso a la red local para la prueba de ping.",
       ],
     },
-    sizeWindows: "118 KB",
+    sizeWindows: "131 KB",
     sizeMac: "1,2 MB",
     freeLabel: "gratis",
     windowsWarning: {
@@ -1271,7 +1271,7 @@ const es: LandingContent = {
   donation: {
     eyebrow: "Apoyar el proyecto",
     titlePre: "Apoya ",
-    titleAccent: "Easy IP-Switch",
+    titleAccent: "AV IP-Switch",
     description:
       "La aplicación se desarrolla de forma voluntaria y se distribuye gratis, sin publicidad ni versión de pago. Una donación ayuda a cubrir los costes de desarrollo, firma y alojamiento, y a financiar las próximas versiones.",
     cta: "Donar con PayPal",
@@ -1279,7 +1279,7 @@ const es: LandingContent = {
     note: "Pago seguro con PayPal · Tarjeta bancaria aceptada · Donación puntual o recurrente",
     qrTitle: "Escanea con tu teléfono",
     qrHint: "o haz clic para abrir la página de PayPal",
-    qrAlt: "Código QR para donar a Easy IP-Switch con PayPal",
+    qrAlt: "Código QR para donar a AV IP-Switch con PayPal",
   },
   faq: {
     eyebrow: "FAQ",
@@ -1289,7 +1289,7 @@ const es: LandingContent = {
       {
         question: "¿La aplicación es realmente gratis?",
         answer:
-          "Sí. Easy IP-Switch es gratis, sin publicidad, sin cuenta y sin versión de pago. Puedes hacer una donación por PayPal para apoyar el desarrollo, pero es totalmente opcional.",
+          "Sí. AV IP-Switch es gratis, sin publicidad, sin cuenta y sin versión de pago. Puedes hacer una donación por PayPal para apoyar el desarrollo, pero es totalmente opcional.",
       },
       {
         question: "¿Hacen falta permisos de administrador para cambiar la dirección IP?",
@@ -1324,7 +1324,7 @@ const es: LandingContent = {
     ],
   },
   footer: {
-    tagline: "Una herramienta de Angeli Visions · v1.1.3",
+    tagline: "Una herramienta de Angeli Visions · v1.2.1",
     description:
       "La aplicación todo en uno para cambiar fácil y rápidamente de dirección IP, en Windows 8, 10, 11 y macOS.",
     appColumn: "Aplicación",
@@ -1335,7 +1335,7 @@ const es: LandingContent = {
     privacy: "Privacidad",
     donate: "Donar",
     rights: "Todos los derechos reservados.",
-    disclaimer: "Easy IP-Switch se distribuye gratis, sin garantía de ningún tipo.",
+    disclaimer: "AV IP-Switch se distribuye gratis, sin garantía de ningún tipo.",
   },
 }
 
